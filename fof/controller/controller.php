@@ -2108,6 +2108,8 @@ class FOFController extends JObject
 			{
 				$tmpInput = new FOFInput($config['input']);
 			}
+		} else {
+			$tmpInput = new FOFInput();
 		}
 
 		// Guess the component name and view
