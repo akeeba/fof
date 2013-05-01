@@ -2098,7 +2098,7 @@ class FOFController extends JObject
 		$classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
 		$viewType = preg_replace('/[^A-Z0-9_]/i', '', $type);
 
-		if (!empty($config['input']))
+		if (array_key_exists('input', $config))
 		{
 			if (($config['input'] instanceof FOFInput))
 			{
