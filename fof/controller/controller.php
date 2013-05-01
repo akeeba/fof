@@ -2098,13 +2098,16 @@ class FOFController extends JObject
 		$classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
 		$viewType = preg_replace('/[^A-Z0-9_]/i', '', $type);
 
-		if (($config['input'] instanceof FOFInput))
+		if (!empty($config['input']))
 		{
-			$tmpInput = $config['input'];
-		}
-		else
-		{
-			$tmpInput = new FOFInput($config['input']);
+			if (($config['input'] instanceof FOFInput))
+			{
+				$tmpInput = $config['input'];
+			}
+			else
+			{
+				$tmpInput = new FOFInput($config['input']);
+			}
 		}
 
 		// Guess the component name and view
