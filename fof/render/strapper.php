@@ -806,6 +806,14 @@ ENDJS;
 
 		$html = '';
 
+		// Check enctype
+		$enctype = '';
+
+		if ($form->getAttribute('enctype') === 'multipart/form-data')
+		{
+			$enctype = 'enctype="multipart/form-data"';
+		}
+
 		if ($validate = $form->getAttribute('validate'))
 		{
 			JHTML::_('behavior.formvalidation');
@@ -817,7 +825,7 @@ ENDJS;
 			$class = '';
 		}
 
-		$html .= '<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-horizontal' . $class . '">' . PHP_EOL;
+		$html .= '<form action="index.php" method="post" name="adminForm" id="adminForm"' . $enctype . ' class="form-horizontal' . $class . '">' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="view" value="' . $input->getCmd('view', 'edit') . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="task" value="" />' . PHP_EOL;
