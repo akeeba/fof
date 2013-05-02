@@ -133,7 +133,12 @@ class FOFDispatcher extends JObject
 		$config['option'] = !is_null($option) ? $option : $input->getCmd('option', 'com_foobar');
 		$config['view'] = !is_null($view) ? $view : $input->getCmd('view', '');
 		$input->set('option', $config['option']);
-		$input->set('view', $config['view']);
+
+		if (!empty($config['view']))
+		{
+			$input->set('view', $config['view']);
+		}
+
 		$config['input'] = $input;
 
 		$className = ucfirst(str_replace('com_', '', $config['option'])) . 'Dispatcher';
