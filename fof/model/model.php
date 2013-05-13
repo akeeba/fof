@@ -2555,6 +2555,32 @@ class FOFModel extends JObject
 	}
 
 	/**
+	 * Set the object properties based on a named array/hash.
+	 *
+	 * @param   mixed  $properties  Either an associative array or another object.
+	 *
+	 * @return  boolean
+	 *
+	 * @since   11.1
+	 *
+	 * @see     setState()
+	 */
+	public function setProperties($properties)
+	{
+		if (is_array($properties) || is_object($properties))
+		{
+			foreach ((array) $properties as $k => $v)
+			{
+				// Use the set function which might be overridden.
+				$this->setState($k, $v);
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Clean the cache
 	 *
 	 * @param   string   $group      The cache group
