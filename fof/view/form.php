@@ -14,7 +14,6 @@ JLoader::import('joomla.application.component.view');
  */
 class FOFViewForm extends FOFViewHtml
 {
-
 	/** @var FOFForm The form to render */
 	protected $form;
 
@@ -42,6 +41,7 @@ class FOFViewForm extends FOFViewHtml
 
 		// Call the relevant method
 		$method_name = 'on' . ucfirst($task);
+
 		if (method_exists($this, $method_name))
 		{
 			$result = $this->$method_name($tpl);
@@ -58,7 +58,7 @@ class FOFViewForm extends FOFViewHtml
 		}
 
 		// Render the toolbar
-		$toolbar = FOFToolbar::getAnInstance($this->input->getCmd('option', 'com_foobar'), $this->config);
+		$toolbar        = FOFToolbar::getAnInstance($this->input->getCmd('option', 'com_foobar'), $this->config);
 		$toolbar->perms = $this->perms;
 		$toolbar->renderToolbar($this->input->getCmd('view', 'cpanel'), $task, $this->input);
 
@@ -71,10 +71,12 @@ class FOFViewForm extends FOFViewHtml
 		$basePath .= $this->config['option'] . '/';
 		$basePath .= $this->config['view'] . '/';
 		$path = $basePath . $this->getLayout();
+
 		if ($tpl)
 		{
 			$path .= '_' . $tpl;
 		}
+
 		$viewTemplate = $this->loadAnyTemplate($path);
 
 		// If there was no template file found, display the form
@@ -85,6 +87,7 @@ class FOFViewForm extends FOFViewHtml
 
 		// -- Output the view template
 		echo $viewTemplate;
+
 		// -- Output HTML after the view template
 		$this->postRender();
 	}
@@ -98,19 +101,29 @@ class FOFViewForm extends FOFViewHtml
 	 */
 	public function getRenderedForm()
 	{
-		$html = '';
+		$html     = '';
 		$renderer = $this->getRenderer();
+
 		if ($renderer instanceof FOFRenderAbstract)
 		{
 			// Load CSS and Javascript files defined in the form
 			$this->form->loadCSSFiles();
 			$this->form->loadJSFiles();
+
 			// Get the form's HTML
 			$html = $renderer->renderForm($this->form, $this->getModel(), $this->input);
 		}
+
 		return $html;
 	}
 
+	/**
+	 * Executes before rendering the page for the Add task.
+	 *
+	 * @param   string  $tpl  Subtemplate to use
+	 *
+	 * @return  boolean  Return true to allow rendering of the page
+	 */
 	protected function onAdd($tpl = null)
 	{
 		// Hide the main menu
@@ -122,7 +135,7 @@ class FOFViewForm extends FOFViewHtml
 		// Assign the item and form to the view
 		$this->assign('item', $model->getItem());
 		$this->assign('form', $this->form);
+
 		return true;
 	}
-
 }
