@@ -18,7 +18,6 @@ JLoader::import('joomla.application.component.view');
  */
 class FOFViewHtml extends FOFView
 {
-
 	/** @var array Data lists */
 	protected $lists = null;
 
@@ -32,13 +31,14 @@ class FOFViewHtml extends FOFView
 	 */
 	public function __construct($config = array())
 	{
-		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		list($isCli,) = FOFDispatcher::isCliAdmin();
 
 		// Make sure $config is an array
 		if (is_object($config))
 		{
-			$config = (array)$config;
-		} elseif (!is_array($config))
+			$config = (array) $config;
+		}
+		elseif (!is_array($config))
 		{
 			$config = array();
 		}
@@ -61,19 +61,19 @@ class FOFViewHtml extends FOFView
 		}
 		else
 		{
-			$this->input = new FOFInput();
+			$this->input = new FOFInput;
 		}
 
-		$this->lists = new JObject();
+		$this->lists = new JObject;
 
-		if(!$isCli)
+		if (!$isCli)
 		{
-			$user = JFactory::getUser();
+			$user  = JFactory::getUser();
 			$perms = (object) array(
-					'create'	 => $user->authorise('core.create', $this->input->getCmd('option', 'com_foobar')),
-					'edit'		 => $user->authorise('core.edit', $this->input->getCmd('option', 'com_foobar')),
-					'editstate'	 => $user->authorise('core.edit.state', $this->input->getCmd('option', 'com_foobar')),
-					'delete'	 => $user->authorise('core.delete', $this->input->getCmd('option', 'com_foobar')),
+				'create'    => $user->authorise('core.create', $this->input->getCmd('option', 'com_foobar')),
+				'edit'      => $user->authorise('core.edit', $this->input->getCmd('option', 'com_foobar')),
+				'editstate' => $user->authorise('core.edit.state', $this->input->getCmd('option', 'com_foobar')),
+				'delete'    => $user->authorise('core.delete', $this->input->getCmd('option', 'com_foobar')),
 			);
 			$this->assign('aclperms', $perms);
 			$this->perms = $perms;
@@ -91,10 +91,11 @@ class FOFViewHtml extends FOFView
 	{
 		// Get the task set in the model
 		$model = $this->getModel();
-		$task = $model->getState('task', 'browse');
+		$task  = $model->getState('task', 'browse');
 
 		// Call the relevant method
 		$method_name = 'on' . ucfirst($task);
+
 		if (method_exists($this, $method_name))
 		{
 			$result = $this->$method_name($tpl);
@@ -112,9 +113,9 @@ class FOFViewHtml extends FOFView
 		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
 
 		// Don't load the toolbar on CLI
-		if(!$isCli)
+		if (!$isCli)
 		{
-			$toolbar = FOFToolbar::getAnInstance($this->input->getCmd('option', 'com_foobar'), $this->config);
+			$toolbar        = FOFToolbar::getAnInstance($this->input->getCmd('option', 'com_foobar'), $this->config);
 			$toolbar->perms = $this->perms;
 			$toolbar->renderToolbar($this->input->getCmd('view', 'cpanel'), $task, $this->input);
 		}
@@ -124,7 +125,9 @@ class FOFViewHtml extends FOFView
 		{
 			$this->preRender();
 		}
+
 		parent::display($tpl);
+
 		if ($this->doPostRender)
 		{
 			$this->postRender();
@@ -132,8 +135,9 @@ class FOFViewHtml extends FOFView
 	}
 
 	/**
-	 * Renders the link bar (submenu) using Joomla!'s default
-	 * JSubMenuHelper::addEntry method
+	 * Renders the link bar (submenu) using Joomla!'s default JSubMenuHelper::addEntry method.
+	 *
+	 * @return void
 	 */
 	private function renderLinkbar()
 	{
@@ -142,7 +146,8 @@ class FOFViewHtml extends FOFView
 		if (!$isAdmin || $isCli)
 			return;
 		$toolbar = FOFToolbar::getAnInstance($this->input->getCmd('option', 'com_foobar'), $this->config);
-		$links = $toolbar->getLinks();
+		$links   = $toolbar->getLinks();
+
 		if (!empty($links))
 		{
 			foreach ($links as $link)
@@ -153,12 +158,14 @@ class FOFViewHtml extends FOFView
 	}
 
 	/**
-	 * Runs before rendering the view template, echoing HTML to put before the
-	 * view template's generated HTML
+	 * Runs before rendering the view template, echoing HTML to put before the view template's generated HTML.
+	 *
+	 * @return void
 	 */
 	protected function preRender()
 	{
 		$renderer = $this->getRenderer();
+
 		if (!($renderer instanceof FOFRenderAbstract))
 		{
 			$this->renderLinkbar();
@@ -172,12 +179,14 @@ class FOFViewHtml extends FOFView
 	}
 
 	/**
-	 * Runs after rendering the view template, echoing HTML to put after the
-	 * view template's generated HTML
+	 * Runs after rendering the view template, echoing HTML to put after the view template's generated HTML.
+	 *
+	 * @return void
 	 */
 	protected function postRender()
 	{
 		$renderer = $this->getRenderer();
+
 		if ($renderer instanceof FOFRenderAbstract)
 		{
 			$view = $this->input->getCmd('view', 'cpanel');
@@ -197,6 +206,7 @@ class FOFViewHtml extends FOFView
 	{
 		// When in interactive browsing mode, save the state to the session
 		$this->getModel()->savestate(1);
+
 		return $this->onDisplay($tpl);
 	}
 
@@ -226,8 +236,9 @@ class FOFViewHtml extends FOFView
 		$this->assign('pagination', $model->getPagination());
 		$this->assignRef('lists', $this->lists);
 
-		//pass page params on frontend only
+		// Pass page params on frontend only
 		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+
 		if (!$isAdmin && !$isCli)
 		{
 			$params = JFactory::getApplication()->getParams();
@@ -249,6 +260,7 @@ class FOFViewHtml extends FOFView
 		JRequest::setVar('hidemainmenu', true);
 		$model = $this->getModel();
 		$this->assign('item', $model->getItem());
+
 		return true;
 	}
 
@@ -310,14 +322,15 @@ class FOFViewHtml extends FOFView
 		}
 
 		$orderingColumn = $table->getColumnAlias('ordering');
-		$fields = $table->getTableFields();
+		$fields         = $table->getTableFields();
+
 		if (!array_key_exists($orderingColumn, $fields))
 		{
 			return false;
 		}
 
 		$listOrder = $this->escape($model->getState('filter_order', null, 'cmd'));
-		$listDirn = $this->escape($model->getState('filter_order_Dir', 'ASC', 'cmd'));
+		$listDirn  = $this->escape($model->getState('filter_order_Dir', 'ASC', 'cmd'));
 		$saveOrder = $listOrder == $orderingColumn;
 
 		if ($saveOrder)
@@ -327,7 +340,7 @@ class FOFViewHtml extends FOFView
 		}
 
 		return array(
-			'saveOrder'		 => $saveOrder,
+			'saveOrder'      => $saveOrder,
 			'orderingColumn' => $orderingColumn
 		);
 	}
@@ -354,5 +367,4 @@ class FOFViewHtml extends FOFView
 	{
 		return $this->perms;
 	}
-
 }

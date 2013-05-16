@@ -18,7 +18,13 @@ JLoader::import('joomla.application.component.view');
  */
 class FOFViewJson extends FOFViewHtml
 {
-
+	/**
+	 * Executes before rendering a generic page, default to actions necessary for the Browse task.
+	 *
+	 * @param   string  $tpl  Subtemplate to use
+	 *
+	 * @return  boolean  Return true to allow rendering of the page
+	 */
 	protected function onDisplay($tpl = null)
 	{
 		// Load the model
@@ -39,10 +45,13 @@ class FOFViewJson extends FOFViewHtml
 		{
 			JError::setErrorHandling(E_ALL, 'ignore');
 		}
+
 		$hasFailed = false;
+
 		try
 		{
 			$result = $this->loadTemplate($tpl, true);
+
 			if ($result instanceof Exception)
 			{
 				$hasFailed = true;
@@ -59,6 +68,7 @@ class FOFViewJson extends FOFViewHtml
 			{
 				$hasFailed = true;
 			}
+
 			JError::setErrorHandling(E_WARNING, 'callback');
 		}
 
@@ -69,6 +79,7 @@ class FOFViewJson extends FOFViewHtml
 
 			// JSONP support
 			$callback = $this->input->getVar('callback', null);
+
 			if (!empty($callback))
 			{
 				echo $callback . '(' . $json . ')';
@@ -76,7 +87,7 @@ class FOFViewJson extends FOFViewHtml
 			else
 			{
 				$defaultName = $this->input->getCmd('view', 'joomla');
-				$filename = $this->input->getCmd('basename', $defaultName);
+				$filename    = $this->input->getCmd('basename', $defaultName);
 
 				$document->setName($filename);
 				echo $json;
@@ -87,10 +98,18 @@ class FOFViewJson extends FOFViewHtml
 		else
 		{
 			echo $result;
+
 			return false;
 		}
 	}
 
+	/**
+	 * Executes before rendering the page for the Read task.
+	 *
+	 * @param   string  $tpl  Subtemplate to use
+	 *
+	 * @return  boolean  Return true to allow rendering of the page
+	 */
 	protected function onRead($tpl = null)
 	{
 		$model = $this->getModel();
@@ -112,6 +131,7 @@ class FOFViewJson extends FOFViewHtml
 		}
 
 		$hasFailed = false;
+
 		try
 		{
 			$result = $this->loadTemplate($tpl, true);
@@ -127,6 +147,7 @@ class FOFViewJson extends FOFViewHtml
 			{
 				$hasFailed = true;
 			}
+
 			JError::setErrorHandling(E_WARNING, 'callback');
 		}
 
@@ -137,6 +158,7 @@ class FOFViewJson extends FOFViewHtml
 
 			// JSONP support
 			$callback = $this->input->get('callback', null);
+
 			if (!empty($callback))
 			{
 				echo $callback . '(' . $json . ')';
@@ -144,7 +166,7 @@ class FOFViewJson extends FOFViewHtml
 			else
 			{
 				$defaultName = $this->input->getCmd('view', 'joomla');
-				$filename = $this->input->getCmd('basename', $defaultName);
+				$filename    = $this->input->getCmd('basename', $defaultName);
 				$document->setName($filename);
 				echo $json;
 			}
@@ -154,8 +176,8 @@ class FOFViewJson extends FOFViewHtml
 		else
 		{
 			echo $result;
+
 			return false;
 		}
 	}
-
 }
