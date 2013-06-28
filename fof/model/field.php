@@ -71,7 +71,7 @@ abstract class FOFModelField
 	 */
 	public function isEmpty($value)
 	{
-		return ($value === $this->null_value) || empty($value);
+		return ($value === $this->null_value) || ('' === $value);
 	}
 
 	/**
