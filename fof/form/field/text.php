@@ -206,7 +206,7 @@ class FOFFormFieldText extends JFormFieldText implements FOFFormField
 
 		foreach ($fields as $fielddata)
 		{
-			$fieldname = $fielddata->Field;
+			$fieldname = $fielddata['Field'];
 
 			if (empty($fieldname))
 			{
