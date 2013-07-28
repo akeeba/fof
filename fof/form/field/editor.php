@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldEditor'))
 {
@@ -24,6 +24,7 @@ if (!class_exists('JFormFieldEditor'))
  */
 class FOFFormFieldEditor extends JFormFieldEditor implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -31,7 +32,7 @@ class FOFFormFieldEditor extends JFormFieldEditor implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -93,4 +94,5 @@ class FOFFormFieldEditor extends JFormFieldEditor implements FOFFormField
 
 		return '<div class="' . $this->id . ' ' . $class . '">' . $this->value . '</div>';
 	}
+
 }

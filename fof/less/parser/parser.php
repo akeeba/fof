@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * This class is taken verbatim from:
@@ -17,47 +17,36 @@ defined('_JEXEC') or die();
  *
  * Copyright 2012, Leaf Corcoran <leafot@gmail.com>
  * Licensed under MIT or GPLv3, see LICENSE
- *
- * Responsible for taking a string of LESS code and converting it into a syntax tree
- *
- * @since  2.0
  */
+// responsible for taking a string of LESS code and converting it into a
+// syntax tree
 class FOFLessParser
 {
-	// Used to uniquely identify blocks
-	protected static $nextBlockId = 0;
 
-	protected static $precedence = array(
-		'=<'					 => 0,
-		'>='					 => 0,
-		'='						 => 0,
-		'<'						 => 0,
-		'>'						 => 0,
-		'+'						 => 1,
-		'-'						 => 1,
-		'*'						 => 2,
-		'/'						 => 2,
-		'%'						 => 2,
+	static protected $nextBlockId = 0; // used to uniquely identify blocks
+	static protected $precedence = array(
+		'=<' => 0,
+		'>=' => 0,
+		'='  => 0,
+		'<'  => 0,
+		'>'  => 0,
+		'+'  => 1,
+		'-'  => 1,
+		'*'  => 2,
+		'/'  => 2,
+		'%'  => 2,
 	);
-
-	protected static $whitePattern;
-
-	protected static $commentMulti;
-
-	protected static $commentSingle = "//";
-
-	protected static $commentMultiLeft = "/*";
-
-	protected static $commentMultiRight = "*/";
-
-	// Regex string to match any of the operators
-	protected static $operatorString;
-
-	// These properties will supress division unless it's inside parenthases
-	protected static $supressDivisionProps = array('/border-radius$/i', '/^font$/i');
-
+	static protected $whitePattern;
+	static protected $commentMulti;
+	static protected $commentSingle = "//";
+	static protected $commentMultiLeft = "/*";
+	static protected $commentMultiRight = "*/";
+	// regex string to match any of the operators
+	static protected $operatorString;
+	// these properties will supress division unless it's inside parenthases
+	static protected $supressDivisionProps =
+		array('/border-radius$/i', '/^font$/i');
 	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document");
-
 	protected $lineDirectives = array("charset");
 
 	/**
@@ -70,34 +59,26 @@ class FOFLessParser
 	 *     property2: (10 -5); // should evaluate to 5
 	 */
 	protected $inParens = false;
+	// caches preg escaped literals
+	static protected $literalCache = array();
 
-	// Caches preg escaped literals
-	protected static $literalCache = array();
-
-	/**
-	 * Constructor
-	 *
-	 * @param   [type]  $lessc       [description]
-	 * @param   string  $sourceName  [description]
-	 */
 	public function __construct($lessc, $sourceName = null)
 	{
 		$this->eatWhiteDefault = true;
-
-		// Reference to less needed for vPrefix, mPrefix, and parentSelector
+		// reference to less needed for vPrefix, mPrefix, and parentSelector
 		$this->lessc = $lessc;
 
-		// Name used for error messages
-		$this->sourceName = $sourceName;
+		$this->sourceName = $sourceName; // name used for error messages
 
 		$this->writeComments = false;
 
 		if (!self::$operatorString)
 		{
-			self::$operatorString = '(' . implode('|', array_map(array('FOFLess', 'preg_quote'), array_keys(self::$precedence))) . ')';
+			self::$operatorString =
+				'(' . implode('|', array_map(array('FOFLess', 'preg_quote'), array_keys(self::$precedence))) . ')';
 
-			$commentSingle = FOFLess::preg_quote(self::$commentSingle);
-			$commentMultiLeft = FOFLess::preg_quote(self::$commentMultiLeft);
+			$commentSingle     = FOFLess::preg_quote(self::$commentSingle);
+			$commentMultiLeft  = FOFLess::preg_quote(self::$commentMultiLeft);
 			$commentMultiRight = FOFLess::preg_quote(self::$commentMultiRight);
 
 			self::$commentMulti = $commentMultiLeft . '.*?' . $commentMultiRight;
@@ -105,48 +86,34 @@ class FOFLessParser
 		}
 	}
 
-	/**
-	 * Parse text
-	 *
-	 * @param   string  $buffer  [description]
-	 *
-	 * @return  [type]           [description]
-	 */
 	public function parse($buffer)
 	{
 		$this->count = 0;
-		$this->line = 1;
+		$this->line  = 1;
 
-		// Block stack
-		$this->env = null;
+		$this->env    = null; // block stack
 		$this->buffer = $this->writeComments ? $buffer : $this->removeComments($buffer);
 		$this->pushSpecialBlock("root");
 		$this->eatWhiteDefault = true;
-		$this->seenComments = array();
+		$this->seenComments    = array();
 
-		/*
-		 * trim whitespace on head
-		 * if (preg_match('/^\s+/', $this->buffer, $m)) {
-		 * 	$this->line += substr_count($m[0], "\n");
-		 * 	$this->buffer = ltrim($this->buffer);
-		 * }
-		 */
+		// trim whitespace on head
+		// if (preg_match('/^\s+/', $this->buffer, $m)) {
+		// 	$this->line += substr_count($m[0], "\n");
+		// 	$this->buffer = ltrim($this->buffer);
+		// }
 		$this->whitespace();
 
-		// Parse the entire file
+		// parse the entire file
 		$lastCount = $this->count;
-		while (false !== $this->parseChunk());
+		while (false !== $this->parseChunk()) ;
 
 		if ($this->count != strlen($this->buffer))
-		{
 			$this->throwError();
-		}
 
 		// TODO report where the block was opened
 		if (!is_null($this->env->parent))
-		{
 			throw new exception('parse error: unclosed block');
-		}
 
 		return $this->env;
 	}
@@ -186,21 +153,17 @@ class FOFLessParser
 	 * Before parsing a chain, use $s = $this->seek() to remember the current
 	 * position into $s. Then if a chain fails, use $this->seek($s) to
 	 * go back where we started.
-	 *
-	 * @return  boolean
 	 */
 	protected function parseChunk()
 	{
 		if (empty($this->buffer))
-		{
 			return false;
-		}
-
 		$s = $this->seek();
 
-		// Setting a property
-		if ($this->keyword($key) && $this->assign()
-			&& $this->propertyValue($value, $key) && $this->end())
+		// setting a property
+		if ($this->keyword($key) && $this->assign() &&
+			$this->propertyValue($value, $key) && $this->end()
+		)
 		{
 			$this->append(array('assign', $key, $value), $s);
 
@@ -211,18 +174,20 @@ class FOFLessParser
 			$this->seek($s);
 		}
 
-		// Look for special css blocks
+
+		// look for special css blocks
 		if ($this->literal('@', false))
 		{
 			$this->count--;
 
-			// Media
+			// media
 			if ($this->literal('@media'))
 			{
 				if (($this->mediaQueryList($mediaQueries) || true)
-					&& $this->literal('{'))
+					&& $this->literal('{')
+				)
 				{
-					$media = $this->pushSpecialBlock("media");
+					$media          = $this->pushSpecialBlock("media");
 					$media->queries = is_null($mediaQueries) ? array() : $mediaQueries;
 
 					return true;
@@ -239,16 +204,14 @@ class FOFLessParser
 			{
 				if ($this->isDirective($dirName, $this->blockDirectives))
 				{
-					if (($this->openString("{", $dirValue, null, array(";")) || true)
-						&& $this->literal("{"))
+					if (($this->openString("{", $dirValue, null, array(";")) || true) &&
+						$this->literal("{")
+					)
 					{
-						$dir = $this->pushSpecialBlock("directive");
+						$dir       = $this->pushSpecialBlock("directive");
 						$dir->name = $dirName;
-
 						if (isset($dirValue))
-						{
 							$dir->value = $dirValue;
-						}
 
 						return true;
 					}
@@ -267,9 +230,10 @@ class FOFLessParser
 			$this->seek($s);
 		}
 
-		// Setting a variable
-		if ($this->variable($var) && $this->assign()
-			&& $this->propertyValue($value) && $this->end())
+		// setting a variable
+		if ($this->variable($var) && $this->assign() &&
+			$this->propertyValue($value) && $this->end()
+		)
 		{
 			$this->append(array('assign', $var, $value), $s);
 
@@ -287,19 +251,17 @@ class FOFLessParser
 			return true;
 		}
 
-		// Opening parametric mixin
-		if ($this->tag($tag, true) && $this->argumentDef($args, $isVararg)
-			&& ($this->guards($guards) || true)
-			&& $this->literal('{'))
+		// opening parametric mixin
+		if ($this->tag($tag, true) && $this->argumentDef($args, $isVararg) &&
+			($this->guards($guards) || true) &&
+			$this->literal('{')
+		)
 		{
-			$block = $this->pushBlock($this->fixTags(array($tag)));
-			$block->args = $args;
+			$block           = $this->pushBlock($this->fixTags(array($tag)));
+			$block->args     = $args;
 			$block->isVararg = $isVararg;
-
 			if (!empty($guards))
-			{
 				$block->guards = $guards;
-			}
 
 			return true;
 		}
@@ -308,7 +270,7 @@ class FOFLessParser
 			$this->seek($s);
 		}
 
-		// Opening a simple block
+		// opening a simple block
 		if ($this->tags($tags) && $this->literal('{'))
 		{
 			$tags = $this->fixTags($tags);
@@ -321,7 +283,7 @@ class FOFLessParser
 			$this->seek($s);
 		}
 
-		// Closing a block
+		// closing a block
 		if ($this->literal('}', false))
 		{
 			try
@@ -335,11 +297,9 @@ class FOFLessParser
 			}
 
 			$hidden = false;
-
 			if (is_null($block->type))
 			{
 				$hidden = true;
-
 				if (!isset($block->args))
 				{
 					foreach ($block->tags as $tag)
@@ -366,17 +326,18 @@ class FOFLessParser
 				$this->append(array('block', $block), $s);
 			}
 
-			// This is done here so comments aren't bundled into he block that was just closed
+			// this is done here so comments aren't bundled into he block that
+			// was just closed
 			$this->whitespace();
 
 			return true;
 		}
 
-		// Mixin
-		if ($this->mixinTags($tags)
-			&& ($this->argumentValues($argv) || true)
-			&& ($this->keyword($suffix) || true)
-			&& $this->end())
+		// mixin
+		if ($this->mixinTags($tags) &&
+			($this->argumentValues($argv) || true) &&
+			($this->keyword($suffix) || true) && $this->end()
+		)
 		{
 			$tags = $this->fixTags($tags);
 			$this->append(array('mixin', $tags, $argv, $suffix), $s);
@@ -388,24 +349,13 @@ class FOFLessParser
 			$this->seek($s);
 		}
 
-		// Spare ;
+		// spare ;
 		if ($this->literal(';'))
-		{
 			return true;
-		}
 
-		// Got nothing, throw error
-		return false;
+		return false; // got nothing, throw error
 	}
 
-	/**
-	 * [isDirective description]
-	 *
-	 * @param   string  $dirname     [description]
-	 * @param   [type]  $directives  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function isDirective($dirname, $directives)
 	{
 		// TODO: cache pattern in parser
@@ -415,34 +365,19 @@ class FOFLessParser
 		return preg_match($pattern, $dirname);
 	}
 
-	/**
-	 * [fixTags description]
-	 *
-	 * @param   [type]  $tags  [description]
-	 *
-	 * @return  [type]         [description]
-	 */
 	protected function fixTags($tags)
 	{
-		// Move @ tags out of variable namespace
+		// move @ tags out of variable namespace
 		foreach ($tags as &$tag)
 		{
 			if ($tag{0} == $this->lessc->vPrefix)
-			{
 				$tag[0] = $this->lessc->mPrefix;
-			}
 		}
 
 		return $tags;
 	}
 
-	/**
-	 * a list of expressions
-	 *
-	 * @param   [type]  &$exps  [description]
-	 *
-	 * @return  boolean
-	 */
+	// a list of expressions
 	protected function expressionList(&$exps)
 	{
 		$values = array();
@@ -453,9 +388,7 @@ class FOFLessParser
 		}
 
 		if (count($values) == 0)
-		{
 			return false;
-		}
 
 		$exps = FOFLess::compressList($values, ' ');
 
@@ -464,12 +397,7 @@ class FOFLessParser
 
 	/**
 	 * Attempt to consume an expression.
-	 *
-	 * @param   string  &$out  [description]
-	 *
 	 * @link http://en.wikipedia.org/wiki/Operator-precedence_parser#Pseudo-code
-	 *
-	 * @return  boolean
 	 */
 	protected function expression(&$out)
 	{
@@ -477,12 +405,11 @@ class FOFLessParser
 		{
 			$out = $this->expHelper($lhs, 0);
 
-			// Look for / shorthand
+			// look for / shorthand
 			if (!empty($this->env->supressedDivision))
 			{
 				unset($this->env->supressedDivision);
 				$s = $this->seek();
-
 				if ($this->literal("/") && $this->value($rhs))
 				{
 					$out = array("list", "",
@@ -501,21 +428,17 @@ class FOFLessParser
 	}
 
 	/**
-	 * Recursively parse infix equation with $lhs at precedence $minP
-	 *
-	 * @param   type  $lhs   [description]
-	 * @param   type  $minP  [description]
-	 *
-	 * @return   string
+	 * recursively parse infix equation with $lhs at precedence $minP
 	 */
 	protected function expHelper($lhs, $minP)
 	{
 		$this->inExp = true;
-		$ss = $this->seek();
+		$ss          = $this->seek();
 
 		while (true)
 		{
-			$whiteBefore = isset($this->buffer[$this->count - 1]) && ctype_space($this->buffer[$this->count - 1]);
+			$whiteBefore = isset($this->buffer[$this->count - 1]) &&
+				ctype_space($this->buffer[$this->count - 1]);
 
 			// If there is whitespace before the operator, then we require
 			// whitespace after the operator for it to be an expression
@@ -535,21 +458,21 @@ class FOFLessParser
 					}
 				}
 
-				$whiteAfter = isset($this->buffer[$this->count - 1]) && ctype_space($this->buffer[$this->count - 1]);
+
+				$whiteAfter = isset($this->buffer[$this->count - 1]) &&
+					ctype_space($this->buffer[$this->count - 1]);
 
 				if (!$this->value($rhs))
-				{
 					break;
-				}
 
-				// Peek for next operator to see what to do with rhs
+				// peek for next operator to see what to do with rhs
 				if ($this->peek(self::$operatorString, $next) && self::$precedence[$next[1]] > self::$precedence[$m[1]])
 				{
 					$rhs = $this->expHelper($rhs, self::$precedence[$next[1]]);
 				}
 
 				$lhs = array('expression', $m[1], $lhs, $rhs, $whiteBefore, $whiteAfter);
-				$ss = $this->seek();
+				$ss  = $this->seek();
 
 				continue;
 			}
@@ -562,78 +485,54 @@ class FOFLessParser
 		return $lhs;
 	}
 
-	/**
-	 * Consume a list of values for a property
-	 *
-	 * @param   [type]  &$value   [description]
-	 * @param   [type]  $keyName  [description]
-	 *
-	 * @return  boolean
-	 */
+	// consume a list of values for a property
 	public function propertyValue(&$value, $keyName = null)
 	{
 		$values = array();
 
 		if ($keyName !== null)
-		{
 			$this->env->currentProperty = $keyName;
-		}
 
 		$s = null;
-
 		while ($this->expressionList($v))
 		{
 			$values[] = $v;
-			$s = $this->seek();
-
+			$s        = $this->seek();
 			if (!$this->literal(','))
-			{
 				break;
-			}
 		}
 
 		if ($s)
-		{
 			$this->seek($s);
-		}
 
 		if ($keyName !== null)
-		{
 			unset($this->env->currentProperty);
-		}
 
 		if (count($values) == 0)
-		{
 			return false;
-		}
 
 		$value = FOFLess::compressList($values, ', ');
 
 		return true;
 	}
 
-	/**
-	 * [parenValue description]
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function parenValue(&$out)
 	{
 		$s = $this->seek();
 
-		// Speed shortcut
+		// speed shortcut
 		if (isset($this->buffer[$this->count]) && $this->buffer[$this->count] != "(")
 		{
 			return false;
 		}
 
 		$inParens = $this->inParens;
-
-		if ($this->literal("(") && ($this->inParens = true) && $this->expression($exp) && $this->literal(")"))
+		if ($this->literal("(") &&
+			($this->inParens = true) && $this->expression($exp) &&
+			$this->literal(")")
+		)
 		{
-			$out = $exp;
+			$out            = $exp;
 			$this->inParens = $inParens;
 
 			return true;
@@ -647,23 +546,20 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * a single value
-	 *
-	 * @param   [type]  &$value  [description]
-	 *
-	 * @return  boolean
-	 */
+	// a single value
 	protected function value(&$value)
 	{
 		$s = $this->seek();
 
-		// Speed shortcut
+		// speed shortcut
 		if (isset($this->buffer[$this->count]) && $this->buffer[$this->count] == "-")
 		{
-			// Negation
-			if ($this->literal("-", false) &&(($this->variable($inner) && $inner = array("variable", $inner))
-				|| $this->unit($inner) || $this->parenValue($inner)))
+			// negation
+			if ($this->literal("-", false) &&
+				(($this->variable($inner) && $inner = array("variable", $inner)) ||
+					$this->unit($inner) ||
+					$this->parenValue($inner))
+			)
 			{
 				$value = array("unary", "-", $inner);
 
@@ -676,29 +572,15 @@ class FOFLessParser
 		}
 
 		if ($this->parenValue($value))
-		{
 			return true;
-		}
-
 		if ($this->unit($value))
-		{
 			return true;
-		}
-
 		if ($this->color($value))
-		{
 			return true;
-		}
-
 		if ($this->func($value))
-		{
 			return true;
-		}
-
 		if ($this->string($value))
-		{
 			return true;
-		}
 
 		if ($this->keyword($word))
 		{
@@ -707,7 +589,7 @@ class FOFLessParser
 			return true;
 		}
 
-		// Try a variable
+		// try a variable
 		if ($this->variable($var))
 		{
 			$value = array('variable', $var);
@@ -715,7 +597,7 @@ class FOFLessParser
 			return true;
 		}
 
-		// Unquote string (should this work on any type?
+		// unquote string (should this work on any type?
 		if ($this->literal("~") && $this->string($str))
 		{
 			$value = array("escape", $str);
@@ -727,7 +609,7 @@ class FOFLessParser
 			$this->seek($s);
 		}
 
-		// Css hack: \0
+		// css hack: \0
 		if ($this->literal('\\') && $this->match('([0-9]+)', $m))
 		{
 			$value = array('keyword', '\\' . $m[1]);
@@ -742,27 +624,16 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * an import statement
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
+	// an import statement
 	protected function import(&$out)
 	{
 		$s = $this->seek();
-
 		if (!$this->literal('@import'))
-		{
 			return false;
-		}
 
-		/*
-		 * @import "something.css" media;
-		 * @import url("something.css") media;
-		 * @import url(something.css) media;
-		 */
+		// @import "something.css" media;
+		// @import url("something.css") media;
+		// @import url(something.css) media;
 
 		if ($this->propertyValue($value))
 		{
@@ -772,13 +643,6 @@ class FOFLessParser
 		}
 	}
 
-	/**
-	 * [mediaQueryList description]
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function mediaQueryList(&$out)
 	{
 		if ($this->genericList($list, "mediaQuery", ",", false))
@@ -791,41 +655,28 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * [mediaQuery description]
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  [type]        [description]
-	 */
 	protected function mediaQuery(&$out)
 	{
 		$s = $this->seek();
 
 		$expressions = null;
-		$parts = array();
+		$parts       = array();
 
 		if (($this->literal("only") && ($only = true) || $this->literal("not") && ($not = true) || true) && $this->keyword($mediaType))
 		{
 			$prop = array("mediaType");
-
 			if (isset($only))
-			{
 				$prop[] = "only";
-			}
-
 			if (isset($not))
-			{
 				$prop[] = "not";
-			}
-
-			$prop[] = $mediaType;
+			$prop[]  = $mediaType;
 			$parts[] = $prop;
 		}
 		else
 		{
 			$this->seek($s);
 		}
+
 
 		if (!empty($mediaType) && !$this->literal("and"))
 		{
@@ -834,11 +685,8 @@ class FOFLessParser
 		else
 		{
 			$this->genericList($expressions, "mediaExpression", "and", false);
-
 			if (is_array($expressions))
-			{
 				$parts = array_merge($parts, $expressions[2]);
-			}
 		}
 
 		if (count($parts) == 0)
@@ -853,27 +701,19 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * [mediaExpression description]
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function mediaExpression(&$out)
 	{
-		$s = $this->seek();
+		$s     = $this->seek();
 		$value = null;
-
-		if ($this->literal("(") && $this->keyword($feature) && ($this->literal(":")
-			&& $this->expression($value) || true) && $this->literal(")"))
+		if ($this->literal("(") &&
+			$this->keyword($feature) &&
+			($this->literal(":") && $this->expression($value) || true) &&
+			$this->literal(")")
+		)
 		{
 			$out = array("mediaExp", $feature);
-
 			if ($value)
-			{
 				$out[] = $value;
-			}
 
 			return true;
 		}
@@ -883,24 +723,14 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * An unbounded string stopped by $end
-	 *
-	 * @param   [type]  $end          [description]
-	 * @param   [type]  &$out         [description]
-	 * @param   [type]  $nestingOpen  [description]
-	 * @param   [type]  $rejectStrs   [description]
-	 *
-	 * @return  boolean
-	 */
+	// an unbounded string stopped by $end
 	protected function openString($end, &$out, $nestingOpen = null, $rejectStrs = null)
 	{
-		$oldWhite = $this->eatWhiteDefault;
+		$oldWhite              = $this->eatWhiteDefault;
 		$this->eatWhiteDefault = false;
 
 		$stop = array("'", '"', "@{", $end);
 		$stop = array_map(array("FOFLess", "preg_quote"), $stop);
-
 		// $stop[] = self::$commentMulti;
 
 		if (!is_null($rejectStrs))
@@ -913,13 +743,11 @@ class FOFLessParser
 		$nestingLevel = 0;
 
 		$content = array();
-
 		while ($this->match($patt, $m, false))
 		{
 			if (!empty($m[1]))
 			{
 				$content[] = $m[1];
-
 				if ($nestingOpen)
 				{
 					$nestingLevel += substr_count($m[1], $nestingOpen);
@@ -929,7 +757,6 @@ class FOFLessParser
 			$tok = $m[2];
 
 			$this->count -= strlen($tok);
-
 			if ($tok == $end)
 			{
 				if ($nestingLevel == 0)
@@ -960,6 +787,7 @@ class FOFLessParser
 				break;
 			}
 
+
 			$content[] = $tok;
 			$this->count += strlen($tok);
 		}
@@ -969,7 +797,7 @@ class FOFLessParser
 		if (count($content) == 0)
 			return false;
 
-		// Trim the end
+		// trim the end
 		if (is_string(end($content)))
 		{
 			$content[count($content) - 1] = rtrim(end($content));
@@ -980,17 +808,9 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * [string description]
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function string(&$out)
 	{
 		$s = $this->seek();
-
 		if ($this->literal('"', false))
 		{
 			$delim = '"';
@@ -1006,20 +826,19 @@ class FOFLessParser
 
 		$content = array();
 
-		// Look for either ending delim , escape, or string interpolation
-		$patt = '([^\n]*?)(@\{|\\\\|' . FOFLess::preg_quote($delim) . ')';
+		// look for either ending delim , escape, or string interpolation
+		$patt = '([^\n]*?)(@\{|\\\\|' .
+			FOFLess::preg_quote($delim) . ')';
 
-		$oldWhite = $this->eatWhiteDefault;
+		$oldWhite              = $this->eatWhiteDefault;
 		$this->eatWhiteDefault = false;
 
 		while ($this->match($patt, $m, false))
 		{
 			$content[] = $m[1];
-
 			if ($m[2] == "@{")
 			{
 				$this->count -= strlen($m[2]);
-
 				if ($this->interpolation($inter, false))
 				{
 					$content[] = $inter;
@@ -1027,15 +846,12 @@ class FOFLessParser
 				else
 				{
 					$this->count += strlen($m[2]);
-
-					// Ignore it
-					$content[] = "@{";
+					$content[] = "@{"; // ignore it
 				}
 			}
 			elseif ($m[2] == '\\')
 			{
 				$content[] = $m[2];
-
 				if ($this->literal($delim, false))
 				{
 					$content[] = $delim;
@@ -1044,9 +860,7 @@ class FOFLessParser
 			else
 			{
 				$this->count -= strlen($delim);
-
-				// Delim
-				break;
+				break; // delim
 			}
 		}
 
@@ -1064,29 +878,21 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * [interpolation description]
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function interpolation(&$out)
 	{
-		$oldWhite = $this->eatWhiteDefault;
+		$oldWhite              = $this->eatWhiteDefault;
 		$this->eatWhiteDefault = true;
 
 		$s = $this->seek();
-
-		if ($this->literal("@{") && $this->keyword($var) && $this->literal("}", false))
+		if ($this->literal("@{") &&
+			$this->keyword($var) &&
+			$this->literal("}", false)
+		)
 		{
-			$out = array("variable", $this->lessc->vPrefix . $var);
+			$out                   = array("variable", $this->lessc->vPrefix . $var);
 			$this->eatWhiteDefault = $oldWhite;
-
 			if ($this->eatWhiteDefault)
-			{
 				$this->whitespace();
-			}
 
 			return true;
 		}
@@ -1097,24 +903,14 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * [unit description]
-	 *
-	 * @param   [type]  &$unit  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function unit(&$unit)
 	{
-		// Speed shortcut
+		// speed shortcut
 		if (isset($this->buffer[$this->count]))
 		{
 			$char = $this->buffer[$this->count];
-
 			if (!ctype_digit($char) && $char != ".")
-			{
 				return false;
-			}
 		}
 
 		if ($this->match('([0-9]+(?:\.[0-9]*)?|\.[0-9]+)([%a-zA-Z]+)?', $m))
@@ -1127,13 +923,7 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * a # color
-	 *
-	 * @param   [type]  &$out  [description]
-	 *
-	 * @return  boolean
-	 */
+	// a # color
 	protected function color(&$out)
 	{
 		if ($this->match('(#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3}))', $m))
@@ -1153,43 +943,24 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * Consume a list of property values delimited by ; and wrapped in ()
-	 *
-	 * @param   [type]  &$args  [description]
-	 * @param   [type]  $delim  [description]
-	 *
-	 * @return  boolean
-	 */
+	// consume a list of property values delimited by ; and wrapped in ()
 	protected function argumentValues(&$args, $delim = ',')
 	{
 		$s = $this->seek();
-
 		if (!$this->literal('('))
-		{
 			return false;
-		}
 
 		$values = array();
-
 		while (true)
 		{
 			if ($this->expressionList($value))
-			{
 				$values[] = $value;
-			}
-
 			if (!$this->literal($delim))
-			{
 				break;
-			}
 			else
 			{
 				if ($value == null)
-				{
 					$values[] = null;
-				}
-
 				$value = null;
 			}
 		}
@@ -1206,17 +977,9 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * Consume an argument definition list surrounded by ()
-	 * each argument is a variable name with optional value
-	 * or at the end a ... or a variable named followed by ...
-	 *
-	 * @param   [type]  &$args      [description]
-	 * @param   [type]  &$isVararg  [description]
-	 * @param   [type]  $delim      [description]
-	 *
-	 * @return  boolean
-	 */
+	// consume an argument definition list surrounded by ()
+	// each argument is a variable name with optional value
+	// or at the end a ... or a variable named followed by ...
 	protected function argumentDef(&$args, &$isVararg, $delim = ',')
 	{
 		$s = $this->seek();
@@ -1226,7 +989,6 @@ class FOFLessParser
 		$values = array();
 
 		$isVararg = false;
-
 		while (true)
 		{
 			if ($this->literal("..."))
@@ -1238,8 +1000,7 @@ class FOFLessParser
 			if ($this->variable($vname))
 			{
 				$arg = array("arg", $vname);
-				$ss = $this->seek();
-
+				$ss  = $this->seek();
 				if ($this->assign() && $this->expressionList($value))
 				{
 					$arg[] = $value;
@@ -1247,21 +1008,15 @@ class FOFLessParser
 				else
 				{
 					$this->seek($ss);
-
 					if ($this->literal("..."))
 					{
-						$arg[0] = "rest";
+						$arg[0]   = "rest";
 						$isVararg = true;
 					}
 				}
-
 				$values[] = $arg;
-
 				if ($isVararg)
-				{
 					break;
-				}
-
 				continue;
 			}
 
@@ -1271,9 +1026,7 @@ class FOFLessParser
 			}
 
 			if (!$this->literal($delim))
-			{
 				break;
-			}
 		}
 
 		if (!$this->literal(')'))
@@ -1288,51 +1041,29 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * Consume a list of tags
-	 * This accepts a hanging delimiter
-	 *
-	 * @param   [type]  &$tags   [description]
-	 * @param   [type]  $simple  [description]
-	 * @param   [type]  $delim   [description]
-	 *
-	 * @return  boolean
-	 */
+	// consume a list of tags
+	// this accepts a hanging delimiter
 	protected function tags(&$tags, $simple = false, $delim = ',')
 	{
 		$tags = array();
-
 		while ($this->tag($tt, $simple))
 		{
 			$tags[] = $tt;
-
 			if (!$this->literal($delim))
-			{
 				break;
-			}
 		}
-
 		if (count($tags) == 0)
-		{
 			return false;
-		}
 
 		return true;
 	}
 
-	/**
-	 * List of tags of specifying mixin path
-	 * Optionally separated by > (lazy, accepts extra >)
-	 *
-	 * @param   [type]  &$tags  [description]
-	 *
-	 * @return  boolean
-	 */
+	// list of tags of specifying mixin path
+	// optionally separated by > (lazy, accepts extra >)
 	protected function mixinTags(&$tags)
 	{
-		$s = $this->seek();
+		$s    = $this->seek();
 		$tags = array();
-
 		while ($this->tag($tt, true))
 		{
 			$tags[] = $tt;
@@ -1340,41 +1071,29 @@ class FOFLessParser
 		}
 
 		if (count($tags) == 0)
-		{
 			return false;
-		}
 
 		return true;
 	}
 
-	/**
-	 * A bracketed value (contained within in a tag definition)
-	 *
-	 * @param   [type]  &$value  [description]
-	 *
-	 * @return  boolean
-	 */
+	// a bracketed value (contained within in a tag definition)
 	protected function tagBracket(&$value)
 	{
-		// Speed shortcut
+		// speed shortcut
 		if (isset($this->buffer[$this->count]) && $this->buffer[$this->count] != "[")
 		{
 			return false;
 		}
 
 		$s = $this->seek();
-
 		if ($this->literal('[') && $this->to(']', $c, true) && $this->literal(']', false))
 		{
 			$value = '[' . $c . ']';
-
-			// Whitespace?
+			// whitespace?
 			if ($this->whitespace())
-			{
 				$value .= " ";
-			}
 
-			// Escape parent selector, (yuck)
+			// escape parent selector, (yuck)
 			$value = str_replace($this->lessc->parentSelector, "$&$", $value);
 
 			return true;
@@ -1385,17 +1104,9 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * [tagExpression description]
-	 *
-	 * @param   [type]  &$value  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function tagExpression(&$value)
 	{
 		$s = $this->seek();
-
 		if ($this->literal("(") && $this->expression($exp) && $this->literal(")"))
 		{
 			$value = array('exp', $exp);
@@ -1408,24 +1119,13 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * A single tag
-	 *
-	 * @param   [type]   &$tag    [description]
-	 * @param   boolean  $simple  [description]
-	 *
-	 * @return  boolean
-	 */
+	// a single tag
 	protected function tag(&$tag, $simple = false)
 	{
 		if ($simple)
-		{
 			$chars = '^,:;{}\][>\(\) "\'';
-		}
 		else
-		{
 			$chars = '^,;{}["\'';
-		}
 
 		if (!$simple && $this->tagExpression($tag))
 		{
@@ -1433,39 +1133,29 @@ class FOFLessParser
 		}
 
 		$tag = '';
-
 		while ($this->tagBracket($first))
-		{
 			$tag .= $first;
-		}
 
 		while (true)
 		{
 			if ($this->match('([' . $chars . '0-9][' . $chars . ']*)', $m))
 			{
 				$tag .= $m[1];
-
 				if ($simple)
-				{
 					break;
-				}
 
 				while ($this->tagBracket($brack))
-				{
 					$tag .= $brack;
-				}
-
 				continue;
 			}
 			elseif ($this->unit($unit))
-			{
-				// For keyframes
+			{ // for keyframes
 				$tag .= $unit[1] . $unit[2];
 				continue;
 			}
-
 			break;
 		}
+
 
 		$tag = trim($tag);
 		if ($tag == '')
@@ -1474,13 +1164,7 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * A css function
-	 *
-	 * @param   [type]  &$func  [description]
-	 *
-	 * @return  boolean
-	 */
+	// a css function
 	protected function func(&$func)
 	{
 		$s = $this->seek();
@@ -1492,12 +1176,10 @@ class FOFLessParser
 			$sPreArgs = $this->seek();
 
 			$args = array();
-
 			while (true)
 			{
 				$ss = $this->seek();
-
-				// This ugly nonsense is for ie filter properties
+				// this ugly nonsense is for ie filter properties
 				if ($this->keyword($name) && $this->literal('=') && $this->expressionList($value))
 				{
 					$args[] = array("string", "", array($name, "=", $value));
@@ -1505,7 +1187,6 @@ class FOFLessParser
 				else
 				{
 					$this->seek($ss);
-
 					if ($this->expressionList($value))
 					{
 						$args[] = $value;
@@ -1513,11 +1194,8 @@ class FOFLessParser
 				}
 
 				if (!$this->literal(','))
-				{
 					break;
-				}
 			}
-
 			$args = array('list', ',', $args);
 
 			if ($this->literal(')'))
@@ -1528,9 +1206,8 @@ class FOFLessParser
 			}
 			elseif ($fname == 'url')
 			{
-				// Couldn't parse and in url? treat as string
+				// couldn't parse and in url? treat as string
 				$this->seek($sPreArgs);
-
 				if ($this->openString(")", $string) && $this->literal(")"))
 				{
 					$func = array('function', $fname, $string);
@@ -1545,18 +1222,13 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * Consume a less variable
-	 *
-	 * @param   [type]  &$name  [description]
-	 *
-	 * @return  boolean
-	 */
+	// consume a less variable
 	protected function variable(&$name)
 	{
 		$s = $this->seek();
-
-		if ($this->literal($this->lessc->vPrefix, false) &&	($this->variable($sub) || $this->keyword($name)))
+		if ($this->literal($this->lessc->vPrefix, false) &&
+			($this->variable($sub) || $this->keyword($name))
+		)
 		{
 			if (!empty($sub))
 			{
@@ -1579,28 +1251,16 @@ class FOFLessParser
 	/**
 	 * Consume an assignment operator
 	 * Can optionally take a name that will be set to the current property name
-	 *
-	 * @param   string  $name  [description]
-	 *
-	 * @return  boolean
 	 */
 	protected function assign($name = null)
 	{
 		if ($name)
-		{
 			$this->currentProperty = $name;
-		}
 
 		return $this->literal(':') || $this->literal('=');
 	}
 
-	/**
-	 * Consume a keyword
-	 *
-	 * @param   [type]  &$word  [description]
-	 *
-	 * @return  boolean
-	 */
+	// consume a keyword
 	protected function keyword(&$word)
 	{
 		if ($this->match('([\w_\-\*!"][\w\-_"]*)', $m))
@@ -1613,11 +1273,7 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * Consume an end of statement delimiter
-	 *
-	 * @return  boolean
-	 */
+	// consume an end of statement delimiter
 	protected function end()
 	{
 		if ($this->literal(';'))
@@ -1626,20 +1282,13 @@ class FOFLessParser
 		}
 		elseif ($this->count == strlen($this->buffer) || $this->buffer{$this->count} == '}')
 		{
-			// If there is end of file or a closing block next then we don't need a ;
+			// if there is end of file or a closing block next then we don't need a ;
 			return true;
 		}
 
 		return false;
 	}
 
-	/**
-	 * [guards description]
-	 *
-	 * @param   [type]  &$guards  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function guards(&$guards)
 	{
 		$s = $this->seek();
@@ -1656,11 +1305,8 @@ class FOFLessParser
 		while ($this->guardGroup($g))
 		{
 			$guards[] = $g;
-
 			if (!$this->literal(","))
-			{
 				break;
-			}
 		}
 
 		if (count($guards) == 0)
@@ -1674,28 +1320,17 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * A bunch of guards that are and'd together
-	 *
-	 * @param   [type]  &$guardGroup  [description]
-	 *
-	 * @todo rename to guardGroup
-	 *
-	 * @return  boolean
-	 */
+	// a bunch of guards that are and'd together
+	// TODO rename to guardGroup
 	protected function guardGroup(&$guardGroup)
 	{
-		$s = $this->seek();
+		$s          = $this->seek();
 		$guardGroup = array();
-
 		while ($this->guard($guard))
 		{
 			$guardGroup[] = $guard;
-
 			if (!$this->literal("and"))
-			{
 				break;
-			}
 		}
 
 		if (count($guardGroup) == 0)
@@ -1709,26 +1344,16 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * [guard description]
-	 *
-	 * @param   [type]  &$guard  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function guard(&$guard)
 	{
-		$s = $this->seek();
+		$s      = $this->seek();
 		$negate = $this->literal("not");
 
 		if ($this->literal("(") && $this->expression($exp) && $this->literal(")"))
 		{
 			$guard = $exp;
-
 			if ($negate)
-			{
 				$guard = array("negate", $guard);
-			}
 
 			return true;
 		}
@@ -1740,22 +1365,12 @@ class FOFLessParser
 
 	/* raw parsing functions */
 
-	/**
-	 * [literal description]
-	 *
-	 * @param   [type]  $what           [description]
-	 * @param   [type]  $eatWhitespace  [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function literal($what, $eatWhitespace = null)
 	{
 		if ($eatWhitespace === null)
-		{
 			$eatWhitespace = $this->eatWhiteDefault;
-		}
 
-		// Shortcut on single letter
+		// shortcut on single letter
 		if (!isset($what[1]) && isset($this->buffer[$this->count]))
 		{
 			if ($this->buffer[$this->count] == $what)
@@ -1766,6 +1381,7 @@ class FOFLessParser
 
 					return true;
 				}
+				// goes below...
 			}
 			else
 			{
@@ -1781,31 +1397,17 @@ class FOFLessParser
 		return $this->match(self::$literalCache[$what], $m, $eatWhitespace);
 	}
 
-	/**
-	 * [genericList description]
-	 *
-	 * @param   [type]   &$out       [description]
-	 * @param   [type]   $parseItem  [description]
-	 * @param   string   $delim      [description]
-	 * @param   boolean  $flatten    [description]
-	 *
-	 * @return  boolean
-	 */
 	protected function genericList(&$out, $parseItem, $delim = "", $flatten = true)
 	{
-		$s = $this->seek();
+		$s     = $this->seek();
 		$items = array();
-
 		while ($this->$parseItem($value))
 		{
 			$items[] = $value;
-
 			if ($delim)
 			{
 				if (!$this->literal($delim))
-				{
 					break;
-				}
 			}
 		}
 
@@ -1828,18 +1430,9 @@ class FOFLessParser
 		return true;
 	}
 
-	/**
-	 * Advance counter to next occurrence of $what
-	 * $until - don't include $what in advance
-	 * $allowNewline, if string, will be used as valid char set
-	 *
-	 * @param   [type]   $what          [description]
-	 * @param   [type]   &$out          [description]
-	 * @param   boolean  $until         [description]
-	 * @param   boolean  $allowNewline  [description]
-	 *
-	 * @return  boolean
-	 */
+	// advance counter to next occurrence of $what
+	// $until - don't include $what in advance
+	// $allowNewline, if string, will be used as valid char set
 	protected function to($what, &$out, $until = false, $allowNewline = false)
 	{
 		if (is_string($allowNewline))
@@ -1850,49 +1443,27 @@ class FOFLessParser
 		{
 			$validChars = $allowNewline ? "." : "[^\n]";
 		}
-
 		if (!$this->match('(' . $validChars . '*?)' . FOFLess::preg_quote($what), $m, !$until))
-		{
 			return false;
-		}
-
 		if ($until)
-		{
-			// Give back $what
-			$this->count -= strlen($what);
-		}
-
+			$this->count -= strlen($what); // give back $what
 		$out = $m[1];
 
 		return true;
 	}
 
-	/**
-	 * Try to match something on head of buffer
-	 *
-	 * @param   [type]  $regex          [description]
-	 * @param   [type]  &$out           [description]
-	 * @param   [type]  $eatWhitespace  [description]
-	 *
-	 * @return  boolean
-	 */
+	// try to match something on head of buffer
 	protected function match($regex, &$out, $eatWhitespace = null)
 	{
 		if ($eatWhitespace === null)
-		{
 			$eatWhitespace = $this->eatWhiteDefault;
-		}
 
 		$r = '/' . $regex . ($eatWhitespace && !$this->writeComments ? '\s*' : '') . '/Ais';
-
 		if (preg_match($r, $this->buffer, $out, null, $this->count))
 		{
 			$this->count += strlen($out[0]);
-
 			if ($eatWhitespace && $this->writeComments)
-			{
 				$this->whitespace();
-			}
 
 			return true;
 		}
@@ -1900,17 +1471,12 @@ class FOFLessParser
 		return false;
 	}
 
-	/**
-	 * Watch some whitespace
-	 *
-	 * @return  boolean
-	 */
+	// match some whitespace
 	protected function whitespace()
 	{
 		if ($this->writeComments)
 		{
 			$gotWhite = false;
-
 			while (preg_match(self::$whitePattern, $this->buffer, $m, null, $this->count))
 			{
 				if (isset($m[1]) && empty($this->commentsSeen[$this->count]))
@@ -1918,7 +1484,6 @@ class FOFLessParser
 					$this->append(array("comment", $m[1]));
 					$this->commentsSeen[$this->count] = true;
 				}
-
 				$this->count += strlen($m[0]);
 				$gotWhite = true;
 			}
@@ -1933,64 +1498,36 @@ class FOFLessParser
 		}
 	}
 
-	/**
-	 * Match something without consuming it
-	 *
-	 * @param   [type]  $regex  [description]
-	 * @param   [type]  &$out   [description]
-	 * @param   [type]  $from   [description]
-	 *
-	 * @return  boolean
-	 */
+	// match something without consuming it
 	protected function peek($regex, &$out = null, $from = null)
 	{
 		if (is_null($from))
-		{
 			$from = $this->count;
-		}
-
-		$r = '/' . $regex . '/Ais';
+		$r      = '/' . $regex . '/Ais';
 		$result = preg_match($r, $this->buffer, $out, null, $from);
 
 		return $result;
 	}
 
-	/**
-	 * Seek to a spot in the buffer or return where we are on no argument
-	 *
-	 * @param   [type]  $where  [description]
-	 *
-	 * @return  boolean
-	 */
+	// seek to a spot in the buffer or return where we are on no argument
 	protected function seek($where = null)
 	{
 		if ($where === null)
-		{
 			return $this->count;
-		}
 		else
-		{
 			$this->count = $where;
-		}
 
 		return true;
 	}
 
 	/* misc functions */
 
-	/**
-	 * [throwError description]
-	 *
-	 * @param   string  $msg    [description]
-	 * @param   [type]  $count  [description]
-	 *
-	 * @return  void
-	 */
 	public function throwError($msg = "parse error", $count = null)
 	{
 		$count = is_null($count) ? $this->count : $count;
 
-		$line = $this->line + substr_count(substr($this->buffer, 0, $count), "\n");
+		$line = $this->line +
+			substr_count(substr($this->buffer, 0, $count), "\n");
 
 		if (!empty($this->sourceName))
 		{
@@ -2012,27 +1549,18 @@ class FOFLessParser
 		}
 	}
 
-	/**
-	 * [pushBlock description]
-	 *
-	 * @param   [type]  $selectors  [description]
-	 * @param   [type]  $type       [description]
-	 *
-	 * @return  stdClass
-	 */
 	protected function pushBlock($selectors = null, $type = null)
 	{
-		$b = new stdclass;
+		$b         = new stdclass;
 		$b->parent = $this->env;
 
 		$b->type = $type;
-		$b->id = self::$nextBlockId++;
+		$b->id   = self::$nextBlockId++;
 
-		// TODO: kill me from here
-		$b->isVararg = false;
-		$b->tags = $selectors;
+		$b->isVararg = false; // TODO: kill me from here
+		$b->tags     = $selectors;
 
-		$b->props = array();
+		$b->props    = array();
 		$b->children = array();
 
 		$this->env = $b;
@@ -2040,58 +1568,31 @@ class FOFLessParser
 		return $b;
 	}
 
-	/**
-	 * Push a block that doesn't multiply tags
-	 *
-	 * @param   [type]  $type  [description]
-	 *
-	 * @return  stdClass
-	 */
+	// push a block that doesn't multiply tags
 	protected function pushSpecialBlock($type)
 	{
 		return $this->pushBlock(null, $type);
 	}
 
-	/**
-	 * Append a property to the current block
-	 *
-	 * @param   [type]  $prop  [description]
-	 * @param   [type]  $pos   [description]
-	 *
-	 * @return  void
-	 */
+	// append a property to the current block
 	protected function append($prop, $pos = null)
 	{
 		if ($pos !== null)
-		{
 			$prop[-1] = $pos;
-		}
-
 		$this->env->props[] = $prop;
 	}
 
-	/**
-	 * Pop something off the stack
-	 *
-	 * @return  [type]  [description]
-	 */
+	// pop something off the stack
 	protected function pop()
 	{
-		$old = $this->env;
+		$old       = $this->env;
 		$this->env = $this->env->parent;
 
 		return $old;
 	}
 
-	/**
-	 * Remove comments from $text
-	 *
-	 * @param   [type]  $text  [description]
-	 *
-	 * @todo: make it work for all functions, not just url
-	 *
-	 * @return  [type]         [description]
-	 */
+	// remove comments from $text
+	// todo: make it work for all functions, not just url
 	protected function removeComments($text)
 	{
 		$look = array(
@@ -2100,77 +1601,54 @@ class FOFLessParser
 
 		$out = '';
 		$min = null;
-
 		while (true)
 		{
-			// Find the next item
+			// find the next item
 			foreach ($look as $token)
 			{
 				$pos = strpos($text, $token);
-
 				if ($pos !== false)
 				{
 					if (!isset($min) || $pos < $min[1])
-					{
 						$min = array($token, $pos);
-					}
 				}
 			}
 
 			if (is_null($min))
 				break;
 
-			$count = $min[1];
-			$skip = 0;
+			$count    = $min[1];
+			$skip     = 0;
 			$newlines = 0;
-
 			switch ($min[0])
 			{
 				case 'url(':
-
 					if (preg_match('/url\(.*?\)/', $text, $m, 0, $count))
-					{
 						$count += strlen($m[0]) - strlen($min[0]);
-					}
-
 					break;
 				case '"':
 				case "'":
-
 					if (preg_match('/' . $min[0] . '.*?' . $min[0] . '/', $text, $m, 0, $count))
-					{
 						$count += strlen($m[0]) - 1;
-					}
-
 					break;
 				case '//':
 					$skip = strpos($text, "\n", $count);
-
 					if ($skip === false)
-					{
 						$skip = strlen($text) - $count;
-					}
 					else
-					{
 						$skip -= $count;
-					}
-
 					break;
 				case '/*':
-
 					if (preg_match('/\/\*.*?\*\//s', $text, $m, 0, $count))
 					{
-						$skip = strlen($m[0]);
+						$skip     = strlen($m[0]);
 						$newlines = substr_count($m[0], "\n");
 					}
-
 					break;
 			}
 
 			if ($skip == 0)
-			{
 				$count += strlen($min[0]);
-			}
 
 			$out .= substr($text, 0, $count) . str_repeat("\n", $newlines);
 			$text = substr($text, $count + $skip);
@@ -2180,4 +1658,5 @@ class FOFLessParser
 
 		return $out . $text;
 	}
+
 }

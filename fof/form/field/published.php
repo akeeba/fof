@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldList'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldList'))
  */
 class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -31,7 +32,7 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -84,11 +85,11 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 		// defaults we shall use...
 
 		$config = array(
-			'published'		 => 1,
-			'unpublished'	 => 1,
-			'archived'		 => 0,
-			'trash'			 => 0,
-			'all'			 => 0,
+			'published'   => 1,
+			'unpublished' => 1,
+			'archived'    => 0,
+			'trash'       => 0,
+			'all'         => 0,
 		);
 
 		$stack = array();
@@ -134,8 +135,8 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars(self::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars(self::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -154,11 +155,11 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 		}
 
 		// Initialise
-		$prefix = '';
-		$checkbox = 'cb';
-		$publish_up = null;
+		$prefix       = '';
+		$checkbox     = 'cb';
+		$publish_up   = null;
 		$publish_down = null;
-		$enabled = true;
+		$enabled      = true;
 
 		// Get options
 		if ($this->element['prefix'])
@@ -185,4 +186,5 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 		// Get the HTML
 		return JHTML::_('jgrid.published', $this->value, $this->rowid, $prefix, $enabled, $checkbox, $publish_up, $publish_down);
 	}
+
 }

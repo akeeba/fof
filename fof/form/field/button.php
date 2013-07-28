@@ -5,19 +5,20 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 JFormHelper::loadFieldClass('text');
 
 /**
  * Form Field class for the FOF framework
- * Supports a button input.
+ * Supports a one line text field.
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
 class FOFFormFieldButton extends FOFFormFieldText implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -25,7 +26,7 @@ class FOFFormFieldButton extends FOFFormFieldText implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -70,9 +71,9 @@ class FOFFormFieldButton extends FOFFormFieldText implements FOFFormField
 	{
 		$this->label = '';
 
-		$text = $this->element['text'];
-		$class = $this->element['class'] ? (string) $this->element['class'] : '';
-		$icon = $this->element['icon'] ? (string) $this->element['icon'] : '';
+		$text    = $this->element['text'];
+		$class   = $this->element['class'] ? (string) $this->element['class'] : '';
+		$icon    = $this->element['icon'] ? (string) $this->element['icon'] : '';
 		$onclick = $this->element['onclick'] ? 'onclick="' . (string) $this->element['onclick'] . '"' : '';
 
 		$this->value = JText::_($text);
@@ -83,17 +84,12 @@ class FOFFormFieldButton extends FOFFormFieldText implements FOFFormField
 		}
 
 		return '<button id="' . $this->id . '" class="btn ' . $class . '" ' .
-			$onclick . '>' .
-			$icon .
-			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-			'</button>';
+		$onclick . '>' .
+		$icon .
+		htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
+		'</button>';
 	}
 
-	/**
-	 * Method to get the field title.
-	 *
-	 * @return  string  The field title.
-	 */
 	protected function getTitle()
 	{
 		return null;

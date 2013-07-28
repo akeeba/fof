@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Access level field header
@@ -15,16 +15,17 @@ defined('_JEXEC') or die();
  */
 class FOFFormHeaderAccesslevel extends FOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Method to get the list of access levels
 	 *
-	 * @return  array	A list of access levels.
+	 * @return  array    A list of access levels.
 	 *
 	 * @since   2.0
 	 */
 	protected function getOptions()
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('a.id AS value, a.title AS text');
@@ -39,4 +40,5 @@ class FOFFormHeaderAccesslevel extends FOFFormHeaderFieldselectable
 
 		return $options;
 	}
+
 }

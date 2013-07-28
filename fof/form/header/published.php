@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Field header for Published (enabled) columns
@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
  */
 class FOFFormHeaderPublished extends FOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Create objects for the options
 	 *
@@ -23,11 +24,11 @@ class FOFFormHeaderPublished extends FOFFormHeaderFieldselectable
 	protected function getOptions()
 	{
 		$config = array(
-			'published'		 => 1,
-			'unpublished'	 => 1,
-			'archived'		 => 0,
-			'trash'			 => 0,
-			'all'			 => 0,
+			'published'   => 1,
+			'unpublished' => 1,
+			'archived'    => 0,
+			'trash'       => 0,
+			'all'         => 0,
 		);
 
 		$stack = array();
@@ -63,4 +64,5 @@ class FOFFormHeaderPublished extends FOFFormHeaderFieldselectable
 
 		return $options;
 	}
+
 }

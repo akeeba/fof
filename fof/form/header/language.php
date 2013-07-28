@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Language field header
@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
  */
 class FOFFormHeaderLanguage extends FOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Method to get the filter options.
 	 *
@@ -39,4 +40,5 @@ class FOFFormHeaderLanguage extends FOFFormHeaderFieldselectable
 
 		return $options;
 	}
+
 }

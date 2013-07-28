@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldTimezone'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldTimezone'))
  */
 class FOFFormFieldTimezone extends JFormFieldTimezone implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldTimezone extends JFormFieldTimezone implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -78,17 +79,17 @@ class FOFFormFieldTimezone extends JFormFieldTimezone implements FOFFormField
 		if (is_null($selected))
 		{
 			$selected = array(
-				'group'	 => '',
-				'item'	 => ''
+				'group' => '',
+				'item'  => ''
 			);
 		}
 
 		return '<span id="' . $this->id . '-group" class="fof-groupedlist-group ' . $class . '>' .
-			htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
-			'</span>' .
-			'<span id="' . $this->id . '-item" class="fof-groupedlist-item ' . $class . '>' .
-			htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
+		'</span>' .
+		'<span id="' . $this->id . '-item" class="fof-groupedlist-item ' . $class . '>' .
+		htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -103,4 +104,5 @@ class FOFFormFieldTimezone extends JFormFieldTimezone implements FOFFormField
 	{
 		return $this->getStatic();
 	}
+
 }

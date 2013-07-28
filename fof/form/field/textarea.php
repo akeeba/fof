@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldTextarea'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldTextarea'))
  */
 class FOFFormFieldTextarea extends JFormFieldTextarea implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldTextarea extends JFormFieldTextarea implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -74,8 +75,8 @@ class FOFFormFieldTextarea extends JFormFieldTextarea implements FOFFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		return '<div id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars(nl2br($this->value), ENT_COMPAT, 'UTF-8') .
-			'</div>';
+		htmlspecialchars(nl2br($this->value), ENT_COMPAT, 'UTF-8') .
+		'</div>';
 	}
 
 	/**
@@ -90,4 +91,5 @@ class FOFFormFieldTextarea extends JFormFieldTextarea implements FOFFormField
 	{
 		return $this->getStatic();
 	}
+
 }
