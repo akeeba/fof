@@ -793,10 +793,8 @@ class FOFToolbar
 
 			case 'preview':
 				$url = isset($attributes['url']) ? $attributes['url'] : '';
-				$update_editors = isset($attributes['update_editors']) ?
-					FOFStringUtils::toBool($attributes['update_editors']) : false;
 
-				JToolbarHelper::preview($url, $update_editors);
+				JToolbarHelper::preview($url);
 				break;
 
 			case 'help':
@@ -1021,12 +1019,10 @@ class FOFToolbar
 				}
 
 				$component = $attributes['component'];
-				$height = isset($attributes['height']) ? $attributes['height'] : '550';
-				$width = isset($attributes['width']) ? $attributes['width'] : '875';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JToolbar_Options';
 				$path = isset($attributes['path']) ? $attributes['path'] : '';
 
-				JToolbarHelper::preferences($component, $height, $width, $alt, $path);
+				JToolbarHelper::preferences($component, '550', '875', $alt, $path);
 				break;
 
 			default:
