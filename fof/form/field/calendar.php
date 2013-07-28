@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldCalendar'))
 {
@@ -28,7 +28,7 @@ class FOFFormFieldCalendar extends JFormFieldCalendar implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -78,7 +78,7 @@ class FOFFormFieldCalendar extends JFormFieldCalendar implements FOFFormField
 
 		// Get some system objects.
 		$config = JFactory::getConfig();
-		$user = JFactory::getUser();
+		$user   = JFactory::getUser();
 
 		// If a known filter is given use it.
 		switch (strtoupper((string) $this->element['filter']))
@@ -111,8 +111,8 @@ class FOFFormFieldCalendar extends JFormFieldCalendar implements FOFFormField
 		}
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -132,7 +132,7 @@ class FOFFormFieldCalendar extends JFormFieldCalendar implements FOFFormField
 
 		// Get some system objects.
 		$config = JFactory::getConfig();
-		$user = JFactory::getUser();
+		$user   = JFactory::getUser();
 
 		// If a known filter is given use it.
 		switch (strtoupper((string) $this->element['filter']))
@@ -165,7 +165,8 @@ class FOFFormFieldCalendar extends JFormFieldCalendar implements FOFFormField
 		}
 
 		return '<span class="' . $this->id . ' ' . $class . '">' .
-			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
+
 }

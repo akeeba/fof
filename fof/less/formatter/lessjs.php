@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * This class is taken verbatim from:
@@ -17,17 +17,13 @@ defined('_JEXEC') or die();
  *
  * Copyright 2012, Leaf Corcoran <leafot@gmail.com>
  * Licensed under MIT or GPLv3, see LICENSE
- *
- * @package  FrameworkOnFramework
- * @since    2.0
  */
 class FOFLessFormatterLessjs extends FOFLessFormatterClassic
 {
+
 	public $disableSingle = true;
-
 	public $breakSelectors = true;
-
 	public $assignSeparator = ": ";
-
 	public $selectorSeparator = ",";
+
 }

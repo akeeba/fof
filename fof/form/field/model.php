@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldSql'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldSql'))
  */
 class FOFFormFieldModel extends FOFFormFieldList implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldModel extends FOFFormFieldList implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -74,8 +75,8 @@ class FOFFormFieldModel extends FOFFormFieldList implements FOFFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -88,107 +89,11 @@ class FOFFormFieldModel extends FOFFormFieldList implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		$class				= $this->id;
-		$format_string		= '';
-		$show_link			= false;
-		$link_url			= '';
-		$empty_replacement	= '';
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
 
-		// Get field parameters
-		if ($this->element['class'])
-		{
-			$class = (string) $this->element['class'];
-		}
-
-		if ($this->element['format'])
-		{
-			$format_string = (string) $this->element['format'];
-		}
-
-		if ($this->element['show_link'] == 'true')
-		{
-			$show_link = true;
-		}
-
-		if ($this->element['url'])
-		{
-			$link_url = $this->element['url'];
-		}
-		else
-		{
-			$show_link = false;
-		}
-
-		if ($show_link && ($this->item instanceof FOFTable))
-		{
-			// Replace [ITEM:ID] in the URL with the item's key value (usually:
-			// the auto-incrementing numeric ID)
-			$keyfield = $this->item->getKeyName();
-			$replace  = $this->item->$keyfield;
-			$link_url = str_replace('[ITEM:ID]', $replace, $link_url);
-
-			// Replace other field variables in the URL
-			$fields = $this->item->getFields();
-
-			foreach ($fields as $fielddata)
-			{
-				$fieldname = $fielddata->Field;
-
-				if (empty($fieldname))
-				{
-					$fieldname = $fielddata->column_name;
-				}
-
-				$search    = '[ITEM:' . strtoupper($fieldname) . ']';
-				$replace   = $this->item->$fieldname;
-				$link_url  = str_replace($search, $replace, $link_url);
-			}
-		}
-		else
-		{
-			$show_link = false;
-		}
-
-		if ($this->element['empty_replacement'])
-		{
-			$empty_replacement = (string) $this->element['empty_replacement'];
-		}
-
-		$value = FOFFormFieldList::getOptionName($this->getOptions(), $this->value);
-
-		// Get the (optionally formatted) value
-		if (!empty($empty_replacement) && empty($value))
-		{
-			$value = JText::_($empty_replacement);
-		}
-
-		if (empty($format_string))
-		{
-			$value = htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
-		}
-		else
-		{
-			$value = sprintf($format_string, $value);
-		}
-
-		// Create the HTML
-		$html = '<span class="' . $class . '">';
-
-		if ($show_link)
-		{
-			$html .= '<a href="' . $link_url . '">';
-		}
-
-		$html .= $value;
-
-		if ($show_link)
-		{
-			$html .= '</a>';
-		}
-
-		$html .= '</span>';
-
-		return $html;
+		return '<span class="' . $this->id . ' ' . $class . '">' .
+		htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -201,31 +106,24 @@ class FOFFormFieldModel extends FOFFormFieldList implements FOFFormField
 		$options = array();
 
 		// Initialize some field attributes.
-		$key = $this->element['key_field'] ? (string) $this->element['key_field'] : 'value';
-		$value = $this->element['value_field'] ? (string) $this->element['value_field'] : (string) $this->element['name'];
-		$translate = $this->element['translate'] ? (string) $this->element['translate'] : false;
+		$key         = $this->element['key_field'] ? (string) $this->element['key_field'] : 'value';
+		$value       = $this->element['value_field'] ? (string) $this->element['value_field'] : (string) $this->element['name'];
+		$translate   = $this->element['translate'] ? (string) $this->element['translate'] : false;
 		$applyAccess = $this->element['apply_access'] ? (string) $this->element['apply_access'] : 'false';
-		$modelName = (string) $this->element['model'];
-		$nonePlaceholder = (string) $this->element['none'];
-
-		if (!empty($nonePlaceholder))
-		{
-			$options[] = JHtml::_('select.option', JText::_($nonePlaceholder), null);
-		}
+		$modelName   = (string) $this->element['model'];
 
 		// Process field atrtibutes
 		$applyAccess = strtolower($applyAccess);
 		$applyAccess = in_array($applyAccess, array('yes', 'on', 'true', '1'));
 
 		// Explode model name into model name and prefix
-		$parts = FOFInflector::explode($modelName);
-		$mName = ucfirst(array_pop($parts));
+		$parts   = FOFInflector::explode($modelName);
+		$mName   = ucfirst(array_pop($parts));
 		$mPrefix = FOFInflector::implode($parts);
 
 		// Get the model object
 		$config = array('savestate' => 0);
-		$model = FOFModel::getTmpInstance($mName, $mPrefix, $config);
-
+		$model  = FOFModel::getTmpInstance($mName, $mPrefix, $config);
 		if ($applyAccess)
 		{
 			$model->applyAccessFiltering();
@@ -235,13 +133,13 @@ class FOFFormFieldModel extends FOFFormFieldList implements FOFFormField
 		foreach ($this->element->children() as $stateoption)
 		{
 			// Only add <option /> elements.
-			if ($stateoption->getName() != 'state')
+			if ($option->getName() != 'state')
 			{
 				continue;
 			}
 
-			$key = (string) $stateoption['key'];
-			$value = (string) $stateoption;
+			$key   = (string) $option['key'];
+			$value = (string) $option;
 
 			$model->setState($key, $value);
 		}

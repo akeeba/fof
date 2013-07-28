@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldPassword'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldPassword'))
  */
 class FOFFormFieldPassword extends JFormFieldPassword implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldPassword extends JFormFieldPassword implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -74,8 +75,8 @@ class FOFFormFieldPassword extends JFormFieldPassword implements FOFFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -91,7 +92,8 @@ class FOFFormFieldPassword extends JFormFieldPassword implements FOFFormField
 		$class = $this->element['class'] ? (string) $this->element['class'] : '';
 
 		return '<span class="' . $this->id . ' ' . $class . '">' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
+
 }

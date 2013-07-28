@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldCheckbox'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldCheckbox'))
  */
 class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -85,9 +86,9 @@ class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 		}
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			'<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . ' />' .
-			'</span>';
+		'<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+		. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . ' />' .
+		'</span>';
 	}
 
 	/**
@@ -114,8 +115,9 @@ class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 		}
 
 		return '<span class="' . $this->id . ' ' . $class . '">' .
-			'<input type="checkbox" name="' . $this->name . '" class="' . $this->id . ' ' . $class . '"' . ' value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $disabled . $onclick . ' />' .
-			'</span>';
+		'<input type="checkbox" name="' . $this->name . '" class="' . $this->id . ' ' . $class . '"' . ' value="'
+		. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $disabled . $onclick . ' />' .
+		'</span>';
 	}
+
 }

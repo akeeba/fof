@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldGroupedList'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldGroupedList'))
  */
 class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -78,17 +79,17 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 		if (is_null($selected))
 		{
 			$selected = array(
-				'group'	 => '',
-				'item'	 => ''
+				'group' => '',
+				'item'  => ''
 			);
 		}
 
 		return '<span id="' . $this->id . '-group" class="fof-groupedlist-group ' . $class . '>' .
-			htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
-			'</span>' .
-			'<span id="' . $this->id . '-item" class="fof-groupedlist-item ' . $class . '>' .
-			htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
+		'</span>' .
+		'<span id="' . $this->id . '-item" class="fof-groupedlist-item ' . $class . '>' .
+		htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
@@ -108,27 +109,27 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 		if (is_null($selected))
 		{
 			$selected = array(
-				'group'	 => '',
-				'item'	 => ''
+				'group' => '',
+				'item'  => ''
 			);
 		}
 
 		return '<span class="' . $this->id . '-group fof-groupedlist-group ' . $class . '">' .
-			htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
-			'</span>' .
-			'<span class="' . $this->id . '-item fof-groupedlist-item ' . $class . '">' .
-			htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
-			'</span>';
+		htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
+		'</span>' .
+		'<span class="' . $this->id . '-item fof-groupedlist-item ' . $class . '">' .
+		htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
+		'</span>';
 	}
 
 	/**
 	 * Gets the active option's label given an array of JHtml options
 	 *
-	 * @param   array   $data      The JHtml options to parse
-	 * @param   mixed   $selected  The currently selected value
-	 * @param   string  $groupKey  Group name
-	 * @param   string  $optKey    Key name
-	 * @param   string  $optText   Value name
+	 * @param   array  $data      The JHtml options to parse
+	 * @param   mixed  $selected  The currently selected value
+	 * @param   string $groupKey  Group name
+	 * @param   string $optKey    Key name
+	 * @param   string $optText   Value name
 	 *
 	 * @return  mixed   The label of the currently selected option
 	 */
@@ -138,20 +139,20 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 
 		foreach ($data as $dataKey => $group)
 		{
-			$label = $dataKey;
+			$label   = $dataKey;
 			$noGroup = is_int($dataKey);
 
 			if (is_array($group))
 			{
 				$subList = $group[$groupKey];
-				$label = $group[$optText];
+				$label   = $group[$optText];
 				$noGroup = false;
 			}
 			elseif (is_object($group))
 			{
 				// Sub-list is in a property of an object
 				$subList = $group->$groupKey;
-				$label = $group->$optText;
+				$label   = $group->$optText;
 				$noGroup = false;
 			}
 			else
@@ -169,8 +170,8 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 			if (!is_null($match))
 			{
 				$ret = array(
-					'group'	 => $label,
-					'item'	 => $match
+					'group' => $label,
+					'item'  => $match
 				);
 				break;
 			}
@@ -178,4 +179,5 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 
 		return $ret;
 	}
+
 }

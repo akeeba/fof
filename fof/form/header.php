@@ -5,17 +5,15 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * An interface for FOFFormHeader fields, used to define the filters and the
  * elements of the header row in repeatable (browse) views
- *
- * @package  FrameworkOnFramework
- * @since    2.0
  */
 abstract class FOFFormHeader
 {
+
 	/**
 	 * The description text for the form field.  Usually used in tooltips.
 	 *
@@ -147,7 +145,7 @@ abstract class FOFFormHeader
 	/**
 	 * Method to instantiate the form field object.
 	 *
-	 * @param   FOFForm  $form  The form to attach to the form field object.
+	 * @param   FOFForm $form  The form to attach to the form field object.
 	 *
 	 * @since   2.0
 	 */
@@ -163,7 +161,7 @@ abstract class FOFFormHeader
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -251,7 +249,7 @@ abstract class FOFFormHeader
 	/**
 	 * Method to attach a JForm object to the field.
 	 *
-	 * @param   FOFForm  $form  The JForm object to attach to the form field.
+	 * @param   FOFForm $form  The JForm object to attach to the form field.
 	 *
 	 * @return  FOFFormHeader  The form field object so that the method can be used in a chain.
 	 *
@@ -267,9 +265,9 @@ abstract class FOFFormHeader
 	/**
 	 * Method to attach a FOFForm object to the field.
 	 *
-	 * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
-	 * @param   mixed             $value    The form field value to validate.
-	 * @param   string            $group    The field name group control value. This acts as as an array container for the field.
+	 * @param   SimpleXMLElement $element   The SimpleXMLElement object representing the <field /> tag for the form field object.
+	 * @param   mixed            $value     The form field value to validate.
+	 * @param   string           $group     The field name group control value. This acts as as an array container for the field.
 	 *                                      For example if the field has name="foo" and the group value is set to "bar" then the
 	 *                                      full field name would end up being "bar[foo]".
 	 *
@@ -286,23 +284,23 @@ abstract class FOFFormHeader
 		}
 
 		// Reset the internal fields
-		$this->label = null;
-		$this->header = null;
-		$this->filter = null;
-		$this->buttons = null;
-		$this->options = null;
-		$this->value = null;
+		$this->label        = null;
+		$this->header       = null;
+		$this->filter       = null;
+		$this->buttons      = null;
+		$this->options      = null;
+		$this->value        = null;
 		$this->filterSource = null;
 
 		// Set the XML element object.
 		$this->element = $element;
 
 		// Get some important attributes from the form field element.
-		$class = (string) $element['class'];
-		$id = (string) $element['id'];
-		$name = (string) $element['name'];
+		$class        = (string) $element['class'];
+		$id           = (string) $element['id'];
+		$name         = (string) $element['name'];
 		$filterSource = (string) $element['filter_source'];
-		$tdwidth = (string) $element['tdwidth'];
+		$tdwidth      = (string) $element['tdwidth'];
 
 		// Set the field description text.
 		$this->description = (string) $element['description'];
@@ -314,9 +312,9 @@ abstract class FOFFormHeader
 		$this->tdwidth = $tdwidth;
 
 		// Set the field name and id.
-		$this->fieldname = $this->getFieldName($name);
-		$this->name = $this->getName($this->fieldname);
-		$this->id = $this->getId($id, $this->fieldname);
+		$this->fieldname    = $this->getFieldName($name);
+		$this->name         = $this->getName($this->fieldname);
+		$this->id           = $this->getId($id, $this->fieldname);
 		$this->filterSource = $this->getFilterSource($filterSource);
 
 		// Set the field default value.
@@ -328,8 +326,8 @@ abstract class FOFFormHeader
 	/**
 	 * Method to get the id used for the field input tag.
 	 *
-	 * @param   string  $fieldId    The field element id.
-	 * @param   string  $fieldName  The field element name.
+	 * @param   string $fieldId    The field element id.
+	 * @param   string $fieldName  The field element name.
 	 *
 	 * @return  string  The id to be used for the field input tag.
 	 *
@@ -340,11 +338,9 @@ abstract class FOFFormHeader
 		$id = '';
 
 		// If the field is in a group add the group control to the field id.
-
 		if ($this->group)
 		{
 			// If we already have an id segment add the group control as another level.
-
 			if ($id)
 			{
 				$id .= '_' . str_replace('.', '_', $this->group);
@@ -356,7 +352,6 @@ abstract class FOFFormHeader
 		}
 
 		// If we already have an id segment add the field id/name as another level.
-
 		if ($id)
 		{
 			$id .= '_' . ($fieldId ? $fieldId : $fieldName);
@@ -375,7 +370,7 @@ abstract class FOFFormHeader
 	/**
 	 * Method to get the name used for the field input tag.
 	 *
-	 * @param   string  $fieldName  The field element name.
+	 * @param   string $fieldName  The field element name.
 	 *
 	 * @return  string  The name to be used for the field input tag.
 	 *
@@ -386,12 +381,10 @@ abstract class FOFFormHeader
 		$name = '';
 
 		// If the field is in a group add the group control to the field name.
-
 		if ($this->group)
 		{
 			// If we already have a name segment add the group control as another level.
 			$groups = explode('.', $this->group);
-
 			if ($name)
 			{
 				foreach ($groups as $group)
@@ -402,7 +395,6 @@ abstract class FOFFormHeader
 			else
 			{
 				$name .= array_shift($groups);
-
 				foreach ($groups as $group)
 				{
 					$name .= '[' . $group . ']';
@@ -411,7 +403,6 @@ abstract class FOFFormHeader
 		}
 
 		// If we already have a name segment add the field name as another level.
-
 		if ($name)
 		{
 			$name .= '[' . $fieldName . ']';
@@ -427,7 +418,7 @@ abstract class FOFFormHeader
 	/**
 	 * Method to get the field name used.
 	 *
-	 * @param   string  $fieldName  The field element name.
+	 * @param   string $fieldName  The field element name.
 	 *
 	 * @return  string  The field name
 	 *
@@ -447,17 +438,19 @@ abstract class FOFFormHeader
 	 */
 	protected function getLabel()
 	{
+		$title = '';
+
 		// Get the label text from the XML element, defaulting to the element name.
 		$title = $this->element['label'] ? (string) $this->element['label'] : '';
 
 		if (empty($title))
 		{
-			$view = $this->form->getView();
+			$view   = $this->form->getView();
 			$params = $view->getViewOptionAndName();
-			$title = $params['option'] . '_' .
+			$title  = $params['option'] . '_' .
 				FOFInflector::pluralize($params['view']) . '_FIELD_' .
 				(string) $this->element['name'];
-			$title = strtoupper($title);
+			$title  = strtoupper($title);
 			$result = JText::_($title);
 
 			if ($result === $title)
@@ -471,8 +464,6 @@ abstract class FOFFormHeader
 
 	/**
 	 * Get the filter value for this header field
-	 *
-	 * @return  mixed  The filter value
 	 */
 	protected function getValue()
 	{
@@ -481,14 +472,6 @@ abstract class FOFFormHeader
 		return $model->getState($this->filterSource);
 	}
 
-	/**
-	 * Return the key of the filter value in the model state or, if it's not set,
-	 * the name of the field.
-	 *
-	 * @param   string  $filterSource  The filter source value to return
-	 *
-	 * @return  string
-	 */
 	protected function getFilterSource($filterSource)
 	{
 		if ($filterSource)
@@ -501,22 +484,15 @@ abstract class FOFFormHeader
 		}
 	}
 
-	/**
-	 * Is this a sortable field?
-	 *
-	 * @return  boolean  True if it's sortable
-	 */
 	protected function getSortable()
 	{
 		$sortable = ($this->element['sortable'] != 'false');
-
 		if ($sortable)
 		{
 			if (empty($this->header))
 			{
 				$this->header = $this->getHeader();
 			}
-
 			$sortable = !empty($this->header);
 		}
 
@@ -567,12 +543,11 @@ abstract class FOFFormHeader
 	 * Returns the JHtml options for a drop-down filter. Do not include an
 	 * empty option, it is added automatically.
 	 *
-	 * @return  array  The JHtml options for a drop-down filter
-	 *
 	 * @since 2.0
 	 */
 	protected function getOptions()
 	{
 		return array();
 	}
+
 }

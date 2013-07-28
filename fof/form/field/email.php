@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldEMail'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldEMail'))
  */
 class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -71,8 +72,8 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 	 */
 	public function getStatic()
 	{
-		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$dolink = $this->element['show_link'] == 'true';
+		$class             = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$dolink            = $this->element['show_link'] == 'true';
 		$empty_replacement = '';
 
 		if ($this->element['empty_replacement'])
@@ -94,8 +95,8 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 		}
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			$innerHtml .
-			'</span>';
+		$innerHtml .
+		'</span>';
 	}
 
 	/**
@@ -109,9 +110,9 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 	public function getRepeatable()
 	{
 		// Initialise
-		$class = '';
-		$show_link = false;
-		$link_url = '';
+		$class             = '';
+		$show_link         = false;
+		$link_url          = '';
 		$empty_replacement = '';
 
 		// Get field parameters
@@ -119,12 +120,10 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 		{
 			$class = (string) $this->element['class'];
 		}
-
 		if ($this->element['show_link'] == 'true')
 		{
 			$show_link = true;
 		}
-
 		if ($this->element['url'])
 		{
 			$link_url = $this->element['url'];
@@ -144,7 +143,6 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 		{
 			$this->value = JText::_($empty_replacement);
 		}
-
 		$value = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 
 		// Create the HTML
@@ -166,4 +164,5 @@ class FOFFormFieldEmail extends JFormFieldEMail implements FOFFormField
 
 		return $html;
 	}
+
 }

@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Generic filter, drop-down based on fixed options
@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
  */
 class FOFFormHeaderFilterselectable extends FOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Get the header
 	 *
@@ -24,4 +25,5 @@ class FOFFormHeaderFilterselectable extends FOFFormHeaderFieldselectable
 	{
 		return '';
 	}
+
 }

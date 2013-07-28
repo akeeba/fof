@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldUrl'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldUrl'))
  */
 class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -71,8 +72,8 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 	 */
 	public function getStatic()
 	{
-		$class  = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$dolink = $this->element['show_link'] == 'true';
+		$class             = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$dolink            = $this->element['show_link'] == 'true';
 		$empty_replacement = '';
 
 		if ($this->element['empty_replacement'])
@@ -94,8 +95,8 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		}
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			$innerHtml .
-			'</span>';
+		$innerHtml .
+		'</span>';
 	}
 
 	/**
@@ -120,7 +121,6 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		{
 			$class .= ' ' . (string) $this->element['class'];
 		}
-
 		if ($this->element['show_link'] == 'true')
 		{
 			$show_link = true;
@@ -136,7 +136,6 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		{
 			$this->value = JText::_($empty_replacement);
 		}
-
 		$value = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 
 		// Create the HTML
@@ -158,4 +157,5 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 
 		return $html;
 	}
+
 }

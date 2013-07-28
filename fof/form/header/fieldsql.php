@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Generic field header, with drop down filters based on a SQL query
@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
  */
 class FOFFormHeaderFieldsql extends FOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Create objects for the options
 	 *
@@ -58,4 +59,5 @@ class FOFFormHeaderFieldsql extends FOFFormHeaderFieldselectable
 
 		return $options;
 	}
+
 }

@@ -5,26 +5,18 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 JLoader::import('joomla.form.helper');
 
-/**
- * FOFForm's helper class.
- * Provides a storage for filesystem's paths where FOFForm's entities reside and
- * methods for creating those entities. Also stores objects with entities'
- * prototypes for further reusing.
- *
- * @package  FrameworkOnFramework
- * @since    2.0
- */
 class FOFFormHelper extends JFormHelper
 {
+
 	/**
 	 * Method to load a form field object given a type.
 	 *
-	 * @param   string   $type  The field type.
-	 * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
+	 * @param   string  $type  The field type.
+	 * @param   boolean $new   Flag to toggle whether we should get a new instance of the object.
 	 *
 	 * @return  mixed  JFormField object on success, false otherwise.
 	 *
@@ -38,8 +30,8 @@ class FOFFormHelper extends JFormHelper
 	/**
 	 * Method to load a form field object given a type.
 	 *
-	 * @param   string   $type  The field type.
-	 * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
+	 * @param   string  $type  The field type.
+	 * @param   boolean $new   Flag to toggle whether we should get a new instance of the object.
 	 *
 	 * @return  mixed  JFormField object on success, false otherwise.
 	 *
@@ -55,9 +47,9 @@ class FOFFormHelper extends JFormHelper
 	 * Each type is loaded only once and then used as a prototype for other objects of same type.
 	 * Please, use this method only with those entities which support types (forms don't support them).
 	 *
-	 * @param   string   $entity  The entity.
-	 * @param   string   $type    The entity type.
-	 * @param   boolean  $new     Flag to toggle whether we should get a new instance of the object.
+	 * @param   string  $entity  The entity.
+	 * @param   string  $type    The entity type.
+	 * @param   boolean $new     Flag to toggle whether we should get a new instance of the object.
 	 *
 	 * @return  mixed  Entity object on success, false otherwise.
 	 *
@@ -66,7 +58,7 @@ class FOFFormHelper extends JFormHelper
 	protected static function loadType($entity, $type, $new = true)
 	{
 		// Reference to an array with current entity's type instances
-		$types = &self::$entities[$entity];
+		$types = & self::$entities[$entity];
 
 		$key = md5($type);
 
@@ -77,7 +69,6 @@ class FOFFormHelper extends JFormHelper
 		}
 
 		$class = self::loadClass($entity, $type);
-
 		if ($class !== false)
 		{
 			// Instantiate a new type object.
@@ -95,7 +86,7 @@ class FOFFormHelper extends JFormHelper
 	 * Attempt to import the JFormField class file if it isn't already imported.
 	 * You can use this method outside of JForm for loading a field for inheritance or composition.
 	 *
-	 * @param   string  $type  Type of a field whose class should be loaded.
+	 * @param   string $type  Type of a field whose class should be loaded.
 	 *
 	 * @return  mixed  Class name on success or false otherwise.
 	 *
@@ -110,7 +101,7 @@ class FOFFormHelper extends JFormHelper
 	 * Attempt to import the FOFFormHeader class file if it isn't already imported.
 	 * You can use this method outside of JForm for loading a field for inheritance or composition.
 	 *
-	 * @param   string  $type  Type of a field whose class should be loaded.
+	 * @param   string $type  Type of a field whose class should be loaded.
 	 *
 	 * @return  mixed  Class name on success or false otherwise.
 	 *
@@ -126,8 +117,8 @@ class FOFFormHelper extends JFormHelper
 	 * Currently, it makes sense to use this method for the "field" and "rule" entities
 	 * (but you can support more entities in your subclass).
 	 *
-	 * @param   string  $entity  One of the form entities (field or rule).
-	 * @param   string  $type    Type of an entity.
+	 * @param   string $entity  One of the form entities (field or rule).
+	 * @param   string $type    Type of an entity.
 	 *
 	 * @return  mixed  Class name on success or false otherwise.
 	 *
@@ -142,11 +133,11 @@ class FOFFormHelper extends JFormHelper
 		}
 		else
 		{
-			$prefix = 'FOF';
+			$prefix    = 'FOF';
 			$altPrefix = 'J';
 		}
 
-		$class = JString::ucfirst($prefix, '_') . 'Form' . JString::ucfirst($entity, '_') . JString::ucfirst($type, '_');
+		$class    = JString::ucfirst($prefix, '_') . 'Form' . JString::ucfirst($entity, '_') . JString::ucfirst($type, '_');
 		$altClass = JString::ucfirst($altPrefix, '_') . 'Form' . JString::ucfirst($entity, '_') . JString::ucfirst($type, '_');
 
 		if (class_exists($class))
@@ -164,6 +155,7 @@ class FOFFormHelper extends JFormHelper
 		// If the type is complex, add the base type to the paths.
 		if ($pos = strpos($type, '_'))
 		{
+
 			// Add the complex type prefix to the paths.
 			for ($i = 0, $n = count($paths); $i < $n; $i++)
 			{
@@ -176,20 +168,17 @@ class FOFFormHelper extends JFormHelper
 					$paths[] = $path;
 				}
 			}
-
 			// Break off the end of the complex type.
 			$type = substr($type, $pos + 1);
 		}
 
 		// Try to find the class file.
 		$type = strtolower($type) . '.php';
-
 		foreach ($paths as $path)
 		{
 			if ($file = JPath::find($path, $type))
 			{
 				require_once $file;
-
 				if (class_exists($class))
 				{
 					break;
@@ -219,7 +208,7 @@ class FOFFormHelper extends JFormHelper
 	/**
 	 * Method to add a path to the list of header include paths.
 	 *
-	 * @param   mixed  $new  A path or array of paths to add.
+	 * @param   mixed $new  A path or array of paths to add.
 	 *
 	 * @return  array  The list of paths that have been added.
 	 */
@@ -227,4 +216,5 @@ class FOFFormHelper extends JFormHelper
 	{
 		return self::addPath('header', $new);
 	}
+
 }

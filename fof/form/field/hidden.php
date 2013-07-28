@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 if (!class_exists('JFormFieldHidden'))
 {
@@ -21,6 +21,7 @@ if (!class_exists('JFormFieldHidden'))
  */
 class FOFFormFieldHidden extends JFormFieldHidden implements FOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
@@ -28,7 +29,7 @@ class FOFFormFieldHidden extends JFormFieldHidden implements FOFFormField
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
 	 *
-	 * @param   string  $name  The property name for which to the the value.
+	 * @param   string $name  The property name for which to the the value.
 	 *
 	 * @return  mixed  The property value or null.
 	 *
@@ -86,4 +87,5 @@ class FOFFormFieldHidden extends JFormFieldHidden implements FOFFormField
 	{
 		return $this->getInput();
 	}
+
 }

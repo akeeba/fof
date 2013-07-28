@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * FrameworkOnFramework dispatcher class
@@ -19,6 +19,7 @@ defined('_JEXEC') or die();
  */
 class FOFDispatcher extends JObject
 {
+
 	/** @var array Configuration variables */
 	protected $config = array();
 
@@ -75,9 +76,9 @@ class FOFDispatcher extends JObject
 	/**
 	 * Get a static (Singleton) instance of a particular Dispatcher
 	 *
-	 * @param   string  $option  The component name
-	 * @param   string  $view    The View name
-	 * @param   array   $config  Configuration data
+	 * @param   string $option  The component name
+	 * @param   string $view    The View name
+	 * @param   array  $config  Configuration data
 	 *
 	 * @staticvar  array  $instances  Holds the array of Dispatchers FOF knows about
 	 *
@@ -100,9 +101,9 @@ class FOFDispatcher extends JObject
 	/**
 	 * Gets a temporary instance of a Dispatcher
 	 *
-	 * @param   string  $option  The component name
-	 * @param   string  $view    The View name
-	 * @param   array   $config  Configuration data
+	 * @param   string $option  The component name
+	 * @param   string $view    The View name
+	 * @param   array  $config  Configuration data
 	 *
 	 * @return FOFDispatcher
 	 */
@@ -120,9 +121,8 @@ class FOFDispatcher extends JObject
 				{
 					$config['input'] = (array) $config['input'];
 				}
-
 				$config['input'] = array_merge($_REQUEST, $config['input']);
-				$input = new FOFInput($config['input']);
+				$input           = new FOFInput($config['input']);
 			}
 		}
 		else
@@ -131,7 +131,7 @@ class FOFDispatcher extends JObject
 		}
 
 		$config['option'] = !is_null($option) ? $option : $input->getCmd('option', 'com_foobar');
-		$config['view'] = !is_null($view) ? $view : $input->getCmd('view', '');
+		$config['view']   = !is_null($view) ? $view : $input->getCmd('view', '');
 		$input->set('option', $config['option']);
 		$input->set('view', $config['view']);
 		$config['input'] = $input;
@@ -140,13 +140,26 @@ class FOFDispatcher extends JObject
 
 		if (!class_exists($className))
 		{
-			$componentPaths = FOFPlatform::getInstance()->getComponentBaseDirs($config['option']);
+			list($isCli, $isAdmin) = self::isCliAdmin();
+
+			if ($isAdmin)
+			{
+				$basePath = JPATH_ADMINISTRATOR;
+			}
+			elseif ($isCli)
+			{
+				$basePath = JPATH_ROOT;
+			}
+			else
+			{
+				$basePath = JPATH_SITE;
+			}
 
 			$searchPaths = array(
-				$componentPaths['main'],
-				$componentPaths['main'] . '/dispatchers',
-				$componentPaths['admin'],
-				$componentPaths['admin'] . '/dispatchers'
+				$basePath . '/components/' . $config['option'],
+				$basePath . '/components/' . $config['option'] . '/dispatchers',
+				JPATH_ADMINISTRATOR . '/components/' . $config['option'],
+				JPATH_ADMINISTRATOR . '/components/' . $config['option'] . '/dispatchers'
 			);
 
 			if (array_key_exists('searchpath', $config))
@@ -157,7 +170,7 @@ class FOFDispatcher extends JObject
 			JLoader::import('joomla.filesystem.path');
 
 			$path = JPath::find(
-					$searchPaths, 'dispatcher.php'
+				$searchPaths, 'dispatcher.php'
 			);
 
 			if ($path)
@@ -179,7 +192,7 @@ class FOFDispatcher extends JObject
 	/**
 	 * Public constructor
 	 *
-	 * @param   array  $config  The configuration variables
+	 * @param   array $config  The configuration variables
 	 */
 	public function __construct($config = array())
 	{
@@ -193,14 +206,14 @@ class FOFDispatcher extends JObject
 		}
 		else
 		{
-			$this->input = new FOFInput;
+			$this->input = JRequest::get('default', 3);
 		}
 
 		// Get the default values for the component name
 		$this->component = $this->input->getCmd('option', 'com_foobar');
 
 		// Load the component's fof.xml configuration file
-		$configProvider = new FOFConfigProvider;
+		$configProvider    = new FOFConfigProvider;
 		$this->defaultView = $configProvider->get($this->component . '.dispatcher.default_view', $this->defaultView);
 
 		// Get the default values for the view name
@@ -210,7 +223,6 @@ class FOFDispatcher extends JObject
 		{
 			// Do we have a task formatted as controller.task?
 			$task = $this->input->getCmd('task', '');
-
 			if (!empty($task) && (strstr($task, '.') !== false))
 			{
 				list($this->view, $task) = explode('.', $task, 2);
@@ -222,7 +234,6 @@ class FOFDispatcher extends JObject
 		{
 			$this->view = $this->defaultView;
 		}
-
 		$this->layout = $this->input->getCmd('layout', null);
 
 		// Overrides from the config
@@ -254,26 +265,52 @@ class FOFDispatcher extends JObject
 	 */
 	public function dispatch()
 	{
-		if (!FOFPlatform::getInstance()->authorizeAdmin($this->input->getCmd('option', 'com_foobar')))
+		// Timezone fix; avoids errors printed out by PHP 5.3.3+
+		list($isCli, $isAdmin) = self::isCliAdmin();
+
+		if ($isAdmin)
 		{
-			if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+			// Master access check for the back-end, Joomla! 1.6 style.
+			$user = JFactory::getUser();
+
+			if (!$user->authorise('core.manage', $this->input->getCmd('option', 'com_foobar'))
+				&& !$user->authorise('core.admin', $this->input->getCmd('option', 'com_foobar'))
+			)
 			{
-				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
-			}
-			else
-			{
-				return JError::raiseError('403', JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+				if (version_compare(JVERSION, '3.0', 'ge'))
+				{
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+				}
+				else
+				{
+					return JError::raiseError('403', JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+				}
 			}
 		}
-
-		$this->transparentAuthentication();
+		elseif (!$isCli)
+		{
+			// Perform transparent authentication for front-end requests
+			$this->transparentAuthentication();
+		}
 
 		// Merge English and local translations
-		FOFPlatform::getInstance()->loadTranslations($this->component);
+		if ($isAdmin)
+		{
+			$paths = array(JPATH_ROOT, JPATH_ADMINISTRATOR);
+		}
+		else
+		{
+			$paths = array(JPATH_ADMINISTRATOR, JPATH_ROOT);
+		}
+
+		$jlang = JFactory::getLanguage();
+		$jlang->load($this->component, $paths[0], 'en-GB', true);
+		$jlang->load($this->component, $paths[0], null, true);
+		$jlang->load($this->component, $paths[1], 'en-GB', true);
+		$jlang->load($this->component, $paths[1], null, true);
 
 		$canDispatch = true;
-
-		if (FOFPlatform::getInstance()->isCli())
+		if ($isCli)
 		{
 			$canDispatch = $canDispatch && $this->onBeforeDispatchCLI();
 		}
@@ -284,7 +321,7 @@ class FOFDispatcher extends JObject
 		{
 			JResponse::setHeader('Status', '403 Forbidden', true);
 
-			if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 			}
@@ -296,8 +333,8 @@ class FOFDispatcher extends JObject
 
 		// Get and execute the controller
 		$option = $this->input->getCmd('option', 'com_foobar');
-		$view = $this->input->getCmd('view', $this->defaultView);
-		$task = $this->input->getCmd('task', null);
+		$view   = $this->input->getCmd('view', $this->defaultView);
+		$task   = $this->input->getCmd('task', '');
 
 		if (empty($task))
 		{
@@ -318,17 +355,17 @@ class FOFDispatcher extends JObject
 		$this->input->set('view', $view);
 		$this->input->set('task', $task);
 
-		$config = $this->config;
+		$config          = $this->config;
 		$config['input'] = $this->input;
 
 		$controller = FOFController::getTmpInstance($option, $view, $config);
-		$status = $controller->execute($task);
+		$status     = $controller->execute($task);
 
 		if (!$this->onAfterDispatch())
 		{
 			JResponse::setHeader('Status', '403 Forbidden', true);
 
-			if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 			}
@@ -364,14 +401,13 @@ class FOFDispatcher extends JObject
 	 * Tries to guess the controller task to execute based on the view name and
 	 * the HTTP request method.
 	 *
-	 * @param   string  $view  The name of the view
+	 * @param   string $view  The name of the view
 	 *
 	 * @return  string  The best guess of the task to execute
 	 */
 	protected function getTask($view)
 	{
 		// Get a default task based on plural/singular view
-		$request_task = $this->input->getCmd('task', null);
 		$task = FOFInflector::isPlural($view) ? 'browse' : 'edit';
 
 		// Get a potential ID, we might need it later
@@ -400,29 +436,25 @@ class FOFDispatcher extends JObject
 		{
 			case 'POST':
 			case 'PUT':
-				if (!is_null($id))
-				{
-					$task = 'save';
-				}
+				$task = 'save';
 				break;
 
 			case 'DELETE':
 				if ($id != 0)
-				{
 					$task = 'delete';
-				}
 				break;
 
 			case 'GET':
 			default:
+				list($isCli, $isAdmin) = self::isCliAdmin();
+
 				// If it's an edit without an ID or ID=0, it's really an add
 				if (($task == 'edit') && ($id == 0))
 				{
 					$task = 'add';
 				}
-
 				// If it's an edit in the frontend, it's really a read
-				elseif (($task == 'edit') && FOFPlatform::getInstance()->isFrontend())
+				elseif (($task == 'edit') && !$isCli && !$isAdmin)
 				{
 					$task = 'read';
 				}
@@ -458,24 +490,21 @@ class FOFDispatcher extends JObject
 
 		// We have no Application Helper (there is no Application!), so I have to define these constants manually
 		$option = $this->input->get('option', '', 'cmd');
-
 		if ($option)
 		{
-			$componentPaths = FOFPlatform::getInstance()->getComponentBaseDirs($option);
-
 			if (!defined('JPATH_COMPONENT'))
 			{
-				define('JPATH_COMPONENT', $componentPaths['main']);
+				define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
 			}
 
 			if (!defined('JPATH_COMPONENT_SITE'))
 			{
-				define('JPATH_COMPONENT_SITE', $componentPaths['site']);
+				define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
 			}
 
 			if (!defined('JPATH_COMPONENT_ADMINISTRATOR'))
 			{
-				define('JPATH_COMPONENT_ADMINISTRATOR', $componentPaths['admin']);
+				define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
 			}
 		}
 
@@ -493,7 +522,11 @@ class FOFDispatcher extends JObject
 
 		if ($this->fofAuth_LogoutOnReturn && $this->_fofAuth_isLoggedIn)
 		{
-			return FOFPlatform::getInstance()->logoutUser();
+			JLoader::import('joomla.user.authentication');
+			$app        = JFactory::getApplication();
+			$options    = array('remember' => false);
+			$parameters = array('username' => JFactory::getUser()->username);
+			$results    = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 		}
 
 		return true;
@@ -508,7 +541,7 @@ class FOFDispatcher extends JObject
 	{
 		// Only run when there is no logged in user
 
-		if (!FOFPlatform::getInstance()->getUser()->guest)
+		if (!JFactory::getUser()->guest)
 		{
 			return;
 		}
@@ -526,9 +559,7 @@ class FOFDispatcher extends JObject
 			// If we're already logged in, don't bother
 
 			if ($this->_fofAuth_isLoggedIn)
-			{
 				continue;
-			}
 
 			// This will hold our authentication data array (username, password)
 			$authInfo = null;
@@ -585,8 +616,8 @@ class FOFDispatcher extends JObject
 					}
 
 					$authInfo = array(
-						'username'	 => $_SERVER['PHP_AUTH_USER'],
-						'password'	 => $_SERVER['PHP_AUTH_PW']
+						'username' => $_SERVER['PHP_AUTH_USER'],
+						'password' => $_SERVER['PHP_AUTH_PW']
 					);
 					break;
 
@@ -612,8 +643,8 @@ class FOFDispatcher extends JObject
 
 				case 'SplitQueryString_Plaintext':
 					$authInfo = array(
-						'username'	 => $this->input->get('_fofauthentication_username', '', 'raw'),
-						'password'	 => $this->input->get('_fofauthentication_password', '', 'raw'),
+						'username' => $this->input->get('_fofauthentication_username', '', 'raw'),
+						'password' => $this->input->get('_fofauthentication_password', '', 'raw'),
 					);
 
 					if (empty($authInfo['username']))
@@ -635,14 +666,35 @@ class FOFDispatcher extends JObject
 				continue;
 			}
 
-			$this->_fofAuth_isLoggedIn = FOFPlatform::getInstance()->login($authInfo);
+			JLoader::import('joomla.user.authentication');
+			$app          = JFactory::getApplication();
+			$options      = array('remember' => false);
+			$authenticate = JAuthentication::getInstance();
+			$response     = $authenticate->authenticate($authInfo, $options);
+
+			if ($response->status == JAUTHENTICATE_STATUS_SUCCESS)
+			{
+				JPluginHelper::importPlugin('user');
+				$results = $app->triggerEvent('onLoginUser', array((array) $response, $options));
+
+				JLoader::import('joomla.user.helper');
+				$userid = JUserHelper::getUserId($response->username);
+				$user   = JFactory::getUser($userid);
+
+				$session = JFactory::getSession();
+				$session->set('user', $user);
+
+				// $results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
+
+				$this->_fofAuth_isLoggedIn = true;
+			}
 		}
 	}
 
 	/**
 	 * Decrypts a transparent authentication message using a TOTP
 	 *
-	 * @param   string  $encryptedData  The encrypted data
+	 * @param   string $encryptedData  The encrypted data
 	 *
 	 * @return  array  The decrypted data
 	 */
@@ -655,14 +707,14 @@ class FOFDispatcher extends JObject
 			return null;
 		}
 
-		$totp = new FOFEncryptTotp($this->fofAuth_timeStep);
+		$totp   = new FOFEncryptTotp($this->fofAuth_timeStep);
 		$period = $totp->getPeriod();
 		$period--;
 
 		for ($i = 0; $i <= 2; $i++)
 		{
-			$time = ($period + $i) * $this->fofAuth_timeStep;
-			$otp = $totp->getCode($this->fofAuth_Key, $time);
+			$time                     = ($period + $i) * $this->fofAuth_timeStep;
+			$otp                      = $totp->getCode($this->fofAuth_Key, $time);
 			$this->_fofAuth_CryptoKey = hash('sha256', $this->fofAuth_Key . $otp);
 
 			$aes = new FOFEncryptAes($this->_fofAuth_CryptoKey);
@@ -699,14 +751,14 @@ class FOFDispatcher extends JObject
 	/**
 	 * Creates a decryption key for use with the TOTP decryption method
 	 *
-	 * @param   integer  $time  The timestamp used for TOTP calculation, leave empty to use current timestamp
+	 * @param   integer $time  The timestamp used for TOTP calculation, leave empty to use current timestamp
 	 *
 	 * @return  string  THe encryption key
 	 */
 	private function _createDecryptionKey($time = null)
 	{
 		$totp = new FOFEncryptTotp($this->fofAuth_timeStep);
-		$otp = $totp->getCode($this->fofAuth_Key, $time);
+		$otp  = $totp->getCode($this->fofAuth_Key, $time);
 
 		$key = hash('sha256', $this->fofAuth_Key . $otp);
 
@@ -720,15 +772,38 @@ class FOFDispatcher extends JObject
 	 */
 	public static function isCliAdmin()
 	{
-		static $isCLI   = null;
+		static $isCLI = null;
 		static $isAdmin = null;
 
 		if (is_null($isCLI) && is_null($isAdmin))
 		{
-			$isCLI   = FOFPlatform::getInstance()->isCli();
-			$isAdmin = FOFPlatform::getInstance()->isBackend();
+			try
+			{
+				if (is_null(JFactory::$application))
+				{
+					$isCLI = true;
+				}
+				else
+				{
+					$isCLI = JFactory::getApplication() instanceof JException;
+				}
+			}
+			catch (Exception $e)
+			{
+				$isCLI = true;
+			}
+
+			if ($isCLI)
+			{
+				$isAdmin = false;
+			}
+			else
+			{
+				$isAdmin = !JFactory::$application ? false : JFactory::getApplication()->isAdmin();
+			}
 		}
 
 		return array($isCLI, $isAdmin);
 	}
+
 }

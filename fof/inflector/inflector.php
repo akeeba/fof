@@ -4,7 +4,7 @@
  * @copyright  Copyright (C) 2010 - 2012 Akeeba Ltd. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * The FOFInflector is an adaptation of the Akelos PHP Inflector which is a PHP
@@ -15,7 +15,6 @@ defined('_JEXEC') or die();
  * FOFInflector to pluralize and singularize English nouns.
  *
  * @package  FrameworkOnFramework
- * @since    1.0
  */
 class FOFInflector
 {
@@ -131,8 +130,8 @@ class FOFInflector
 	/**
 	 * Add a word to the cache, useful to make exceptions or to add words in other languages.
 	 *
-	 * @param   string  $singular  word.
-	 * @param   string  $plural    word.
+	 * @param   string $singular  word.
+	 * @param   string $plural    word.
 	 *
 	 * @return  void
 	 */
@@ -145,7 +144,7 @@ class FOFInflector
 	/**
 	 * Singular English word to plural.
 	 *
-	 * @param   string  $word  word to pluralize.
+	 * @param   string $word  word to pluralize.
 	 *
 	 * @return  string Plural noun.
 	 */
@@ -184,7 +183,7 @@ class FOFInflector
 	/**
 	 * Plural English word to singular.
 	 *
-	 * @param   string  $word  Word to singularize.
+	 * @param   string $word  Word to singularize.
 	 *
 	 * @return  string Singular noun.
 	 */
@@ -227,7 +226,7 @@ class FOFInflector
 	 * will remove non alphanumeric characters from the word, so
 	 * "who's online" will be converted to "WhoSOnline"
 	 *
-	 * @param   string  $word  Word to convert to camel case.
+	 * @param   string $word  Word to convert to camel case.
 	 *
 	 * @return  string  UpperCamelCasedWord
 	 */
@@ -244,7 +243,7 @@ class FOFInflector
 	 *
 	 * Convert any "CamelCased" or "ordinary Word" into an "underscored_word".
 	 *
-	 * @param   string  $word  Word to underscore
+	 * @param   string $word  Word to underscore
 	 *
 	 * @return string Underscored word
 	 */
@@ -262,7 +261,7 @@ class FOFInflector
 	 * Returns an array of strings each of which is a substring of string formed
 	 * by splitting it at the camelcased letters.
 	 *
-	 * @param   string  $word  Word to explode
+	 * @param   string $word  Word to explode
 	 *
 	 * @return  array   Array of strings
 	 */
@@ -276,7 +275,7 @@ class FOFInflector
 	/**
 	 * Convert  an array of strings into a "CamelCased" word.
 	 *
-	 * @param   array  $words  Array to implode
+	 * @param   array $words  Array to implode
 	 *
 	 * @return  string UpperCamelCasedWord
 	 */
@@ -294,7 +293,7 @@ class FOFInflector
 	 * underscores with a space, and by upper-casing the initial
 	 * character by default.
 	 *
-	 * @param   string  $word  String to "humanize"
+	 * @param   string $word  String to "humanize"
 	 *
 	 * @return string Human-readable word
 	 */
@@ -311,7 +310,7 @@ class FOFInflector
 	 *
 	 * Converts "Person" to "people"
 	 *
-	 * @param   string  $className  Class name for getting related table_name.
+	 * @param   string $className  Class name for getting related table_name.
 	 *
 	 * @return  string  plural_table_name
 	 *
@@ -332,12 +331,12 @@ class FOFInflector
 	/**
 	 * Converts a table name to its class name according to Koowa naming conventions.
 	 *
-	 * @param   string  $tableName  Table name for getting related ClassName.
+	 * @param   string $tableName  Table name for getting related ClassName.
 	 *
 	 * @return string SingularClassName
 	 *
 	 * @example  Converts "people" to "Person"
-	 * @see tableize
+	 * @see      tableize
 	 */
 	public static function classify($tableName)
 	{
@@ -349,7 +348,7 @@ class FOFInflector
 	/**
 	 * Returns camelBacked version of a string. Same as camelize but first char is lowercased.
 	 *
-	 * @param   string  $string  String to be camelBacked.
+	 * @param   string $string  String to be camelBacked.
 	 *
 	 * @return string
 	 *
@@ -367,7 +366,7 @@ class FOFInflector
 	/**
 	 * Check to see if an English word is singular
 	 *
-	 * @param   string  $string  The word to check
+	 * @param   string $string  The word to check
 	 *
 	 * @return boolean
 	 */
@@ -389,7 +388,7 @@ class FOFInflector
 	/**
 	 * Check to see if an Enlish word is plural.
 	 *
-	 * @param   string  $string  String to be checked.
+	 * @param   string $string  String to be checked.
 	 *
 	 * @return boolean
 	 */
@@ -414,9 +413,9 @@ class FOFInflector
 	 * Use a negative index to start at the last part of the word (-1 is the
 	 * last part)
 	 *
-	 * @param   string   $string   Word
-	 * @param   integer  $index    Index of the part
-	 * @param   string   $default  Default value
+	 * @param   string  $string   Word
+	 * @param   integer $index    Index of the part
+	 * @param   string  $default  Default value
 	 *
 	 * @return string
 	 */

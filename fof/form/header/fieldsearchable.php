@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 /**
  * Generic field header, with text input (search) filter
@@ -15,6 +15,7 @@ defined('_JEXEC') or die();
  */
 class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 {
+
 	/**
 	 * Get the filter field
 	 *
@@ -50,8 +51,9 @@ class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 			$onchange = ' onchange="document.adminForm.submit();"';
 		}
 
+
 		return '<input type="text" name="' . $name . '" id="' . $this->id . '"' . ' value="'
-			. htmlspecialchars($searchvalue, ENT_COMPAT, 'UTF-8') . '"' . $filterclass . $size . $placeholder . $onchange . $maxLength . '/>';
+		. htmlspecialchars($searchvalue, ENT_COMPAT, 'UTF-8') . '"' . $filterclass . $size . $placeholder . $onchange . $maxLength . '/>';
 	}
 
 	/**
@@ -61,7 +63,7 @@ class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 	 */
 	protected function getButtons()
 	{
-		$buttonclass = $this->element['buttonclass'] ? ' class="' . (string) $this->element['buttonclass'] . '"' : '';
+		$buttonclass  = $this->element['buttonclass'] ? ' class="' . (string) $this->element['buttonclass'] . '"' : '';
 		$buttonsState = strtolower($this->element['buttons']);
 		$show_buttons = !in_array($buttonsState, array('no', 'false', '0'));
 
@@ -81,4 +83,5 @@ class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 
 		return $html;
 	}
+
 }
