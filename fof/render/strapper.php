@@ -993,8 +993,10 @@ ENDJS;
 
 				if (empty($title) && !$emptylabel)
 				{
-					$model->getName();
-					$title = strtoupper($input->get('option') . '_' . $model->getName() . '_' . $field->id . '_LABEL');
+					if (!$title = $field->label)
+					{
+						$title = strtoupper($input->get('option') . '_' . $model->getName() . '_' . $field->id . '_LABEL');
+					}
 				}
 
 				// Field description
