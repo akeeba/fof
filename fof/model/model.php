@@ -2063,18 +2063,22 @@ class FOFModel extends JObject
 	 *
 	 * @param   array    $data      Data for the form.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
-	 * @param   boolean  $source    The name of the form. If not set we'll try the form_name state variable or fall back to default.
+	 * @param   boolean  $source    The form source. If not set we'll try the form_name state variable or fall back to default.
+	 * @param   boolean  $name		The name of the form. If not set we'll use the com_foobar.view format.
 	 *
 	 * @return  mixed  A FOFForm object on success, false on failure
 	 *
 	 * @since   2.0
 	 */
-	public function getForm($data = array(), $loadData = true, $source = null)
+	public function getForm($data = array(), $loadData = true, $source = null, $name = null)
 	{
 		$this->_formData = $data;
 
-		$name = $this->input->getCmd('option', 'com_foobar') . '.'
-			. $this->input->getCmd('view', 'cpanels');
+		if (empty($name))
+		{
+			$name = $this->input->getCmd('option', 'com_foobar') . '.'
+				. $this->input->getCmd('view', 'cpanels');
+		}
 
 		if (empty($source))
 		{
