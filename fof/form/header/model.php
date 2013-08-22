@@ -70,10 +70,10 @@ class FOFFormHeaderModel extends FOFFormHeaderFieldselectable
 				continue;
 			}
 
-			$key = (string) $stateoption['key'];
-			$value = (string) $stateoption;
+			$statusKey = (string) $stateoption['key'];
+			$statusValue = (string) $stateoption;
 
-			$model->setState($key, $value);
+			$model->setState($statusKey, $statusValue);
 		}
 
 		// Set the query and get the result list.
