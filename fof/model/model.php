@@ -367,7 +367,17 @@ class FOFModel extends JObject
 		}
 
 		// First look for ComponentnameModelViewnameBehaviorName (e.g. FoobarModelItemsBehaviorFilter)
-		$behaviorClass = ucfirst($this->option) . 'Model' . FOFInflector::pluralize($this->name) . 'Behavior' . ucfirst(strtolower($name));
+		$behaviorClass = ucfirst(str_replace('com_', '', $this->option)) . 'Model' . FOFInflector::pluralize($this->name) . 'Behavior' . ucfirst(strtolower($name));
+
+		if (class_exists($behaviorClass))
+		{
+			$behavior = new $behaviorClass($this->modelDispatcher, $config);
+
+			return true;
+		}
+
+		// Then look for ComponentnameModelBehaviorName (e.g. FoobarModelBehaviorFilter)
+		$behaviorClass = ucfirst(str_replace('com_', '', $this->option)) . 'ModelBehavior' . ucfirst(strtolower($name));
 
 		if (class_exists($behaviorClass))
 		{
