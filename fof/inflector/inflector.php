@@ -28,70 +28,70 @@ class FOFInflector
 	protected static $_rules = array
 	(
 		'pluralization'   => array(
-			'/move$/i'                      => 'moves',
-			'/sex$/i'                       => 'sexes',
-			'/child$/i'                     => 'children',
-			'/man$/i'                       => 'men',
-			'/foot$/i'                      => 'feet',
-			'/person$/i'                    => 'people',
-			'/taxon$/i'                     => 'taxa',
-			'/(quiz)$/i'                    => '$1zes',
-			'/^(ox)$/i'                     => '$1en',
-			'/(m|l)ouse$/i'                 => '$1ice',
-			'/(matr|vert|ind|suff)ix|ex$/i' => '$1ices',
-			'/(x|ch|ss|sh)$/i'              => '$1es',
-			'/([^aeiouy]|qu)y$/i'           => '$1ies',
-			'/(?:([^f])fe|([lr])f)$/i'      => '$1$2ves',
-			'/sis$/i'                       => 'ses',
-			'/([ti]|addend)um$/i'           => '$1a',
-			'/(alumn|formul)a$/i'           => '$1ae',
-			'/(buffal|tomat|her)o$/i'       => '$1oes',
-			'/(bu)s$/i'                     => '$1ses',
-			'/(alias|status)$/i'            => '$1es',
-			'/(octop|vir)us$/i'             => '$1i',
-			'/(gen)us$/i'                   => '$1era',
-			'/(ax|test)is$/i'               => '$1es',
-			'/s$/i'                         => 's',
-			'/$/'                           => 's',
+			'/moves?$/i'                             => 'moves',
+			'/sex(?:es)?$/i'                         => 'sexes',
+			'/child(?:ren)?$/i'                      => 'children',
+			'/m[ae]n$/i'                             => 'men',
+			'/f(?:oo|ee)t$/i'                        => 'feet',
+			'/(?:person|people)$/i'                  => 'people',
+			'/tax(?:on|a)$/i'                        => 'taxa',
+			'/(quiz)(?:zes)?$/i'                     => '$1zes',
+			'/^(ox)(?:en)?$/i'                       => '$1en',
+			'/(m|l)(?:ouse|ice)$/i'                  => '$1ice',
+			'/(matr|vert|ind|suff)(?:ix|ex|ices)$/i' => '$1ices',
+			'/(x|ch|ss|sh)(?:es)?$/i'                => '$1es',
+			'/([^aeiouy]|qu)(?:y|ies)$/i'            => '$1ies',
+			'/(?:([^f])fe|([lr])f)(?:ves)?$/i'       => '$1$2ves',
+			'/s[ie]s$/i'                             => 'ses',
+			'/([ti]|addend)(?:um|a)$/i'              => '$1a',
+			'/(alumn|formul)ae?$/i'                  => '$1ae',
+			'/(buffal|tomat|her)o(?:es)?$/i'         => '$1oes',
+			'/(bu)s(?:es)?$/i'                       => '$1ses',
+			'/(alias|status)(?:es)?$/i'              => '$1es',
+			'/(octop|vir)(?:us|i)$/i'                => '$1i',
+			'/(gen)(?:us|era)$/i'                    => '$1era',
+			'/(ax|test)[ie]s$/i'                     => '$1es',
+			'/s$/i'                                  => 's',
+			'/$/'                                    => 's',
 		),
 		'singularization' => array(
-			'/cookies$/i'                                                      => 'cookie',
-			'/moves$/i'                                                        => 'move',
-			'/sexes$/i'                                                        => 'sex',
-			'/children$/i'                                                     => 'child',
-			'/men$/i'                                                          => 'man',
-			'/feet$/i'                                                         => 'foot',
-			'/people$/i'                                                       => 'person',
-			'/taxa$/i'                                                         => 'taxon',
-			'/databases$/i'                                                    => 'database',
-			'/(quiz)zes$/i'                                                    => '\1',
-			'/(matr|suff)ices$/i'                                              => '\1ix',
-			'/(vert|ind)ices$/i'                                               => '\1ex',
-			'/^(ox)en/i'                                                       => '\1',
-			'/(alias|status)es$/i'                                             => '\1',
-			'/(tomato|hero|buffalo)es$/i'                                      => '\1',
-			'/([octop|vir])i$/i'                                               => '\1us',
-			'/(gen)era$/i'                                                     => '\1us',
-			'/(cris|^ax|test)es$/i'                                            => '\1is',
-			'/(shoe)s$/i'                                                      => '\1',
-			'/(o)es$/i'                                                        => '\1',
-			'/(bus)es$/i'                                                      => '\1',
-			'/([m|l])ice$/i'                                                   => '\1ouse',
-			'/(x|ch|ss|sh)es$/i'                                               => '\1',
-			'/(m)ovies$/i'                                                     => '\1ovie',
+			'/cookies?$/i'                                                      => 'cookie',
+			'/moves?$/i'                                                        => 'move',
+			'/sex(?:es)?$/i'                                                        => 'sex',
+			'/child(?:ren)$/i'                                                     => 'child',
+			'/m[ae]n$/i'                                                          => 'man',
+			'/f(?:ee|oo)t$/i'                                                         => 'foot',
+			'/(?:people|person)$/i'                                                       => 'person',
+			'/tax(?:a|on)$/i'                                                         => 'taxon',
+			'/databases?$/i'                                                    => 'database',
+			'/(quiz)(?:zes)?$/i'                                                    => '\1',
+			'/(matr|suff)(?:ices|ix)$/i'                                              => '\1ix',
+			'/(vert|ind)(?:ices|ex)$/i'                                               => '\1ex',
+			'/^(ox)(?:en)?/i'                                                       => '\1',
+			'/(alias|status)(?:es)?$/i'                                             => '\1',
+			'/(tomato|hero|buffalo)(?:es)?$/i'                                      => '\1',
+			'/([octop|vir])(?:i|us)$/i'                                               => '\1us',
+			'/(gen)(?:era|us)$/i'                                                     => '\1us',
+			'/(cris|^ax|test)[ei]s$/i'                                            => '\1is',
+			'/(shoe)s?$/i'                                                      => '\1',
+			'/(o)(?:es)?$/i'                                                        => '\1',
+			'/(bus)(?:es)?$/i'                                                      => '\1',
+			'/([m|l])(?:ice|ouse)$/i'                                                   => '\1ouse',
+			'/(x|ch|ss|sh)(?:es)?$/i'                                               => '\1',
+			'/(m)ovies?$/i'                                                     => '\1ovie',
 			'/(s)eries$/i'                                                     => '\1eries',
-			'/([^aeiouy]|qu)ies$/i'                                            => '\1y',
-			'/([lr])ves$/i'                                                    => '\1f',
-			'/(tive)s$/i'                                                      => '\1',
-			'/(hive)s$/i'                                                      => '\1',
-			'/([^f])ves$/i'                                                    => '\1fe',
-			'/(^analy)ses$/i'                                                  => '\1sis',
-			'/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' => '\1\2sis',
-			'/([ti]|addend)a$/i'                                               => '\1um',
-			'/(alumn|formul)ae$/i'                                             => '$1a',
+			'/([^aeiouy]|qu)(?:ies|y)$/i'                                            => '\1y',
+			'/([lr])(?:ves|f)$/i'                                                    => '\1f',
+			'/(tive)s?$/i'                                                      => '\1',
+			'/(hive)s?$/i'                                                      => '\1',
+			'/([^f])(?:ves|fe)$/i'                                                    => '\1fe',
+			'/(^analy)s[ei]s$/i'                                                  => '\1sis',
+			'/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)s[ei]s$/i' => '\1\2sis',
+			'/([ti]|addend)(?:a|um)$/i'                                               => '\1um',
+			'/(alumn|formul)ae?$/i'                                             => '$1a',
 			'/(n)ews$/i'                                                       => '\1ews',
 			'/(.*)ss$/i'                                                       => '\1ss',
-			'/(.*)s$/i'                                                        => '\1',
+			'/(.*)s?$/i'                                                        => '\1',
 		),
 		'countable'       => array(
 			'aircraft',
@@ -140,7 +140,9 @@ class FOFInflector
 	public static function addWord($singular, $plural)
 	{
 		self::$_cache['pluralized'][$singular] = $plural;
+		self::$_cache['pluralized'][$plural] = $plural;
 		self::$_cache['singularized'][$plural] = $singular;
+		self::$_cache['singularized'][$singular] = $singular;
 	}
 
 	/**
@@ -173,7 +175,7 @@ class FOFInflector
 
 			if ($matches > 0)
 			{
-				$_cache['pluralized'][$word] = $plural;
+				self::addWord($word, $plural);
 
 				return $plural;
 			}
@@ -212,7 +214,7 @@ class FOFInflector
 
 			if ($matches > 0)
 			{
-				$_cache['singularized'][$word] = $singular;
+				self::addWord($singular, $word);
 
 				return $singular;
 			}
