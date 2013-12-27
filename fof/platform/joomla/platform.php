@@ -373,6 +373,29 @@ class FOFPlatformJoomlaPlatform extends FOFPlatform implements FOFPlatformInterf
 		return $document;
 	}
 
+    /**
+     * Return the JDate object
+     *
+     * @param   mixed  $time      The initial time for the JDate object
+     * @param   mixed  $tzOffset  The timezone offset.
+     *
+     * @return  JDate object
+     */
+    public function getDate($time = 'now', $tzOffest = null)
+    {
+        return JFactory::getDate($time, $tzOffest);
+    }
+
+    public function getLanguage()
+    {
+        return JFactory::getLanguage();
+    }
+
+    public function getDbo()
+    {
+        return JFactory::getDbo();
+    }
+
 	/**
 	 * This method will try retrieving a variable from the request (input) data.
 	 *
@@ -681,6 +704,11 @@ class FOFPlatformJoomlaPlatform extends FOFPlatform implements FOFPlatformInterf
 		$cache = JFactory::getCache('fof', '');
 		$cache->store($false, 'cache', 'fof');
 	}
+
+    public function getConfig()
+    {
+        return JFactory::getConfig();
+    }
 
 	/**
 	 * logs in a user

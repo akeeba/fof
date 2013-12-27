@@ -266,6 +266,12 @@ interface FOFPlatformInterface
 	 */
 	public function getDocument();
 
+    public function getDate($time = 'now', $tzOffest = null);
+
+    public function getLanguage();
+
+    public function getDbo();
+
 	/**
 	 * Is this the administrative section of the component?
 	 *
@@ -341,6 +347,13 @@ interface FOFPlatformInterface
 	 * @return  boolean  True on success
 	 */
 	public function clearCache();
+
+    /**
+     * Returns an object that holds the configuration of the current site.
+     *
+     * @return  mixed
+     */
+    public function getConfig();
 
 	/**
 	 * Is the global FOF cache enabled?

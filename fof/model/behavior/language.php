@@ -66,7 +66,7 @@ class FOFModelBehaviorLanguage extends FOFModelBehavior
 		if ($lang_filter_params->get('remove_default_prefix'))
 		{
 			// Get default site language
-			$lg = JFactory::getLanguage();
+			$lg = FOFPlatform::getInstance()->getLanguage();
 			$languages[] = $lg->getTag();
 		}
 		else
@@ -78,7 +78,7 @@ class FOFModelBehaviorLanguage extends FOFModelBehavior
 		$languages = array_unique($languages);
 
 		// And filter the query output by these languages
-		$db = JFactory::getDbo();
+		$db        = FOFPlatform::getInstance()->getDbo();
 		$languages = array_map(array($db, 'quote'), $languages);
 		$query->where($db->qn($languageField) . ' IN (' . implode(',', $languages) . ')');
 	}
@@ -126,7 +126,7 @@ class FOFModelBehaviorLanguage extends FOFModelBehavior
 			if ($lang_filter_params->get('remove_default_prefix'))
 			{
 				// Get default site language
-				$lg = JFactory::getLanguage();
+				$lg = FOFPlatform::getInstance()->getLanguage();
 				$languages[] = $lg->getTag();
 			}
 			else
