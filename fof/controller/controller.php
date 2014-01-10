@@ -2147,7 +2147,7 @@ class FOFController extends FOFUtilsObject
 				$customURL = base64_decode($customURL);
 			}
 
-			if (!empty($customURL))
+			if (!empty($customURL) && $this->input->get('redirectwitherror', 'false', 'bool'))
 			{
 				$url = $customURL;
 			}
