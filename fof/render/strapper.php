@@ -831,7 +831,7 @@ JS;
 				{
 					$field->rowid	 = $i;
 					$field->item	 = $table_item;
-					$class			 = $field->labelClass ? 'class ="' . $field->labelClass . '"' : '';
+					$class			 = $field->labelclass ? 'class ="' . $field->labelclass . '"' : '';
 					$html .= "\t\t\t\t\t<td $class>" . $field->getRepeatable() . '</td>' . PHP_EOL;
 				}
 
@@ -1042,7 +1042,7 @@ JS;
 			foreach ($fields as $field)
 			{
 				$required	 = $field->required;
-				$labelClass	 = $field->labelClass;
+				$labelClass	 = $field->labelclass;
 				$groupClass	 = $form->getFieldAttribute($field->fieldname, 'groupclass', '', $field->group);
 
 				// Auto-generate label and description if needed
