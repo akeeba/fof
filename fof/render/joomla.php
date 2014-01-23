@@ -263,7 +263,7 @@ class FOFRenderJoomla extends FOFRenderAbstract
 				{
 					$field->rowid	 = $i;
 					$field->item	 = $table_item;
-					$class			 = $field->labelClass ? 'class ="' . $field->labelClass . '"' : '';
+					$class			 = $field->labelclass ? 'class ="' . $field->labelclass . '"' : '';
 					$html .= "\t\t\t\t\t<td $class>" . $field->getRepeatable() . '</td>' . PHP_EOL;
 				}
 
