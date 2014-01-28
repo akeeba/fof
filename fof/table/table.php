@@ -38,14 +38,14 @@ class FOFTable extends FOFUtilsObject implements JTableInterface
 	 *
 	 * @var    array
 	 */
-	private static $instances = array();
+	protected static $instances = array();
 
 	/**
 	 * Include paths for searching for FOFTable classes.
 	 *
 	 * @var    array
 	 */
-	private static $_includePaths = array();
+	protected static $_includePaths = array();
 
 	/**
 	 * The configuration parameters array
@@ -930,7 +930,7 @@ class FOFTable extends FOFUtilsObject implements JTableInterface
 		// Check that we have a result.
 		if (empty($row))
 		{
-			$result = true;
+			$result = false;
 
 			return $this->onAfterLoad($result);
 		}
@@ -2490,9 +2490,9 @@ class FOFTable extends FOFUtilsObject implements JTableInterface
 	protected function onAfterLoad(&$result)
 	{
 		// Call the behaviors
-		$eventRistult = $this->tableDispatcher->trigger('onAfterLoad', array(&$this, &$result));
+		$eventResult = $this->tableDispatcher->trigger('onAfterLoad', array(&$this, &$result));
 
-		if (in_array(false, $eventRistult, true))
+		if (in_array(false, $eventResult, true))
 		{
 			// Behavior failed, return false
 			$result = false;
