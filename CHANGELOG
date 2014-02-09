@@ -8,6 +8,7 @@ FOF 2.2.0
 ~ FOFModel::onBeforePreprocessForm explicitly passes the form object as reference. Please update your method signature to avoid PHP notices
 ~ FOFModel::onAfterPreprocessForm explicitly passes the form object as reference. Please update your method signature to avoid PHP notices
 ~ FOFModel::preprocessForm explicitly passes the form object as reference. Please update your method signature to avoid PHP notices
+~ Added btn-group to radio buttons of FOFFormFieldRadio
 # [LOW] Notice in render/strapper.php
 # [LOW] gh-246 Fix wrong singularize result for word "menus"
 # [LOW] gh-247 Grouped list field uses getOptions instead of getGroups, leading to a fatal error
