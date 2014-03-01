@@ -1018,11 +1018,11 @@ class FOFController extends FOFUtilsObject
 			$viewType = $this->input->getCmd('format', 'html');
 		}
 
-		$view = $this->getThisView();
+		$view = $this->getThisView($this->config);
 
 		// Get/Create the model
 
-		if ($model = $this->getThisModel())
+		if ($model = $this->getThisModel($this->config))
 		{
 			// Push the model into the view (as default)
 			$view->setModel($model, true);
@@ -1134,7 +1134,7 @@ class FOFController extends FOFUtilsObject
 		}
 
 		// Do I have a form?
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (empty($this->layout))
 		{
@@ -1168,7 +1168,7 @@ class FOFController extends FOFUtilsObject
 	public function read()
 	{
 		// Load the model
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1221,7 +1221,7 @@ class FOFController extends FOFUtilsObject
 	public function add()
 	{
 		// Load and reset the model
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 		$model->reset();
 
 		// Set the layout to form, if it's not set in the URL
@@ -1262,7 +1262,7 @@ class FOFController extends FOFUtilsObject
 	public function edit()
 	{
 		// Load the model
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1338,7 +1338,7 @@ class FOFController extends FOFUtilsObject
 			$this->_csrfProtection();
 		}
 
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 		$result = $this->applySave();
 
 		// Redirect to the edit task
@@ -1374,7 +1374,7 @@ class FOFController extends FOFUtilsObject
 			$this->_csrfProtection();
 		}
 
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1480,7 +1480,7 @@ class FOFController extends FOFUtilsObject
 	 */
 	public function cancel()
 	{
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1639,7 +1639,7 @@ class FOFController extends FOFUtilsObject
 			$this->_csrfProtection();
 		}
 
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1702,7 +1702,7 @@ class FOFController extends FOFUtilsObject
 			$this->_csrfProtection();
 		}
 
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1746,7 +1746,7 @@ class FOFController extends FOFUtilsObject
 			$this->_csrfProtection();
 		}
 
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1790,7 +1790,7 @@ class FOFController extends FOFUtilsObject
 			$this->_csrfProtection();
 		}
 
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -1997,7 +1997,7 @@ class FOFController extends FOFUtilsObject
 	 */
 	final protected function setstate($state = 0)
 	{
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -2036,7 +2036,7 @@ class FOFController extends FOFUtilsObject
 	 */
 	final protected function setaccess($level = 0)
 	{
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -2094,7 +2094,7 @@ class FOFController extends FOFUtilsObject
 	final protected function applySave()
 	{
 		// Load the model
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
@@ -2780,11 +2780,11 @@ class FOFController extends FOFUtilsObject
 			$ids = null;
 
 			// First, check if there is an asset for this record
-			$table = $this->getThisModel()->getTable();
+			$table = $this->getThisModel($this->config)->getTable();
 
 			if ($table && $table->isAssetsTracked())
 			{
-				$ids = $this->getThisModel()->getId() ? $this->getThisModel()->getId() : null;
+				$ids = $this->getThisModel($this->config)->getId() ? $this->getThisModel($this->config)->getId() : null;
 			}
 
 			// Generic or Asset tracking
@@ -2818,7 +2818,7 @@ class FOFController extends FOFUtilsObject
 
 					if ((!$isEditState) && (FOFPlatform::getInstance()->authorise('core.edit.own', $asset)))
 					{
-						$table = $this->getThisModel()->getTable();
+						$table = $this->getThisModel($this->config)->getTable();
                         $table->load($id);
 
                         $created_by = $table->getColumnAlias('created_by');
@@ -2957,7 +2957,7 @@ class FOFController extends FOFUtilsObject
 	 */
 	protected function onBeforeApply()
 	{
-        $model = $this->getThisModel();
+        $model = $this->getThisModel($this->config);
 
         if (!$model->getId())
         {
@@ -3007,7 +3007,7 @@ class FOFController extends FOFUtilsObject
 	 */
 	protected function onBeforeCancel()
 	{
-        $model = $this->getThisModel();
+        $model = $this->getThisModel($this->config);
 
         if (!$model->getId())
         {
@@ -3115,7 +3115,7 @@ class FOFController extends FOFUtilsObject
 	 */
 	protected function onBeforeSave()
 	{
-		$model = $this->getThisModel();
+		$model = $this->getThisModel($this->config);
 
 		if (!$model->getId())
 		{
