@@ -48,14 +48,35 @@ class F0FRenderStrapper extends F0FRenderAbstract
 			return;
 		}
 
-		if (!F0FPlatform::getInstance()->isCli())
+		$platform = F0FPlatform::getInstance();
+
+		if (!$platform->isCli())
 		{
-			// Wrap output in a Joomla-versioned div
+			// Wrap output in various classes
 			$version = new JVersion;
 			$versionParts = explode('.', $version->RELEASE);
 			$minorVersion = str_replace('.', '', $version->RELEASE);
 			$majorVersion = array_shift($versionParts);
-			echo "<div class=\"joomla-version-$majorVersion joomla-version-$minorVersion\">\n";
+
+			$area = $platform->isBackend() ? 'admin' : 'site';
+			$option = $input->getCmd('option', '');
+			$view = $input->getCmd('view', '');
+			$layout = $input->getCmd('layout', '');
+			$task = $input->getCmd('task', '');
+			$itemid = $input->getCmd('Itemid', '');
+
+			$classes = array(
+				'joomla-version-' . $majorVersion,
+				'joomla-version-' . $minorVersion,
+				$area,
+				$option,
+				'view-' . $view,
+				'layout-' . $layout,
+				'task-' . $task,
+				'itemid-' . $itemid,
+			);
+
+			echo '<div id="akeeba-bootstrap" class="' . implode($classes, ' ') . "\">\n";
 
 			// Wrap output in an akeeba-bootstrap class div
 			echo "<div class=\"akeeba-bootstrap\">\n";
