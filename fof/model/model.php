@@ -2272,6 +2272,153 @@ class F0FModel extends F0FUtilsObject
 	}
 
 	/**
+	 * Method to get multiple forms of a specific directory.
+	 *
+	 * Important!
+	 * After getting the forms, you should assign a model to each form. For example:
+	 *
+	 * $model = $this->getThisModel();
+	 * $forms = $model->getForms($data, $path);
+	 *
+	 * foreach ($forms as $form)
+	 * {
+	 * 		$form->setModel($model);
+	 * }
+	 *
+	 * @param 	array		$sources		The sources (basename) of the forms to get, e.g.
+	 * 										array('form.foo', 'form.bar'). Leave empty to get all forms.
+	 * @param 	array		$paths			The paths to look into. You can declare this to override the default F0F paths.
+	 * @param   array|null 	$data			Data for the forms. Set to null to automatically use the data of the
+	 * 										item of the current model.
+	 * @param   boolean  	$loadData  		True if the form is to load its own data (default case), false if not.
+	 * @param 	boolean		$orderForms		Do we need to order the forms?
+	 * @param 	array		$orderOptions	Options for ordering the forms.
+	 * 										'key'				The key (string) or a array of key to sort on.
+	 * 															Possible values are 'source' and 'ordering'.
+	 * 										'direction'			The direction to sort on ('asc' or 'desc').
+	 *										'case_sensitive'	Boolean or array of booleans to let sort occur case
+	 * 															sensitive or insensitive.
+	 * 										'locale'			Boolean or array of booleans to let sort occur using
+	 * 															the locale language or not.
+	 *
+	 * @return 	array		An indexed array of F0F forms.
+	 */
+	public function getForms($sources = array(), $paths = array(), $data = null, $loadData = true, $orderForms = false, $orderOptions = array())
+	{
+		if (empty($paths))
+		{
+			$option = $this->input->getCmd('option', 'com_foobar');
+			$view 	= $this->input->getCmd('view', '');
+
+			$componentPaths = F0FPlatform::getInstance()->getComponentBaseDirs($option);
+			$file_root      = $componentPaths['main'];
+			$alt_file_root  = $componentPaths['alt'];
+			$template_root  = F0FPlatform::getInstance()->getTemplateOverridePath($option);
+
+			// Set up the paths to look into
+			// PLEASE NOTE: If you ever change this, please update Model Unit tests, too, since we have to
+			// copy these default folders (we have to add the protocol for the virtual filesystem)
+			$paths = array(
+				// In the template override
+				$template_root . '/' . $view,
+				// In this side of the component
+				$file_root . '/views/' . $view . '/tmpl',
+				// In the other side of the component
+				$alt_file_root . '/views/' . $view . '/tmpl',
+				// In the models/forms of this side
+				$file_root . '/models/forms',
+				// In the models/forms of the other side
+				$alt_file_root . '/models/forms',
+			);
+		}
+
+		$paths = array_unique($paths);
+
+		if (is_null($data))
+		{
+			$item = $this->getItem();
+			$data = is_object($item) ? $item->getData() : array();
+		}
+
+		if (empty($sources))
+		{
+			$filesystem = F0FPlatform::getInstance()->getIntegrationObject('filesystem');
+
+			foreach ($paths as $path)
+			{
+				if (!$filesystem->folderExists($path))
+				{
+					continue;
+				}
+
+				foreach (new DirectoryIterator($path) as $fileInfo)
+				{
+					if ($fileInfo->isDot())
+					{
+						continue;
+					}
+
+					if ($fileInfo->getExtension() == 'xml')
+					{
+						$source = $fileInfo->getFilename();
+						$sources[] = str_replace('.xml', '', $source);
+					}
+				}
+
+				if (!empty($sources))
+				{
+					break;
+				}
+			}
+		}
+
+		// Create a $sortOptions array in order to apply sorting
+		$i = 0;
+		$sortOptions = array();
+
+		foreach ($sources as $source)
+		{
+			$form = $this->getForm($data, $loadData, $source);
+			$ordering = $form->getAttribute('ordering', false);
+
+			if ($ordering === false)
+			{
+				$orderForms = false;
+			}
+
+			$sortOptions[$i] = new stdClass;
+			$sortOptions[$i]->form = $form;
+			$sortOptions[$i]->source = $source;
+			$sortOptions[$i]->ordering = $ordering;
+			$i++;
+		}
+
+		if ($orderForms)
+		{
+			if (empty($orderOptions))
+			{
+				$orderOptions = array(
+					'key'				=> 'ordering',
+					'direction'			=> 'asc',
+					'case_sensitive'	=> true,
+					'locale'			=> false,
+				);
+			}
+
+			F0FUtilsArray::sortObjects($sortOptions, $orderOptions['key'], $orderOptions['direction'] == 'asc' ? 1 : -1, $orderOptions['case_sensitive'], $orderOptions['locale']);
+		}
+
+		$forms = array();
+
+		foreach ($sortOptions as $sortOption)
+		{
+			$forms[$sortOption->source] = $sortOption->form;
+		}
+
+		return $forms;
+	}
+
+	/**
 	 * A method for getting the form from the model.
 	 *
 	 * @param   array    $data      Data for the form.
@@ -2436,7 +2583,7 @@ class F0FModel extends F0FUtilsObject
 	 */
 	public function findFormFilename($source, $paths = array())
 	{
-        // TODO Should we read from internal variables instead of the input? With a temp instance we have no input
+		// TODO Should we read from internal variables instead of the input? With a temp instance we have no input
 		$option = $this->input->getCmd('option', 'com_foobar');
 		$view 	= $this->name;
 
@@ -2448,8 +2595,8 @@ class F0FModel extends F0FUtilsObject
 		if (empty($paths))
 		{
 			// Set up the paths to look into
-            // PLEASE NOTE: If you ever change this, please update Model Unit tests, too, since we have to
-            // copy these default folders (we have to add the protocol for the virtual filesystem)
+			// PLEASE NOTE: If you ever change this, please update Model Unit tests, too, since we have to
+			// copy these default folders (we have to add the protocol for the virtual filesystem)
 			$paths = array(
 				// In the template override
 				$template_root . '/' . $view,
@@ -2470,7 +2617,7 @@ class F0FModel extends F0FUtilsObject
 			);
 		}
 
-        $paths = array_unique($paths);
+		$paths = array_unique($paths);
 
 		// Set up the suffixes to look into
 		$suffixes = array();
