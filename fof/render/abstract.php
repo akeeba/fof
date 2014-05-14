@@ -167,10 +167,44 @@ abstract class F0FRenderAbstract
 			return;
 		}
 
+		$this->fixCategoriesColumns();
+
 		$toolbar = F0FToolbar::getAnInstance($extension, $config);
 		$toolbar->renderSubmenu();
 
 		$this->renderLinkbarItems($toolbar);
+	}
+
+	/**
+	 * Fixes the columns width of com_categories of Joomla! 3 backend.
+	 *
+	 * The width of the Joomla! 3 categories layout is broken because two sidebars
+	 * are rendered. The sidebar of F0F and of Joomla!. The (unused) Joomla! sidebar
+	 * breaks the layout because it's empty and it has a 'span2' class. Since we
+	 * have no control over the template and com_categories, we can only fix this
+	 * with this JavaScript hack.
+	 */
+	protected function fixCategoriesColumns()
+	{
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$document = F0FPlatform::getInstance()->getDocument();
+
+			if ($document instanceof JDocument)
+			{
+				$document->addScriptDeclaration(<<<JS
+(function($)
+{
+	$(document).ready(function()
+	{
+		$('#j-sidebar-container').remove();
+		$('#j-main-container.span10').addClass('span12').removeClass('span10');
+	});
+})(akeeba.jQuery);
+JS
+				);
+			}
+		}
 	}
 
 	/**
