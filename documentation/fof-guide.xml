@@ -6761,6 +6761,57 @@ $viewTemplate = $this-&gt;getRenderedForm();
 echo $viewTemplate; 
 ?&gt;</programlisting>
           </section>
+
+          <section xml:id="format-forms-with-bs-tabs">
+            <title>Mixing multiple XML forms with PHP-based view
+            templates</title>
+
+            <important>
+              <para>Available since FOF 2.3.1.</para>
+            </important>
+
+            <para>You can also load multiple XML forms in your PHP-based view
+            tempate by using the <code>F0FModel-&gt;getForms()</code> method
+            in your controller. This method gets mutlple XML forms from a
+            specific directory. Then assign a model to each form and assign
+            the forms to your view. For example:</para>
+
+            <programlisting>/**
+ * Runs before adding or editing a record.
+ * You should call this method in onBeforeAdd() and onBeforeEdit().
+ */
+private function OnBeforeAddEdit()
+{
+	// Get the forms
+	$model = $this-&gt;getThisModel();
+	$forms = $model-&gt;getForms();
+
+	foreach ($forms as $form)
+	{
+		$form-&gt;setModel($model);
+	}
+
+	$view = $this-&gt;getThisView();
+	$view-&gt;assign('forms', $forms);
+}
+</programlisting>
+
+            <para>In your view you have to render the forms and assign the
+            rendered forms to your template. In your template you can then
+            very easily output the rendered form. For example:</para>
+
+            <programlisting>&lt;?php echo $this-&gt;forms['form.permissions']; ?&gt;</programlisting>
+
+            <para>The forms which are retrieved with <code>getForms()</code>
+            can also be ordered. This can be configured by altering the
+            arguments of <code>getForms()</code> (see F0FModel for more
+            information). If you want to order forms, you have to set
+            <code>$orderForms = true</code> and add the <code>ordering</code>
+            attribute (integer) to the <code>&lt;form&gt;</code> element of
+            the XML form. For example you can order two forms by using
+            <code>ordering="1"</code> for the first form and
+            <code>ordering="2"</code> for the second form.</para>
+          </section>
         </section>
       </section>
 
