@@ -1233,7 +1233,7 @@ class F0FModelTest extends FtestCaseDatabase
                 {
                     if(isset($test['onBefore']['modify']))
                     {
-                        $name    = $test['onBefore']['name'];
+                        $name    = $test['onBefore']['name'] . $test['onBefore']['source'];
                         $source  = $test['onBefore']['source'];
                         $options = $test['onBefore']['options'];
                     }
