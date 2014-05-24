@@ -214,23 +214,22 @@ class AkeebaStrapper
             return;
 		}
 
-        if (!self::$_includedJQuery)
-        {
-            self::jQuery();
-        }
-
-        self::$_includedJQueryUI = true;
-
-		$jQueryUILoad = self::getPreference('jqueryui_load', 1);
-		if (!$jQueryUILoad)
+		if (!self::$_includedJQueryUI)
 		{
-			return;
+			self::$_includedJQueryUI = true;
+
+			self::jQuery();
+
+			if (!self::getPreference('jqueryui_load', 1))
+			{
+				return;
+			}
+
+			$theme = self::getPreference('jquery_theme', self::$jqUItheme);
+
+			self::addJSfile('media://akeeba_strapper/js/akeebajqui.js', AKEEBASTRAPPER_MEDIATAG);
+			self::addCSSfile("media://akeeba_strapper/css/$theme/theme.min.css", AKEEBASTRAPPER_MEDIATAG);
 		}
-
-		$theme = self::getPreference('jquery_theme', self::$jqUItheme);
-
-		self::addJSfile('media://akeeba_strapper/js/akeebajqui.js', AKEEBASTRAPPER_MEDIATAG);
-		self::addCSSfile("media://akeeba_strapper/css/$theme/theme.min.css", AKEEBASTRAPPER_MEDIATAG);
     }
 
     /**
