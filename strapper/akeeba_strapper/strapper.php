@@ -152,40 +152,44 @@ class AkeebaStrapper
             return;
 		}
 
-		$jQueryLoad = self::getPreference('jquery_load', 'auto');
-		if (!in_array($jQueryLoad, array('auto', 'full', 'namespace', 'none')))
+		if (!self::$_includedJQuery)
 		{
-			$jQueryLoad = 'auto';
-		}
+			self::$_includedJQuery = true;
 
-        self::$_includedJQuery = true;
+			$jQueryLoad = self::getPreference('jquery_load', 'auto');
 
-		if ($jQueryLoad == 'none')
-		{
-			return;
-		}
-		elseif ($jQueryLoad == 'auto')
-		{
-			if (version_compare(JVERSION, '3.0', 'gt'))
+			if (!in_array($jQueryLoad, array('auto', 'full', 'namespace', 'none')))
 			{
-				$jQueryLoad = 'namespace';
-				JHtml::_('jquery.framework');
+				$jQueryLoad = 'auto';
+			}
+
+			if ($jQueryLoad == 'none')
+			{
+				return;
+			}
+			elseif ($jQueryLoad == 'auto')
+			{
+				if (version_compare(JVERSION, '3.0', 'gt'))
+				{
+					$jQueryLoad = 'namespace';
+					JHtml::_('jquery.framework');
+				}
+				else
+				{
+					$jQueryLoad = 'full';
+				}
+			}
+
+			if ($jQueryLoad == 'full')
+			{
+				self::addJSfile('media://akeeba_strapper/js/akeebajq.js', AKEEBASTRAPPER_MEDIATAG);
+				self::addJSfile('media://akeeba_strapper/js/akjqmigrate.js', AKEEBASTRAPPER_MEDIATAG);
 			}
 			else
 			{
-				$jQueryLoad = 'full';
+				self::addJSfile('media://akeeba_strapper/js/namespace.js', AKEEBASTRAPPER_MEDIATAG);
 			}
 		}
-
-        if ($jQueryLoad == 'full')
-        {
-            self::addJSfile('media://akeeba_strapper/js/akeebajq.js', AKEEBASTRAPPER_MEDIATAG);
-            self::addJSfile('media://akeeba_strapper/js/akjqmigrate.js', AKEEBASTRAPPER_MEDIATAG);
-        }
-        else
-        {
-            self::addJSfile('media://akeeba_strapper/js/namespace.js', AKEEBASTRAPPER_MEDIATAG);
-        }
     }
 
     /**
@@ -295,10 +299,7 @@ class AkeebaStrapper
 			JHtml::_('bootstrap.framework');
 		}
 
-        if (!self::$_includedJQuery)
-        {
-            self::jQuery();
-        }
+		self::jQuery();
 
 		if ($loadBootstrap == 'none')
 		{

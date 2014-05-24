@@ -7,7 +7,7 @@ FOF 2.3.1
 ~ Allow F0FModel::getForm to load multiple forms by passing it a different $source parameter
 ~ Refactored F0F renderers
 ~ Only show ordering input fields and save button when rows are ordered by ordering (Joomla! 3)
-~ Make sure JQueryUI is only loaded once by Akeeba Strapper
+# [LOW] Make sure jQuery and jQueryUI are only loaded once by Akeeba Strapper
 
 FOF 2.3.0
 ================================================================================
