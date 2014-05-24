@@ -154,8 +154,6 @@ class AkeebaStrapper
 
 		if (!self::$_includedJQuery)
 		{
-			self::$_includedJQuery = true;
-
 			$jQueryLoad = self::getPreference('jquery_load', 'auto');
 
 			if (!in_array($jQueryLoad, array('auto', 'full', 'namespace', 'none')))
@@ -167,7 +165,8 @@ class AkeebaStrapper
 			{
 				return;
 			}
-			elseif ($jQueryLoad == 'auto')
+
+			if ($jQueryLoad == 'auto')
 			{
 				if (version_compare(JVERSION, '3.0', 'gt'))
 				{
@@ -189,6 +188,8 @@ class AkeebaStrapper
 			{
 				self::addJSfile('media://akeeba_strapper/js/namespace.js', AKEEBASTRAPPER_MEDIATAG);
 			}
+
+			self::$_includedJQuery = true;
 		}
     }
 
@@ -220,19 +221,19 @@ class AkeebaStrapper
 
 		if (!self::$_includedJQueryUI)
 		{
-			self::$_includedJQueryUI = true;
-
-			self::jQuery();
-
 			if (!self::getPreference('jqueryui_load', 1))
 			{
 				return;
 			}
 
+			self::jQuery();
+
 			$theme = self::getPreference('jquery_theme', self::$jqUItheme);
 
 			self::addJSfile('media://akeeba_strapper/js/akeebajqui.js', AKEEBASTRAPPER_MEDIATAG);
 			self::addCSSfile("media://akeeba_strapper/css/$theme/theme.min.css", AKEEBASTRAPPER_MEDIATAG);
+
+			self::$_includedJQueryUI = true;
 		}
     }
 
