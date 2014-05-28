@@ -420,7 +420,7 @@ class AkeebaStrapper
 		$localFile = F0FTemplateUtils::parsePath($path, true);
 		if (!@file_exists($localFile) && (substr($path, -8) != '.min.css'))
 		{
-			$path = substr($path, 0, -4) . '.min.js';
+			$path = substr($path, 0, -4) . '.min.css';
 		}
 
 		self::$cssURLs[] = array(F0FTemplateUtils::parsePath($path), $tag);
