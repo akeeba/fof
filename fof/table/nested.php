@@ -660,12 +660,6 @@ class F0FTableNested extends F0FTable
             throw new RuntimeException('Invalid position values for the current node');
         }
 
-		// If it is a root node we will not move the node (roots don't participate in tree ordering)
-		if ($this->isRoot())
-		{
-			return $this;
-		}
-
 		// Are we already the leftmost node?
 		$parentNode = $this->getParent();
 
@@ -680,6 +674,12 @@ class F0FTableNested extends F0FTable
 		$table->reset();
 		$leftSibling = $table->whereRaw($db->qn($this->getColumnAlias('rgt')) . ' = ' . $db->q($this->lft - 1))
 			->get(0, 1)->current();
+
+        // Are we already the leftmost root?
+        if(!($leftSibling instanceof F0FTableNested))
+        {
+            return $this;
+        }
 
 		// Move the node
 		return $this->moveToLeftOf($leftSibling);
@@ -700,12 +700,6 @@ class F0FTableNested extends F0FTable
             throw new RuntimeException('Invalid position values for the current node');
         }
 
-		// If it is a root node we will not move the node (roots don't participate in tree ordering)
-		if ($this->isRoot())
-		{
-			return $this;
-		}
-
 		// Are we already the rightmost node?
 		$parentNode = $this->getParent();
 
@@ -721,6 +715,12 @@ class F0FTableNested extends F0FTable
 		$table->reset();
 		$rightSibling = $table->whereRaw($db->qn($this->getColumnAlias('lft')) . ' = ' . $db->q($this->rgt + 1))
 			->get(0, 1)->current();
+
+        // Are we already the rightmost root?
+        if(!($rightSibling instanceof F0FTableNested))
+        {
+            return $this;
+        }
 
 		// Move the node
 		return $this->moveToRightOf($rightSibling);
