@@ -1213,7 +1213,8 @@ class F0FModel extends F0FUtilsObject
 
 			if (!$overrideLimits)
 			{
-				$limitstart = $this->getState('limitstart');
+				// We always have to get the start from the request, otherwise we won't be able to surf to the first page
+				$limitstart = $this->input->getInt('limitstart', 0);
 				$limit = $this->getState('limit');
 				$this->list = $this->_getList((string) $query, $limitstart, $limit, $group);
 			}
@@ -1273,7 +1274,8 @@ class F0FModel extends F0FUtilsObject
 		}
 		else
 		{
-			$limitStart = $this->getState('limitstart');
+			// We always have to get the start from the request, otherwise we won't be able to surf to the first page
+			$limitstart = $this->input->getInt('limitstart', 0);
 			$limit      = $this->getState('limit');
 		}
 
@@ -1781,7 +1783,8 @@ class F0FModel extends F0FUtilsObject
 
 			// Prepare pagination values
 			$total = $this->getTotal();
-			$limitstart = $this->getState('limitstart');
+			// We always have to get the start from the request, otherwise we won't be able to surf to the first page
+			$limitstart = $this->input->getInt('limitstart', 0);
 			$limit = $this->getState('limit');
 
 			// Create the pagination object
