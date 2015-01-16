@@ -1747,15 +1747,18 @@ abstract class F0FUtilsInstallscript
 				->from('#__menu')
 				->where('menutype = ' . $db->quote('main'))
 				->where('client_id = 1')
-				->where('link = ' . $db->quote('index.php?option=' . $option))
+				->where('link like ' . $db->quote('index.php?option=' . $option . '%'))
 				->where('type = ' . $db->quote('component'))
-				->where('parent_id = 1')
+
+				// Retrieve all backend component menu items
+				// ->where('parent_id = 1')
+
 				->where('home = 0');
 
 			$db->setQuery($query);
-			$menu_id = $db->loadResult();
+			$menu_ids = $db->loadColumn();
 
-			if (!$menu_id)
+			if (empty($menu_ids))
 			{
 				// Oops! Could not get the menu ID. Go back and rollback changes.
 				JError::raiseWarning(1, $table->getError());
@@ -1764,10 +1767,12 @@ abstract class F0FUtilsInstallscript
 			}
 			else
 			{
+				$ids = implode(',', $menu_ids);
+
 				// Remove the old menu item
 				$query->clear()
 					->delete('#__menu')
-					->where('id = ' . (int)$menu_id);
+					->where('id in (' . $ids . ')');
 
 				$db->setQuery($query);
 				$db->query();
