@@ -11,10 +11,9 @@ branches:
   only:
     - development
 
-install:
-  - composer update
-
 before_script:
+  - composer self-update
+  - composer update
   - mysql -e 'create database fof_test;'
   - if [[ "$JVERSION_TEST" == "2.5" ]]; then cp tests/environments/2.5/joomla.sql joomla.sql; fi
   - if [[ "$JVERSION_TEST" == "3.1" ]]; then cp tests/environments/3.1/joomla.sql joomla.sql; fi
