@@ -95,7 +95,7 @@ class Language extends Observer
 		$languages = array_map(array($db, 'quote'), $languages);
 		$fieldName = $model->getFieldAlias('language');
 
-		$model->whereRaw($db->qn($fieldName) . ' IN(' . implode(', ', $languages) . ')');
+		$query->where($db->qn($fieldName) . ' IN(' . implode(', ', $languages) . ')');
 	}
 
 	/**

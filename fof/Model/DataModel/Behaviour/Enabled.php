@@ -40,7 +40,7 @@ class Enabled extends Observer
 		$fieldName = $model->getFieldAlias('enabled');
 		$db = $model->getDbo();
 
-		$model->whereRaw($db->qn($fieldName) . ' = ' . $db->q(1));
+		$query->where($db->qn($fieldName) . ' = ' . $db->q(1));
 	}
 
 	/**
