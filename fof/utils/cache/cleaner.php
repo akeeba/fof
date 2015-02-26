@@ -48,6 +48,17 @@ class F0FUtilsCacheCleaner
 	}
 
 	/**
+	 * Clears the com_templates cache. You need to call this whenever you alter the publish state or parameters of a
+	 * template from your code.
+	 *
+	 * @return  void
+	 */
+	public static function clearTemplatesCache()
+	{
+		self::clearCacheGroups(array('com_templates'), array(0,1));
+	}
+
+	/**
 	 * Clears the specified cache groups.
 	 *
 	 * @param   array $clearGroups    Which cache groups to clear. Usually this is com_yourcomponent to clear your

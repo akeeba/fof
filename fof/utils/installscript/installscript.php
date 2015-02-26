@@ -33,7 +33,7 @@ abstract class F0FUtilsInstallscript
 	protected $componentTitle = 'Foobar Component';
 
 	/**
-	 * The list of extra modules and plugins to install on component installation / update and remove on component
+	 * The list of extra modules, plugins and templates to install on component installation / update and remove on component
 	 * uninstallation.
 	 *
 	 * @var   array
@@ -47,11 +47,16 @@ abstract class F0FUtilsInstallscript
 		// plugins => { (folder) => { (element) => (published) }* }*
 		'plugins' => array(
 			'system' => array(),
+		),
+		// templates => { (folder) => { (template) => { (published) } }* }*
+		'templates' => array(
+			'admin' => array(),
+			'site'  => array()
 		)
 	);
 
 	/**
-	 * The list of obsolete extra modules and plugins to uninstall on component upgrade / installation.
+	 * The list of obsolete extra modules, plugins and templates to uninstall on component upgrade / installation.
 	 *
 	 * @var array
 	 */
@@ -64,6 +69,11 @@ abstract class F0FUtilsInstallscript
 		// plugins => { (folder) => { (element) }* }*
 		'plugins' => array(
 			'system' => array(),
+		),
+		// templates => { (folder) => { (template) }* }*
+		'templates' => array(
+			'admin' => array(),
+			'site'  => array()
 		)
 	);
 
@@ -145,6 +155,13 @@ abstract class F0FUtilsInstallscript
 	 * @var   string
 	 */
 	protected $pluginsSourcePath = 'plugins';
+
+	/**
+	 * The path inside your package where extra templates are stored
+	 *
+	 * @var   string
+	 */
+	protected $templatesSourcePath = 'templates';
 
 	/**
 	 * Is the schemaXmlPath class variable a relative path? If set to true the schemaXmlPath variable contains a path
@@ -417,7 +434,7 @@ abstract class F0FUtilsInstallscript
 		));
 		$dbInstaller->removeSchema();
 
-		// Uninstall modules and plugins
+		// Uninstall modules, plugins and templates
 		$status = $this->uninstallSubextensions($parent);
 
 		// Uninstall post-installation messages on Joomla! 3.2 and later
@@ -534,6 +551,22 @@ abstract class F0FUtilsInstallscript
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
+			<?php if (count($status->templates)) : ?>
+				<tr>
+					<th>Template</th>
+					<th>Client</th>
+					<th></th>
+				</tr>
+				<?php foreach ($status->templates as $template) : ?>
+					<tr class="row<?php echo($rows++ % 2); ?>">
+						<td class="key"><?php echo $template['name']; ?></td>
+						<td class="key"><?php echo ucfirst($template['client']); ?></td>
+						<td><strong
+								style="color: <?php echo ($template['result']) ? "green" : "red" ?>"><?php echo ($template['result']) ? 'Installed' : 'Not installed'; ?></strong>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 			</tbody>
 		</table>
 	<?php
@@ -591,6 +624,22 @@ abstract class F0FUtilsInstallscript
 						<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
 						<td><strong
 								style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>"><?php echo ($plugin['result']) ? 'Removed' : 'Not removed'; ?></strong>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			<?php if (count($status->templates)) : ?>
+				<tr>
+					<th>Template</th>
+					<th>Client</th>
+					<th></th>
+				</tr>
+				<?php foreach ($status->templates as $template) : ?>
+					<tr class="row<?php echo($rows++ % 2); ?>">
+						<td class="key"><?php echo $template['name']; ?></td>
+						<td class="key"><?php echo ucfirst($template['client']); ?></td>
+						<td><strong
+								style="color: <?php echo ($template['result']) ? "green" : "red" ?>"><?php echo ($template['result']) ? 'Removed' : 'Not removed'; ?></strong>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -852,7 +901,7 @@ abstract class F0FUtilsInstallscript
 	}
 
 	/**
-	 * Installs subextensions (modules, plugins) bundled with the main extension
+	 * Installs subextensions (modules, plugins and templates) bundled with the main extension
 	 *
 	 * @param JInstaller $parent
 	 *
@@ -867,6 +916,7 @@ abstract class F0FUtilsInstallscript
 		$status = new JObject();
 		$status->modules = array();
 		$status->plugins = array();
+		$status->templates = array();
 
 		// Modules installation
 		if (isset($this->installation_queue['modules']) && count($this->installation_queue['modules']))
@@ -1093,14 +1143,127 @@ abstract class F0FUtilsInstallscript
 			}
 		}
 
+		// Templates installation
+		if (isset($this->installation_queue['templates']) && count($this->installation_queue['templates']))
+		{
+			foreach ($this->installation_queue['templates'] as $folder => $templates)
+			{
+				if (count($templates))
+				{
+					foreach ($templates as $template => $templatePreferences)
+					{
+						// Install the template
+						if (empty($folder))
+						{
+							$folder = 'site';
+						}
+
+						$path = "$src/" . $this->templatesSourcePath . "/$folder/$template";
+
+						if (!is_dir($path))
+						{
+							$path = "$src/" . $this->templatesSourcePath . "/$folder/$template";
+						}
+
+						if (!is_dir($path))
+						{
+							$path = "$src/" . $this->templatesSourcePath . "/$template";
+						}
+
+						if (!is_dir($path))
+						{
+							$path = "$src/" . $this->templatesSourcePath . "/$template";
+						}
+
+						if (!is_dir($path))
+						{
+							continue;
+						}
+
+						// Was the template already installed?
+						$sql = $db->getQuery(true)
+							->select('COUNT(*)')
+							->from('#__template_styles')
+							->where($db->qn('template') . ' = ' . $db->q($template));
+						$db->setQuery($sql);
+
+						try
+						{
+							$count = $db->loadResult();
+						}
+						catch (Exception $exc)
+						{
+							$count = 0;
+						}
+
+						$installer = new JInstaller;
+						$result = $installer->install($path);
+						$status->templates[] = array(
+							'name'   => $template,
+							'client' => $folder,
+							'result' => $result
+						);
+
+						// Modify where it's published and its published state
+						if (!$count)
+						{
+							// A. Position and state
+							list($templatePublished) = $templatePreferences;
+
+							if ($templatePublished)
+							{
+								$client_id = $folder = "site" ? 0 : 1;
+								//First unpublished all templates
+								$sql = $db->getQuery(true)
+									->update($db->qn('#__template_styles'))
+									->set($db->qn('home') . ' = ' . $db->q('0'))
+									->where($db->qn('client_id') . ' = ' . $db->q($client_id));
+
+								$db->setQuery($sql);
+
+								try
+								{
+									$db->execute();
+								}
+								catch (Exception $exc)
+								{
+									// Nothing
+								}
+
+								// Then publish the template
+								$sql = $db->getQuery(true)
+									->update($db->qn('#__template_styles'))
+									->set($db->qn('home') . ' = ' . $db->q('1'))
+									->where($db->qn('template') . ' = ' . $db->q($template));
+
+								$db->setQuery($sql);
+
+								try
+								{
+									$db->execute();
+								}
+								catch (Exception $exc)
+								{
+									// Nothing
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		// Clear com_modules and com_plugins cache (needed when we alter module/plugin state)
 		F0FUtilsCacheCleaner::clearPluginsAndModulesCache();
+
+		// Clear com_templates cache (needed when we alter template state)
+		F0FUtilsCacheCleaner::clearTemplatesCache();
 
 		return $status;
 	}
 
 	/**
-	 * Uninstalls subextensions (modules, plugins) bundled with the main extension
+	 * Uninstalls subextensions (modules, plugins and templates) bundled with the main extension
 	 *
 	 * @param   JInstaller $parent The parent object
 	 *
@@ -1113,6 +1276,7 @@ abstract class F0FUtilsInstallscript
 		$status = new stdClass();
 		$status->modules = array();
 		$status->plugins = array();
+		$status->templates = array();
 
 		$src = $parent->getParent()->getPath('source');
 
@@ -1199,8 +1363,53 @@ abstract class F0FUtilsInstallscript
 			}
 		}
 
+		// Templates uninstallation
+		if (isset($this->installation_queue['templates']) && count($this->installation_queue['templates']))
+		{
+			foreach ($this->installation_queue['templates'] as $folder => $templates)
+			{
+				if (count($templates))
+				{
+					foreach ($templates as $template => $templatePreferences)
+					{
+						// Find the template ID
+						$sql = $db->getQuery(true)
+							->select($db->qn('extension_id'))
+							->from($db->qn('#__extensions'))
+							->where($db->qn('element') . ' = ' . $db->q($template))
+							->where($db->qn('type') . ' = ' . $db->q('template'));
+						$db->setQuery($sql);
+
+						try
+						{
+							$id = $db->loadResult();
+						}
+						catch (Exception $exc)
+						{
+							$id = 0;
+						}
+
+						// Uninstall the template
+						if ($id)
+						{
+							$installer = new JInstaller;
+							$result = $installer->uninstall('template', $id, 1);
+							$status->templates[] = array(
+								'name'   => $template,
+								'client' => $folder,
+								'result' => $result
+							);
+						}
+					}
+				}
+			}
+		}
+
 		// Clear com_modules and com_plugins cache (needed when we alter module/plugin state)
 		F0FUtilsCacheCleaner::clearPluginsAndModulesCache();
+
+		// Clear com_templates cache (needed when we alter template state)
+		F0FUtilsCacheCleaner::clearTemplatesCache();
 
 		return $status;
 	}
@@ -1505,7 +1714,7 @@ abstract class F0FUtilsInstallscript
 	}
 
 	/**
-	 * Uninstalls obsolete subextensions (modules, plugins) bundled with the main extension
+	 * Uninstalls obsolete subextensions (modules, plugins and templates) bundled with the main extension
 	 *
 	 * @param   JInstaller $parent The parent object
 	 *
@@ -1520,6 +1729,7 @@ abstract class F0FUtilsInstallscript
 		$status = new stdClass();
 		$status->modules = array();
 		$status->plugins = array();
+		$status->templates = array();
 
 		$src = $parent->getParent()->getPath('source');
 
@@ -1581,6 +1791,39 @@ abstract class F0FUtilsInstallscript
 							$status->plugins[] = array(
 								'name'   => 'plg_' . $plugin,
 								'group'  => $folder,
+								'result' => $result
+							);
+						}
+					}
+				}
+			}
+		}
+
+		// Templates uninstallation
+		if (isset($this->uninstallation_queue['templates']) && count($this->uninstallation_queue['templates']))
+		{
+			foreach ($this->uninstallation_queue['templates'] as $folder => $templates)
+			{
+				if (count($templates))
+				{
+					foreach ($templates as $template)
+					{
+						// Find the template ID
+						$sql = $db->getQuery(true)
+							->select($db->qn('extension_id'))
+							->from($db->qn('#__extensions'))
+							->where($db->qn('element') . ' = ' . $db->q($template))
+							->where($db->qn('type') . ' = ' . $db->q('template'));
+						$db->setQuery($sql);
+						$id = $db->loadResult();
+						// Uninstall the template
+						if ($id)
+						{
+							$installer = new JInstaller;
+							$result = $installer->uninstall('template', $id, 1);
+							$status->templates[] = array(
+								'name'   => $template,
+								'client' => $folder,
 								'result' => $result
 							);
 						}
