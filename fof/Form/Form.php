@@ -651,7 +651,7 @@ class Form extends JForm
 			list($prefix, $type) = explode('.', $type);
 
 			array_unshift($plainPrefixes, $prefix);
-			array_unshift($namespacedPrefixes, $prefix);
+			array_unshift($namespacedPrefixes, $prefix . '\\');
 		}
 
 		// First try to find the namespaced class
