@@ -11,12 +11,9 @@ branches:
   only:
     - development
 
-install:
-  - composer update
-
 before_script:
-  - pear channel-discover pear.phpunit.de
-  - pear install phpunit/DbUnit
+  - composer self-update
+  - composer update
   - mysql -e 'create database fof_test;'
   - if [[ "$JVERSION_TEST" == "2.5" ]]; then cp tests/environments/2.5/joomla.sql joomla.sql; fi
   - if [[ "$JVERSION_TEST" == "3.1" ]]; then cp tests/environments/3.1/joomla.sql joomla.sql; fi
@@ -30,4 +27,4 @@ after_script:
 notifications:
   email: false
 
-script: phpunit --bootstrap=tests/unit/bootstrap.php tests
+script: php vendor/phpunit/phpunit/phpunit --bootstrap=tests/unit/bootstrap.php tests
