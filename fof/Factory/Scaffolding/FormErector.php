@@ -38,13 +38,6 @@ class FormErector extends BaseErector implements ErectorInterface
 		// Get the database fields
 		$allFields = $model->getTableFields();
 
-		// Ordering is not included
-		if ($model->hasField('ordering'))
-		{
-			$fieldName = $model->getFieldAlias('ordering');
-			unset($allFields[$fieldName]);
-		}
-
 		// Primary key is not inclided
 		$primaryKeyField = $model->getKeyName();
 		unset($allFields[$primaryKeyField]);
@@ -303,6 +296,14 @@ class FormErector extends BaseErector implements ErectorInterface
 				}
 			}
 
+			// ordering => Ordering
+			if ($model->getFieldAlias('ordering') == $fieldName)
+			{
+				$this->applyOrderingField($model, $fieldSet, $fieldName);
+
+				continue;
+			}
+
 			// Other fields, use getFieldType
 			$typeDef = $this->getFieldType($fieldDefinition->Type);
 			switch ($typeDef['type'])
@@ -353,10 +354,21 @@ class FormErector extends BaseErector implements ErectorInterface
 	}
 
 	/**
+	 * Apply the ordering field
+	 *
+	 * @param \FOF30\Model\DataModel $model
+	 * @param \SimpleXMLElement      $fieldSet
+	 * @param string                 $fieldName
+	 */
+	private function applyOrderingField(DataModel $model, \SimpleXMLElement &$fieldSet, $fieldName)
+	{
+		$this->applyFieldOfType($model, $fieldSet, $fieldName, 'Ordering');
+	}
+
+	/**
 	 * Apply an access level field
 	 *
 	 * @param \FOF30\Model\DataModel $model
-	 * @param \SimpleXMLElement      $headerSet
 	 * @param \SimpleXMLElement      $fieldSet
 	 * @param string                 $fieldName
 	 */
