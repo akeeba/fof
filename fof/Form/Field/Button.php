@@ -123,7 +123,12 @@ class Button extends Text implements FieldInterface
 		$text     = $this->element['text'] ? (string) $this->element['text'] : '';
 		$class    = $this->class ? $this->class : '';
 		$icon     = $this->element['icon'] ? '<span class="icon ' . (string) $this->element['icon'] . '"></span> ' : '';
-		$onclick  = $this->onclick ? 'onclick="' . $this->parseFieldTags((string) $this->onclick) . '"' : '';
+
+		// Request a task action trough POST
+		if ($this->element['listItemTask'])
+			$this->onclick = "listItemTask('cb" . $this->item->getId() . "', '" . (string)$this->element['listItemTask'] . "')";
+
+		$onclick  = $this->onclick ? 'onclick="' . str_replace('[ITEM:ID]', $this->item->getId(), $this->onclick) . '"' : '';
 		$url      = $this->element['url'] ? 'href="' . $this->parseFieldTags((string) $this->element['url']) . '"' : '';
 		$title    = $this->element['title'] ? 'title="' . JText::_((string) $this->element['title']) . '"' : '';
 		$useValue = in_array((string) $this->element['use_value'], array('true', '1', 'on', 'yes'));
@@ -139,6 +144,7 @@ class Button extends Text implements FieldInterface
 			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
 			'</' . $type . '>';
 	}
+
 
 	/**
 	 * Method to get the field title.
