@@ -164,7 +164,6 @@ class Inflector
 	public function pluralize($word)
 	{
 		$word = strtolower($word);
-
 		// Get the cached noun of it exists
 		if (isset($this->cache['pluralized'][$word]))
 		{
@@ -210,12 +209,14 @@ class Inflector
 	 */
 	public function singularize($word)
 	{
+		$word = strtolower($word);
+
 		// Get the cached noun of it exists
 		if (isset($this->cache['singularized'][$word]))
 		{
 			return $this->cache['singularized'][$word];
 		}
-		
+
 		// Check if the noun is already in singular form, i.e. in the pluralized cache
 		if (isset($this->cache['pluralized'][$word]))
 		{
