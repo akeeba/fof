@@ -163,6 +163,8 @@ class Inflector
 	 */
 	public function pluralize($word)
 	{
+		$word = strtolower($word);
+
 		// Get the cached noun of it exists
 		if (isset($this->cache['pluralized'][$word]))
 		{
