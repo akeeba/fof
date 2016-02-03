@@ -911,7 +911,7 @@ class Controller
 		if (method_exists($session, 'getToken'))
 		{
 			$token    = $session->getToken();
-			$hasToken = $this->input->get($token, false, 'none') == 1;
+			$hasToken = $session->hasToken($token);
 
 			if (!$hasToken)
 			{
@@ -925,7 +925,7 @@ class Controller
 			if (method_exists($session, 'getFormToken'))
 			{
 				$token    = $session->getFormToken();
-				$hasToken = $this->input->get($token, false, 'none') == 1;
+				$hasToken = $session->hasToken($token);
 
 				if (!$hasToken)
 				{
