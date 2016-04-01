@@ -191,7 +191,7 @@ class BaseErector implements ErectorInterface
 			case 'float':
 			case 'double':
 			case 'currency':
-				$detectedType = 'Numeric';
+				$detectedType = 'Integer';
 				break;
 
 			case 'enum':
