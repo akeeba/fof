@@ -323,6 +323,7 @@ class FormErector extends BaseErector implements ErectorInterface
 					$this->applyCheckboxField($model, $fieldSet, $fieldName);
 					break;
 
+				case 'Numeric':
 				case 'Integer':
 					$this->applyIntegerField($model, $fieldSet, $fieldName);
 					break;

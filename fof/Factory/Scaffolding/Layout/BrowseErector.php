@@ -300,6 +300,10 @@ class BrowseErector extends BaseErector implements ErectorInterface
 					$this->applyCheckboxField($model, $headerSet, $fieldSet, $fieldName);
 					break;
 
+				case 'Numeric':
+					$this->applyNumericField($model, $headerSet, $fieldSet, $fieldName);
+					break;
+
 				case 'Integer':
 					$this->applyIntegerField($model, $headerSet, $fieldSet, $fieldName);
 					break;
@@ -376,6 +380,17 @@ class BrowseErector extends BaseErector implements ErectorInterface
 		unset($allFields[$keyField]);
 	}
 
+	/**
+	 * Apply a custom type field
+	 *
+	 * @param DataModel         $model
+	 * @param \SimpleXMLElement $headerSet
+	 * @param \SimpleXMLElement $fieldSet
+	 * @param                   $fieldName
+	 * @param                   $fieldTypeHeader
+	 * @param                   $fieldTypeField
+	 * @param array             $headerAttributes
+	 */
 	private function applyFieldOfType(DataModel $model, \SimpleXMLElement &$headerSet, \SimpleXMLElement &$fieldSet, $fieldName, $fieldTypeHeader, $fieldTypeField, array $headerAttributes = array())
 	{
 		$langDefs = $this->getFieldLabel($fieldName);
@@ -461,6 +476,13 @@ class BrowseErector extends BaseErector implements ErectorInterface
 	private function applyEmailField(DataModel $model, \SimpleXMLElement &$headerSet, \SimpleXMLElement &$fieldSet, $fieldName)
 	{
 		$this->applyFieldOfType($model, $headerSet, $fieldSet, $fieldName, 'Searchable', 'Email', array(
+			'sortable' => 'true'
+		));
+	}
+
+	private function applyNumericField(DataModel $model, \SimpleXMLElement &$headerSet, \SimpleXMLElement &$fieldSet, $fieldName)
+	{
+		$this->applyFieldOfType($model, $headerSet, $fieldSet, $fieldName, 'Searchable', 'Numeric', array(
 			'sortable' => 'true'
 		));
 	}
