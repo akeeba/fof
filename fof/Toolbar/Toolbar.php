@@ -667,7 +667,55 @@ class Toolbar
 				{
 					$using_meta = true;
 					$xml = simplexml_load_file($searchPath . '/' . $view . '/' . $meta[0]);
+
+				/*	place metadata.xml file in the view directory ( as with skip.xml
+					<?xml version="1.0" encoding="utf-8"
+					<viewmetadata>
+					    <foflib>
+					        <ordering>99</ordering>
+					        <viewaccess>
+								<!-- can have muliple entries for userid or groupname -->
+					            <userid>42</userid>
+					            <groupname>ViryaDevelopment</groupname>
+					        </viewaccess>
+					    </foflib>
+					</viewmetadata>
+				*/
+					$validated = false;
+
+					// validating agains userids should only be used in a development context where we want to limit the
+					// risk of a customer assigning themselves to a group and thus wreak havoc
+					$userids            = (array) $xml->foflib->viewaccess->userid;
+					if ( $userids )
+					{
+						$userId         = $this->container->platform->getUser()->id;
+						$validated      = array_search($userId,$userids) !== false ? true : false;
+					}
+
+					// specify the group names and thus controll the visibility of a sidebare menu item
+					$groupnames         = (array) $xml->foflib->viewaccess->groupname;
+					if ( ! $validated && $groupnames )
+					{
+						$groupnamesIds = GroupsViewAcl::getGroupIdsByNames($groupnames);
+						if ( $groupnamesIds )
+						{
+							$user          = $this->container->platform->getUser();
+							$groups        = $user->groups;
+							$validated     = array_intersect($groups,$groupnamesIds);
+						}
+					}
+					// If so desired we could add "groupid" and "accesslevelname"
+					// $groupid          =   (array) $xml->foflib->viewaccess->groupid;
+					// $accesslevelname  =   (array) $xml->foflib->viewaccess->accesslevelname;
+
+					if ( ! $validated )
+					{
+						// no matching users or groups is that same as skipping
+						continue;
+					}
+
 					$order = (int)$xml->foflib->ordering;
+
 				}
 				else
 				{
