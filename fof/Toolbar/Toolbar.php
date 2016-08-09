@@ -708,9 +708,9 @@ class Toolbar
 					// $groupid          =   (array) $xml->foflib->viewaccess->groupid;
 					// $accesslevelname  =   (array) $xml->foflib->viewaccess->accesslevelname;
 
-					if ( ! $validated )
+					if ( ! $validated && ( $groupnames || $userids ) )
 					{
-						// no matching users or groups is that same as skipping
+						// no matching users or groups ( but rules specified ) is the same as skipping
 						continue;
 					}
 
