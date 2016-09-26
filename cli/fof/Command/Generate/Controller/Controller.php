@@ -33,7 +33,7 @@ class Controller extends Command
 
         if(!$scaffolding->make($classname, $view))
         {
-            throw new \RuntimeException("An error occurred while creating the Controller class");
+            throw new \RuntimeException('An error occurred while creating the Controller class');
         }
     }
 }

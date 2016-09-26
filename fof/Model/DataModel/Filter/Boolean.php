@@ -20,6 +20,6 @@ class Boolean extends Number
 	 */
 	public function isEmpty($value)
 	{
-		return is_null($value) || ($value === '');
+		return null === $value || ($value === '');
 	}
 } 

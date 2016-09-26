@@ -32,7 +32,7 @@ class Model extends Command
 
         if(!$scaffolding->make($classname, $view))
         {
-            throw new \RuntimeException("An error occurred while creating the Model class");
+            throw new \RuntimeException('An error occurred while creating the Model class');
         }
     }
 }

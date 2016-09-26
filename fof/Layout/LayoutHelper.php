@@ -39,9 +39,8 @@ class LayoutHelper
 		$basePath = empty($basePath) ? null : $basePath;
 		$layout = new LayoutFile($layoutFile, $basePath);
 		$layout->container = $container;
-		$renderedLayout = $layout->render($displayData);
 
-		return $renderedLayout;
+		return $layout->render($displayData);
 	}
 
 }

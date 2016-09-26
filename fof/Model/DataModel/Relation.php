@@ -130,7 +130,7 @@ abstract class Relation
 	 */
 	public function getData($callback = null, Collection $dataCollection = null)
 	{
-		if (is_null($this->data))
+		if (null === $this->data)
 		{
 			// Initialise
 			$this->data = new Collection();
@@ -147,7 +147,7 @@ abstract class Relation
 			}
 
 			// Apply the callback, if applicable
-			if (!is_null($callback) && is_callable($callback))
+			if (null !== $callback && is_callable($callback))
 			{
 				call_user_func($callback, $foreignModel);
 			}
@@ -251,7 +251,7 @@ abstract class Relation
 	public function &getForeignModel(array $config = array())
 	{
 		// If the model comes from this component go through our Factory
-		if (is_null($this->foreignModelComponent))
+		if (null === $this->foreignModelComponent)
 		{
 			$model = $this->container->factory->model($this->foreignModelName, $config)->tmpInstance();
 

@@ -150,7 +150,7 @@ class DataController extends Controller
 	 */
 	public function execute($task)
 	{
-		if ($task == 'default')
+		if ($task === 'default')
 		{
 			$task = $this->getCrudTask();
 		}
@@ -166,9 +166,9 @@ class DataController extends Controller
 	protected function onAfterExecute($task)
 	{
 		// JSON shouldn't have redirects
-		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') == 'json') {
+		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') === 'json') {
 			// Error: deal with it in REST api way
-			if ($this->messageType == 'error') {
+			if ($this->messageType === 'error') {
 				$response = new \JResponseJson($this->message, $this->message, true);
 
 				echo $response;
@@ -198,7 +198,7 @@ class DataController extends Controller
 		$task = $this->container->inflector->isPlural($view) ? 'browse' : 'edit';
 
 		// If the task is 'edit' but there's no logged in user switch to a 'read' task
-		if (($task == 'edit') && !$this->container->platform->getUser()->id)
+		if (($task === 'edit') && !$this->container->platform->getUser()->id)
 		{
 			$task = 'read';
 		}
@@ -245,7 +245,7 @@ class DataController extends Controller
 			case 'GET':
 			default:
 				// If it's an edit without an ID or ID=0, it's really an add
-				if (($task == 'edit') && ($id == 0))
+				if (($task === 'edit') && ($id == 0))
 				{
 					$task = 'add';
 				}
@@ -296,7 +296,7 @@ class DataController extends Controller
 		}
 
 		$resource = $this->container->inflector->singularize($this->view);
-		$isEditState = ($area == 'core.edit.state');
+		$isEditState = ($area === 'core.edit.state');
 
 		foreach ($ids as $id)
 		{
@@ -375,7 +375,7 @@ class DataController extends Controller
 
 			$viewType = $this->input->getCmd('format', 'html');
 
-			if (($viewType == 'html') && $this->hasForm)
+			if (($viewType === 'html') && $this->hasForm)
 			{
 				$viewType = 'form';
 			}
@@ -463,7 +463,7 @@ class DataController extends Controller
 		{
 			$this->layout = 'item';
 		}
-		elseif ($this->layout == 'default')
+		elseif ($this->layout === 'default')
 		{
 			$this->layout = 'item';
 		}
@@ -500,7 +500,7 @@ class DataController extends Controller
 		{
 			$this->layout = 'form';
 		}
-		elseif ($this->layout == 'default')
+		elseif ($this->layout === 'default')
 		{
 			$this->layout = 'form';
 		}
@@ -589,7 +589,7 @@ class DataController extends Controller
 		{
 			$this->layout = 'form';
 		}
-		elseif ($this->layout == 'default')
+		elseif ($this->layout === 'default')
 		{
 			$this->layout = 'form';
 		}
@@ -1389,7 +1389,7 @@ class DataController extends Controller
 		}
 
 		// Set the layout to form, if it's not set in the URL
-		if (is_null($this->layout))
+		if (null === $this->layout)
 		{
 			$this->layout = 'form';
 		}
@@ -1488,7 +1488,7 @@ class DataController extends Controller
 	{
 		$model = parent::getModel($name, $config);
 
-		if (is_null($name) && !($model instanceof DataModel))
+		if (null === $name && !($model instanceof DataModel))
 		{
 			throw new NotADataModel('Model ' . get_class($model) . ' is not a database-aware Model');
 		}

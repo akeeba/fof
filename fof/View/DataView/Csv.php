@@ -116,7 +116,7 @@ class Csv extends Html implements DataViewInterface
 		$platform->setHeader('Content-Description', 'File Transfer');
 		$platform->setHeader('Content-Disposition', 'attachment; filename="' . $this->csvFilename . '"');
 
-		if (is_null($tpl))
+		if (null === $tpl)
 		{
 			$tpl = 'csv';
 		}
@@ -211,7 +211,7 @@ class Csv extends Html implements DataViewInterface
 					$csv[] = $k;
 				}
 
-				echo implode(",", $csv) . "\r\n";
+				echo implode(',', $csv) . "\r\n";
 			}
 
 			foreach ($items as $item)
@@ -253,7 +253,7 @@ class Csv extends Html implements DataViewInterface
 					$csv[] = $v;
 				}
 
-				echo implode(",", $csv) . "\r\n";
+				echo implode(',', $csv) . "\r\n";
 			}
 		}
 

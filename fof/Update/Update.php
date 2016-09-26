@@ -227,9 +227,8 @@ class Update extends Model
 		            ->from($db->qn('#__update_sites_extensions'))
 		            ->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
 		$db->setQuery($query);
-		$updateSiteIds = $db->loadColumn(0);
 
-		return $updateSiteIds;
+		return $db->loadColumn(0);
 	}
 
 	/**
@@ -280,7 +279,7 @@ class Update extends Model
 		// Get the #__update_sites columns
 		$columns = $db->getTableColumns('#__update_sites', true);
 
-		if (version_compare(JVERSION, '3.0.0', 'lt') || !array_key_exists('extra_query', $columns))
+		if (!array_key_exists('extra_query', $columns) || version_compare(JVERSION, '3.0.0', 'lt'))
 		{
 			unset($update_site['extra_query']);
 		}

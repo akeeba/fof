@@ -99,13 +99,13 @@ class TransparentAuthenticationTest extends FOFTestCase
         ReflectionHelper::setValue($input, 'data', array());
 
 		// Push input data if so defined
-		if (!is_null($inputData))
+		if (null !== $inputData)
 		{
             ReflectionHelper::setValue($input, 'data', $inputData);
 		}
 
 		// Override server globals if necessary
-		if (!is_null($serverGlobals))
+		if (null !== $serverGlobals)
 		{
 			foreach ($serverGlobals as $k => $v)
 			{

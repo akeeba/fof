@@ -848,7 +848,7 @@ class InstallScript
 
 		// If we didn't find the item with ID=1 something has screwed up the menu table, e.g. a bad upgrade script. In
 		// this case we can try to find the root node by title.
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			$rootItemId = null;
 			$query = $db->getQuery(true)
@@ -859,7 +859,7 @@ class InstallScript
 		}
 
 		// So, someone changed the title of the menu item too?! Let's find it by alias.
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			$rootItemId = null;
 			$query = $db->getQuery(true)
@@ -870,7 +870,7 @@ class InstallScript
 		}
 
 		// For crying out loud, they changed the alias too? Fine! Find it by component ID.
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			$rootItemId = null;
 			$query = $db->getQuery(true)
@@ -881,7 +881,7 @@ class InstallScript
 		}
 
 		// Um, OK. Still no go. Let's try with minimum lft value.
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			$rootItemId = null;
 			$query = $db->getQuery(true)
@@ -892,9 +892,9 @@ class InstallScript
 		}
 
 		// I quit. Your site's menu structure is broken. I'll just throw an error.
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
-			throw new Exception("Your site is broken. There is no root menu item. As a result it is impossible to create menu items. The installation of this component has failed. Please fix your database and retry!", 500);
+			throw new Exception('Your site is broken. There is no root menu item. As a result it is impossible to create menu items. The installation of this component has failed. Please fix your database and retry!', 500);
 		}
 
 		/** @var \SimpleXMLElement $menuElement */
@@ -1161,7 +1161,7 @@ class InstallScript
 			->where($db->qn('id') . ' = ' . $db->q(1));
 		$rootItemId = $db->setQuery($query)->loadResult();
 
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			// Guess what? The Problem has happened. Let's find the root node by title.
 			$rootItemId = null;
@@ -1172,7 +1172,7 @@ class InstallScript
 			$rootItemId = $db->setQuery($query, 0, 1)->loadResult();
 		}
 
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			// For crying out loud, did that idiot changed the title too?! Let's find it by alias.
 			$rootItemId = null;
@@ -1183,7 +1183,7 @@ class InstallScript
 			$rootItemId = $db->setQuery($query, 0, 1)->loadResult();
 		}
 
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			// Dude. Dude! Duuuuuuude! The alias is screwed up, too?! Find it by component ID.
 			$rootItemId = null;
@@ -1194,7 +1194,7 @@ class InstallScript
 			$rootItemId = $db->setQuery($query, 0, 1)->loadResult();
 		}
 
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			// Your site is more of a "shite" than a "site". Let's try with minimum lft value.
 			$rootItemId = null;
@@ -1205,7 +1205,7 @@ class InstallScript
 			$rootItemId = $db->setQuery($query, 0, 1)->loadResult();
 		}
 
-		if (is_null($rootItemId))
+		if (null === $rootItemId)
 		{
 			// I quit. Your site is broken.
 			return false;
@@ -1360,7 +1360,7 @@ class InstallScript
 		}
 
 		// If the type is anything other than message you need an action key
-		if (($options['type'] != 'message') && empty($options['action_key']))
+		if (($options['type'] !== 'message') && empty($options['action_key']))
 		{
 			throw new Exception('Post-installation message definitions need an action key when they are of type "' . $options['type'] . '"', 500);
 		}
@@ -1372,7 +1372,7 @@ class InstallScript
 		}
 
 		// The action file and method are only required for the "action" type
-		if ($options['type'] == 'action')
+		if ($options['type'] === 'action')
 		{
 			if (empty($options['action_file']))
 			{
@@ -1392,7 +1392,7 @@ class InstallScript
 			}
 		}
 
-		if ($options['type'] == 'link')
+		if ($options['type'] === 'link')
 		{
 			if (empty($options['link']))
 			{
@@ -1401,7 +1401,7 @@ class InstallScript
 		}
 
 		// The condition file and method are only required when the type is not "message"
-		if ($options['type'] != 'message')
+		if ($options['type'] !== 'message')
 		{
 			if (empty($options['condition_file']))
 			{
@@ -1440,7 +1440,7 @@ class InstallScript
 
 			foreach ($options as $k => $v)
 			{
-				if ($k == 'enabled')
+				if ($k === 'enabled')
 				{
 					continue;
 				}

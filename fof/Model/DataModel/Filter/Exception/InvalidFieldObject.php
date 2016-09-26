@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class InvalidFieldObject extends \InvalidArgumentException
 {
-	public function __construct( $message = "", $code = 500, Exception $previous = null )
+	public function __construct($message = '', $code = 500, Exception $previous = null )
 	{
 		if (empty($message))
 		{

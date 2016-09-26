@@ -123,7 +123,7 @@ class Numeric extends \JFormFieldNumber implements FieldInterface
 		$html = '<span class="' . $class . '">';
 
 		// Prepend currency?
-		if ($currencyPos == 'before' && $currencySymbol)
+		if ($currencyPos === 'before' && $currencySymbol)
 		{
 			$html .= $currencySymbol;
 		}
@@ -155,7 +155,7 @@ class Numeric extends \JFormFieldNumber implements FieldInterface
 		$html .= $number;
 
 		// Append currency?
-		if ($currencyPos == 'after' && $currencySymbol)
+		if ($currencyPos === 'after' && $currencySymbol)
 		{
 			$html .= $currencySymbol;
 		}

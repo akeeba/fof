@@ -162,7 +162,7 @@ class FOFTestCase extends ApplicationTestCase
 			$this->expectedErrors = array();
 		}
 
-		if (!is_null($error))
+		if (null !== $error)
 		{
 			$this->expectedErrors[] = $error;
 		}

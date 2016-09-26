@@ -49,13 +49,13 @@ class FofApp extends JApplicationCli
 			{
 				if ($cgiMode)
 				{
-					$query = "";
+					$query = '';
 					if (!empty($_GET))
 					{
 						foreach ($_GET as $k => $v)
 						{
 							$query .= " $k";
-							if ($v != "")
+							if ($v != '')
 							{
 								$query .= "=$v";
 							}
@@ -127,7 +127,7 @@ class FofApp extends JApplicationCli
 		$composer = $this->getComposerInfo();
 
 		$phar = Phar::running(false);
-		$path = $phar ? (Phar::running(true) . '/fof/') : (realpath(dirname(__FILE__)) . '/');
+		$path = $phar ? (Phar::running(true) . '/fof/') : (realpath(__DIR__) . '/');
 
 		// Register the current namespace with the autoloader
 		FOF30\Autoloader\Autoloader::getInstance()->addMap('FOF30\\Generator\\', array($path));
@@ -163,7 +163,7 @@ class FofApp extends JApplicationCli
 	 */
 	protected function getComposerInfo()
 	{
-		$this->out("Checking for Existing Composer File...");
+		$this->out('Checking for Existing Composer File...');
 
 		// Does the composer file exists?
 		if (!file_exists(getcwd() . '/composer.json'))
@@ -175,9 +175,7 @@ class FofApp extends JApplicationCli
 		}
 
 		// Read composer's informations
-		$composer = json_decode(file_get_contents(getcwd() . '/composer.json'));
-
-		return $composer;
+		return json_decode(file_get_contents(getcwd() . '/composer.json'));
 	}
 
 	/**
@@ -195,7 +193,7 @@ class FofApp extends JApplicationCli
 
 		if (!$safe_mode && function_exists('set_time_limit'))
 		{
-			$this->out("Unsetting time limit restrictions");
+			$this->out('Unsetting time limit restrictions');
 			@set_time_limit(0);
 		}
 	}
@@ -239,16 +237,16 @@ class FofApp extends JApplicationCli
 		$phpversion		 = PHP_VERSION;
 		$phpenvironment	 = PHP_SAPI;
 
-		$this->out("FOF3 Generator");
+		$this->out('FOF3 Generator');
 		$this->out("Copyright (C) 2010-$year Nicholas K. Dionysopoulos");
 		$this->out(str_repeat('-', 79));
-		$this->out("FOF3 is Free Software, distributed under the terms of the GNU General");
-		$this->out("Public License version 2 or, at your option, any later version.");
-		$this->out("This program comes with ABSOLUTELY NO WARRANTY as per sections 15 & 16 of the");
-		$this->out("license. See http://www.gnu.org/licenses/gpl-2.0.html for details.");
+		$this->out('FOF3 is Free Software, distributed under the terms of the GNU General');
+		$this->out('Public License version 2 or, at your option, any later version.');
+		$this->out('This program comes with ABSOLUTELY NO WARRANTY as per sections 15 & 16 of the');
+		$this->out('license. See http://www.gnu.org/licenses/gpl-2.0.html for details.');
 		$this->out(str_repeat('-', 79));
 		$this->out("You are using PHP $phpversion ($phpenvironment)");
-		$this->out("");
+		$this->out('');
 	}
 
 	/**

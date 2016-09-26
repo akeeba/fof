@@ -969,8 +969,8 @@ class ToolbarDataprovider
                 )
             ),
             array(
-                'case' => "The view is not a data-aware one",
-                'result' => false
+	            'case' => 'The view is not a data-aware one',
+	            'result' => false
             )
         );
 
@@ -983,8 +983,8 @@ class ToolbarDataprovider
                 )
             ),
             array(
-                'case' => "The view is a data-aware one",
-                'result' => true
+	            'case' => 'The view is a data-aware one',
+	            'result' => true
             )
         );
 
@@ -997,8 +997,8 @@ class ToolbarDataprovider
                 )
             ),
             array(
-                'case' => "Result is cached",
-                'result' => 'dummy'
+	            'case' => 'Result is cached',
+	            'result' => 'dummy'
             )
         );
 

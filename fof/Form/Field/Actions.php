@@ -177,7 +177,7 @@ class Actions extends \JFormFieldList implements FieldInterface
 
 		foreach ($attributes as $name => $value)
 		{
-			if (!is_null($value))
+			if (null !== $value)
 			{
 				$renderedAttributes[] = $name . '="' . $value . '"';
 			}
@@ -247,7 +247,7 @@ class Actions extends \JFormFieldList implements FieldInterface
 
 			if ($config['archived'])
 			{
-				$archived	= $this->item->getFieldValue($publishedFieldName) == 2 ? true : false;
+				$archived	= $this->item->getFieldValue($publishedFieldName) == 2;
 
 				// Create dropdown items
 				$action = $archived ? 'unarchive' : 'archive';
@@ -256,7 +256,7 @@ class Actions extends \JFormFieldList implements FieldInterface
 
 			if ($config['trash'])
 			{
-				$trashed	= $this->item->getFieldValue($publishedFieldName) == -2 ? true : false;
+				$trashed	= $this->item->getFieldValue($publishedFieldName) == -2;
 
 				$action = $trashed ? 'untrash' : 'trash';
 				JHtml::_('actionsdropdown.' . $action, 'cb' . $this->rowid);

@@ -85,7 +85,7 @@ class Json implements RenderInterface
 
 				foreach ($links as $link)
 				{
-					array_push($serialiseThis->_links->$rel, $this->_getLink($link));
+					$serialiseThis->_links->$rel[] = $this->_getLink($link);
 				}
 			}
 		}
@@ -109,8 +109,8 @@ class Json implements RenderInterface
 
 				foreach ($embeddeddocs as $embedded)
 				{
-					$renderer = new static($embedded);
-					array_push($serialiseThis->_embedded->$rel, $renderer->render($options));
+					$renderer                         = new static($embedded);
+					$serialiseThis->_embedded->$rel[] = $renderer->render($options);
 				}
 			}
 		}

@@ -54,9 +54,9 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Application has the language filter method, but return false",
-                'blacklist' => 1,
-                'where'     => array()
+	            'case'      => 'Application has the language filter method, but return false',
+	            'blacklist' => 1,
+	            'where'     => array()
             )
         );
 
@@ -71,9 +71,9 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option set to remove the prefix",
-                'blacklist' => 1,
-                'where'     => array("`language` IN('*', 'en-GB')")
+	            'case'      => 'Plugin option set to remove the prefix',
+	            'blacklist' => 1,
+	            'where'     => array("`language` IN('*', 'en-GB')")
             )
         );
 
@@ -105,9 +105,9 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option not set to remove the prefix, language is not set inside app input",
-                'blacklist' => 1,
-                'where'     => array("`language` IN('*')")
+	            'case'      => 'Plugin option not set to remove the prefix, language is not set inside app input',
+	            'blacklist' => 1,
+	            'where'     => array("`language` IN('*')")
             )
         );
 
@@ -124,9 +124,9 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option not set to remove the prefix, language is set inside app input",
-                'blacklist' => 1,
-                'where'     => array("`language` IN('*', 'it-IT')")
+	            'case'      => 'Plugin option not set to remove the prefix, language is set inside app input',
+	            'blacklist' => 1,
+	            'where'     => array("`language` IN('*', 'it-IT')")
             )
         );
 
@@ -178,8 +178,8 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Application has a language filter method and returns false",
-                'reset'     => 0
+	            'case'      => 'Application has a language filter method and returns false',
+	            'reset'     => 0
             )
         );
 
@@ -194,8 +194,8 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option set to remove the prefix, model language is not the same of the site",
-                'reset'     => 1
+	            'case'      => 'Plugin option set to remove the prefix, model language is not the same of the site',
+	            'reset'     => 1
             )
         );
 
@@ -210,8 +210,8 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option set to remove the prefix, model language is the same of the site",
-                'reset'     => 0
+	            'case'      => 'Plugin option set to remove the prefix, model language is the same of the site',
+	            'reset'     => 0
             )
         );
 
@@ -228,8 +228,8 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option not set to remove the prefix, language is set inside app input, model language is not the same of the site",
-                'reset'     => 1
+	            'case'      => 'Plugin option not set to remove the prefix, language is set inside app input, model language is not the same of the site',
+	            'reset'     => 1
             )
         );
 
@@ -246,8 +246,8 @@ class LanguageDataprovider
                 )
             ),
             'check' => array(
-                'case'      => "Plugin option not set to remove the prefix, language is set inside app input, model language is the same of the site",
-                'reset'     => 0
+	            'case'      => 'Plugin option not set to remove the prefix, language is set inside app input, model language is the same of the site',
+	            'reset'     => 0
             )
         );
 

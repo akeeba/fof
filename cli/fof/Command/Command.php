@@ -56,13 +56,13 @@ abstract class Command
 	protected function getComponentName($composer)
 	{
 		$extra        = (isset($composer->extra) && isset($composer->extra->fof)) ? $composer->extra->fof : false;
-		$default_name = $extra ? $extra->name : array_pop(explode("/", $composer->name));
+		$default_name = $extra ? $extra->name : array_pop(explode('/', $composer->name));
 		$default_name = $default_name ? $default_name : 'com_foobar';
 
 		// Add com_ if necessary
-		if (stripos($default_name, "com_") !== 0)
+		if (stripos($default_name, 'com_') !== 0)
         {
-			$default_name = "com_" . $default_name;
+			$default_name = 'com_' . $default_name;
 		}
 
 		$name = false;
@@ -72,7 +72,7 @@ abstract class Command
             /** @var \FofApp $app */
             $app = JFactory::getApplication();
 
-			$app->out("What's your component name? (" . $default_name . ")");
+			$app->out("What's your component name? (" . $default_name . ')');
 			$name = $app->in();
 		}
 
@@ -88,9 +88,9 @@ abstract class Command
 		}
 
 		// Add com_ if necessary
-		if (stripos($name, "com_") !== 0)
+		if (stripos($name, 'com_') !== 0)
         {
-			$name = "com_" . $name;
+			$name = 'com_' . $name;
 		}
 
 		return strtolower($name);
@@ -106,7 +106,7 @@ abstract class Command
         $path = '';
 
 		// .fof file not found, ask the user!
-		if (!JFile::exists(getcwd() . '/.fof') || $force)
+		if ($force || !JFile::exists(getcwd() . '/.fof'))
         {
 			$this->out("What's the dev site location? ( /var/www/ )");
 			$path = $this->in();
@@ -139,7 +139,7 @@ abstract class Command
 
         if(!$path)
         {
-            throw new \RuntimeException("Could not detect the path to the dev server");
+            throw new \RuntimeException('Could not detect the path to the dev server');
         }
 
 		// Load the configuration object.

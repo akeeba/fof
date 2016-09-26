@@ -384,7 +384,7 @@ class TransparentAuthentication
 
 					$return = $this->decryptWithTOTP($encryptedData);
 
-					if (!is_null($return))
+					if (null !== $return)
 					{
 						return $return;
 					}

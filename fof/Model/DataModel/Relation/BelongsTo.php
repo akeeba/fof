@@ -66,7 +66,7 @@ class BelongsTo extends HasOne
 	 */
 	public function getNew()
 	{
-		throw new DataModel\Relation\Exception\NewNotSupported("getNew() is not supported by the belongsTo relation type");
+		throw new DataModel\Relation\Exception\NewNotSupported('getNew() is not supported by the belongsTo relation type');
 	}
 
 }

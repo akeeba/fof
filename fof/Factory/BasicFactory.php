@@ -340,7 +340,7 @@ class BasicFactory implements FactoryInterface
 				$scaffolding = new LayoutBuilder($this->container);
 				$xml = $scaffolding->make($source, $viewName);
 
-				if (!is_null($xml))
+				if (null !== $xml)
 				{
 					return $this->form($name, $xml, $viewName, $options, $replace, $xpath);
 				}
@@ -387,7 +387,7 @@ class BasicFactory implements FactoryInterface
 
 		// Apply fof.xml overrides
 		$appConfig = $this->container->appConfig;
-		$key = "views." . ucfirst($view->getName()) . ".config";
+		$key = 'views.' . ucfirst($view->getName()) . '.config';
 
 		$fofXmlConfig = array(
 			'extensions'    => $appConfig->get("$key.templateExtensions", $config['extensions']),

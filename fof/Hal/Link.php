@@ -130,7 +130,7 @@ class Link
 	 */
 	public function __set($name, $value)
 	{
-		if (($name == 'href') && empty($value))
+		if (($name === 'href') && empty($value))
 		{
 			return;
 		}

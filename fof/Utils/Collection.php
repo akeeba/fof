@@ -45,7 +45,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public static function make($items)
 	{
-		if (is_null($items))
+		if (null === $items)
 		{
 			return new static;
 		}
@@ -145,7 +145,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public function first(Closure $callback = null, $default = null)
 	{
-		if (is_null($callback))
+		if (null === $callback)
 		{
 			return count($this->items) > 0 ? reset($this->items) : null;
 		}
@@ -238,7 +238,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public function implode($value, $glue = null)
 	{
-		if (is_null($glue))
+		if (null === $glue)
 		{
 			return implode($this->lists($value));
 		}
@@ -710,7 +710,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public function offsetSet($key, $value)
 	{
-		if (is_null($key))
+		if (null === $key)
 		{
 			$this->items[] = $value;
 		}

@@ -132,7 +132,7 @@ class Assets extends Observer
 				{
 					if ($p !== '')
 					{
-						$rules[$action][$id] = ($p == '1' || $p == 'true') ? true : false;
+						$rules[$action][$id] = ($p == '1' || $p === 'true');
 					}
 				}
 			}

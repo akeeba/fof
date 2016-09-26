@@ -93,7 +93,7 @@ abstract class AbstractFilter
 	public function isEmpty($value)
 	{
 		return (($value === $this->null_value) || empty($value))
-			&& !($this->filterZero && ($value === "0"));
+			&& !($this->filterZero && ($value === '0'));
 	}
 
 	/**
@@ -262,7 +262,7 @@ abstract class AbstractFilter
 
 		$prefix = '';
 
-		if (substr($operator, 0, 1) == '!')
+		if (substr($operator, 0, 1) === '!')
 		{
 			$prefix = 'NOT ';
 			$operator = substr($operator, 1);
@@ -320,9 +320,7 @@ abstract class AbstractFilter
 
 			$db = $config['dbo'];
 
-			$field = new $className($db, $field);
-
-			return $field;
+			return new $className($db, $field);
 		}
 
 		return null;
@@ -376,7 +374,7 @@ abstract class AbstractFilter
 		}
 
 		// Sometimes we have character types followed by a space and some cruft. Let's handle them.
-		if (is_null($detectedType) && !empty($type))
+		if (null === $detectedType && !empty($type))
 		{
 			list ($type, ) = explode(' ', $type);
 

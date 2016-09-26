@@ -34,7 +34,7 @@ if ($phar)
 }
 else
 {
-	$phar_path = realpath(dirname(__FILE__)) . '/';
+	$phar_path = realpath(__DIR__) . '/';
 }
 
 // Try to set 0755

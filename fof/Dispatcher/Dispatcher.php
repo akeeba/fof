@@ -88,7 +88,7 @@ class Dispatcher
 	public function __get($name)
 	{
 		// Handle $this->input
-		if ($name == 'input')
+		if ($name === 'input')
 		{
 			return $this->container->input;
 		}
@@ -268,7 +268,7 @@ class Dispatcher
 		// If we have an "on" prefix for the event (e.g. onFooBar) remove it and stash it for later.
 		$prefix = '';
 
-		if (substr($event, 0, 2) == 'on')
+		if (substr($event, 0, 2) === 'on')
 		{
 			$prefix = 'on';
 			$event = substr($event, 2);

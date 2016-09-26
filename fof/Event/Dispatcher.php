@@ -305,7 +305,7 @@ class Dispatcher implements Observable
 					break;
 			}
 
-			if (!is_null($result))
+			if (null !== $result)
 			{
 				return $result;
 			}

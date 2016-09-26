@@ -194,7 +194,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 				$text = $element;
 			}
 
-			if (is_null($ret) && $selectFirst)
+			if (null === $ret && $selectFirst)
 			{
 				$ret = $text;
 			}
@@ -245,7 +245,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 		if ($this->element['order_case_sensitive'])
 		{
 			// Override default setting when the form element value is 'true'
-			if ($this->element['order_case_sensitive'] == 'true')
+			if ($this->element['order_case_sensitive'] === 'true')
 			{
 				$order_case_sensitive = true;
 			}
@@ -270,7 +270,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 		if ($order)
 		{
 			jimport('joomla.utilities.arrayhelper');
-			\JArrayHelper::sortObjects($sortOptions, $order, $order_dir == 'asc' ? 1 : -1, $order_case_sensitive, false);
+			\JArrayHelper::sortObjects($sortOptions, $order, $order_dir === 'asc' ? 1 : -1, $order_case_sensitive, false);
 		}
 
 		// Initialise the options
@@ -289,7 +289,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 				continue;
 			}
 
-			$tmp = JHtml::_('select.option', (string) $option['value'], $name, 'value', 'text', ((string) $option['disabled'] == 'true'));
+			$tmp = JHtml::_('select.option', (string) $option['value'], $name, 'value', 'text', ((string) $option['disabled'] === 'true'));
 
 			// Set some option attributes.
 			$tmp->class = (string) $option['class'];
@@ -307,7 +307,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 		$source_method    = empty($this->element['source_method']) ? '' : (string) $this->element['source_method'];
 		$source_key       = empty($this->element['source_key']) ? '*' : (string) $this->element['source_key'];
 		$source_value     = empty($this->element['source_value']) ? '*' : (string) $this->element['source_value'];
-		$source_translate = is_null($this->element['source_translate']) ? 'true' : (string) $this->element['source_translate'];
+		$source_translate = null === $this->element['source_translate'] ? 'true' : (string) $this->element['source_translate'];
 		$source_translate = StringHelper::toBool($source_translate) ? true : false;
 		$source_format    = empty($this->element['source_format']) ? '' : (string) $this->element['source_format'];
 
@@ -331,7 +331,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 				if (in_array($source_method, get_class_methods($source_class)))
 				{
 					// Get the data from the class
-					if ($source_format == 'optionsobject')
+					if ($source_format === 'optionsobject')
 					{
 						$options = array_merge($options, $source_class::$source_method());
 					}
@@ -343,8 +343,8 @@ class GenericList extends \JFormFieldList implements FieldInterface
 						// Loop through the data and prime the $options array
 						foreach ($source_data as $k => $v)
 						{
-							$key = (empty($source_key) || ($source_key == '*')) ? $k : @$v[$source_key];
-							$value = (empty($source_value) || ($source_value == '*')) ? $v : @$v[$source_value];
+							$key = (empty($source_key) || ($source_key === '*')) ? $k : @$v[$source_key];
+							$value = (empty($source_value) || ($source_value === '*')) ? $v : @$v[$source_value];
 
 							if ($source_translate)
 							{
@@ -376,7 +376,7 @@ class GenericList extends \JFormFieldList implements FieldInterface
 
         // Replace [ITEM:ID] in the URL with the item's key value (usually:
         // the auto-incrementing numeric ID)
-        if (is_null($this->item))
+        if (null === $this->item)
         {
             $this->item = $this->form->getModel();
         }

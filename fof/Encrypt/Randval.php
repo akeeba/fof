@@ -115,7 +115,7 @@ class Randval implements RandvalInterface
 			 * Collect any entropy available from the PHP system and filesystem.
 			 * If we have ssl data that isn't strong, we use it once.
 			 */
-			$entropy = rand() . uniqid(mt_rand(), true) . $sslStr;
+			$entropy = mt_rand() . uniqid(mt_rand(), true) . $sslStr;
 			$entropy .= implode('', @fstat(fopen(__FILE__, 'r')));
 			$entropy .= memory_get_usage();
 			$sslStr = '';
@@ -158,7 +158,7 @@ class Randval implements RandvalInterface
 					$duration += $microEnd - $microStart;
 				}
 
-				$duration = $duration / $samples;
+				$duration /= $samples;
 
 				/*
 				 * Based on the average time, determine the total rounds so that

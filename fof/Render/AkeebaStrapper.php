@@ -61,7 +61,7 @@ class AkeebaStrapper extends RenderBase implements RenderInterface
 			$format	 = 'html';
 		}
 
-		if ($format != 'html')
+		if ($format !== 'html')
 		{
 			return;
 		}
@@ -138,7 +138,7 @@ class AkeebaStrapper extends RenderBase implements RenderInterface
 
 		$format = $input->getCmd('format', 'html');
 
-		if ($format != 'html' || $platform->isCli())
+		if ($format !== 'html' || $platform->isCli())
 		{
 			return;
 		}
@@ -239,7 +239,7 @@ JS;
 		$toolbar				 = $this->container->toolbar;
 		$renderFrontendSubmenu	 = $toolbar->getRenderFrontendSubmenu();
 
-		if (!$platform->isBackend() && !$renderFrontendSubmenu)
+		if (!$renderFrontendSubmenu && !$platform->isBackend())
 		{
 			return;
 		}
@@ -261,7 +261,7 @@ JS;
 
 				if ($dropdown)
 				{
-					echo "<li";
+					echo '<li';
 					$class = 'dropdown';
 
 					if ($link['active'])
@@ -286,14 +286,14 @@ JS;
 
 					foreach ($link['items'] as $item)
 					{
-						echo "<li";
+						echo '<li';
 
 						if ($item['active'])
 						{
 							echo ' class="active"';
 						}
 
-						echo ">";
+						echo '>';
 
 						if ($item['icon'])
 						{
@@ -302,28 +302,28 @@ JS;
 
 						if ($item['link'])
 						{
-							echo "<a href=\"" . $item['link'] . "\">" . $item['name'] . "</a>";
+							echo "<a href=\"" . $item['link'] . "\">" . $item['name'] . '</a>';
 						}
 						else
 						{
 							echo $item['name'];
 						}
 
-						echo "</li>";
+						echo '</li>';
 					}
 
 					echo "</ul>\n";
 				}
 				else
 				{
-					echo "<li";
+					echo '<li';
 
 					if ($link['active'])
 					{
 						echo ' class="active"';
 					}
 
-					echo ">";
+					echo '>';
 
 					if ($link['icon'])
 					{
@@ -332,7 +332,7 @@ JS;
 
 					if ($link['link'])
 					{
-						echo "<a href=\"" . $link['link'] . "\">" . $link['name'] . "</a>";
+						echo "<a href=\"" . $link['link'] . "\">" . $link['name'] . '</a>';
 					}
 					else
 					{
@@ -375,7 +375,7 @@ JS;
 		$toolbar				 = $this->container->toolbar;
 		$renderFrontendSubmenu	 = $toolbar->getRenderFrontendSubmenu();
 
-		if (!$platform->isBackend() && !$renderFrontendSubmenu)
+		if (!$renderFrontendSubmenu && !$platform->isBackend())
 		{
 			return;
 		}
@@ -447,7 +447,7 @@ JS;
 		// (JTOOLBAR_BACK, JTOOLBAR_PUBLISH etc etc)
 		$platform->loadTranslations('joomla');
 
-		if ($platform->isBackend() || !$renderFrontendButtons)
+		if (!$renderFrontendButtons || $platform->isBackend())
 		{
 			return;
 		}
@@ -575,8 +575,9 @@ HTML;
 
 		if ($show_filters)
 		{
-			JHtmlSidebar::setAction("index.php?option=" .
-				$this->container->componentName . "&view=" .
+			JHtmlSidebar::setAction(
+				'index.php?option=' .
+				$this->container->componentName . '&view=' .
 				$this->container->inflector->pluralize($form->getView()->getName())
 			);
 		}
@@ -753,8 +754,8 @@ JS;
 			if (!empty($sortFields))
 			{
 				// Display the field sort order
-				$asc_sel	 = ($form->getView()->getLists()->order_Dir == 'asc') ? 'selected="selected"' : '';
-				$desc_sel	 = ($form->getView()->getLists()->order_Dir == 'desc') ? 'selected="selected"' : '';
+				$asc_sel	 = ($form->getView()->getLists()->order_Dir === 'asc') ? 'selected="selected"' : '';
+				$desc_sel	 = ($form->getView()->getLists()->order_Dir === 'desc') ? 'selected="selected"' : '';
 				$html .= "\t" . '<div class="btn-group pull-right hidden-phone">' . "\n";
 				$html .= "\t\t" . '<label for="directionTable" class="element-invisible">' . \JText::_('JFIELD_ORDERING_DESC') . '</label>' . "\n";
 				$html .= "\t\t" . '<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">' . "\n";
@@ -924,9 +925,7 @@ JS;
 	 */
 	public function renderFormRead(Form &$form, DataModel $model)
 	{
-		$html = $this->renderFormRaw($form, $model, 'read');
-
-		return $html;
+		return $this->renderFormRaw($form, $model, 'read');
 	}
 
 	/**
@@ -999,7 +998,7 @@ JS;
 		$actionUrl = $platform->isBackend() ? 'index.php' : \JUri::root().'index.php';
 
 		$itemid = $this->container->input->getCmd('Itemid', 0);
-		if ($platform->isFrontend() && ($itemid != 0))
+		if (($itemid != 0) && $platform->isFrontend())
 		{
 			$uri = new \JUri($actionUrl);
 
@@ -1239,12 +1238,12 @@ JS;
 
 			$inputField = '';
 
-			if ($formType == 'read')
+			if ($formType === 'read')
 			{
 				$inputField = $field->static;
 			}
 
-			if ($formType == 'edit')
+			if ($formType === 'edit')
 			{
 				$inputField = $field->input;
 			}
@@ -1256,7 +1255,7 @@ JS;
 			}
 
 			$renderedLabel = !empty($title) ? $this->renderFieldsetLabel($field, $form, $title) : '';
-			$renderedLabel = ($label_placement == 'empty') ? '' : $renderedLabel;
+			$renderedLabel = ($label_placement === 'empty') ? '' : $renderedLabel;
 
 			switch ($label_placement)
 			{
@@ -1419,7 +1418,7 @@ JS;
 			JHtml::_('formbehavior.chosen', $useChosen);
 		}
 
-		if (is_null($formType))
+		if (null === $formType)
 		{
 			$formType = $form->getAttribute('type', 'edit');
 		}

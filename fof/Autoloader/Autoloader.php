@@ -108,7 +108,7 @@ class Autoloader
 			$length = strlen($prefix);
 			if ('\\' !== $prefix[$length - 1])
 			{
-				throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+				throw new \InvalidArgumentException('A non-empty PSR-4 prefix must end with a namespace separator.');
 			}
 			$this->prefixLengths[$prefix[0]][$prefix] = $length;
 			$this->prefixDirs[$prefix] = (array)$paths;
@@ -176,7 +176,7 @@ class Autoloader
 			$length = strlen($prefix);
 			if ('\\' !== $prefix[$length - 1])
 			{
-				throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+				throw new \InvalidArgumentException('A non-empty PSR-4 prefix must end with a namespace separator.');
 			}
 			$this->prefixLengths[$prefix[0]][$prefix] = $length;
 			$this->prefixDirs[$prefix] = (array)$paths;
@@ -232,7 +232,7 @@ class Autoloader
 	public function findFile($class)
 	{
 		// work around for PHP 5.3.0 - 5.3.2 https://bugs.php.net/50731
-		if ('\\' == $class[0])
+		if ('\\' === $class[0])
 		{
 			$class = substr($class, 1);
 		}

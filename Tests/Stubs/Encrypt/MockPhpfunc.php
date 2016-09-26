@@ -66,7 +66,7 @@ class MockPhpfunc extends Phpfunc
 		// for parent coverage
 		$result = $this->__call('function_exists', array($name));
 
-		if (is_null($this->functions_enabled))
+		if (null === $this->functions_enabled)
 		{
 			return $result;
 		}
@@ -80,7 +80,7 @@ class MockPhpfunc extends Phpfunc
 		// for parent coverage
 		$result = $this->__call('mcrypt_list_algorithms', array());
 
-		if (is_null($this->mcrypt_algorithms))
+		if (null === $this->mcrypt_algorithms)
 		{
 			return $result;
 		}
@@ -94,7 +94,7 @@ class MockPhpfunc extends Phpfunc
 		// for parent coverage
 		$result = $this->__call('openssl_get_cipher_methods', array());
 
-		if (is_null($this->openssl_algorithms))
+		if (null === $this->openssl_algorithms)
 		{
 			return $result;
 		}
@@ -108,7 +108,7 @@ class MockPhpfunc extends Phpfunc
 		// for parent coverage
 		$result = $this->__call('hash_algos', array());
 
-		if (is_null($this->hash_algorithms))
+		if (null === $this->hash_algorithms)
 		{
 			return $result;
 		}

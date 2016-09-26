@@ -92,7 +92,7 @@ class Form extends JForm
 	{
 		$value = $this->xml->attributes()->$attribute;
 
-		if (is_null($value))
+		if (null === $value)
 		{
 			return $default;
 		}
@@ -634,7 +634,7 @@ class Form extends JForm
 		$types = &$this->entities[$entity];
 
 		// Return an entity object if it already exists and we don't need a new one.
-		if (isset($types[$type]) && $new === false)
+		if ($new === false && isset($types[$type]))
 		{
 			return $types[$type];
 		}
@@ -944,7 +944,7 @@ class Form extends JForm
 		{
 			$default = (string) $element['default'];
 
-			if (($translate = $element['translate_default']) && ((string) $translate == 'true' || (string) $translate == '1'))
+			if (($translate = $element['translate_default']) && ((string) $translate === 'true' || (string) $translate === '1'))
 			{
 				$lang = JFactory::getLanguage();
 

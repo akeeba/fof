@@ -44,7 +44,7 @@ class Init extends Command
 			'translationsfrontend'  => 'translations/component/frontend'
 		);
 
-	    if (!isset($info->paths) || empty($info->paths) || is_null($info->paths))
+	    if (!isset($info->paths) || empty($info->paths))
 	    {
 		    $info->paths = array();
 	    }
@@ -94,7 +94,7 @@ class Init extends Command
 		// Keep asking while the path is not valid
 		$path = false;
 
-		$this->out("Location of " . $key . " files: [" . $default_path . "]");
+		$this->out('Location of ' . $key . ' files: [' . $default_path . ']');
 		$path = $this->in();
 
 		// Use the default path if needbe

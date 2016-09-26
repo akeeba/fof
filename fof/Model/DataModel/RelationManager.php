@@ -123,7 +123,7 @@ class RelationManager
 					continue;
 				}
 
-				if ($file->getExtension() != 'php')
+				if ($file->getExtension() !== 'php')
 				{
 					continue;
 				}
@@ -292,7 +292,7 @@ class RelationManager
 	 */
 	public function save($name = null)
 	{
-		if (is_null($name))
+		if (null === $name)
 		{
 			foreach ($this->relations as $name => $relation)
 			{
@@ -434,7 +434,7 @@ class RelationManager
 				throw new \InvalidArgumentException("You can not create an unnamed '$name' relation");
 			}
 		}
-		elseif (substr($name, 0, 3) == 'get')
+		elseif (substr($name, 0, 3) === 'get')
 		{
 			$relationName = substr($name, 3);
 			$relationName = strtolower($relationName[0]) . substr($relationName, 1);
@@ -474,7 +474,7 @@ class RelationManager
 		{
 			return true;
 		}
-		elseif (substr($name, 0, 3) == 'get')
+		elseif (substr($name, 0, 3) === 'get')
 		{
 			$relationName = substr($name, 3);
 			$relationName = strtolower($relationName[0]) . substr($relationName, 1);

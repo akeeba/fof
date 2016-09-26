@@ -69,11 +69,11 @@ class Platform extends BasePlatform
 	 */
 	protected function isCliAdmin()
 	{
-		if (is_null(static::$isCLI) && is_null(static::$isAdmin))
+		if (null === static::$isCLI && null === static::$isAdmin)
 		{
 			try
 			{
-				if (is_null(\JFactory::$application))
+				if (null === \JFactory::$application)
 				{
 					static::$isCLI = true;
 				}
@@ -207,7 +207,7 @@ class Platform extends BasePlatform
 				$path = $isAdmin ? 'administrator/templates/' : 'templates/';
 			}
 
-			if (substr($component, 0, 7) == 'media:/')
+			if (substr($component, 0, 7) === 'media:/')
 			{
 				$directory = 'media/' . substr($component, 7);
 			}
@@ -296,7 +296,7 @@ class Platform extends BasePlatform
 	{
 		// If I'm in CLI and I have an ID, let's load the User directly, otherwise JFactory will check the session
 		// (which doesn't exists in CLI)
-		if($this->isCli() && $id)
+		if($id && $this->isCli())
 		{
 			return \JUser::getInstance($id);
 		}
@@ -407,7 +407,7 @@ class Platform extends BasePlatform
 			$old_state = null;
 		}
 
-		$cur_state = (!is_null($old_state)) ? $old_state : $default;
+		$cur_state = (null !== $old_state) ? $old_state : $default;
 		$new_state = $input->get($request, null, $type);
 
 		// Save the new value only if it was set in this request
@@ -422,7 +422,7 @@ class Platform extends BasePlatform
 				$new_state = $cur_state;
 			}
 		}
-		elseif (is_null($new_state))
+		elseif (null === $new_state)
 		{
 			$new_state = $cur_state;
 		}
@@ -615,7 +615,7 @@ class Platform extends BasePlatform
 	private function &getCacheObject($force = false)
 	{
 		// Check if we have to load the cache file or we are forced to do that
-		if (is_null($this->_cache) || $force)
+		if (null === $this->_cache || $force)
 		{
 			// Try to get data from Joomla!'s cache
 			$cache = \JFactory::getCache('fof', '');

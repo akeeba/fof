@@ -143,9 +143,7 @@ class Views implements DomainInterface
 		array_shift($parts);
 		array_shift($parts);
 
-		$ret = $this->$method($view, $configuration, $parts, $default);
-
-		return $ret;
+		return $this->$method($view, $configuration, $parts, $default);
 	}
 
 	/**

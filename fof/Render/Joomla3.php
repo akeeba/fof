@@ -44,7 +44,7 @@ class Joomla3 extends AkeebaStrapper
 			$format	 = 'html';
 		}
 
-		if ($format != 'html')
+		if ($format !== 'html')
 		{
 			return;
 		}
@@ -122,7 +122,7 @@ class Joomla3 extends AkeebaStrapper
 			$format	 = 'html';
 		}
 
-		if ($format != 'html')
+		if ($format !== 'html')
 		{
 			return;
 		}

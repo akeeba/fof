@@ -69,7 +69,7 @@ class HasMany extends Relation
 				{
 					$v = $item->getFieldValue($this->localKey, null);
 
-					if (!is_null($v))
+					if (null !== $v)
 					{
 						$values[] = $v;
 					}
@@ -98,7 +98,7 @@ class HasMany extends Relation
 			// Lazy loaded relation; get the single local key
 			$localKey = $this->parentModel->getFieldValue($this->localKey, null);
 
-			if (is_null($localKey))
+			if (null === $localKey)
 			{
 				return false;
 			}

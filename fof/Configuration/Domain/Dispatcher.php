@@ -64,7 +64,7 @@ class Dispatcher implements DomainInterface
 	 */
 	public function get(&$configuration, $var, $default)
 	{
-		if ($var == '*')
+		if ($var === '*')
 		{
 			return $configuration['dispatcher'];
 		}

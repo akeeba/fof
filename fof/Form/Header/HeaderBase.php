@@ -303,7 +303,7 @@ abstract class HeaderBase
 	public function setup(SimpleXMLElement $element, $group = null)
 	{
 		// Make sure there is a valid JFormField XML element.
-		if ((string) $element->getName() != 'header')
+		if ((string) $element->getName() !== 'header')
 		{
 			return false;
 		}
@@ -558,7 +558,7 @@ abstract class HeaderBase
 	 */
 	protected function getSortable()
 	{
-		$sortable = ($this->element['sortable'] != 'false');
+		$sortable = ($this->element['sortable'] !== 'false');
 
 		if ($sortable)
 		{

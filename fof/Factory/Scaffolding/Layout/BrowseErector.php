@@ -27,9 +27,9 @@ class BrowseErector extends BaseErector implements ErectorInterface
 
 		// Create the attributes of the form's base element
 		$this->xml->addAttribute('type', 'browse');
-		$this->xml->addAttribute('show_header', "1");
-		$this->xml->addAttribute('show_filters', "1");
-		$this->xml->addAttribute('show_pagination', "1");
+		$this->xml->addAttribute('show_header', '1');
+		$this->xml->addAttribute('show_filters', '1');
+		$this->xml->addAttribute('show_pagination', '1');
 		$this->xml->addAttribute('norows_placeholder', $noRowsKey);
 
 		// Create the headerset and fieldset sections of the form file
@@ -108,7 +108,7 @@ class BrowseErector extends BaseErector implements ErectorInterface
 			}
 
 			// cache_handler => CacheHandler
-			if ($lowercaseFieldName == 'cache_handler')
+			if ($lowercaseFieldName === 'cache_handler')
 			{
 				$this->applyCacheHandlerField($model, $headerSet, $fieldSet, $fieldName);
 
@@ -116,7 +116,7 @@ class BrowseErector extends BaseErector implements ErectorInterface
 			}
 
 			// component_id => Components
-			if ($lowercaseFieldName == 'component_id')
+			if ($lowercaseFieldName === 'component_id')
 			{
 				$this->applyComponentsField($model, $headerSet, $fieldSet, $fieldName);
 
@@ -133,7 +133,7 @@ class BrowseErector extends BaseErector implements ErectorInterface
 
 
 			// email, *_email => Email
-			if (($lowercaseFieldName == 'email') || (substr($lowercaseFieldName, -6) == 'email'))
+			if (($lowercaseFieldName === 'email') || (substr($lowercaseFieldName, -6) === 'email'))
 			{
 				$this->applyEmailField($model, $headerSet, $fieldSet, $fieldName);
 
@@ -143,7 +143,7 @@ class BrowseErector extends BaseErector implements ErectorInterface
 			// image, media, *_image => Media
 			if (
 				in_array($lowercaseFieldName, array('image', 'media'))
-				|| (substr($lowercaseFieldName, -6) == '_image')
+				|| (substr($lowercaseFieldName, -6) === '_image')
 			)
 			{
 				$this->applyMediaField($model, $headerSet, $fieldSet, $fieldName);
@@ -168,7 +168,7 @@ class BrowseErector extends BaseErector implements ErectorInterface
 			}
 
 			// plugin_id => Plugins
-			if ($lowercaseFieldName == 'plugin_id')
+			if ($lowercaseFieldName === 'plugin_id')
 			{
 				$this->applyPluginsField($model, $headerSet, $fieldSet, $fieldName);
 
@@ -176,13 +176,13 @@ class BrowseErector extends BaseErector implements ErectorInterface
 			}
 
 			// asset_id => Rules (not applicable here)
-			if ($lowercaseFieldName == 'asset_id')
+			if ($lowercaseFieldName === 'asset_id')
 			{
 				continue;
 			}
 
 			// session_handler => SessionHandler
-			if ($lowercaseFieldName == 'session_handler')
+			if ($lowercaseFieldName === 'session_handler')
 			{
 				$this->applySessionHandlerField($model, $headerSet, $fieldSet, $fieldName);
 
@@ -232,7 +232,7 @@ class BrowseErector extends BaseErector implements ErectorInterface
 			// Special handling for myComponent_whatever_id fields
 			$myComponentPrefix = $this->builder->getContainer()->bareComponentName . '_';
 
-			if ((strpos($fieldName, $myComponentPrefix) === 0) && (substr($fieldName, -3) == '_id'))
+			if ((strpos($fieldName, $myComponentPrefix) === 0) && (substr($fieldName, -3) === '_id'))
 			{
 				$parts = explode('_', $fieldName);
 				array_pop($parts);

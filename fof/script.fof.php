@@ -90,9 +90,9 @@ class lib_fof30InstallerScript
 		}
 
 		// In case of an update, discovery etc I need to check if I am an update
-		if (($type != 'install') && !$this->amIAnUpdate($parent))
+		if (($type !== 'install') && !$this->amIAnUpdate($parent))
 		{
-			$msg = "<p>You have a newer version of FOF installed. If you want to downgrade please uninstall FOF and install the older version.</p>";
+			$msg = '<p>You have a newer version of FOF installed. If you want to downgrade please uninstall FOF and install the older version.</p>';
 
 			JLog::add($msg, JLog::WARNING, 'jerror');
 

@@ -418,7 +418,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndunless($expression)
 	{
-		return "<?php endif; ?>";
+		return '<?php endif; ?>';
 	}
 
 	/**
@@ -446,7 +446,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndRepeatable($expression)
 	{
-		return "<?php }; ?>";
+		return '<?php }; ?>';
 	}
 
 	/**
@@ -507,7 +507,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileElse($expression)
 	{
-		return "<?php else: ?>";
+		return '<?php else: ?>';
 	}
 
 	/**
@@ -599,7 +599,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndwhile($expression)
 	{
-		return "<?php endwhile; ?>";
+		return '<?php endwhile; ?>';
 	}
 
 	/**
@@ -610,7 +610,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndfor($expression)
 	{
-		return "<?php endfor; ?>";
+		return '<?php endfor; ?>';
 	}
 
 	/**
@@ -621,7 +621,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndforeach($expression)
 	{
-		return "<?php endforeach; ?>";
+		return '<?php endforeach; ?>';
 	}
 
 	/**
@@ -632,7 +632,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndif($expression)
 	{
-		return "<?php endif; ?>";
+		return '<?php endif; ?>';
 	}
 
 	/**
@@ -643,7 +643,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEndforelse($expression)
 	{
-		return "<?php endif; ?>";
+		return '<?php endif; ?>';
 	}
 
 	/**

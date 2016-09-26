@@ -146,7 +146,7 @@ class Timezone extends \JFormFieldTimezone implements FieldInterface
 
 		$selected = GroupedList::getOptionName($this->getGroups(), $this->value);
 
-		if (is_null($selected))
+		if (null === $selected)
 		{
 			$selected = array(
 				'group'	 => '',

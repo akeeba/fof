@@ -54,7 +54,7 @@ class Configuration
 	{
 		static $domains = null;
 
-		if (is_null($domains))
+		if (null === $domains)
 		{
 			$domains = $this->getDomains();
 		}
@@ -215,7 +215,7 @@ class Configuration
 				{
 					$domain = basename($file, '.php');
 
-					if ($domain == 'DomainInterface')
+					if ($domain === 'DomainInterface')
 					{
 						continue;
 					}

@@ -61,7 +61,7 @@ class ViewStub extends View
     {
         if(isset($this->methods['getName']))
         {
-            if($this->methods['getName'] == 'parent')
+            if($this->methods['getName'] === 'parent')
             {
                 return parent::getName();
             }

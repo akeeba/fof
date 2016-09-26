@@ -28,9 +28,9 @@ class Joomla extends Classic
 
 	public $breakSelectors = true;
 
-	public $assignSeparator = ": ";
+	public $assignSeparator = ': ';
 
-	public $selectorSeparator = ",";
+	public $selectorSeparator = ',';
 
 	public $indentChar = "\t";
 }

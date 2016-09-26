@@ -145,7 +145,7 @@ class Calendar extends \JFormFieldCalendar implements FieldInterface
 		}
 
 		// Handle the special case for "now".
-		if (strtoupper($this->value) == 'NOW')
+		if (strtoupper($this->value) === 'NOW')
 		{
 			$this->value = strftime($format);
 		}
@@ -183,7 +183,7 @@ class Calendar extends \JFormFieldCalendar implements FieldInterface
 				break;
 		}
 
-		if ($display == 'static')
+		if ($display === 'static')
 		{
 			// Build the attributes array.
 			$attributes = array();

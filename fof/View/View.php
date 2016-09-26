@@ -285,7 +285,7 @@ class View
 	public function __get($name)
 	{
 		// Handle $this->input
-		if ($name == 'input')
+		if ($name === 'input')
 		{
 			return $this->container->input;
 		}
@@ -424,7 +424,7 @@ class View
 	public function get($property, $default = null, $modelName = null)
 	{
 		// If $model is null we use the default model
-		if (is_null($modelName))
+		if (null === $modelName)
 		{
 			$model = $this->defaultModel;
 		}
@@ -451,7 +451,7 @@ class View
 			{
 				$result = $this->modelInstances[$model]->$property();
 
-				if (is_null($result))
+				if (null === $result)
 				{
 					return $default;
 				}
@@ -609,7 +609,7 @@ class View
 	{
 		$previous = $this->layout;
 
-		if (is_null($layout))
+		if (null === $layout)
 		{
 			$layout = 'default';
 		}
@@ -726,7 +726,7 @@ class View
 
 		$response = isset($callback) ? $callback($this, $contents) : null;
 
-		if (!is_null($response))
+		if (null !== $response)
 		{
 			$contents = $response;
 		}
@@ -978,12 +978,12 @@ class View
 	protected function evaluateTemplate(array &$forceParams)
 	{
 		// If the engine returned raw content, return the raw content immediately
-		if ($this->_tempFilePath['type'] == 'raw')
+		if ($this->_tempFilePath['type'] === 'raw')
 		{
 			return $this->_tempFilePath['content'];
 		}
 
-		if (substr($this->_tempFilePath['content'], 0, 4) == 'raw|')
+		if (substr($this->_tempFilePath['content'], 0, 4) === 'raw|')
 		{
 			return substr($this->_tempFilePath['content'], 4);
 		}
@@ -1222,7 +1222,7 @@ class View
 		// If we have an "on" prefix for the event (e.g. onFooBar) remove it and stash it for later.
 		$prefix = '';
 
-		if (substr($event, 0, 2) == 'on')
+		if (substr($event, 0, 2) === 'on')
 		{
 			$prefix = 'on';
 			$event = substr($event, 2);
@@ -1347,7 +1347,7 @@ class View
 	public function addJavascriptFile($uri, $version = null, $type = 'text/javascript', $defer = false, $async = false)
 	{
 		// Add an automatic version if $version is null. For no version parameter pass an empty string to $version.
-		if (is_null($version))
+		if (null === $version)
 		{
 			$version = $this->container->mediaVersion;
 		}
@@ -1386,7 +1386,7 @@ class View
 	public function addCssFile($uri, $version = null, $type = 'text/css', $media = null, $attribs = array())
 	{
 		// Add an automatic version if $version is null. For no version parameter pass an empty string to $version.
-		if (is_null($version))
+		if (null === $version)
 		{
 			$version = $this->container->mediaVersion;
 		}
@@ -1432,7 +1432,7 @@ class View
 	public function addLess($uri, $cssUri, $version = null, $type = 'text/css', $media = null, $attribs = array())
 	{
 		// Add an automatic version if $version is null. For no version parameter pass an empty string to $version.
-		if (is_null($version))
+		if (null === $version)
 		{
 			$version = $this->container->mediaVersion;
 		}

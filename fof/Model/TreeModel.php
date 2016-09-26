@@ -1267,7 +1267,7 @@ class TreeModel extends DataModel
 	        throw new TreeInvalidLftRgtCurrent;
         }
 
-		if (is_null($this->treeDepth))
+		if (null === $this->treeDepth)
 		{
 			$db = $this->getDbo();
 
@@ -1828,7 +1828,7 @@ class TreeModel extends DataModel
 			}
 
 			// If the above method didn't work, get all roots and select the one with the appropriate lft/rgt values
-			if (is_null($this->treeRoot))
+			if (null === $this->treeRoot)
 			{
 				// Find the node with depth = 0, lft < our lft and rgt > our right. That's our root node.
 				$query = $db->getQuery(true)
@@ -2155,7 +2155,7 @@ class TreeModel extends DataModel
 		$pathComponents = array();
 
 		// Handle paths with (no root slug provided) and without (root slug provided) a leading slash
-		$currentLevel = (substr($path, 0, 1) == '/') ? 0 : -1;
+		$currentLevel = (substr($path, 0, 1) === '/') ? 0 : -1;
 		$maxLevel     = count($pathParts) + $currentLevel;
 
 		// Initialise the path results array

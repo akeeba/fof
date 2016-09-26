@@ -155,7 +155,7 @@ class Container extends ContainerBase
 		{
 			$bareComponent = $component;
 
-			if (substr($component, 0, 4) == 'com_')
+			if (substr($component, 0, 4) === 'com_')
 			{
 				$bareComponent = substr($component, 4);
 			}
@@ -182,7 +182,7 @@ class Container extends ContainerBase
 			$backEndPath = $values['backEndPath'];
 		}
 
-		$thisPath = ($section == 'admin') ? $backEndPath : $frontEndPath;
+		$thisPath = ($section === 'admin') ? $backEndPath : $frontEndPath;
 
 		// Get the namespaces for the front-end and back-end parts of the component
 		$frontEndNamespace = '\\' . $namespace . '\\Site\\';
@@ -210,7 +210,7 @@ class Container extends ContainerBase
 		}
 
 		// Get the Container class name
-		$classNamespace = ($section == 'admin') ? $backEndNamespace : $frontEndNamespace;
+		$classNamespace = ($section === 'admin') ? $backEndNamespace : $frontEndNamespace;
 		$class = $classNamespace . 'Container';
 
 		// Get the values overrides from fof.xml
@@ -253,9 +253,7 @@ class Container extends ContainerBase
 			$values['mediaVersion'] = $mediaVersion;
 		}
 
-		unset($appConfig);
-		unset($tmpConfig);
-		unset($tmpContainer);
+		unset($appConfig, $tmpConfig, $tmpContainer);
 
 		if (class_exists($class, true))
 		{
@@ -548,7 +546,7 @@ class Container extends ContainerBase
 				$filesystem     = $c->filesystem;
 
 				// Try loading the stock renderers shipped with F0F
-				$path = dirname(__FILE__) . '/../Render/';
+				$path = __DIR__ . '/../Render/';
 				$renderFiles = $filesystem->folderFiles($path, '.php');
 				$renderer = null;
 				$priority = 0;
@@ -557,12 +555,12 @@ class Container extends ContainerBase
 				{
 					foreach ($renderFiles as $filename)
 					{
-						if ($filename == 'RenderBase.php')
+						if ($filename === 'RenderBase.php')
 						{
 							continue;
 						}
 
-						if ($filename == 'RenderInterface.php')
+						if ($filename === 'RenderInterface.php')
 						{
 							continue;
 						}

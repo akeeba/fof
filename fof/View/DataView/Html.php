@@ -40,7 +40,7 @@ class Html extends Raw implements DataViewInterface
 			$toolbar->renderToolbar($view, $task);
 		}
 
-		if ($platform->isFrontend() && $this->setFrontendPageTitle)
+		if ($this->setFrontendPageTitle && $platform->isFrontend())
 		{
 			$this->setPageTitle();
 		}

@@ -38,8 +38,6 @@ class TransparentAuthenticationFactory extends BaseFactory
 			$className = '\\FOF30\\TransparentAuthentication\\TransparentAuthentication';
 		}
 
-		$dispatcher = new $className($this->container, $config);
-
-		return $dispatcher;
+		return new $className($this->container, $config);
 	}
 }

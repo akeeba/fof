@@ -135,7 +135,7 @@ class GroupedButton extends \JFormFieldText implements FieldInterface
 
 			foreach ($option->attributes() as $name => $value)
 			{
-				if (!is_null($value))
+				if (null !== $value)
 				{
 					$renderedAttributes[] = $name . '="' . htmlentities($value) . '"';
 				}

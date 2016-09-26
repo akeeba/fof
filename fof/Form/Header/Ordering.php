@@ -24,11 +24,11 @@ class Ordering extends Field
 	 */
 	protected function getHeader()
 	{
-		$sortable = ($this->element['sortable'] != 'false');
+		$sortable = ($this->element['sortable'] !== 'false');
 
 		$dnd = isset($this->element['dragndrop']) ? (string) $this->element['dragndrop'] : 'notbroken';
 
-		if (strtolower($dnd) == 'notbroken')
+		if (strtolower($dnd) === 'notbroken')
 		{
 			$dnd = !version_compare(JVERSION, '3.5.0', 'ge');
 		}
@@ -61,7 +61,7 @@ class Ordering extends Field
 			'JGRID_HEADING_ORDERING'
 		);
 
-		$ordering = $view->getLists()->order == 'ordering';
+		$ordering = $view->getLists()->order === 'ordering';
 
 		// Joomla! 3.5 and later: drag and drop reordering is broken when the ordering field is not hidden
 		// because some idiot submitted that code and some moron committed it. I tried to file a PR to fix

@@ -26,13 +26,13 @@ class Compressed extends Classic
 {
 	public $disableSingle = true;
 
-	public $open = "{";
+	public $open = '{';
 
-	public $selectorSeparator = ",";
+	public $selectorSeparator = ',';
 
-	public $assignSeparator = ":";
+	public $assignSeparator = ':';
 
-	public $break = "";
+	public $break = '';
 
 	public $compressColors = true;
 
@@ -45,6 +45,6 @@ class Compressed extends Classic
 	 */
 	public function indentStr($n = 0)
 	{
-		return "";
+		return '';
 	}
 }

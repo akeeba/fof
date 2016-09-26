@@ -28,7 +28,7 @@ class Lessjs
 
 	public $breakSelectors = true;
 
-	public $assignSeparator = ": ";
+	public $assignSeparator = ': ';
 
-	public $selectorSeparator = ",";
+	public $selectorSeparator = ',';
 }

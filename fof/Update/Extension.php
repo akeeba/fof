@@ -52,7 +52,7 @@ class Extension
 		}
 
 		// Sanity check
-		if (($xml->getName() != 'updates'))
+		if (($xml->getName() !== 'updates'))
 		{
 			unset($xml);
 
@@ -64,7 +64,7 @@ class Extension
 		foreach ($xml->children() as $update)
 		{
 			// Sanity check
-			if ($update->getName() != 'update')
+			if ($update->getName() !== 'update')
 			{
 				continue;
 			}
