@@ -24,21 +24,21 @@ defined('_JEXEC') or die;
  */
 class Classic
 {
-	public $indentChar			 = "  ";
+	public $indentChar			 = '  ';
 
 	public $break				 = "\n";
 
-	public $open				 = " {";
+	public $open				 = ' {';
 
-	public $close				 = "}";
+	public $close				 = '}';
 
-	public $selectorSeparator	 = ", ";
+	public $selectorSeparator	 = ', ';
 
-	public $assignSeparator	 = ":";
+	public $assignSeparator	 = ':';
 
-	public $openSingle			 = " { ";
+	public $openSingle			 = ' { ';
 
-	public $closeSingle		 = " }";
+	public $closeSingle		 = ' }';
 
 	public $disableSingle		 = false;
 
@@ -76,7 +76,7 @@ class Classic
 	 */
 	public function property($name, $value)
 	{
-		return $name . $this->assignSeparator . $value . ";";
+		return $name . $this->assignSeparator . $value . ';';
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Classic
 		$inner	 = $pre	 = $this->indentStr();
 
 		$isSingle = !$this->disableSingle &&
-			is_null($block->type) && count($block->lines) == 1;
+			null === $block->type && count($block->lines) == 1;
 
 		if (!empty($block->selectors))
 		{
@@ -142,7 +142,7 @@ class Classic
 			if ($isSingle)
 			{
 				echo $this->openSingle;
-				$inner = "";
+				$inner = '';
 			}
 			else
 			{

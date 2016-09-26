@@ -158,8 +158,8 @@ class Curl extends AbstractAdapter implements DownloadInterface
 
 		if ($data)
 		{
-			$content_length = "unknown";
-			$status = "unknown";
+			$content_length = 'unknown';
+			$status = 'unknown';
 			$redirection = null;
 
 			if (preg_match( "/^HTTP\/1\.[01] (\d\d\d)/", $data, $matches))
@@ -172,7 +172,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 				$content_length = (int)$matches[1];
 			}
 
-			if (preg_match( "/Location: (.*)/", $data, $matches))
+			if (preg_match('/Location: (.*)/', $data, $matches))
 			{
 				$redirection = (int)$matches[1];
 			}
@@ -213,7 +213,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 			return $strlen;
 		}
 
-		if (substr($data, 0, 4) == 'HTTP')
+		if (substr($data, 0, 4) === 'HTTP')
 		{
 			return $strlen;
 		}

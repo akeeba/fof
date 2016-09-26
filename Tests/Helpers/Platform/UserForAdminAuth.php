@@ -14,7 +14,7 @@ class UserForAdminAuth extends \JUser
 
 	public function authorise($action, $assetname = null)
 	{
-		$signature = $action . (is_null($assetname) ? '' : ('#' . $assetname));
+		$signature = $action . (null === $assetname ? '' : ('#' . $assetname));
 
 		return in_array($signature, $this->allowedAuths);
 	}

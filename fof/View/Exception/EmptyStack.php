@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  */
 class EmptyStack extends \RuntimeException
 {
-	public function __construct($message = "", $code = 500, Exception $previous = null)
+	public function __construct($message = '', $code = 500, Exception $previous = null)
 	{
 		$message = \JText::_('LIB_FOF_VIEW_EMPTYSECTIONSTACK');
 

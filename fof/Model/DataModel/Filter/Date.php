@@ -190,7 +190,7 @@ class Date extends Text
 		{
 			if (strlen($interval) > 2)
 			{
-				$interval = explode(" ", $interval);
+				$interval = explode(' ', $interval);
 				$sign = ($interval[0] == '-') ? '-' : '+';
 				$value = (int) substr($interval[0], 1);
 

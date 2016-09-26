@@ -38,7 +38,7 @@ class LayoutFile extends JLayoutFile
 	{
 		$filesystem = $this->container->filesystem;
 
-		if (is_null($this->fullPath) && !empty($this->layoutId))
+		if (null === $this->fullPath && !empty($this->layoutId))
 		{
 			$parts = explode('.', $this->layoutId);
 			$file  = array_pop($parts);
@@ -64,7 +64,7 @@ class LayoutFile extends JLayoutFile
 
 			reset($files);
 
-			while ((list(, $fileName) = each($files)) && is_null($this->fullPath))
+			while ((list(, $fileName) = each($files)) && null === $this->fullPath)
 			{
 				$r = $filesystem->pathFind($possiblePaths, $fileName);
 				$this->fullPath = $r === false ? null : $r;

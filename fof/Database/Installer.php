@@ -177,7 +177,7 @@ class Installer
 			/** @var SimpleXMLElement $node */
 			foreach ($action->children() as $node)
 			{
-				if ($node->getName() == 'condition')
+				if ($node->getName() === 'condition')
 				{
 					// Get the operator
 					$operator = $node->attributes()->operator ? (string)$node->attributes()->operator : 'and';
@@ -229,7 +229,7 @@ class Installer
 			// Execute queries
 			foreach ($action->children() as $node)
 			{
-				if ($node->getName() == 'query')
+				if ($node->getName() === 'query')
 				{
 					$query = (string) $node;
 
@@ -427,7 +427,7 @@ class Installer
 		}
 
 		// Make sure the file is an XML schema file
-		if ($xml->getName() != 'schema')
+		if ($xml->getName() !== 'schema')
 		{
 			$xml = null;
 
@@ -595,7 +595,7 @@ class Installer
 					$parts    = explode('_', $collation, 3);
 					$encoding = empty($parts[0]) ? '' : strtolower($parts[0]);
 
-					$condition = $encoding != 'utf8mb4';
+					$condition = $encoding !== 'utf8mb4';
 				}
 
 				break;
@@ -857,7 +857,7 @@ class Installer
 		$queryStart = substr($query, 0, 12);
 		$queryStart = strtoupper($queryStart);
 
-		if ($queryStart != 'CREATE TABLE')
+		if ($queryStart !== 'CREATE TABLE')
 		{
 			return;
 		}
@@ -911,7 +911,7 @@ class Installer
 			$parts    = explode('_', $collation, 3);
 			$encoding = empty($parts[0]) ? '' : strtolower($parts[0]);
 
-			if ($encoding != 'utf8mb4')
+			if ($encoding !== 'utf8mb4')
 			{
 				$queries = $this->db->getAlterTableCharacterSet($tableName);
 
@@ -944,7 +944,7 @@ class Installer
 		static $isMySQL = null;
 		static $cache = array();
 
-		if (is_null($isMySQL))
+		if (null === $isMySQL)
 		{
 			$driverType = $this->db->name;
 			$driverType = strtolower($driverType);
@@ -952,8 +952,8 @@ class Installer
 
 			if (
 				!strpos($driverType, 'mysql') === 0
-				&& !(substr($driverType, -5) == 'mysql')
-				&& !(substr($driverType, -6) == 'mysqli')
+				&& !(substr($driverType, -5) === 'mysql')
+				&& !(substr($driverType, -6) === 'mysqli')
 			)
 			{
 				$isMySQL = false;

@@ -33,11 +33,11 @@ defined('_JEXEC') or die;
  */
 class Less
 {
-	public static $VERSION = "v0.3.9";
+	public static $VERSION = 'v0.3.9';
 
-	protected static $TRUE = array("keyword", "true");
+	protected static $TRUE = array('keyword', 'true');
 
-	protected static $FALSE = array("keyword", "false");
+	protected static $FALSE = array('keyword', 'false');
 
 	protected $libFunctions = array();
 
@@ -77,7 +77,7 @@ class Less
 
 	protected $sourceLoc = null;
 
-	public static $defaultValue = array("keyword", "");
+	public static $defaultValue = array('keyword', '');
 
 	/**
 	 * Uniquely identify imports
@@ -97,7 +97,7 @@ class Less
 	{
 		foreach ((array) $this->importDir as $dir)
 		{
-			$full = $dir . (substr($dir, -1) != '/' ? '/' : '') . $url;
+			$full = $dir . (substr($dir, -1) !== '/' ? '/' : '') . $url;
 
 			if ($this->fileExists($file = $full . '.less') || $this->fileExists($file = $full))
 			{
@@ -165,7 +165,7 @@ class Less
 	 */
 	protected function tryImport($importPath, $parentBlock, $out)
 	{
-		if ($importPath[0] == "function" && $importPath[1] == "url")
+		if ($importPath[0] === 'function' && $importPath[1] === 'url')
 		{
 			$importPath = $this->flattenList($importPath[2]);
 		}
@@ -194,7 +194,7 @@ class Less
 
 		if ($this->importDisabled)
 		{
-			return array(false, "/* import disabled */");
+			return array(false, '/* import disabled */');
 		}
 
 		$this->addParsedFile($realPath);
@@ -204,7 +204,7 @@ class Less
 		// Set the parents of all the block props
 		foreach ($root->props as $prop)
 		{
-			if ($prop[0] == "block")
+			if ($prop[0] === 'block')
 			{
 				$prop[1]->parent = $parentBlock;
 			}
@@ -230,7 +230,7 @@ class Less
 		}
 
 		$pi = pathinfo($realPath);
-		$dir = $pi["dirname"];
+		$dir = $pi['dirname'];
 
 		list($top, $bottom) = $this->sortProps($root->props, true);
 		$this->compileImportedProps($top, $parentBlock, $out, $parser, $dir);
@@ -296,21 +296,21 @@ class Less
 	{
 		switch ($block->type)
 		{
-			case "root":
+			case 'root':
 				$this->compileRoot($block);
 				break;
 			case null:
 				$this->compileCSSBlock($block);
 				break;
-			case "media":
+			case 'media':
 				$this->compileMedia($block);
 				break;
-			case "directive":
-				$name = "@" . $block->name;
+			case 'directive':
+				$name = '@' . $block->name;
 
 				if (!empty($block->value))
 				{
-					$name .= " " . $this->compileValue($this->reduce($block->value));
+					$name .= ' ' . $this->compileValue($this->reduce($block->value));
 				}
 
 				$this->compileNestedBlock($block, array($name));
@@ -366,7 +366,7 @@ class Less
 		{
 			$orphanSelelectors = $this->findClosestSelectors();
 
-			if (!is_null($orphanSelelectors))
+			if (null !== $orphanSelelectors)
 			{
 				$orphan = $this->makeOutputBlock(null, $orphanSelelectors);
 				$orphan->lines = $this->scope->lines;
@@ -390,7 +390,7 @@ class Less
 	{
 		while (!empty($scope->parent))
 		{
-			if (!empty($scope->type) && $scope->type != "media")
+			if (!empty($scope->type) && $scope->type !== 'media')
 			{
 				break;
 			}
@@ -470,7 +470,7 @@ class Less
 		{
 			switch ($prop[0])
 			{
-				case "assign":
+				case 'assign':
 					if (isset($prop[1][0]) && $prop[1][0] == $this->vPrefix)
 					{
 						$vars[] = $prop;
@@ -480,11 +480,11 @@ class Less
 						$other[] = $prop;
 					}
 					break;
-				case "import":
+				case 'import':
 					$id        = self::$nextImportId++;
 					$prop[]    = $id;
 					$imports[] = $prop;
-					$other[]   = array("import_mixin", $id);
+					$other[]   = array('import_mixin', $id);
 					break;
 				default:
 					$other[] = $prop;
@@ -520,21 +520,21 @@ class Less
 			{
 				switch ($q[0])
 				{
-					case "mediaType":
-						$parts[] = implode(" ", array_slice($q, 1));
+					case 'mediaType':
+						$parts[] = implode(' ', array_slice($q, 1));
 						break;
-					case "mediaExp":
+					case 'mediaExp':
 						if (isset($q[2]))
 						{
 							$parts[] = "($q[1]: " .
-								$this->compileValue($this->reduce($q[2])) . ")";
+								$this->compileValue($this->reduce($q[2])) . ')';
 						}
 						else
 						{
 							$parts[] = "($q[1])";
 						}
 						break;
-					case "variable":
+					case 'variable':
 						$parts[] = $this->compileValue($this->reduce($q));
 						break;
 				}
@@ -542,15 +542,15 @@ class Less
 
 			if (count($parts) > 0)
 			{
-				$compiledQueries[] = implode(" and ", $parts);
+				$compiledQueries[] = implode(' and ', $parts);
 			}
 		}
 
-		$out = "@media";
+		$out = '@media';
 
 		if (!empty($parts))
 		{
-			$out .= " " .
+			$out .= ' ' .
 				implode($this->formatter->selectorSeparator, $compiledQueries);
 		}
 
@@ -567,9 +567,10 @@ class Less
 	 */
 	protected function multiplyMedia($env, $childQueries = null)
 	{
-		if (is_null($env)
+		if (null === $env
 			|| !empty($env->block->type)
-			&& $env->block->type != "media")
+			&& $env->block->type !== 'media'
+		)
 		{
 			return $childQueries;
 		}
@@ -583,7 +584,7 @@ class Less
 		$out = array();
 		$queries = $env->block->queries;
 
-		if (is_null($childQueries))
+		if (null === $childQueries)
 		{
 			$out = $queries;
 		}
@@ -662,12 +663,12 @@ class Less
 
 		$parentSelectors = $this->findClosestSelectors();
 
-		if (is_null($parentSelectors))
+		if (null === $parentSelectors)
 		{
 			// Kill parent reference in top level selector
 			foreach ($selectors as &$s)
 			{
-				$this->expandParentSelectors($s, "");
+				$this->expandParentSelectors($s, '');
 			}
 
 			return $selectors;
@@ -763,7 +764,7 @@ class Less
 
 					$negate = false;
 
-					if ($guard[0] == "negate")
+					if ($guard[0] === 'negate')
 					{
 						$guard = $guard[1];
 						$negate = true;
@@ -816,20 +817,20 @@ class Less
 		{
 			switch ($arg[0])
 			{
-				case "lit":
+				case 'lit':
 					if (empty($callingArgs[$i]) || !$this->eq($arg[1], $callingArgs[$i]))
 					{
 						return false;
 					}
 					break;
-				case "arg":
+				case 'arg':
 					// No arg and no default value
 					if (!isset($callingArgs[$i]) && !isset($arg[2]))
 					{
 						return false;
 					}
 					break;
-				case "rest":
+				case 'rest':
 					// Rest can be empty
 					$i--;
 					break 2;
@@ -922,7 +923,7 @@ class Less
 				{
 					$subMatches = $this->findBlocks($subBlock, array_slice($path, 1), $args, $seen);
 
-					if (!is_null($subMatches))
+					if (null !== $subMatches)
 					{
 						foreach ($subMatches as $sm)
 						{
@@ -959,9 +960,9 @@ class Less
 
 		foreach ($args as $a)
 		{
-			if ($a[0] == "arg")
+			if ($a[0] === 'arg')
 			{
-				if ($i < count($values) && !is_null($values[$i]))
+				if ($i < count($values) && null !== $values[$i])
 				{
 					$value = $values[$i];
 				}
@@ -985,10 +986,10 @@ class Less
 		// Check for a rest
 		$last = end($args);
 
-		if ($last[0] == "rest")
+		if ($last[0] === 'rest')
 		{
 			$rest = array_slice($values, count($args) - 1);
-			$this->set($last[1], $this->reduce(array("list", " ", $rest)));
+			$this->set($last[1], $this->reduce(array('list', ' ', $rest)));
 		}
 
 		$this->env->arguments = $assignedValues;
@@ -1029,7 +1030,7 @@ class Less
 			case 'mixin':
 				list(, $path, $args, $suffix) = $prop;
 
-				$args = array_map(array($this, "reduce"), (array) $args);
+				$args = array_map(array($this, 'reduce'), (array) $args);
 				$mixins = $this->findBlocks($block, $path, $args);
 
 				if ($mixins === null)
@@ -1068,7 +1069,7 @@ class Less
 					foreach ($this->sortProps($mixin->props) as $subProp)
 					{
 						if ($suffix !== null
-							&& $subProp[0] == "assign"
+							&& $subProp[0] === 'assign'
 							&& is_string($subProp[1])
 							&& $subProp[1]{0} != $this->vPrefix)
 						{
@@ -1098,14 +1099,14 @@ class Less
 			case 'raw':
 				$out->lines[] = $prop[1];
 				break;
-			case "directive":
+			case 'directive':
 				list(, $name, $value) = $prop;
 				$out->lines[] = "@$name " . $this->compileValue($this->reduce($value)) . ';';
 				break;
-			case "comment":
+			case 'comment':
 				$out->lines[] = $prop[1];
 				break;
-			case "import";
+			case 'import';
 				list(, $importPath, $importId) = $prop;
 				$importPath = $this->reduce($importPath);
 
@@ -1117,11 +1118,11 @@ class Less
 				$result = $this->tryImport($importPath, $block, $out);
 
 				$this->env->imports[$importId] = $result === false ?
-					array(false, "@import " . $this->compileValue($importPath) . ";") :
+					array(false, '@import ' . $this->compileValue($importPath) . ';') :
 					$result;
 
 				break;
-			case "import_mixin":
+			case 'import_mixin':
 				list(, $importId) = $prop;
 				$import = $this->env->imports[$importId];
 
@@ -1217,7 +1218,7 @@ class Less
 					return 'rgba(' . $r . ',' . $g . ',' . $b . ',' . $value[4] . ')';
 				}
 
-				$h = sprintf("#%02x%02x%02x", $r, $g, $b);
+				$h = sprintf('#%02x%02x%02x', $r, $g, $b);
 
 				if (!empty($this->formatter->compressColors))
 				{
@@ -1250,7 +1251,7 @@ class Less
 	 */
 	protected function lib_isnumber($value)
 	{
-		return $this->toBool($value[0] == "number");
+		return $this->toBool($value[0] === 'number');
 	}
 
 	/**
@@ -1262,7 +1263,7 @@ class Less
 	 */
 	protected function lib_isstring($value)
 	{
-		return $this->toBool($value[0] == "string");
+		return $this->toBool($value[0] === 'string');
 	}
 
 	/**
@@ -1286,7 +1287,7 @@ class Less
 	 */
 	protected function lib_iskeyword($value)
 	{
-		return $this->toBool($value[0] == "keyword");
+		return $this->toBool($value[0] === 'keyword');
 	}
 
 	/**
@@ -1298,7 +1299,7 @@ class Less
 	 */
 	protected function lib_ispixel($value)
 	{
-		return $this->toBool($value[0] == "number" && $value[2] == "px");
+		return $this->toBool($value[0] === 'number' && $value[2] === 'px');
 	}
 
 	/**
@@ -1310,7 +1311,7 @@ class Less
 	 */
 	protected function lib_ispercentage($value)
 	{
-		return $this->toBool($value[0] == "number" && $value[2] == "%");
+		return $this->toBool($value[0] === 'number' && $value[2] === '%');
 	}
 
 	/**
@@ -1322,7 +1323,7 @@ class Less
 	 */
 	protected function lib_isem($value)
 	{
-		return $this->toBool($value[0] == "number" && $value[2] == "em");
+		return $this->toBool($value[0] === 'number' && $value[2] === 'em');
 	}
 
 	/**
@@ -1334,7 +1335,7 @@ class Less
 	 */
 	protected function lib_isrem($value)
 	{
-		return $this->toBool($value[0] == "number" && $value[2] == "rem");
+		return $this->toBool($value[0] === 'number' && $value[2] === 'rem');
 	}
 
 	/**
@@ -1348,12 +1349,12 @@ class Less
 	{
 		$color = $this->coerceColor($color);
 
-		if (is_null($color))
+		if (null === $color)
 		{
-			$this->throwError("color expected for rgbahex");
+			$this->throwError('color expected for rgbahex');
 		}
 
-		return sprintf("#%02x%02x%02x%02x", isset($color[4]) ? $color[4] * 255 : 255, $color[1], $color[2], $color[3]);
+		return sprintf('#%02x%02x%02x%02x', isset($color[4]) ? $color[4] * 255 : 255, $color[1], $color[2], $color[3]);
 	}
 
 	/**
@@ -1379,7 +1380,7 @@ class Less
 	{
 		switch ($arg[0])
 		{
-			case "list":
+			case 'list':
 				$items = $arg[2];
 
 				if (isset($items[0]))
@@ -1389,16 +1390,16 @@ class Less
 
 				return self::$defaultValue;
 
-			case "string":
-				$arg[1] = "";
+			case 'string':
+				$arg[1] = '';
 
 				return $arg;
 
-			case "keyword":
+			case 'keyword':
 				return $arg;
 
 			default:
-				return array("keyword", $this->compileValue($arg));
+				return array('keyword', $this->compileValue($arg));
 		}
 	}
 
@@ -1411,7 +1412,7 @@ class Less
 	 */
 	protected function lib__sprintf($args)
 	{
-		if ($args[0] != "list")
+		if ($args[0] !== 'list')
 		{
 			return $args;
 		}
@@ -1441,9 +1442,9 @@ class Less
 			}
 		}
 
-		$d = $string[0] == "string" ? $string[1] : '"';
+		$d = $string[0] === 'string' ? $string[1] : '"';
 
-		return array("string", $d, array($template));
+		return array('string', $d, array($template));
 	}
 
 	/**
@@ -1457,7 +1458,7 @@ class Less
 	{
 		$value = $this->assertNumber($arg);
 
-		return array("number", floor($value), $arg[2]);
+		return array('number', floor($value), $arg[2]);
 	}
 
 	/**
@@ -1471,7 +1472,7 @@ class Less
 	{
 		$value = $this->assertNumber($arg);
 
-		return array("number", ceil($value), $arg[2]);
+		return array('number', ceil($value), $arg[2]);
 	}
 
 	/**
@@ -1485,7 +1486,7 @@ class Less
 	{
 		$value = $this->assertNumber($arg);
 
-		return array("number", round($value), $arg[2]);
+		return array('number', round($value), $arg[2]);
 	}
 
 	/**
@@ -1497,14 +1498,14 @@ class Less
 	 */
 	protected function lib_unit($arg)
 	{
-		if ($arg[0] == "list")
+		if ($arg[0] === 'list')
 		{
 			list($number, $newUnit) = $arg[2];
-			return array("number", $this->assertNumber($number), $this->compileValue($this->lib_e($newUnit)));
+			return array('number', $this->assertNumber($number), $this->compileValue($this->lib_e($newUnit)));
 		}
 		else
 		{
-			return array("number", $this->assertNumber($arg), "");
+			return array('number', $this->assertNumber($arg), '');
 		}
 	}
 
@@ -1518,14 +1519,14 @@ class Less
 	 */
 	protected function colorArgs($args)
 	{
-		if ($args[0] != 'list' || count($args[2]) < 2)
+		if ($args[0] !== 'list' || count($args[2]) < 2)
 		{
 			return array(array('color', 0, 0, 0), 0);
 		}
 
 		list($color, $delta) = $args[2];
 		$color = $this->assertColor($color);
-		$delta = floatval($delta[1]);
+		$delta = (float) $delta[1];
 
 		return array($color, $delta);
 	}
@@ -1611,7 +1612,7 @@ class Less
 
 		$hsl = $this->toHSL($color);
 
-		$hsl[1] = $hsl[1] + $delta % 360;
+		$hsl[1]  += $delta % 360;
 
 		if ($hsl[1] < 0)
 		{
@@ -1703,7 +1704,7 @@ class Less
 	 */
 	protected function lib_alpha($value)
 	{
-		if (!is_null($color = $this->coerceColor($value)))
+		if (null !== $color = $this->coerceColor($value))
 		{
 			return isset($color[4]) ? $color[4] : 1;
 		}
@@ -1735,7 +1736,7 @@ class Less
 	{
 		$num = $this->assertNumber($arg);
 
-		return array("number", $num * 100, "%");
+		return array('number', $num * 100, '%');
 	}
 
 	/**
@@ -1749,9 +1750,9 @@ class Less
 	 */
 	protected function lib_mix($args)
 	{
-		if ($args[0] != "list" || count($args[2]) < 3)
+		if ($args[0] !== 'list' || count($args[2]) < 3)
 		{
-			$this->throwError("mix expects (color1, color2, weight)");
+			$this->throwError('mix expects (color1, color2, weight)');
 		}
 
 		list($first, $second, $weight) = $args[2];
@@ -1791,7 +1792,7 @@ class Less
 	 */
 	protected function lib_contrast($args)
 	{
-		if ($args[0] != 'list' || count($args[2]) < 3)
+		if ($args[0] !== 'list' || count($args[2]) < 3)
 		{
 			return array(array('color', 0, 0, 0), 0);
 		}
@@ -1819,11 +1820,11 @@ class Less
 	 *
 	 * @return  type
 	 */
-	protected function assertColor($value, $error = "expected color value")
+	protected function assertColor($value, $error = 'expected color value')
 	{
 		$color = $this->coerceColor($value);
 
-		if (is_null($color))
+		if (null === $color)
 		{
 			$this->throwError($error);
 		}
@@ -1839,9 +1840,9 @@ class Less
 	 *
 	 * @return  type
 	 */
-	protected function assertNumber($value, $error = "expecting number")
+	protected function assertNumber($value, $error = 'expecting number')
 	{
-		if ($value[0] == "number")
+		if ($value[0] === 'number')
 		{
 			return $value[1];
 		}
@@ -1858,7 +1859,7 @@ class Less
 	 */
 	protected function toHSL($color)
 	{
-		if ($color[0] == 'hsl')
+		if ($color[0] === 'hsl')
 		{
 			return $color;
 		}
@@ -2028,7 +2029,7 @@ class Less
 	{
 		$fname = $func[1];
 
-		if ($func[2][0] != 'list')
+		if ($func[2][0] !== 'list')
 		{
 			// Need a list of arguments
 			return false;
@@ -2036,7 +2037,7 @@ class Less
 
 		$rawComponents = $func[2][2];
 
-		if ($fname == 'hsl' || $fname == 'hsla')
+		if ($fname === 'hsl' || $fname === 'hsla')
 		{
 			$hsl = array('hsl');
 			$i = 0;
@@ -2044,7 +2045,7 @@ class Less
 			foreach ($rawComponents as $c)
 			{
 				$val = $this->reduce($c);
-				$val = isset($val[1]) ? floatval($val[1]) : 0;
+				$val = isset($val[1]) ? (float) $val[1] : 0;
 
 				if ($i == 0)
 				{
@@ -2070,7 +2071,7 @@ class Less
 
 			return $this->toRGB($hsl);
 		}
-		elseif ($fname == 'rgb' || $fname == 'rgba')
+		elseif ($fname === 'rgb' || $fname === 'rgba')
 		{
 			$components = array();
 			$i = 1;
@@ -2081,24 +2082,24 @@ class Less
 
 				if ($i < 4)
 				{
-					if ($c[0] == "number" && $c[2] == "%")
+					if ($c[0] === 'number' && $c[2] === '%')
 					{
 						$components[] = 255 * ($c[1] / 100);
 					}
 					else
 					{
-						$components[] = floatval($c[1]);
+						$components[] = (float) $c[1];
 					}
 				}
 				elseif ($i == 4)
 				{
-					if ($c[0] == "number" && $c[2] == "%")
+					if ($c[0] === 'number' && $c[2] === '%')
 					{
 						$components[] = 1.0 * ($c[1] / 100);
 					}
 					else
 					{
-						$components[] = floatval($c[1]);
+						$components[] = (float) $c[1];
 					}
 				}
 				else
@@ -2134,10 +2135,10 @@ class Less
 	{
 		switch ($value[0])
 		{
-			case "interpolate":
+			case 'interpolate':
 				$reduced = $this->reduce($value[1]);
 				$var     = $this->compileValue($reduced);
-				$res     = $this->reduce(array("variable", $this->vPrefix . $var));
+				$res     = $this->reduce(array('variable', $this->vPrefix . $var));
 
 				if (empty($value[2]))
 				{
@@ -2145,7 +2146,7 @@ class Less
 				}
 
 				return $res;
-			case "variable":
+			case 'variable':
 				$key = $value[1];
 				if (is_array($key))
 				{
@@ -2165,21 +2166,21 @@ class Less
 				$seen[$key] = false;
 
 				return $out;
-			case "list":
+			case 'list':
 				foreach ($value[2] as &$item)
 				{
 					$item = $this->reduce($item, $forExpression);
 				}
 
 				return $value;
-			case "expression":
+			case 'expression':
 				return $this->evaluate($value);
-			case "string":
+			case 'string':
 				foreach ($value[2] as &$part)
 				{
 					if (is_array($part))
 					{
-						$strip = $part[0] == "variable";
+						$strip = $part[0] === 'variable';
 						$part = $this->reduce($part);
 
 						if ($strip)
@@ -2190,11 +2191,11 @@ class Less
 				}
 
 				return $value;
-			case "escape":
+			case 'escape':
 				list(, $inner) = $value;
 
 				return $this->lib_e($this->reduce($inner));
-			case "function":
+			case 'function':
 				$color = $this->funcToColor($value);
 
 				if ($color)
@@ -2204,9 +2205,9 @@ class Less
 
 				list(, $name, $args) = $value;
 
-				if ($name == "%")
+				if ($name === '%')
 				{
-					$name = "_sprintf";
+					$name = '_sprintf';
 				}
 
 				$f = isset($this->libFunctions[$name]) ?
@@ -2214,24 +2215,28 @@ class Less
 
 				if (is_callable($f))
 				{
-					if ($args[0] == 'list')
+					if ($args[0] === 'list')
 					{
 						$args = self::compressList($args[2], $args[1]);
 					}
 
 					$ret = call_user_func($f, $this->reduce($args, true), $this);
 
-					if (is_null($ret))
+					if (null === $ret)
 					{
-						return array("string", "", array(
-							$name, "(", $args, ")"
+						return array(
+							'string',
+							'', array(
+							$name,
+							'(', $args,
+							')'
 						));
 					}
 
 					// Convert to a typed value if the result is a php primitive
 					if (is_numeric($ret))
 					{
-						$ret = array('number', $ret, "");
+						$ret = array('number', $ret, '');
 					}
 					elseif (!is_array($ret))
 					{
@@ -2245,37 +2250,37 @@ class Less
 				$value[2] = $this->reduce($value[2]);
 
 				return $value;
-			case "unary":
+			case 'unary':
 				list(, $op, $exp) = $value;
 				$exp = $this->reduce($exp);
 
-				if ($exp[0] == "number")
+				if ($exp[0] === 'number')
 				{
 					switch ($op)
 					{
-						case "+":
+						case '+':
 							return $exp;
-						case "-":
+						case '-':
 							$exp[1] *= -1;
 
 							return $exp;
 					}
 				}
 
-				return array("string", "", array($op, $exp));
+				return array('string', '', array($op, $exp));
 		}
 
 		if ($forExpression)
 		{
 			switch ($value[0])
 			{
-				case "keyword":
+				case 'keyword':
 					if ($color = $this->coerceColor($value))
 					{
 						return $color;
 					}
 					break;
-				case "raw_color":
+				case 'raw_color':
 					return $this->coerceColor($value);
 			}
 		}
@@ -2297,7 +2302,7 @@ class Less
 			case 'color':
 				return $value;
 			case 'raw_color':
-				$c = array("color", 0, 0, 0);
+				$c = array('color', 0, 0, 0);
 				$colorStr = substr($value[1], 1);
 				$num = hexdec($colorStr);
 				$width = strlen($colorStr) == 3 ? 16 : 256;
@@ -2342,10 +2347,10 @@ class Less
 	{
 		switch ($value[0])
 		{
-			case "string":
+			case 'string':
 				return $value;
-			case "keyword":
-				return array("string", "", array($value[1]));
+			case 'keyword':
+				return array('string', '', array($value[1]));
 		}
 
 		return null;
@@ -2360,7 +2365,7 @@ class Less
 	 */
 	protected function flattenList($value)
 	{
-		if ($value[0] == "list" && count($value[2]) == 1)
+		if ($value[0] === 'list' && count($value[2]) == 1)
 		{
 			return $this->flattenList($value[2][0]);
 		}
@@ -2415,17 +2420,17 @@ class Less
 		$rtype = $right[0];
 
 		// Operators that work on all types
-		if ($op == "and")
+		if ($op === 'and')
 		{
 			return $this->toBool($left == self::$TRUE && $right == self::$TRUE);
 		}
 
-		if ($op == "=")
+		if ($op === '=')
 		{
 			return $this->toBool($this->eq($left, $right));
 		}
 
-		if ($op == "+" && !is_null($str = $this->stringConcatenate($left, $right)))
+		if ($op == '+' && null !== $str = $this->stringConcatenate($left, $right))
 		{
 			return $str;
 		}
@@ -2437,7 +2442,7 @@ class Less
 		{
 			$out = $this->$fname($op, $left, $right);
 
-			if (!is_null($out))
+			if (null !== $out)
 			{
 				return $out;
 			}
@@ -2448,15 +2453,15 @@ class Less
 
 		if ($whiteBefore)
 		{
-			$paddedOp = " " . $paddedOp;
+			$paddedOp = ' ' . $paddedOp;
 		}
 
 		if ($whiteAfter)
 		{
-			$paddedOp .= " ";
+			$paddedOp .= ' ';
 		}
 
-		return array("string", "", array($left, $paddedOp, $right));
+		return array('string', '', array($left, $paddedOp, $right));
 	}
 
 	/**
@@ -2471,9 +2476,9 @@ class Less
 	{
 		if ($strLeft = $this->coerceString($left))
 		{
-			if ($right[0] == "string")
+			if ($right[0] === 'string')
 			{
-				$right[1] = "";
+				$right[1] = '';
 			}
 
 			$strLeft[2][] = $right;
@@ -2542,7 +2547,7 @@ class Less
 	 */
 	protected function op_color_number($op, $lft, $rgt)
 	{
-		if ($rgt[0] == '%')
+		if ($rgt[0] === '%')
 		{
 			$rgt[1] /= 100;
 		}
@@ -2610,7 +2615,7 @@ class Less
 	{
 		$color = $this->coerceColor($color);
 
-		if (is_null($color))
+		if (null === $color)
 		{
 			$this->throwError('color expected for red()');
 		}
@@ -2629,7 +2634,7 @@ class Less
 	{
 		$color = $this->coerceColor($color);
 
-		if (is_null($color))
+		if (null === $color)
 		{
 			$this->throwError('color expected for green()');
 		}
@@ -2648,7 +2653,7 @@ class Less
 	{
 		$color = $this->coerceColor($color);
 
-		if (is_null($color))
+		if (null === $color)
 		{
 			$this->throwError('color expected for blue()');
 		}
@@ -2705,7 +2710,7 @@ class Less
 				$this->throwError('parse error: unknown number operator: ' . $op);
 		}
 
-		return array("number", $value, $unit);
+		return array('number', $value, $unit);
 	}
 
 	/**
@@ -2825,7 +2830,7 @@ class Less
 		/** FIF -- END CHANGE * */
 		foreach ($args as $name => $strValue)
 		{
-			if ($name{0} != '@')
+			if ($name{0} !== '@')
 			{
 				$name = '@' . $name;
 			}
@@ -2867,7 +2872,7 @@ class Less
 	public function compile($string, $name = null)
 	{
 		$locale = setlocale(LC_NUMERIC, 0);
-		setlocale(LC_NUMERIC, "C");
+		setlocale(LC_NUMERIC, 'C');
 
 		$this->parser = $this->makeParser($name);
 		$root = $this->parser->parse($string);
@@ -2985,9 +2990,9 @@ class Less
 		{
 			$root = $in;
 		}
-		elseif (is_array($in) and isset($in['root']))
+		elseif (is_array($in) && isset($in['root']))
 		{
-			if ($force or !isset($in['files']))
+			if ($force || !isset($in['files']))
 			{
 				/**
 				 * If we are forcing a recompile or if for some reason the
@@ -2996,11 +3001,11 @@ class Less
 				 */
 				$root = $in['root'];
 			}
-			elseif (isset($in['files']) and is_array($in['files']))
+			elseif (isset($in['files']) && is_array($in['files']))
 			{
 				foreach ($in['files'] as $fname => $ftime)
 				{
-					if (!file_exists($fname) or filemtime($fname) > $ftime)
+					if (!file_exists($fname) || filemtime($fname) > $ftime)
 					{
 						/**
 						 * One of the files we knew about previously has changed
@@ -3073,7 +3078,7 @@ class Less
 		{
 			if (empty($this->_parseFile))
 			{
-				throw new exception("nothing to parse");
+				throw new exception('nothing to parse');
 			}
 
 			$out = $this->compileFile($this->_parseFile);

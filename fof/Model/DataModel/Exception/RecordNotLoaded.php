@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 class RecordNotLoaded extends BaseException
 {
-	public function __construct( $message = "", $code = 404, Exception $previous = null )
+	public function __construct($message = '', $code = 404, Exception $previous = null )
 	{
 		if (empty($message))
 		{

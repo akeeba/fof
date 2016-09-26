@@ -229,13 +229,13 @@ class Download
 
 		// Init retArray
 		$retArray = array(
-			"status"    => true,
-			"error"     => '',
-			"frag"      => $frag,
-			"totalSize" => $totalSize,
-			"doneSize"  => $doneSize,
-			"percent"   => 0,
-			"localfile"	=> $localFilename
+			'status'    => true,
+			'error'     => '',
+			'frag'      => $frag,
+			'totalSize' => $totalSize,
+			'doneSize'  => $doneSize,
+			'percent'   => 0,
+			'localfile' => $localFilename
 		);
 
 		try
@@ -389,12 +389,12 @@ class Download
 
 			// Update $retArray
 			$retArray = array(
-				"status"    => true,
-				"error"     => '',
-				"frag"      => $frag,
-				"totalSize" => $totalSize,
-				"doneSize"  => $doneSize,
-				"percent"   => $percent,
+				'status'    => true,
+				'error'     => '',
+				'frag'      => $frag,
+				'totalSize' => $totalSize,
+				'doneSize'  => $doneSize,
+				'percent'   => $percent,
 			);
 		}
 		catch (DownloadError $e)
@@ -464,7 +464,7 @@ class Download
 
 		while (($file = readdir($handle)) !== false)
 		{
-			if ($file == '.' || $file == '..')
+			if ($file === '.' || $file === '..')
 			{
 				continue;
 			}

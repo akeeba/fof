@@ -113,7 +113,7 @@ class FakeFopen extends FakeBase
 
 				foreach ($headers as $line)
 				{
-					if (substr($line, 0, 13) != 'Range: bytes=')
+					if (substr($line, 0, 13) !== 'Range: bytes=')
 					{
 						continue;
 					}

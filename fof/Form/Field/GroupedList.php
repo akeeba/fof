@@ -147,7 +147,7 @@ class GroupedList extends \JFormFieldGroupedList implements FieldInterface
 
 		$selected = self::getOptionName($this->getGroups(), $this->value);
 
-		if (is_null($selected))
+		if (null === $selected)
 		{
 			$selected = array(
 				'group'	 => '',
@@ -206,7 +206,7 @@ class GroupedList extends \JFormFieldGroupedList implements FieldInterface
 
 			$match = GenericList::getOptionName($group, $selected, $optKey, $optText, false);
 
-			if (!is_null($match))
+			if (null !== $match)
 			{
 				$ret = array(
 					'group'	 => $label,

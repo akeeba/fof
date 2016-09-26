@@ -135,7 +135,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 			for ($i = $nLines - 1; $i >= 0; $i--)
 			{
 				$line = $http_response_header[$i];
-				if (strncasecmp("HTTP", $line, 4) == 0)
+				if (strncasecmp('HTTP', $line, 4) == 0)
 				{
 					$response = explode(' ', $line);
 					$http_code = $response[1];

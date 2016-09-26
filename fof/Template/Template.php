@@ -164,7 +164,7 @@ class Template
 		$filesystem   = $this->container->filesystem;
 		$platformDirs = $this->container->platform->getPlatformBaseDirs();
 
-		if (is_null($sanityCheck))
+		if (null === $sanityCheck)
 		{
 			// Make sure the cache directory exists
 			if (!is_dir($platformDirs['public'] . '/media/lib_fof/compiled/'))
@@ -234,7 +234,7 @@ class Template
 		// Add the compiled CSS to the page
 		$base_url = rtrim($this->container->platform->URIbase(), '/');
 
-		if (substr($base_url, -14) == '/administrator')
+		if (substr($base_url, -14) === '/administrator')
 		{
 			$base_url = substr($base_url, 0, -14);
 		}
@@ -415,7 +415,7 @@ class Template
 			$path = $protoAndPath[1];
 		}
 
-		if ($protocol == 'auto')
+		if ($protocol === 'auto')
 		{
 			$protocol = $this->container->platform->isBackend() ? 'admin' : 'site';
 		}
@@ -619,11 +619,11 @@ class Template
 
 		// Special cases
 
-		if ($route == 'index.php' || $route == 'index.php?')
+		if ($route === 'index.php' || $route === 'index.php?')
 		{
 			$result = $route;
 		}
-		elseif (substr($route, 0, 1) == '&')
+		elseif (substr($route, 0, 1) === '&')
 		{
 			$url = \JURI::getInstance();
 			$vars = array();
@@ -639,7 +639,7 @@ class Template
 			$props = $url->getQuery(true);
 
 			// Strip 'index.php?'
-			if (substr($route, 0, 10) == 'index.php?')
+			if (substr($route, 0, 10) === 'index.php?')
 			{
 				$route = substr($route, 10);
 			}
@@ -670,7 +670,7 @@ class Template
 
 			// Add the format information to the URL only if it's not 'html'
 
-			if (!isset($parts['format']) && isset($props['format']) && $props['format'] != 'html')
+			if (!isset($parts['format']) && isset($props['format']) && $props['format'] !== 'html')
 			{
 				$result[] = 'format=' . $props['format'];
 			}

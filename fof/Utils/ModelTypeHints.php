@@ -145,7 +145,7 @@ class ModelTypeHints
 
 			foreach ($hints['property'] as $hintLine)
 			{
-				$text .= " * @property  " . str_pad($hintLine[0], $colWidth, ' ') . $hintLine[1] . "\n";
+				$text .= ' * @property  ' . str_pad($hintLine[0], $colWidth, ' ') . $hintLine[1] . "\n";
 			}
 
 			$text .= " *\n";
@@ -169,7 +169,7 @@ class ModelTypeHints
 
 			foreach ($hints['method'] as $hintLine)
 			{
-				$text .= " * @method  " . str_pad($hintLine[0], $colWidth, ' ')
+				$text .= ' * @method  ' . str_pad($hintLine[0], $colWidth, ' ')
 					. str_pad($hintLine[1], $col2Width, ' ')
 					. $hintLine[2] . "\n";
 			}
@@ -192,7 +192,7 @@ class ModelTypeHints
 
 			foreach ($hints['property-read'] as $hintLine)
 			{
-				$text .= " * @property  " . str_pad($hintLine[0], $colWidth, ' ') . $hintLine[1] . "\n";
+				$text .= ' * @property  ' . str_pad($hintLine[0], $colWidth, ' ') . $hintLine[1] . "\n";
 			}
 
 			$text .= " *\n";
@@ -259,7 +259,7 @@ class ModelTypeHints
 		}
 
 		// Sometimes we have character types followed by a space and some cruft. Let's handle them.
-		if (is_null($detectedType) && !empty($type))
+		if (null === $detectedType && !empty($type))
 		{
 			list ($type,) = explode(' ', $type);
 

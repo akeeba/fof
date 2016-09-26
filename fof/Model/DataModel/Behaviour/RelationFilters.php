@@ -36,7 +36,7 @@ class RelationFilters extends Observer
 			$subQuery = $model->getRelations()->getCountSubquery($relationName, $tableAlias);
 
 			// Callback method needs different handling
-			if (isset($filterState['method']) && ($filterState['method'] == 'callback'))
+			if (isset($filterState['method']) && ($filterState['method'] === 'callback'))
 			{
 				call_user_func_array($filterState['value'], array(&$subQuery));
 				$filterState['method'] = 'search';

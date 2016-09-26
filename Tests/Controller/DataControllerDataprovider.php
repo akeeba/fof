@@ -381,11 +381,11 @@ class DataControllerDataprovider
                 )
             ),
             array(
-                'case' => "State saved, with layout and form, task not in the cache",
-                'display' => false,
-                'savestate' => true,
-                'formName' => 'form.foobar',
-                'hasForm' => true
+	            'case' => 'State saved, with layout and form, task not in the cache',
+	            'display' => false,
+	            'savestate' => true,
+	            'formName' => 'form.foobar',
+	            'hasForm' => true
             )
         );
 
@@ -399,11 +399,11 @@ class DataControllerDataprovider
                 )
             ),
             array(
-                'case' => "Variable not set, by default I save the stater",
-                'display' => true,
-                'savestate' => true,
-                'formName' => 'form.default',
-                'hasForm' => false
+	            'case' => 'Variable not set, by default I save the stater',
+	            'display' => true,
+	            'savestate' => true,
+	            'formName' => 'form.default',
+	            'hasForm' => false
             )
         );
 

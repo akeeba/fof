@@ -71,7 +71,7 @@ class Joomla extends Extension
 		);
 
 		// Get the current version if none is defined
-		if (is_null($currentVersion))
+		if (null === $currentVersion)
 		{
 			$currentVersion = JVERSION;
 		}
@@ -144,11 +144,11 @@ class Joomla extends Extension
 		{
 			$ret['testing'] = true;
 		}
-		elseif (substr($lastVersionPart, 0, 2) == 'rc')
+		elseif (substr($lastVersionPart, 0, 2) === 'rc')
 		{
 			$ret['testing'] = true;
 		}
-		elseif (substr($lastVersionPart, 0, 3) == 'dev')
+		elseif (substr($lastVersionPart, 0, 3) === 'dev')
 		{
 			$ret['testing'] = true;
 		}
@@ -211,7 +211,7 @@ class Joomla extends Extension
 		foreach ($updates as $update)
 		{
 			// Check each update for platform match
-			if (strtolower($update['targetplatform']['name']) != 'joomla')
+			if (strtolower($update['targetplatform']['name']) !== 'joomla')
 			{
 				continue;
 			}
@@ -227,7 +227,7 @@ class Joomla extends Extension
 			$updateVersion     = $update['version'];
 			$versionProperties = $this->getVersionProperties($updateVersion, $jVersion);
 
-			if ($versionProperties['upgrade'] == 'none')
+			if ($versionProperties['upgrade'] === 'none')
 			{
 				continue;
 			}
@@ -455,7 +455,7 @@ class Joomla extends Extension
 		{
 			$sections = array();
 
-			if ($update['upgrade'] == 'current')
+			if ($update['upgrade'] === 'current')
 			{
 				$sections[0] = 'installed';
 			}

@@ -60,7 +60,7 @@ class Totp
 		$this->secretLength = $secretLength;
 		$this->pinModulo = pow(10, $this->passCodeLength);
 
-		if (is_null($base32))
+		if (null === $base32)
 		{
 			$this->base32 = new Base32();
 		}
@@ -81,14 +81,12 @@ class Totp
 	 */
 	public function getPeriod($time = null)
 	{
-		if (is_null($time))
+		if (null === $time)
 		{
 			$time = time();
 		}
 
-		$period = floor($time / $this->timeStep);
-
-		return $period;
+		return floor($time / $this->timeStep);
 	}
 
 	/**
@@ -130,15 +128,15 @@ class Totp
 		$period = $this->getPeriod($time);
 		$secret = $this->base32->decode($secret);
 
-		$time = pack("N", $period);
+		$time = pack('N', $period);
 		$time = str_pad($time, 8, chr(0), STR_PAD_LEFT);
 
 		$hash = hash_hmac('sha1', $time, $secret, true);
 		$offset = ord(substr($hash, -1));
-		$offset = $offset & 0xF;
+		$offset &= 0xF;
 
 		$truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
-		$pinValue = str_pad($truncatedHash % $this->pinModulo, $this->passCodeLength, "0", STR_PAD_LEFT);
+		$pinValue = str_pad($truncatedHash % $this->pinModulo, $this->passCodeLength, '0', STR_PAD_LEFT);
 
 		return $pinValue;
 	}
@@ -153,8 +151,8 @@ class Totp
 	 */
 	protected function hashToInt($bytes, $start)
 	{
-		$input = substr($bytes, $start, strlen($bytes) - $start);
-		$val2 = unpack("N", substr($input, 0, 4));
+		$input = substr($bytes, $start);
+		$val2 = unpack('N', substr($input, 0, 4));
 
 		return $val2[1];
 	}
@@ -170,11 +168,10 @@ class Totp
 	 */
 	public function getUrl($user, $hostname, $secret)
 	{
-		$url = sprintf("otpauth://totp/%s@%s?secret=%s", $user, $hostname, $secret);
-		$encoder = "https://chart.googleapis.com/chart?chs=200x200&chld=Q|2&cht=qr&chl=";
-		$encoderURL = $encoder . urlencode($url);
+		$url = sprintf('otpauth://totp/%s@%s?secret=%s', $user, $hostname, $secret);
+		$encoder = 'https://chart.googleapis.com/chart?chs=200x200&chld=Q|2&cht=qr&chl=';
 
-		return $encoderURL;
+		return $encoder . urlencode($url);
 	}
 
 	/**
@@ -184,12 +181,12 @@ class Totp
 	 */
 	public function generateSecret()
 	{
-		$secret = "";
+		$secret = '';
 
 		for ($i = 1; $i <= $this->secretLength; $i++)
 		{
-			$c = rand(0, 255);
-			$secret .= pack("c", $c);
+			$c = mt_rand(0, 255);
+			$secret .= pack('c', $c);
 		}
 
 		return $this->base32->encode($secret);

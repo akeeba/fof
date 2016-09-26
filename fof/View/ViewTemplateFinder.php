@@ -201,22 +201,22 @@ class ViewTemplateFinder
 			'template'	 => 'default'
 		);
 
-		if (substr($uri, 0, 5) == 'auto:')
+		if (substr($uri, 0, 5) === 'auto:')
 		{
 			$replacement = $this->container->platform->isBackend() ? 'admin:' : 'site:';
 			$uri = $replacement . substr($uri, 5);
 		}
 
-		if (substr($uri, 0, 6) == 'admin:')
+		if (substr($uri, 0, 6) === 'admin:')
 		{
 			$parts['admin'] = 1;
 			$uri = substr($uri, 6);
 		}
-		elseif (substr($uri, 0, 5) == 'site:')
+		elseif (substr($uri, 0, 5) === 'site:')
 		{
 			$uri = substr($uri, 5);
 		}
-		elseif (substr($uri, 0, 4) == 'any:')
+		elseif (substr($uri, 0, 4) === 'any:')
 		{
 			$parts['admin'] = -1;
 			$uri = substr($uri, 4);
@@ -300,7 +300,7 @@ class ViewTemplateFinder
 		$paths = array_unique($paths);
 
 		// Look for a template layout override
-		if (!empty($layoutTemplate) && ($layoutTemplate != '_') && ($layoutTemplate != $parts['template']))
+		if (!empty($layoutTemplate) && ($layoutTemplate !== '_') && ($layoutTemplate != $parts['template']))
 		{
 			$apath = array_shift($paths);
 			array_unshift($paths, str_replace($parts['template'], $layoutTemplate, $apath));
@@ -359,7 +359,7 @@ class ViewTemplateFinder
 			return;
 		}
 
-		if (substr($extension, 0, 1) != '.')
+		if (substr($extension, 0, 1) !== '.')
 		{
 			$extension = '.' . $extension;
 		}
@@ -384,7 +384,7 @@ class ViewTemplateFinder
 			return;
 		}
 
-		if (substr($extension, 0, 1) != '.')
+		if (substr($extension, 0, 1) !== '.')
 		{
 			$extension = '.' . $extension;
 		}

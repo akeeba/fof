@@ -213,7 +213,7 @@ class BaseErector implements ErectorInterface
 		}
 
 		// Sometimes we have character types followed by a space and some cruft. Let's handle them.
-		if (is_null($detectedType) && !empty($type))
+		if (null === $detectedType && !empty($type))
 		{
 			list ($type, ) = explode(' ', $type);
 

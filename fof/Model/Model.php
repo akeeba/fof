@@ -170,7 +170,7 @@ class Model
 		$value = $this->internal_getState($key);
 
         // Value is not found in the internal state
-		if (is_null($value))
+		if (null === $value)
 		{
             // Can I fetch it from the request?
             if (!$this->_ignoreRequest)
@@ -178,7 +178,7 @@ class Model
                 $value = $this->container->platform->getUserStateFromRequest($this->getHash() . $key, $key, $this->input, $value, 'none', $this->_savestate);
 
                 // Did I get any useful value from the request?
-                if (is_null($value))
+                if (null === $value)
                 {
                     return $default;
                 }
@@ -190,7 +190,7 @@ class Model
             }
 		}
 
-		if (strtoupper($filter_type) == 'RAW')
+		if (strtoupper($filter_type) === 'RAW')
 		{
 			return $value;
 		}
@@ -212,7 +212,7 @@ class Model
 	{
 		static $hash = null;
 
-		if (is_null($hash))
+		if (null === $hash)
 		{
 			$hash = ucfirst($this->container->componentName) . '.' . $this->getName() . '.';
 		}
@@ -239,7 +239,7 @@ class Model
 			$this->_state_set = true;
 		}
 
-		if (is_null($property))
+		if (null === $property)
 		{
 			return $this->state;
 		}
@@ -281,7 +281,7 @@ class Model
 	 */
 	public function setState($property, $value = null)
 	{
-		if (is_null($this->state))
+		if (null === $this->state)
 		{
 			$this->state = new \stdClass();
 		}
@@ -310,9 +310,7 @@ class Model
 	 */
 	public function getClone()
 	{
-		$clone = clone($this);
-
-		return $clone;
+		return clone($this);
 	}
 
 	/**
@@ -336,7 +334,7 @@ class Model
 	public function __get($name)
 	{
 		// Handle $this->input
-		if ($name == 'input')
+		if ($name === 'input')
 		{
 			return $this->container->input;
 		}
@@ -397,7 +395,7 @@ class Model
 	 */
 	public function populateSavestate()
 	{
-		if (is_null($this->_savestate))
+		if (null === $this->_savestate)
 		{
 			$savestate = $this->input->getInt('savestate', -999);
 
@@ -510,7 +508,7 @@ class Model
 		// If we have an "on" prefix for the event (e.g. onFooBar) remove it and stash it for later.
 		$prefix = '';
 
-		if (substr($event, 0, 2) == 'on')
+		if (substr($event, 0, 2) === 'on')
 		{
 			$prefix = 'on';
 			$event = substr($event, 2);

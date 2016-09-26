@@ -31,27 +31,27 @@ class Published extends Selectable
 			'all'			 => 0,
 		);
 
-		if ($this->element['show_published'] == 'false')
+		if ($this->element['show_published'] === 'false')
 		{
 			$config['published'] = 0;
 		}
 
-		if ($this->element['show_unpublished'] == 'false')
+		if ($this->element['show_unpublished'] === 'false')
 		{
 			$config['unpublished'] = 0;
 		}
 
-		if ($this->element['show_archived'] == 'true')
+		if ($this->element['show_archived'] === 'true')
 		{
 			$config['archived'] = 1;
 		}
 
-		if ($this->element['show_trash'] == 'true')
+		if ($this->element['show_trash'] === 'true')
 		{
 			$config['trash'] = 1;
 		}
 
-		if ($this->element['show_all'] == 'true')
+		if ($this->element['show_all'] === 'true')
 		{
 			$config['all'] = 1;
 		}

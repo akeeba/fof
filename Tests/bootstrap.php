@@ -98,7 +98,7 @@ else
     if(!file_exists(__DIR__.'/config.php'))
     {
         echo "Configuration file not found. Please copy the config.dist.php file and rename it to config.php\n";
-        echo "Then update its contents with the connection details to your database";
+        echo 'Then update its contents with the connection details to your database';
         exit(1);
     }
 
@@ -113,7 +113,7 @@ else
 if(!isset($fofTestConfig['host']) || !isset($fofTestConfig['user']) || !isset($fofTestConfig['password']) || !isset($fofTestConfig['db']))
 {
     echo "Your config file is missing one or more required info. Please copy the config.dist.php file and rename it to config.php\n";
-    echo "then update its contents with the connection details to your database";
+    echo 'then update its contents with the connection details to your database';
     exit(1);
 }
 

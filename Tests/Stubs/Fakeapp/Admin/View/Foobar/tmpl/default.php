@@ -5,4 +5,4 @@
  * @license     GNU GPL version 2 or later
  */
 
-echo "Layout text";
+echo 'Layout text';

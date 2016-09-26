@@ -252,7 +252,7 @@ class Components extends \JFormFieldList implements FieldInterface
 		{
 			foreach ($mData as $key => $value)
 			{
-				if ($key == 'type')
+				if ($key === 'type')
 				{
 					// Ignore the type field
 					continue;
@@ -275,8 +275,6 @@ class Components extends \JFormFieldList implements FieldInterface
 				break;
 		}
 
-		$text = JText::_($item->name);
-
-		return $text;
+		return JText::_($item->name);
 	}
 }

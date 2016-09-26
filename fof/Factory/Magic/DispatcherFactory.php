@@ -38,8 +38,6 @@ class DispatcherFactory extends BaseFactory
 			$className = '\\FOF30\\Dispatcher\\Dispatcher';
 		}
 
-		$dispatcher = new $className($this->container, $config);
-
-		return $dispatcher;
+		return new $className($this->container, $config);
 	}
 }

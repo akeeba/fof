@@ -26,7 +26,7 @@ class Generate extends Command
         // Do I have a name of the view?
         if(!$input->getString('name'))
         {
-            throw new \RuntimeException("You have to specify the name of the view that will be used to generate FOF objects");
+            throw new \RuntimeException('You have to specify the name of the view that will be used to generate FOF objects');
         }
 
         // Ok, did the user told me WHAT he wants?
@@ -55,7 +55,7 @@ class Generate extends Command
             return;
         }
 
-        throw new \RuntimeException("You have to specify **what** you want to create: model, view, controller or layout");
+        throw new \RuntimeException('You have to specify **what** you want to create: model, view, controller or layout');
     }
 
     protected function getClass()
@@ -66,11 +66,11 @@ class Generate extends Command
 
         $layout = strtolower($input->get('layout'));
 
-        if(in_array($layout, array("1", 'item', 'default', 'form'), true))
+        if(in_array($layout, array('1', 'item', 'default', 'form'), true))
         {
             $class .= '\\Layout';
 
-            if($layout === "1")
+            if($layout === '1')
             {
                 $return = $class.'\\Layouts';
             }
@@ -98,7 +98,7 @@ class Generate extends Command
 
         if(!$return || !class_exists($return))
         {
-            throw new \RuntimeException("Can not understand which object to generate. Please consult the documentation");
+            throw new \RuntimeException('Can not understand which object to generate. Please consult the documentation');
         }
 
         return $return;

@@ -240,13 +240,13 @@ class Controller
 
 			// If the developer screwed up and declared one of the helper method public do NOT make them available as
 			// tasks.
-			if ((substr($mName, 0, 8) == 'onBefore') || (substr($mName, 0, 7) == 'onAfter') || substr($mName, 0, 1) == '_')
+			if ((substr($mName, 0, 8) === 'onBefore') || (substr($mName, 0, 7) === 'onAfter') || substr($mName, 0, 1) === '_')
 			{
 				continue;
 			}
 
 			// Add default display method if not explicitly declared.
-			if (!in_array($mName, $xMethods) || $mName == 'display' || $mName == 'main')
+			if (!in_array($mName, $xMethods) || $mName === 'display' || $mName === 'main')
 			{
 				$this->methods[] = $mName;
 
@@ -312,7 +312,7 @@ class Controller
 	public function __get($name)
 	{
 		// Handle $this->input
-		if ($name == 'input')
+		if ($name === 'input')
 		{
 			return $this->container->input;
 		}
@@ -437,14 +437,14 @@ class Controller
 		}
 
 		// Set the layout
-		if (!is_null($this->layout))
+		if (null !== $this->layout)
 		{
 			$view->setLayout($this->layout);
 		}
 
 		$conf = $this->container->platform->getConfig();
 
-		if ($this->container->platform->isFrontend() && $cachable && ($viewType != 'feed') && ($conf->get('caching') >= 1))
+		if ($this->container->platform->isFrontend() && $cachable && ($viewType !== 'feed') && ($conf->get('caching') >= 1))
 		{
 			// Get a JCache object
 			$option = $this->input->get('option', 'com_foobar', 'cmd');
@@ -871,7 +871,7 @@ class Controller
 
 		$platform = $this->container->platform;
 
-		if (is_null($isCli))
+		if (null === $isCli)
 		{
 			$isCli   = $platform->isCli();
 			$isAdmin = $platform->isBackend();
@@ -894,7 +894,7 @@ class Controller
 				{
 					return true;
 				}
-				elseif (!$isAdmin && ($this->input->get('format', 'html', 'cmd') != 'html'))
+				elseif (!$isAdmin && ($this->input->get('format', 'html', 'cmd') !== 'html'))
 				{
 					return true;
 				}
@@ -998,7 +998,7 @@ class Controller
 			}
 		}
 		// If there is no handler method perform a simple ACL check
-		elseif (substr($event, 0, 8) == 'onBefore')
+		elseif (substr($event, 0, 8) === 'onBefore')
 		{
 			$task = substr($event, 8);
 			$result = $this->checkACL('@' . $task);
@@ -1016,7 +1016,7 @@ class Controller
 		// If we have an "on" prefix for the event (e.g. onFooBar) remove it and stash it for later.
 		$prefix = '';
 
-		if (substr($event, 0, 2) == 'on')
+		if (substr($event, 0, 2) === 'on')
 		{
 			$prefix = 'on';
 			$event = substr($event, 2);
@@ -1101,7 +1101,7 @@ class Controller
 	protected function getACLRuleFor($area, $oldAreas = array())
 	{
 		// If it's a &notation return the callback result
-		if (substr($area, 0, 1) == '&')
+		if (substr($area, 0, 1) === '&')
 		{
 			$method = substr($area, 1);
 
@@ -1115,7 +1115,7 @@ class Controller
 		}
 
 		// If it's not an @notation return the raw string
-		if (substr($area, 0, 1) != '@')
+		if (substr($area, 0, 1) !== '@')
 		{
 			return $area;
 		}
@@ -1141,7 +1141,7 @@ class Controller
 		}
 
 		// We've found an ACL privilege. Return it.
-		if (substr($area, 0, 1) != '@')
+		if (substr($area, 0, 1) !== '@')
 		{
 			return $newArea;
 		}

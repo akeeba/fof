@@ -28,7 +28,7 @@ class Collection
 	public function getAllUpdates($url, $jVersion = null)
 	{
 		// Get the target platform
-		if (is_null($jVersion))
+		if (null === $jVersion)
 		{
 			$jVersion = JVERSION;
 		}
@@ -58,7 +58,7 @@ class Collection
 		}
 
 		// Sanity check
-		if (($xml->getName() != 'extensionset'))
+		if (($xml->getName() !== 'extensionset'))
 		{
 			unset($xml);
 
@@ -233,7 +233,7 @@ class Collection
 	private function filterListByPlatform($updates, $jVersion = null)
 	{
 		// Get the target platform
-		if (is_null($jVersion))
+		if (null === $jVersion)
 		{
 			$jVersion = JVERSION;
 		}

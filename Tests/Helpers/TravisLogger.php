@@ -41,23 +41,23 @@ abstract class TravisLogger
         switch ($level)
         {
             case 1:
-                $string = "ERROR   |";
+                $string = 'ERROR   |';
                 break;
 
             case 2:
-                $string = "WARNING |";
+                $string = 'WARNING |';
                 break;
 
             case 3:
-                $string = "INFO    |";
+                $string = 'INFO    |';
                 break;
 
             default:
-                $string = "DEBUG   |";
+                $string = 'DEBUG   |';
                 break;
         }
 
-        $string .= @strftime("%y%m%d %H:%M:%S") . "|$message\r\n";
+        $string .= @strftime('%y%m%d %H:%M:%S') . "|$message\r\n";
 
         @fwrite(self::$fp, $string);
     }

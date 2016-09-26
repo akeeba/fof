@@ -24,7 +24,7 @@ class Field extends HeaderBase
 	 */
 	protected function getHeader()
 	{
-		$sortable = ($this->element['sortable'] != 'false');
+		$sortable = ($this->element['sortable'] !== 'false');
 
 		$label = $this->getLabel();
 

@@ -34,8 +34,7 @@ class AccessLevel extends Selectable
 
 		// Get the options.
 		$db->setQuery($query);
-		$options = $db->loadObjectList();
 
-		return $options;
+		return $db->loadObjectList();
 	}
 }

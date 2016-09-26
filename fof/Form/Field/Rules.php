@@ -133,7 +133,7 @@ class Rules extends \JFormFieldRules implements FieldInterface
 		/** @var \SimpleXMLElement $el */
 		foreach ($this->element->children() as $el)
 		{
-			if ($el->getName() == 'action')
+			if ($el->getName() === 'action')
 			{
 				$actions[] = (object) array('name' => (string) $el['name'], 'title' => (string) $el['title'],
 					'description' => (string) $el['description']);
@@ -141,7 +141,7 @@ class Rules extends \JFormFieldRules implements FieldInterface
 		}
 
 		// Get the explicit rules for this asset.
-		if ($section == 'component')
+		if ($section === 'component')
 		{
 			// Need to find the asset id by the name of the component.
 			$db    = $this->form->getContainer()->platform->getDbo();
@@ -193,11 +193,11 @@ class Rules extends \JFormFieldRules implements FieldInterface
 		foreach ($groups as $group)
 		{
 			// Initial Active Tab
-			$active = "";
+			$active = '';
 
 			if ($group->value == 1)
 			{
-				$active = "active";
+				$active = 'active';
 			}
 
 			$html[] = '<li class="' . $active . '">';
@@ -215,11 +215,11 @@ class Rules extends \JFormFieldRules implements FieldInterface
 		foreach ($groups as $group)
 		{
 			// Initial Active Pane
-			$active = "";
+			$active = '';
 
 			if ($group->value == 1)
 			{
-				$active = " active";
+				$active = ' active';
 			}
 
 			$html[] = '<div class="tab-pane' . $active . '" id="permission-' . $group->value . '">';
@@ -362,7 +362,7 @@ class Rules extends \JFormFieldRules implements FieldInterface
 
 		$html[] = '<div class="alert">';
 
-		if ($section == 'component' || $section == null)
+		if ($section === 'component' || $section == null)
 		{
 			$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
 		}

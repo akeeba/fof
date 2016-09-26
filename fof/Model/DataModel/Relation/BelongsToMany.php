@@ -183,7 +183,7 @@ class BelongsToMany extends Relation
 				{
 					$v = $item->getFieldValue($this->localKey, null);
 
-					if (!is_null($v))
+					if (null !== $v)
 					{
 						$values[] = $v;
 					}
@@ -248,7 +248,7 @@ class BelongsToMany extends Relation
 			// Lazy loaded relation; get the single local key
 			$localKey = $this->parentModel->getFieldValue($this->localKey, null);
 
-			if (is_null($localKey))
+			if (null === $localKey)
 			{
 				return false;
 			}
@@ -373,7 +373,7 @@ class BelongsToMany extends Relation
 		{
 			$i++;
 
-			if (is_null($query))
+			if (null === $query)
 			{
 				$query = clone $protoQuery;
 			}
@@ -388,7 +388,7 @@ class BelongsToMany extends Relation
 			}
 		}
 
-		if (!is_null($query))
+		if (null !== $query)
 		{
 			$db->setQuery($query);
 			$db->execute();
@@ -402,6 +402,6 @@ class BelongsToMany extends Relation
 	 */
 	public function getNew()
 	{
-		throw new DataModel\Relation\Exception\NewNotSupported("getNew() is not supported for many-to-may relations. Please add/remove items from the relation data and use push() to effect changes.");
+		throw new DataModel\Relation\Exception\NewNotSupported('getNew() is not supported for many-to-may relations. Please add/remove items from the relation data and use push() to effect changes.');
 	}
 }

@@ -53,7 +53,7 @@ class PageParametersToState extends Observer
 			$explicitInput = $model->input->get($key, null, 'raw');
 
 			// If the current state is empty and there's no explicit input we'll use the page parameters instead
-			if (is_null($currentState) && is_null($explicitInput))
+			if (null === $currentState && null === $explicitInput)
 			{
 				$model->setState($key, $params->get($key));
 			}

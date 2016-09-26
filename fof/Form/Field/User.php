@@ -104,10 +104,10 @@ class User extends \JFormFieldUser implements FieldInterface
 		}
 
 		// Initialise
-		$show_username = !$this->element['show_username'] == 'false';
-		$show_email    = $this->element['show_email'] == 'true';
-		$show_name     = $this->element['show_name'] == 'true';
-		$show_id       = $this->element['show_id'] == 'true';
+		$show_username = !$this->element['show_username'] === 'false';
+		$show_email    = $this->element['show_email'] === 'true';
+		$show_name     = $this->element['show_name'] === 'true';
+		$show_id       = $this->element['show_id'] === 'true';
 		$class         = $this->class ? ' class="' . $this->class . '"' : '';
 
 		// Get the user record
@@ -159,12 +159,12 @@ class User extends \JFormFieldUser implements FieldInterface
 		}
 
 		// Initialise
-		$show_username = !$this->element['show_username'] == 'false';
-		$show_email    = !$this->element['show_email'] == 'false';
-		$show_name     = !$this->element['show_name'] == 'false';
-		$show_id       = !$this->element['show_id'] == 'false';
-		$show_avatar   = !$this->element['show_avatar'] == 'false';
-		$show_link     = $this->element['show_link'] == 'true';
+		$show_username = !$this->element['show_username'] === 'false';
+		$show_email    = !$this->element['show_email'] === 'false';
+		$show_name     = !$this->element['show_name'] === 'false';
+		$show_id       = !$this->element['show_id'] === 'false';
+		$show_avatar   = !$this->element['show_avatar'] === 'false';
+		$show_link     = $this->element['show_link'] === 'true';
 		$link_url      = $this->element['link_url'] ? $this->element['link_url'] : null;
 		$avatar_method = 'gravatar';
 		$avatar_size   = $this->element['avatar_size'] ? $this->element['avatar_size'] : 64;
@@ -226,7 +226,7 @@ class User extends \JFormFieldUser implements FieldInterface
 
 		if ($show_avatar)
 		{
-			if ($avatar_method == 'plugin')
+			if ($avatar_method === 'plugin')
 			{
 				// Use the user plugins to get an avatar
 				$this->form->getContainer()->platform->importPlugin('user');
@@ -262,7 +262,7 @@ class User extends \JFormFieldUser implements FieldInterface
 					$scheme = \JUri::getInstance()->getScheme();
 				}
 
-				if ($scheme == 'http')
+				if ($scheme === 'http')
 				{
 					$avatar_url = 'http://www.gravatar.com/avatar/' . $md5 . '.jpg?s='
 						. $avatar_size . '&d=mm';
@@ -335,7 +335,7 @@ class User extends \JFormFieldUser implements FieldInterface
 
         // Replace [ITEM:ID] in the URL with the item's key value (usually:
         // the auto-incrementing numeric ID)
-        if (is_null($this->item))
+        if (null === $this->item)
         {
             $this->item = $this->form->getModel();
         }

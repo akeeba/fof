@@ -20,8 +20,8 @@ class FiltersDataprovider
             ),
             array(
                 'case'  => 'Searching vs primary key, not ignoring the request',
-                'query' => "SELECT *
-FROM test"
+                'query' => 'SELECT *
+FROM test'
             )
         );
 
@@ -92,8 +92,8 @@ WHERE (`title` LIKE '%one%')"
             ),
             array(
                 'case'  => 'Searching using an array, value key not present',
-                'query' => "SELECT *
-FROM test"
+                'query' => 'SELECT *
+FROM test'
             )
         );
 
@@ -132,8 +132,8 @@ WHERE ((`created_on` > '1979-01-01') AND (`created_on` < '1981-12-31'))"
             ),
             array(
                 'case'  => 'Searching using an array, passing the method in the state - 2',
-                'query' => "SELECT *
-FROM test"
+                'query' => 'SELECT *
+FROM test'
             )
         );
 
@@ -151,8 +151,8 @@ FROM test"
             ),
             array(
                 'case'  => 'Searching using an array, passing the method in the state - 3',
-                'query' => "SELECT *
-FROM test"
+                'query' => 'SELECT *
+FROM test'
             )
         );
 
@@ -192,9 +192,9 @@ WHERE ((`created_on` < '1979-01-01') AND (`created_on` > '1981-12-31'))"
             ),
             array(
                 'case'  => 'Searching using an array, passing the method in the state - 5',
-                'query' => "SELECT *
+                'query' => 'SELECT *
 FROM test
-WHERE (`created_on` >= DATE_ADD(`created_on`, INTERVAL 1 year))"
+WHERE (`created_on` >= DATE_ADD(`created_on`, INTERVAL 1 year))'
             )
         );
 
@@ -254,8 +254,8 @@ WHERE ((`created_on` >= '1979-01-01') AND (`created_on` <= '1981-12-31'))"
             ),
             array(
                 'case'  => 'Searching using an array, passing a wrong method in the state',
-                'query' => "SELECT *
-FROM test"
+                'query' => 'SELECT *
+FROM test'
             )
         );
 

@@ -103,7 +103,7 @@ class Language extends \JFormFieldLanguage implements FieldInterface
 	{
 		$client = (string) $this->element['client'];
 
-		if ($client != 'site' && $client != 'administrator')
+		if ($client !== 'site' && $client !== 'administrator')
 		{
 			$client = 'site';
 		}

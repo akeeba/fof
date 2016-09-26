@@ -60,9 +60,7 @@ class Input extends \JInput
 		{
 			$serialised = $source->serialize();
 			list ($xOptions, $xData, $xInput) = unserialize($serialised);
-			unset ($xOptions);
-			unset ($xInput);
-			unset ($source);
+			unset ($xOptions, $xInput, $source);
 			$source = $xData;
 			unset ($xData);
 		}
@@ -96,7 +94,7 @@ class Input extends \JInput
 
 		// Magic quotes GPC handling (something JInput simply can't handle at all)
 		// @codeCoverageIgnoreStart
-		if (($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('\\JRequest', true))
+		if (($hash === 'REQUEST') && get_magic_quotes_gpc() && class_exists('\\JRequest', true))
 		{
 			$source = \JRequest::get('REQUEST', 2);
 		}
@@ -146,7 +144,7 @@ class Input extends \JInput
 	 */
 	public function __call($name, $arguments)
 	{
-		if (substr($name, 0, 3) == 'get')
+		if (substr($name, 0, 3) === 'get')
 		{
 			$filter = substr($name, 3);
 

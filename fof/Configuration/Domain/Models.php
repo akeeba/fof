@@ -175,9 +175,7 @@ class Models implements DomainInterface
 		array_shift($parts);
 		array_shift($parts);
 
-		$ret = $this->$method($view, $configuration, $parts, $default);
-
-		return $ret;
+		return $this->$method($view, $configuration, $parts, $default);
 	}
 
 	/**
@@ -206,7 +204,7 @@ class Models implements DomainInterface
 
 		$map = $default;
 
-		if (empty($params[0]) || ($params[0] == '*'))
+		if (empty($params[0]) || ($params[0] === '*'))
 		{
 			$map = $fieldmap;
 		}

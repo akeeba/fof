@@ -294,9 +294,7 @@ class Inflector
 	 */
 	public function explode($word)
 	{
-		$result = explode('_', self::underscore($word));
-
-		return $result;
+		return explode('_', self::underscore($word));
 	}
 
 	/**
@@ -308,9 +306,7 @@ class Inflector
 	 */
 	public function implode($words)
 	{
-		$result = self::camelize(implode('_', $words));
-
-		return $result;
+		return self::camelize(implode('_', $words));
 	}
 
 	/**
@@ -326,9 +322,7 @@ class Inflector
 	 */
 	public function humanize($word)
 	{
-		$result = ucwords(strtolower(str_replace("_", " ", $word)));
-
-		return $result;
+		return ucwords(strtolower(str_replace('_', ' ', $word)));
 	}
 
 	/**
@@ -344,9 +338,8 @@ class Inflector
 	{
 		$string = self::camelize(self::underscore($string));
 		$result = strtolower(substr($string, 0, 1));
-		$variable = preg_replace('/\\w/', $result, $string, 1);
 
-		return $variable;
+		return preg_replace('/\\w/', $result, $string, 1);
 	}
 
 	/**

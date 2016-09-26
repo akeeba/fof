@@ -105,7 +105,7 @@ class Collection extends BaseCollection
 	 */
 	public function contains($key)
 	{
-		return ! is_null($this->find($key));
+		return null !== $this->find($key);
 	}
 
 	/**
@@ -131,7 +131,7 @@ class Collection extends BaseCollection
 	{
 		return $this->reduce(function($result, $item) use ($key)
 		{
-			return (is_null($result) || $item->{$key} > $result) ? $item->{$key} : $result;
+			return (null === $result || $item->{$key} > $result) ? $item->{$key} : $result;
 		});
 	}
 
@@ -146,7 +146,7 @@ class Collection extends BaseCollection
 	{
 		return $this->reduce(function($result, $item) use ($key)
 		{
-			return (is_null($result) || $item->{$key} < $result) ? $item->{$key} : $result;
+			return (null === $result || $item->{$key} < $result) ? $item->{$key} : $result;
 		});
 	}
 

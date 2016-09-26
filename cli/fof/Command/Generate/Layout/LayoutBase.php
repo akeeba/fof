@@ -32,7 +32,7 @@ abstract class LayoutBase extends Command
 		$container->factory->setSaveScaffolding(true);
 
 		// plural / singular
-		if ($viewType != 'default')
+		if ($viewType !== 'default')
 		{
 			$view = $container->inflector->singularize($view);
 		}
@@ -74,7 +74,7 @@ abstract class LayoutBase extends Command
 
 		if (!$view)
 		{
-			$this->out("Syntax: fof generate " . $viewType . "view <name>");
+			$this->out('Syntax: fof generate ' . $viewType . 'view <name>');
 			exit();
 		}
 
@@ -86,8 +86,8 @@ abstract class LayoutBase extends Command
 			// Create the view
 			$this->createViewFile($view, $viewType, $backend);
 
-			$message = $backend ? "Backend" : "Frontend";
-			$message .= " " . $viewType . " view for " . $view . ' created!';
+			$message = $backend ? 'Backend' : 'Frontend';
+			$message .= ' ' . $viewType . ' view for ' . $view . ' created!';
 
 			// All ok!
 			$this->out($message);
@@ -99,7 +99,7 @@ abstract class LayoutBase extends Command
             {
 				$container = Container::getInstance($this->component);
 
-				$this->out("FOF cannot find a database table for " . $view . '. It should be named #__' . $this->component . '_' . strtolower($container->inflector->pluralize($view)));
+				$this->out('FOF cannot find a database table for ' . $view . '. It should be named #__' . $this->component . '_' . strtolower($container->inflector->pluralize($view)));
 				exit();
 			}
 

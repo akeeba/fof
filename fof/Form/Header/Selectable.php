@@ -31,7 +31,7 @@ class Selectable extends Field
 		foreach ($this->element->children() as $option)
 		{
 			// Only add <option /> elements.
-			if ($option->getName() != 'option')
+			if ($option->getName() !== 'option')
 			{
 				continue;
 			}
@@ -44,7 +44,7 @@ class Selectable extends Field
 					trim((string) $option),
 					preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)
 				),
-				'value', 'text', ((string) $option['disabled'] == 'true')
+				'value', 'text', ((string) $option['disabled'] === 'true')
 			);
 		}
 
@@ -78,7 +78,7 @@ class Selectable extends Field
 				if (in_array($source_method, get_class_methods($source_class)))
 				{
 					// Get the data from the class
-					if ($source_format == 'optionsobject')
+					if ($source_format === 'optionsobject')
 					{
 						$options = array_merge($options, $source_class::$source_method());
 					}
@@ -89,8 +89,8 @@ class Selectable extends Field
 						// Loop through the data and prime the $options array
 						foreach ($source_data as $k => $v)
 						{
-							$key = (empty($source_key) || ($source_key == '*')) ? $k : @$v[$source_key];
-							$value = (empty($source_value) || ($source_value == '*')) ? $v : @$v[$source_value];
+							$key = (empty($source_key) || ($source_key === '*')) ? $k : @$v[$source_key];
+							$value = (empty($source_value) || ($source_value === '*')) ? $v : @$v[$source_value];
 
 							if ($source_translate)
 							{

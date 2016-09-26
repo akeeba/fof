@@ -38,7 +38,7 @@ class Observer
 	 */
 	public function getObservableEvents()
 	{
-		if (is_null($this->events))
+		if (null === $this->events)
 		{
             // Assign an empty array to protect us from behaviours without any valid method
             $this->events = array();
@@ -48,12 +48,12 @@ class Observer
 
 			foreach ($methods as $m)
 			{
-				if ($m->name == 'getObservableEvents')
+				if ($m->name === 'getObservableEvents')
 				{
 					continue;
 				}
 
-				if ($m->name == '__construct')
+				if ($m->name === '__construct')
 				{
 					continue;
 				}

@@ -98,7 +98,7 @@ abstract class Filesystem implements FilesystemInterface
 
 		while (($file = readdir($handle)) !== false)
 		{
-			if($file == '.' || $file == '..')
+			if($file === '.' || $file === '..')
 			{
 				continue;
 			}

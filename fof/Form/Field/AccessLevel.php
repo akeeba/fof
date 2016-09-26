@@ -151,7 +151,7 @@ class AccessLevel extends \JFormFieldAccessLevel implements FieldInterface
 
 		$params = $this->getOptions();
 
-		if (is_null($defaultOptions))
+		if (null === $defaultOptions)
 		{
 			$db    = $this->form->getContainer()->platform->getDbo();
 			$query = $db->getQuery(true)

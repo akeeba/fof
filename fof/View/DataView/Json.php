@@ -97,7 +97,7 @@ class Json extends Raw implements DataViewInterface
 			}
 		}
 
-		if (is_null($tpl))
+		if (null === $tpl)
 		{
 			$tpl = 'json';
 		}
@@ -241,7 +241,7 @@ class Json extends Raw implements DataViewInterface
 			}
 		}
 
-		if (is_null($tpl))
+		if (null === $tpl)
 		{
 			$tpl = 'json';
 		}
@@ -434,7 +434,7 @@ class Json extends Raw implements DataViewInterface
 	{
 		static $root = null, $rootlen = 0;
 
-		if (is_null($root))
+		if (null === $root)
 		{
 			$root = rtrim(\JUri::base(false), '/');
 			$rootlen = strlen($root);

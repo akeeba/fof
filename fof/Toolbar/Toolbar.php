@@ -133,7 +133,7 @@ class Toolbar
 		$input = $this->container->input;
 
 		// If tmpl=component the default behaviour is to not render the toolbar
-		if ($input->getCmd('tmpl', '') == 'component')
+		if ($input->getCmd('tmpl', '') === 'component')
 		{
 			$render_toolbar = false;
 		}
@@ -246,12 +246,12 @@ class Toolbar
 	 */
 	public function onCpanelsBrowse()
 	{
-		if ($this->container->platform->isBackend() || $this->renderFrontendSubmenu)
+		if ($this->renderFrontendSubmenu || $this->container->platform->isBackend())
 		{
 			$this->renderSubmenu();
 		}
 
-		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
+		if (!$this->renderFrontendButtons && !$this->container->platform->isBackend())
 		{
 			return;
 		}
@@ -276,12 +276,12 @@ class Toolbar
 	public function onBrowse()
 	{
 		// On frontend, buttons must be added specifically
-		if ($this->container->platform->isBackend() || $this->renderFrontendSubmenu)
+		if ($this->renderFrontendSubmenu || $this->container->platform->isBackend())
 		{
 			$this->renderSubmenu();
 		}
 
-		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
+		if (!$this->renderFrontendButtons && !$this->container->platform->isBackend())
 		{
 			return;
 		}
@@ -363,12 +363,12 @@ class Toolbar
 	public function onRead()
 	{
 		// On frontend, buttons must be added specifically
-		if ($this->container->platform->isBackend() || $this->renderFrontendSubmenu)
+		if ($this->renderFrontendSubmenu || $this->container->platform->isBackend())
 		{
 			$this->renderSubmenu();
 		}
 
-		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
+		if (!$this->renderFrontendButtons && !$this->container->platform->isBackend())
 		{
 			return;
 		}
@@ -398,7 +398,7 @@ class Toolbar
 	public function onAdd()
 	{
 		// On frontend, buttons must be added specifically
-		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
+		if (!$this->renderFrontendButtons && !$this->container->platform->isBackend())
 		{
 			return;
 		}
@@ -442,7 +442,7 @@ class Toolbar
 	public function onEdit()
 	{
 		// On frontend, buttons must be added specifically
-		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
+		if (!$this->renderFrontendButtons && !$this->container->platform->isBackend())
 		{
 			return;
 		}
@@ -758,7 +758,7 @@ class Toolbar
 	 */
 	public function isDataView()
 	{
-		if (is_null($this->isDataView))
+		if (null === $this->isDataView)
 		{
 			$this->isDataView = false;
 			$controller = $this->container->dispatcher->getController();

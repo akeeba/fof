@@ -397,7 +397,7 @@ class DataModel extends Model implements \JTableInterface
 
 				$stateValue = $this->getState($field, null);
 
-				if (!is_null($stateValue))
+				if (null !== $stateValue)
 				{
 					$this->setFieldValue($field, $stateValue);
 				}
@@ -473,7 +473,7 @@ class DataModel extends Model implements \JTableInterface
 		}
 
 		// Implements getNew($relationName)
-		if (($name == 'getNew') && count($arguments))
+		if (($name === 'getNew') && count($arguments))
 		{
 			return $this->relationManager->getNew($arguments[0]);
 		}
@@ -501,7 +501,7 @@ class DataModel extends Model implements \JTableInterface
 		$value   = null;
 		$isState = false;
 
-		if (substr($name, 0, 3) == 'flt')
+		if (substr($name, 0, 3) === 'flt')
 		{
 			$isState = true;
 			$name = strtolower(substr($name, 3, 1)) . substr($name, 4);
@@ -543,14 +543,14 @@ class DataModel extends Model implements \JTableInterface
 	public function __get($name)
 	{
 		// Handle $this->input
-		if ($name == 'input')
+		if ($name === 'input')
 		{
 			return $this->container->input;
 		}
 
 		$isState = false;
 
-		if (substr($name, 0, 3) == 'flt')
+		if (substr($name, 0, 3) === 'flt')
 		{
 			$isState = true;
 			$name = strtolower(substr($name, 3, 1)) . substr($name, 4);
@@ -599,12 +599,12 @@ class DataModel extends Model implements \JTableInterface
 		$isState = false;
 		$isScope = false;
 
-		if (substr($name, 0, 3) == 'flt')
+		if (substr($name, 0, 3) === 'flt')
 		{
 			$isState = true;
 			$name = strtolower(substr($name, 3, 1)) . substr($name, 4);
 		}
-		elseif (substr($name, 0, 5) == 'scope')
+		elseif (substr($name, 0, 5) === 'scope')
 		{
 			$isScope = true;
 			$name = strtolower(substr($name, 5, 1)) . substr($name, 5);
@@ -732,7 +732,7 @@ class DataModel extends Model implements \JTableInterface
 
 			$prefix = $this->getDbo()->getPrefix();
 
-			if (substr($name, 0, 3) == '#__')
+			if (substr($name, 0, 3) === '#__')
 			{
 				$checkName = $prefix . substr($name, 3);
 			}
@@ -742,7 +742,7 @@ class DataModel extends Model implements \JTableInterface
 			}
 
 			// Iterate through all lower/uppercase permutations of the prefix if we have a prefix with at least one uppercase letter
-			if (!in_array($checkName, static::$tableCache) && preg_match('/[A-Z]/', $prefix) && (substr($name, 0, 3) == '#__'))
+			if (!in_array($checkName, static::$tableCache) && preg_match('/[A-Z]/', $prefix) && (substr($name, 0, 3) === '#__'))
 			{
 				$prefixPermutations = $this->getPrefixCasePermutations();
 				$partialCheckName = substr($name, 3);
@@ -776,11 +776,11 @@ class DataModel extends Model implements \JTableInterface
 			}
 
 			// PostgreSQL date type compatibility
-			if (($this->getDbo()->name == 'postgresql') && (static::$tableFieldCache[$tableName] != false))
+			if (($this->getDbo()->name === 'postgresql') && (static::$tableFieldCache[$tableName] != false))
 			{
 				foreach (static::$tableFieldCache[$tableName] as $field)
 				{
-					if (strtolower($field->type) == 'timestamp without time zone')
+					if (strtolower($field->type) === 'timestamp without time zone')
 					{
 						if (stristr($field->Default, '\'::timestamp without time zone'))
 						{
@@ -1064,7 +1064,7 @@ class DataModel extends Model implements \JTableInterface
 		}
 
 		// Bind any (optional) data. If no data is provided, the current record data is used
-		if (!is_null($data))
+		if (null !== $data)
 		{
 			$this->bind($data, $ignore);
 		}
@@ -1148,7 +1148,7 @@ class DataModel extends Model implements \JTableInterface
 		}
 
 		// If we have relations we compare the data to the copy of the data before bind.
-		if (count($relationImportantFields) && $resetRelations)
+		if ($resetRelations && count($relationImportantFields))
 		{
 			// Since array_diff_assoc doesn't work recursively we have to do it the EXCRUCIATINGLY SLOW WAY. Sad panda :(
 			$keysRecord = (is_array($this->recordData) && !empty($this->recordData)) ? array_keys($this->recordData) : array();
@@ -1258,7 +1258,7 @@ class DataModel extends Model implements \JTableInterface
 		{
 			foreach ($allRelations as $relationName)
 			{
-				if (!is_null($relations) && !in_array($relationName, $relations))
+				if (null !== $relations && !in_array($relationName, $relations))
 				{
 					continue;
 				}
@@ -1359,7 +1359,7 @@ class DataModel extends Model implements \JTableInterface
 		}
 
 		// Special handling of the ordering field
-		if ($this->hasField('ordering') && is_null($this->getFieldValue('ordering')))
+		if ($this->hasField('ordering') && null === $this->getFieldValue('ordering'))
 		{
 			$this->setFieldValue('ordering', 0);
 		}
@@ -1374,9 +1374,9 @@ class DataModel extends Model implements \JTableInterface
 
 			$value = $this->$fieldName;
 
-			if (isset($field->Null) && ($field->Null == 'NO') && empty($value) && !is_numeric($value) && !in_array($fieldName, $this->fieldsSkipChecks))
+			if (isset($field->Null) && ($field->Null === 'NO') && empty($value) && !is_numeric($value) && !in_array($fieldName, $this->fieldsSkipChecks))
 			{
-				if (!is_null($field->Default))
+				if (null !== $field->Default)
 				{
 					$this->$fieldName = $field->Default;
 
@@ -1538,7 +1538,7 @@ class DataModel extends Model implements \JTableInterface
 		// If the table is not loaded, return false
 		if (empty($this->$k))
 		{
-			throw new RecordNotLoaded(sprintf("Model %s does not have a loaded record", $this->getName()));
+			throw new RecordNotLoaded(sprintf('Model %s does not have a loaded record', $this->getName()));
 		}
 
 		// Select the primary key and ordering values from the table.
@@ -1639,9 +1639,7 @@ class DataModel extends Model implements \JTableInterface
 		// Run the "before build query" hook and behaviours
 		$this->triggerEvent('onBuildCountQuery', array(&$query));
 
-		$total = $db->setQuery($query)->loadResult();
-
-		return $total;
+		return $db->setQuery($query)->loadResult();
 	}
 
 	/**
@@ -1791,7 +1789,7 @@ class DataModel extends Model implements \JTableInterface
 		}
 
 		// Apply eager loaded relations
-		if ($dataCollection->count() && !empty($relations))
+		if (!empty($relations) && $dataCollection->count())
 		{
 			$relationManager = $this->getRelations();
 
@@ -2123,7 +2121,7 @@ class DataModel extends Model implements \JTableInterface
 			$owner = $this->getFieldValue('created_by');
 		}
 
-		if ($privileges['editown'] && ($owner == $userId))
+		if (($owner == $userId) && $privileges['editown'])
 		{
 			return $this->unlock();
 		}
@@ -2247,7 +2245,7 @@ class DataModel extends Model implements \JTableInterface
 
 		if ($oid)
 		{
-			$this->$pkField = intval($oid);
+			$this->$pkField = (int) $oid;
 		}
 
         if(!$this->$pkField)
@@ -2450,7 +2448,7 @@ class DataModel extends Model implements \JTableInterface
 		// Apply key filters
 		foreach ($keys as $filterKey => $filterValue)
 		{
-			if ($filterKey == 'id')
+			if ($filterKey === 'id')
 			{
 				$filterKey = $this->getIdFieldName();
 			}
@@ -2514,7 +2512,7 @@ class DataModel extends Model implements \JTableInterface
 	{
 		$item = $this->get(true, 0, 1)->first();
 
-		if (is_null($item))
+		if (null === $item)
 		{
 			$item = clone $this;
 			$item->create($data);
@@ -2534,7 +2532,7 @@ class DataModel extends Model implements \JTableInterface
 	{
 		$item = $this->get(true, 0, 1)->first();
 
-		if (is_null($item))
+		if (null === $item)
 		{
 			throw new NoItemsFound(get_class($this));
 		}
@@ -2551,7 +2549,7 @@ class DataModel extends Model implements \JTableInterface
 	{
 		$item = $this->get(true, 0, 1)->first();
 
-		if (is_null($item))
+		if (null === $item)
 		{
 			$item = clone $this;
 			$item->reset();
@@ -2627,7 +2625,7 @@ class DataModel extends Model implements \JTableInterface
 
 			$observer = $this->behavioursDispatcher->getObserverByClass($className);
 
-			if (is_null($observer))
+			if (null === $observer)
 			{
 				continue;
 			}
@@ -3093,7 +3091,7 @@ class DataModel extends Model implements \JTableInterface
 						$values = array_shift($values);
 					}
 
-					$options['operator'] = ($options['method'] == 'between') ? '=' : '!=';
+					$options['operator'] = ($options['method'] === 'between') ? '=' : '!=';
 					$options['value']    = $values;
 					$options['method']   = 'search';
 				}
@@ -3387,7 +3385,7 @@ class DataModel extends Model implements \JTableInterface
 						$value = array_shift($value);
 					}
 
-					$filter['operator'] = ($filter['method'] == 'between') ? '=' : '!=';
+					$filter['operator'] = ($filter['method'] === 'between') ? '=' : '!=';
 					$filter['value'] = $value;
 					$filter['method'] = 'search';
 				}
@@ -3870,30 +3868,30 @@ class DataModel extends Model implements \JTableInterface
 				array(
 					'common' => array(
 						0 => array(
-							"core_content_item_id" => $this->getKeyName(),
-							"core_title"           => $this->getUcmCoreAlias('title'),
-							"core_state"           => $this->getUcmCoreAlias('enabled'),
-							"core_alias"           => $this->getUcmCoreAlias('alias'),
-							"core_created_time"    => $this->getUcmCoreAlias('created_on'),
-							"core_modified_time"   => $this->getUcmCoreAlias('created_by'),
-							"core_body"            => $this->getUcmCoreAlias('body'),
-							"core_hits"            => $this->getUcmCoreAlias('hits'),
-							"core_publish_up"      => $this->getUcmCoreAlias('publish_up'),
-							"core_publish_down"    => $this->getUcmCoreAlias('publish_down'),
-							"core_access"          => $this->getUcmCoreAlias('access'),
-							"core_params"          => $this->getUcmCoreAlias('params'),
-							"core_featured"        => $this->getUcmCoreAlias('featured'),
-							"core_metadata"        => $this->getUcmCoreAlias('metadata'),
-							"core_language"        => $this->getUcmCoreAlias('language'),
-							"core_images"          => $this->getUcmCoreAlias('images'),
-							"core_urls"            => $this->getUcmCoreAlias('urls'),
-							"core_version"         => $this->getUcmCoreAlias('version'),
-							"core_ordering"        => $this->getUcmCoreAlias('ordering'),
-							"core_metakey"         => $this->getUcmCoreAlias('metakey'),
-							"core_metadesc"        => $this->getUcmCoreAlias('metadesc'),
-							"core_catid"           => $this->getUcmCoreAlias('cat_id'),
-							"core_xreference"      => $this->getUcmCoreAlias('xreference'),
-							"asset_id"             => $this->getUcmCoreAlias('asset_id')
+							'core_content_item_id' => $this->getKeyName(),
+							'core_title'           => $this->getUcmCoreAlias('title'),
+							'core_state'           => $this->getUcmCoreAlias('enabled'),
+							'core_alias'           => $this->getUcmCoreAlias('alias'),
+							'core_created_time'    => $this->getUcmCoreAlias('created_on'),
+							'core_modified_time'   => $this->getUcmCoreAlias('created_by'),
+							'core_body'            => $this->getUcmCoreAlias('body'),
+							'core_hits'            => $this->getUcmCoreAlias('hits'),
+							'core_publish_up'      => $this->getUcmCoreAlias('publish_up'),
+							'core_publish_down'    => $this->getUcmCoreAlias('publish_down'),
+							'core_access'          => $this->getUcmCoreAlias('access'),
+							'core_params'          => $this->getUcmCoreAlias('params'),
+							'core_featured'        => $this->getUcmCoreAlias('featured'),
+							'core_metadata'        => $this->getUcmCoreAlias('metadata'),
+							'core_language'        => $this->getUcmCoreAlias('language'),
+							'core_images'          => $this->getUcmCoreAlias('images'),
+							'core_urls'          => $this->getUcmCoreAlias('urls'),
+							'core_version'       => $this->getUcmCoreAlias('version'),
+							'core_ordering'      => $this->getUcmCoreAlias('ordering'),
+							'core_metakey'       => $this->getUcmCoreAlias('metakey'),
+							'core_metadesc'      => $this->getUcmCoreAlias('metadesc'),
+							'core_catid'         => $this->getUcmCoreAlias('cat_id'),
+							'core_xreference'   => $this->getUcmCoreAlias('xreference'),
+							'asset_id'          => $this->getUcmCoreAlias('asset_id')
 						)
 					),
 					'special' => array(
@@ -3914,7 +3912,7 @@ class DataModel extends Model implements \JTableInterface
 
 			$contentType->content_history_options = json_encode(
 				array(
-					"ignoreChanges" => array_filter($ignoreFields, 'strlen')
+					'ignoreChanges' => array_filter($ignoreFields, 'strlen')
 				)
 			);
 
@@ -3933,7 +3931,7 @@ class DataModel extends Model implements \JTableInterface
 	 *
 	 * @return string The column name
 	 */
-	protected function getUcmCoreAlias($alias, $null = "null")
+	protected function getUcmCoreAlias($alias, $null = 'null')
 	{
 		if (!$this->hasField($alias))
 		{
@@ -4035,7 +4033,7 @@ class DataModel extends Model implements \JTableInterface
 		// Create a signature hash.
 		$hash = md5($source . serialize($options));
 
-		if (!isset($this->_forms[$hash]) || $clear)
+		if ($clear || !isset($this->_forms[$hash]))
 		{
 			// Get the form.
 			$form = $this->container->factory->form($name, $source, $this->name, $options, false, $xpath);
@@ -4342,7 +4340,7 @@ class DataModel extends Model implements \JTableInterface
 			$prefix = $this->getDbo()->getPrefix();
 			$suffix = '';
 
-			if (substr($prefix, -1) == '_')
+			if (substr($prefix, -1) === '_')
 			{
 				$suffix = '_';
 				$prefix = substr($prefix, 0, -1);

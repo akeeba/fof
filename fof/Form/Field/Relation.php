@@ -168,7 +168,7 @@ class Relation extends GenericList
 
         // Replace [ITEM:ID] in the URL with the item's key value (usually:
         // the auto-incrementing numeric ID)
-        if (is_null($this->item))
+        if (null === $this->item)
         {
             $this->item = $this->form->getModel();
         }

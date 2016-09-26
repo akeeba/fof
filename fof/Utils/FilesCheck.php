@@ -81,7 +81,7 @@ class FilesCheck
 
 		// Check the version and date against those from #__extensions. I hate heavily nested IFs as much as the next
 		// guy, but what can you do...
-		if (!is_null($extension))
+		if (null !== $extension)
 		{
 			$manifestCache = $extension->manifest_cache;
 

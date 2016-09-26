@@ -236,7 +236,7 @@ if ( ! function_exists('array_get'))
 	 */
 	function array_get($array, $key, $default = null)
 	{
-		if (is_null($key)) return $array;
+		if (null === $key) return $array;
 
 		if (isset($array[$key])) return $array[$key];
 
@@ -290,7 +290,7 @@ if ( ! function_exists('array_pluck'))
 			// If the key is "null", we will just append the value to the array and keep
 			// looping. Otherwise we will key the array using the value of the key we
 			// received from the developer. Then we'll return the final array form.
-			if (is_null($key))
+			if (null === $key)
 			{
 				$results[] = $itemValue;
 			}
@@ -339,7 +339,7 @@ if ( ! function_exists('array_set'))
 	 */
 	function array_set(&$array, $key, $value)
 	{
-		if (is_null($key)) return $array = $value;
+		if (null === $key) return $array = $value;
 
 		$keys = explode('.', $key);
 
@@ -447,7 +447,7 @@ if ( ! function_exists('object_get'))
 	 */
 	function object_get($object, $key, $default = null)
 	{
-		if (is_null($key) or trim($key) == '') return $object;
+		if (null === $key || trim($key) === '') return $object;
 
 		foreach (explode('.', $key) as $segment)
 		{

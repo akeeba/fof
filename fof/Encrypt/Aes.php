@@ -148,9 +148,7 @@ class Aes
 		$key     = $this->getExpandedKey($iv_size, $iv);
 
 		// Decrypt the data
-		$plainText = $this->adapter->decrypt($stringToDecrypt, $key);
-
-		return $plainText;
+		return $this->adapter->decrypt($stringToDecrypt, $key);
 	}
 
 	/**

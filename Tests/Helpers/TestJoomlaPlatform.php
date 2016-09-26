@@ -130,7 +130,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 	 */
 	public function getTemplate($params = false)
 	{
-		if (is_null(self::$template))
+		if (null === self::$template)
 		{
 			return parent::getTemplate($params);
 		}
@@ -140,7 +140,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 
 	public function getTemplateSuffixes()
 	{
-		if (is_null(self::$templateSuffixes))
+		if (null === self::$templateSuffixes)
 		{
 			return parent::getTemplateSuffixes();
 		}
@@ -150,7 +150,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 
 	public function getPlatformBaseDirs()
 	{
-		if (is_null(self::$baseDirs))
+		if (null === self::$baseDirs)
 		{
 			return parent::getPlatformBaseDirs();
 		}

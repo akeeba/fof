@@ -43,12 +43,12 @@ class Date extends Field
 			$attributes['class'] = (string) $this->element['filterclass'];
 		}
 
-		if ((string) $this->element['readonly'] == 'true')
+		if ((string) $this->element['readonly'] === 'true')
 		{
 			$attributes['readonly'] = 'readonly';
 		}
 
-		if ((string) $this->element['disabled'] == 'true')
+		if ((string) $this->element['disabled'] === 'true')
 		{
 			$attributes['disabled'] = 'disabled';
 		}

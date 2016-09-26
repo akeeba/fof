@@ -71,9 +71,7 @@ class ReflectionHelper
 		$mirrorMethod = new \ReflectionMethod($object, $methodName);
 		$mirrorMethod->setAccessible(true);
 
-		$result = $mirrorMethod->invokeArgs(is_object($object) ? $object : null, $args);
-
-		return $result;
+		return $mirrorMethod->invokeArgs(is_object($object) ? $object : null, $args);
 	}
 
 	/**

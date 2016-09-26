@@ -168,7 +168,7 @@ class Ordering extends \JFormField implements FieldInterface
 		$icon  = isset($this->element['icon']) ? $this->element['icon'] : 'icon-menu';
 		$dnd = isset($this->element['dragndrop']) ? (string) $this->element['dragndrop'] : 'notbroken';
 
-		if (strtolower($dnd) == 'notbroken')
+		if (strtolower($dnd) === 'notbroken')
 		{
 			$dnd = !version_compare(JVERSION, '3.5.0', 'ge');
 		}

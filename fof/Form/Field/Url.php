@@ -145,7 +145,7 @@ class Url extends \JFormFieldUrl implements FieldInterface
 		$id    = isset($fieldOptions['id']) ? 'id="' . $fieldOptions['id'] . '" ' : '';
 		$class = $this->class . (isset($fieldOptions['class']) ? ' ' . $fieldOptions['class'] : '');
 
-		$show_link = $this->element['show_link'] == 'true';
+		$show_link = $this->element['show_link'] === 'true';
 
 		$empty_replacement = $this->element['empty_replacement'] ? (string) $this->element['empty_replacement'] : '';
 
@@ -191,7 +191,7 @@ class Url extends \JFormFieldUrl implements FieldInterface
 
         // Replace [ITEM:ID] in the URL with the item's key value (usually:
         // the auto-incrementing numeric ID)
-        if (is_null($this->item))
+        if (null === $this->item)
         {
             $this->item = $this->form->getModel();
         }

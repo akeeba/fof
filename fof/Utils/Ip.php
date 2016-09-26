@@ -37,11 +37,11 @@ class Ip
 	 */
 	public static function getIp()
 	{
-		if (is_null(static::$ip))
+		if (null === static::$ip)
 		{
 			$ip = self::detectAndCleanIP();
 
-			if (!empty($ip) && ($ip != '0.0.0.0') && function_exists('inet_pton') && function_exists('inet_ntop'))
+			if (!empty($ip) && ($ip !== '0.0.0.0') && function_exists('inet_pton') && function_exists('inet_ntop'))
 			{
 				$myIP = @inet_pton($ip);
 
@@ -118,7 +118,7 @@ class Ip
 		}
 
 		// If no IP address is found, return false
-		if ($ip == '0.0.0.0')
+		if ($ip === '0.0.0.0')
 		{
 			return false;
 		}
@@ -271,7 +271,7 @@ class Ip
 				{
 					// Standard IPv4 address, i.e. 123.123.123.123 or partial IP address, i.e. 123.[123.][123.][123]
 					$dots = 0;
-					if (substr($ipExpression, -1) == '.')
+					if (substr($ipExpression, -1) === '.')
 					{
 						// Partial IP address. Convert to CIDR and re-match
 						foreach (count_chars($ipExpression, 1) as $i => $val)

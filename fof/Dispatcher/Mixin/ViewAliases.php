@@ -71,7 +71,7 @@ trait ViewAliases
 
 		// Perform HTTP 301 Moved permanently redirection on GET requests if requested to do so
 		if ($this->permanentAliasRedirectionOnGET && isset($_SERVER['REQUEST_METHOD'])
-			&& (strtoupper($_SERVER['REQUEST_METHOD']) == 'GET')
+			&& (strtoupper($_SERVER['REQUEST_METHOD']) === 'GET')
 		)
 		{
 			$url = JUri::getInstance();

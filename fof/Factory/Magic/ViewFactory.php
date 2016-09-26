@@ -64,8 +64,6 @@ class ViewFactory extends BaseFactory
 			$className = '\\FOF30\\View\\DataView\\Html';
 		}
 
-		$view = new $className($this->container, $config);
-
-		return $view;
+		return new $className($this->container, $config);
 	}
 }

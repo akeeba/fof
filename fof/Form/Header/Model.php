@@ -44,7 +44,7 @@ class Model extends Selectable
 		$translate = in_array(strtolower($translate), array('true','yes','1','on')) ? true : false;
 		$with = $this->element['with'] ? (string) $this->element['with'] : null;
 
-		if (!is_null($with))
+		if (null !== $with)
 		{
 			$with = trim($with);
 			$with = explode(',', $with);
@@ -85,7 +85,7 @@ class Model extends Selectable
 			$model->applyAccessFiltering();
 		}
 
-		if (!is_null($with))
+		if (null !== $with)
 		{
 			$model->with($with);
 		}
@@ -95,7 +95,7 @@ class Model extends Selectable
 		foreach ($this->element->children() as $stateoption)
 		{
 			// Only add <option /> elements.
-			if ($stateoption->getName() != 'state')
+			if ($stateoption->getName() !== 'state')
 			{
 				continue;
 			}

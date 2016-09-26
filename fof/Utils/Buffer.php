@@ -44,7 +44,7 @@ class Buffer
 	 */
 	public static function canRegisterWrapper()
 	{
-		if (is_null(static::$canRegisterWrapper))
+		if (null === static::$canRegisterWrapper)
 		{
 			static::$canRegisterWrapper = false;
 
@@ -258,7 +258,7 @@ class Buffer
 		switch ($whence)
 		{
 			case SEEK_SET:
-				if ($offset < strlen(static::$buffers[ $this->name ]) && $offset >= 0)
+				if ($offset >= 0 && $offset < strlen(static::$buffers[$this->name ]))
 				{
 					$this->position = $offset;
 

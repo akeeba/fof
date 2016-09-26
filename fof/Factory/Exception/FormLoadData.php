@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 
 class FormLoadData extends FormLoadGeneric
 {
-	public function __construct( $message = "", $code = 500, Exception $previous = null )
+	public function __construct($message = '', $code = 500, Exception $previous = null )
 	{
 		if (empty($message))
 		{

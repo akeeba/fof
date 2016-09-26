@@ -34,7 +34,7 @@ class HasOne extends HasMany
 	 */
 	public function getData($callback = null, Collection $dataCollection = null)
 	{
-		if (is_null($dataCollection))
+		if (null === $dataCollection)
 		{
 			return parent::getData($callback, $dataCollection)->first();
 		}
