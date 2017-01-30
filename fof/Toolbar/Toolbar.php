@@ -447,37 +447,9 @@ class Toolbar
             return;
         }
 
-        $option = $this->container->componentName;
-        $componentName = str_replace('com_', '', $option);
-        $view = $this->container->input->getCmd('view', 'cpanel');
+        $this->onAdd();
 
-        // Set toolbar title
-        $subtitle_key = strtoupper($option . '_TITLE_' . $this->container->inflector->pluralize($view)) . '_EDIT';
-        JToolBarHelper::title(JText::_(strtoupper($option)) . ': ' . JText::_($subtitle_key), $componentName);
-
-        if (!$this->isDataView())
-        {
-            return;
-        }
-
-        // Set toolbar icons
-        if ($this->perms->edit || $this->perms->editown)
-        {
-            // Show the apply button only if I can edit the record, otherwise I'll return to the edit form and get a
-            // 403 error since I can't do that
-            JToolBarHelper::apply();
-        }
-
-        JToolBarHelper::save();
-
-        if ($this->perms->create)
-        {
-            JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-            \JToolbarHelper::save2copy('save2copy', 'JTOOLBAR_SAVE_AS_COPY');
-        }
-
-        JToolBarHelper::cancel();
-	}
+    }
 
 	/**
 	 * Removes all links from the link bar
