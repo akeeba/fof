@@ -160,12 +160,6 @@ class Dispatcher
 		$view = $this->input->getCmd('view', $this->defaultView);
 		$task = $this->input->getCmd('task', 'default');
 
-		if (empty($task))
-		{
-			$task = 'default';
-			$this->input->set('task', $task);
-		}
-
 		$this->controller = $this->container->factory->controller($view, $this->config);
 		$status = $this->controller->execute($task);
 
