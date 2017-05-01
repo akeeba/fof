@@ -62,6 +62,11 @@ class Relation extends GenericList
 
 		$rels = array();
 
+		if ($relations instanceof DataModel)
+		{
+			$relations = array($relations);
+		}
+
 		foreach ($relations as $relation) {
 
 			$html = '<span class="' . $relationclass . '">';
