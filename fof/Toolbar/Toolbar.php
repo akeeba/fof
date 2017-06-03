@@ -441,14 +441,15 @@ class Toolbar
 	 */
 	public function onEdit()
 	{
-		// On frontend, buttons must be added specifically
-		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
-		{
-			return;
-		}
+        // On frontend, buttons must be added specifically
+        if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
+        {
+            return;
+        }
 
-		$this->onAdd();
-	}
+        $this->onAdd();
+
+    }
 
 	/**
 	 * Removes all links from the link bar
