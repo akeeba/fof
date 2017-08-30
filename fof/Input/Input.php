@@ -94,11 +94,12 @@ class Input extends \JInput
 			$hash = 'REQUEST';
 		}
 
-		// Magic quotes GPC handling (something JInput simply can't handle at all)
+		// Magic quotes GPC handling (something JInput simply can't handle at all) - Note: changed line 101 to include $jinput
 		// @codeCoverageIgnoreStart
 		if (($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('\\JRequest', true))
 		{
-			$source = \JRequest::get('REQUEST', 2);
+			$jinput = \JFactory::getApplication()->input;
+			$source = $jinput->get('REQUEST', null, '2');
 		}
 		// @codeCoverageIgnoreEnd
 
