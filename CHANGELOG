@@ -1,3 +1,13 @@
+FOF 3.3.0
+================================================================================
++ JHtml helpers for browse and edit views to help us convert from XML forms to FEF
++ BrowseView helper to help us convert from XML forms to FEF
++ Blade: `@sortgrid($field [, $langKey])` implements Joomla sortable titles for browse view table headers
++ Blade: `@fieldtitle($field)` returns the translated COM_YourComponent_YourView_FIELD_YourField string
++ SelectOptions helper for getting JHtml option arrays for Joomla core information, such as access levels
++ Additional options for the FEF renderer
+# [MEDIUM] DataModel constructor forcibly applies access level filtering when the model is doing asset tracking
+
 FOF 3.2.1
 ================================================================================
 # [HIGH] DataModel::count() causes a SQL error on MySQL 5.7+ with ONLY_FULL_GROUP_BY SQL mode enabled

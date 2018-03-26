@@ -7,6 +7,8 @@
 
 namespace FOF30\View\Compiler;
 
+use FOF30\Container\Container;
+
 defined('_JEXEC') or die;
 
 class Blade implements CompilerInterface
@@ -71,6 +73,18 @@ class Blade implements CompilerInterface
 	 * @var int
 	 */
 	protected $forelseCounter = 0;
+
+	/**
+	 * The FOF container we are attached to
+	 *
+	 * @var Container
+	 */
+	protected $container;
+
+	public function __construct(Container $container)
+	{
+		$this->container = $container;
+	}
 
 	/**
 	 * Are the results of this compiler engine cacheable? If the engine makes use of the forcedParams it must return
@@ -829,6 +843,71 @@ class Blade implements CompilerInterface
 	protected function compileJhtml($expression)
 	{
 		return "<?php echo \\JHtml::_{$expression}; ?>";
+	}
+
+	/**
+	 * Compile the `sortgrid` statements into valid PHP.
+	 *
+	 * @param  string  $expression
+	 * @return string
+	 *
+	 * @since 3.3.0
+	 */
+	protected function compileSortgrid($expression)
+	{
+		return "<?php echo FOF30\Utils\FEFHelper\BrowseView::sortGrid{$expression} ?>";
+	}
+
+	/**
+	 * Compile the `fieldtitle` statements into valid PHP.
+	 *
+	 * @param  string  $expression
+	 * @return string
+	 *
+	 * @since 3.3.0
+	 */
+	protected function compileFieldtitle($expression)
+	{
+		return "<?php echo FOF30\Utils\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
+	}
+
+	/**
+	 * Compile the `modelfilter($localField, [$modelTitleField, $modelName, $placeholder, $params])` statements into valid PHP.
+	 *
+	 * @param  string  $expression
+	 * @return string
+	 *
+	 * @since 3.3.0
+	 */
+	protected function compileModelfilter($expression)
+	{
+		return "<?php echo \FOF30\Utils\FEFHelper\BrowseView::modelFilter{$expression} ?>";
+	}
+
+	/**
+	 * Compile the `selectfilter($localField, $options [, $placeholder, $params])` statements into valid PHP.
+	 *
+	 * @param  string  $expression
+	 * @return string
+	 *
+	 * @since 3.3.0
+	 */
+	protected function compileSelectfilter($expression)
+	{
+		return "<?php echo \FOF30\Utils\FEFHelper\BrowseView::selectFilter{$expression} ?>";
+	}
+
+	/**
+	 * Compile the `searchfilter($localField, $searchField = null, $placeholder = null, array $attributes = [])` statements into valid PHP.
+	 *
+	 * @param  string  $expression
+	 * @return string
+	 *
+	 * @since 3.3.0
+	 */
+	protected function compileSearchfilter($expression)
+	{
+		return "<?php echo \FOF30\Utils\FEFHelper\BrowseView::searchFilter{$expression} ?>";
 	}
 
 	/**
