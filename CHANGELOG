@@ -1,3 +1,17 @@
+FOF 3.3.2
+================================================================================
++ Encryption service in the container
++ PHP Generator support in DataModel for easily iterating very large datasets under PHP 5.5 or later
+# [MEDIUM] Using getUser() under CLI could cause a problem if no user ID was passed
+
+FOF 3.3.1
+================================================================================
++ Support for precompiled Blade templates for broken hosts without PHP Tokenizer support.
+~ Improve detection of stream wrapper registration capability
+# [HIGH] Scaffolding does not work on PHP 7.2 (see changelog for version 3.1.4 for related issue)
+# [HIGH] Blade templates don't work at all when your cache folders are not writable
+# [LOW] FEF-based components have the wrong padding in the backend due to extra classes being added to the container
+
 FOF 3.3.0
 ================================================================================
 + JHtml helpers for browse and edit views to help us convert from XML forms to FEF
