@@ -1,3 +1,7 @@
+FOF 3.3.3
+================================================================================
+# [HIGH] DateDecorator did not work properly with add(), sub() and modify()
+
 FOF 3.3.2
 ================================================================================
 + Encryption service in the container
