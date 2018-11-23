@@ -56,7 +56,8 @@ trait UserActionsLog
 			$extension = $this->getContainer()->componentName;
 		}
 
-		$user = $this->getContainer()->platform->getUser();
+		$container 	= $this->getContainer();
+		$user		= $container->platform->getUser();
 
 		if (!array_key_exists('userid', $message))
 		{
@@ -73,12 +74,11 @@ trait UserActionsLog
 			$message['accountlink'] = 'index.php?option=com_users&task=user.edit&id=' . $user->id;
 		}
 
-		$message['type'] = strtoupper($message['type']);
-
 		// No Log Text? Let's build it from the data we have
 		if (!$logText)
 		{
-			$key 	 = $extension . '_LOGS_' . $this->getContainer()->input->getCmd('view') .'_'.$message['type'];
+			$view	 = $container->input->getCmd('view');
+			$key 	 = $extension . '_LOGS_' . $container->inflector->singularize($view) .'_'.$message['action'];
 			$logText = strtoupper($key);
 		}
 
