@@ -11,6 +11,8 @@ use FOF30\Container\Container;
 
 defined('_JEXEC') or die;
 
+\JModelLegacy::addIncludePath(JPATH_ROOT . '/administrator/components/com_actionlogs/models', 'ActionlogsModel');
+
 /**
  * @method	Container getContainer()
  */
@@ -40,7 +42,7 @@ trait UserActionsLog
 		}
 
 		// Sanity checks
-		$required_keys = ['action', 'type', 'title'];
+		$required_keys = ['action'];
 
 		foreach ($required_keys as $required)
 		{
@@ -58,11 +60,6 @@ trait UserActionsLog
 
 		$container 	= $this->getContainer();
 		$user		= $container->platform->getUser();
-
-		if (!array_key_exists('userid', $message))
-		{
-			$message['userid'] = $user->id;
-		}
 
 		if (!array_key_exists('username', $message))
 		{
