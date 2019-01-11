@@ -877,8 +877,7 @@ class DataModelCrudDataprovider
 
 	public static function getTestCanDelete()
 	{
-		// Empty join array
-		$data[] = [
+		$data['Empty join array'] = [
 			[
 				'id'    => 1,
 				'load'  => 0,
@@ -890,8 +889,7 @@ class DataModelCrudDataprovider
 			],
 		];
 
-		// Joins are not defined
-		$data[] = [
+		$data['Joins are not defined'] = [
 			[
 				'id'    => 1,
 				'load'  => 0,
@@ -903,8 +901,7 @@ class DataModelCrudDataprovider
 			],
 		];
 
-		// Parent with 1 child - ID passed
-		$data[] = [
+		$data['Parent with 1 child - ID passed'] = [
 			[
 				'id'    => 1,
 				'load'  => 0,
@@ -924,8 +921,7 @@ class DataModelCrudDataprovider
 			],
 		];
 
-		// Parent with 1 child - Loaded table
-		$data[] = [
+		$data['Parent with 1 child - Loaded table'] = [
 			[
 				'id'    => 0,
 				'load'  => 1,
@@ -945,8 +941,7 @@ class DataModelCrudDataprovider
 			],
 		];
 
-		// Parent with no children - delete allowed
-		$data[] = [
+		$data['Parent with no children - delete allowed'] = [
 			[
 				'id'    => 3,
 				'load'  => 0,
@@ -966,8 +961,7 @@ class DataModelCrudDataprovider
 			],
 		];
 
-		// Join array missing some fields
-		$data[] = [
+		$data['Join array missing some fields'] = [
 			[
 				'id'    => 3,
 				'load'  => 0,
@@ -982,12 +976,11 @@ class DataModelCrudDataprovider
 			],
 			[
 				'exception' => '\InvalidArgumentException',
-				'message'   => '',
+				'message'   => 'Join array missing some keys, please check the documentation',
 			],
 		];
 
-		// Table not loaded an no id is passed
-		$data[] = [
+		$data['Table not loaded an no id is passed'] = [
 			[
 				'id'    => 0,
 				'load'  => 0,
@@ -995,7 +988,7 @@ class DataModelCrudDataprovider
 			],
 			[
 				'exception' => '\InvalidArgumentException',
-				'message'   => '',
+				'message'   => 'Master table should be loaded or an ID should be passed',
 			],
 		];
 

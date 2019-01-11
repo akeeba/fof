@@ -3,7 +3,6 @@ Broken tests before refactoring
 FOF40\Tests\Inflector\InflectorTest
     This is actually Joomla! not being able to find the mysqli object...?!
 
-FOF40\Tests\DataModel\DataModelCrudTest
 FOF40\Tests\DataModel\Relation\Relation\HasMany\HasManyTest
 FOF40\Tests\Platform\PlatformJoomlaTest
 FOF40\Tests\Utils\BufferTest
