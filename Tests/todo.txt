@@ -1,0 +1,15 @@
+Broken tests before refactoring
+
+FOF40\Tests\Dispatcher\DispatcherTest
+FOF40\Tests\Encrypt\AesTest
+FOF40\Tests\Factory\BasicFactoryTest
+FOF40\Tests\Inflector\InflectorTest
+FOF40\Tests\Layout\LayoutFileTest
+FOF40\Tests\DataModel\ContentHistoryTest
+FOF40\Tests\DataModel\PageParametersToStateTest
+FOF40\Tests\DataModel\DataModelCrudTest
+FOF40\Tests\DataModel\Relation\Relation\HasMany\HasManyTest
+FOF40\Tests\Platform\PlatformJoomlaTest
+FOF40\Tests\Utils\BufferTest
+FOF40\Tests\Utils\TimezoneWranglerTest
+    Incomplete tests

@@ -522,7 +522,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF40\Controller\DataController::cancel
+     * @covers          \FOF40\Controller\DataController::cancel
      * @dataProvider    DataControllerDataprovider::getTestCancel
      */
     public function testCancel($test, $check)
@@ -542,12 +542,13 @@ class DataControllertest extends DatabaseTest
         ));
 
         $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
-            ->setMethods(array('unlock', 'getId'))
+            ->setMethods(array('unlock', 'getId', 'tmpInstance'))
             ->setConstructorArgs(array($container))
             ->setMockClassName('')
             ->disableOriginalConstructor()
             ->getMock();
 
+        $model->method('tmpInstance')->willReturn($model);
         $model->method('getId')->willReturn($test['mock']['getId']);
 
         $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
@@ -555,7 +556,7 @@ class DataControllertest extends DatabaseTest
             ->setConstructorArgs(array($container))
             ->getMock();
 
-        $controller->method('getModel')->willReturn($model);
+        $controller->expects($this->any())->method('getModel')->willReturn($model);
         $controller->expects($check['getFromReq'] ? $this->once() : $this->never())->method('getIDsFromRequest')->willReturn($test['mock']['ids']);
         $controller->expects($this->once())->method('setRedirect')->with($this->equalTo($check['url']));
 
