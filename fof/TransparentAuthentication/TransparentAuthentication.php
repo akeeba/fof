@@ -443,12 +443,12 @@ class TransparentAuthentication
 				case self::Auth_SplitQueryString_Plaintext:
 					if (empty($this->queryParamUsername))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (empty($this->queryParamPassword))
 					{
-						continue;
+						continue 2;
 					}
 
 					$username = $input->get($this->queryParamUsername, '', 'raw');
@@ -456,12 +456,12 @@ class TransparentAuthentication
 
 					if (empty($username))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (empty($password))
 					{
-						continue;
+						continue 2;
 					}
 
 					return array(
