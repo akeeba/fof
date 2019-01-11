@@ -80,7 +80,7 @@ class PageParametersToStateTest extends DatabaseTest
 		$pageparams = new PageParametersToState($dispatcher);
 
 		$fakeApp = new ClosureHelper([
-			'getPageParameters' => function () use ($test) {
+			'getParams' => function () use ($test) {
 				return new \JRegistry($test['params']);
 			},
 		]);

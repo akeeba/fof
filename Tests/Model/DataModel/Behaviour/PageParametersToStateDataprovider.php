@@ -10,7 +10,7 @@ class PageParametersToStateDataprovider
 {
 	public static function getTestOnAfterConstruct()
 	{
-		$data[] = [
+		$data['We are on the backend'] = [
 			'input' => [
 				'input'  => [],
 				'mock'   => [
@@ -29,7 +29,7 @@ class PageParametersToStateDataprovider
 			],
 		];
 
-		$data[] = [
+		$data['Page params are empty'] = [
 			'input' => [
 				'input'  => [],
 				'mock'   => [
@@ -48,7 +48,7 @@ class PageParametersToStateDataprovider
 			],
 		];
 
-		$data[] = [
+		$data['Page params not present inside model state'] = [
 			'input' => [
 				'input'  => [],
 				'mock'   => [
@@ -70,7 +70,7 @@ class PageParametersToStateDataprovider
 			],
 		];
 
-		$data[] = [
+		$data['Param already set in the model state'] = [
 			'input' => [
 				'input'  => [],
 				'mock'   => [
@@ -91,7 +91,7 @@ class PageParametersToStateDataprovider
 			],
 		];
 
-		$data[] = [
+		$data['Param already set in the model state (empty value)'] = [
 			'input' => [
 				'input'  => [],
 				'mock'   => [
@@ -112,7 +112,7 @@ class PageParametersToStateDataprovider
 			],
 		];
 
-		$data[] = [
+		$data['Param already set in the input'] = [
 			'input' => [
 				'input'  => [
 					'foo' => 'bar',

@@ -37,7 +37,12 @@ class PageParametersToState extends Observer
 		$params = $app->getParams();
 
 		// Extract the page parameter keys
-		$asArray = $params->toArray();
+		$asArray = [];
+
+		if (is_object($params) && method_exists($params, 'toArray'))
+		{
+			$asArray = $params->toArray();
+		}
 
 		if (empty($asArray))
 		{
