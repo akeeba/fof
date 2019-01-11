@@ -34,17 +34,17 @@ class BufferTest extends FOFTestCase
 		$this->assertTrue($return);
 
 		$this->assertEquals(
-			'path',
+			'path/to/some/file',
 			$buffer->name
 		);
 
 		$this->assertArrayHasKey(
-			'path',
-			$buffer::$buffers
+			'path/to/some/file',
+			Buffer::$buffers
 		);
 
 		$this->assertNull(
-			$buffer::$buffers['path']
+			Buffer::$buffers['path/to/some/file']
 		);
 
 		$this->assertEquals(
@@ -55,7 +55,7 @@ class BufferTest extends FOFTestCase
 
 	/**
 	 * @group   Buffer
-	 * @covers  FOF40\Utils\Buffer::stream_write
+	 * @covers  \FOF40\Utils\Buffer::stream_write
 	 */
 	public function testStreamWrite()
 	{
@@ -74,7 +74,7 @@ class BufferTest extends FOFTestCase
 
 		$this->assertEquals(
 			'0123456789',
-			$buffer::$buffers['path']
+			Buffer::$buffers['path/to/some/file']
 		);
 
 		$buffer->position = 0;
@@ -93,13 +93,13 @@ class BufferTest extends FOFTestCase
 
 		$this->assertEquals(
 			'ABCDE56789',
-			$buffer::$buffers['path']
+			Buffer::$buffers['path/to/some/file']
 		);
 	}
 
 	/**
 	 * @group   Buffer
-	 * @covers  FOF40\Utils\Buffer::stream_read
+	 * @covers  \FOF40\Utils\Buffer::stream_read
 	 */
 	public function testStreamRead()
 	{
