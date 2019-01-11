@@ -2,7 +2,7 @@
 /**
  * @package     FOF
  * @copyright   Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
- * @license     GNU GPL version 2 or later
+ * @license     GNU GPL version 3 or later
  */
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
