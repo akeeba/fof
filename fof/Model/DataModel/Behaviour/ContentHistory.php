@@ -9,6 +9,7 @@
 
 namespace FOF40\Model\DataModel\Behaviour;
 
+use FOF40\Container\Container;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
@@ -34,10 +35,11 @@ class ContentHistory extends Observer
 	 */
 	public function onAfterSave(&$model)
 	{
-		$aliasParts = explode('.', $model->getContentType());
 		$model->checkContentType();
 
-		if (\JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
+		$componentParams = $model->getContainer()->params;
+
+		if ($componentParams->get('save_history', 0))
 		{
             if(!$this->historyHelper)
             {
@@ -60,9 +62,9 @@ class ContentHistory extends Observer
 	 */
 	public function onBeforeDelete(&$model, $oid)
 	{
-		$aliasParts = explode('.', $model->getContentType());
+		$componentParams = $model->getContainer()->params;
 
-		if (\JComponentHelper::getParams($aliasParts[0])->get('save_history', 0))
+		if ($componentParams->get('save_history', 0))
 		{
             if(!$this->historyHelper)
             {

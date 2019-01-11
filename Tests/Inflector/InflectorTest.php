@@ -551,10 +551,16 @@ class InflectorTest extends FOFTestCase
 	public function getTestVariableizeData()
 	{
 		return [
-			["foo_bar", "fooBar", 'Underscores must act as camelization points'],
-			["foo bar", "fooBar", 'Spaces must act as camelization points'],
-			["foo's bar", "fooSBar", 'Punctuation must be stripped out'],
-			["foo.bar.123", "fooBar123", 'Numbers must be preserved'],
+			'Underscores must act as camelization points' => [
+				"foo_bar", "fooBar", 'Underscores must act as camelization points',
+			],
+			'Spaces must act as camelization points'      => [
+				"foo bar", "fooBar", 'Spaces must act as camelization points',
+			],
+			'Punctuation must be stripped out'            => [
+				"foo's bar", "fooSBar", 'Punctuation must be stripped out',
+			],
+			'Numbers must be preserved'                   => ["foo.bar.123", "fooBar123", 'Numbers must be preserved'],
 		];
 	}
 

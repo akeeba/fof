@@ -60,16 +60,8 @@ class ContentHistoryTest extends DatabaseTest
 			},
 		]);
 
-		$fakeComponent = [
-			'com_foftest' => (object) [
-				'params' => new \JRegistry([
-					'save_history' => $test['save_history'],
-				]),
-			],
-		];
-
 		ReflectionHelper::setValue($behavior, 'historyHelper', $fakeHelper);
-		ReflectionHelper::setValue('JComponentHelper', 'components', $fakeComponent);
+		$model->getContainer()->params->set('save_history', $test['save_history']);
 
 		$behavior->onAfterSave($model);
 
@@ -107,16 +99,8 @@ class ContentHistoryTest extends DatabaseTest
 			},
 		]);
 
-		$fakeComponent = [
-			'com_foftest' => (object) [
-				'params' => new \JRegistry([
-					'save_history' => $test['save_history'],
-				]),
-			],
-		];
-
 		ReflectionHelper::setValue($behavior, 'historyHelper', $fakeHelper);
-		ReflectionHelper::setValue('JComponentHelper', 'components', $fakeComponent);
+		$model->getContainer()->params->set('save_history', $test['save_history']);
 
 		$behavior->onBeforeDelete($model, 1);
 
