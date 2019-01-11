@@ -418,13 +418,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	/**
 	 * @covers          FOF40\Platform\Joomla\Platform::loginUser
 	 *
-	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoginUser
-	 *
 	 */
 	public function testLoginUser()
 	{
-		// TODO
-		$this->markTestIncomplete('Not yet implemented');
+		$this->markTestSkipped('Cannot test user login / logout from CLI');
 	}
 
 	/**
@@ -456,13 +453,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	/**
 	 * @covers          FOF40\Platform\Joomla\Platform::logoutUser
 	 *
-	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLogoutUser
-	 *
 	 */
 	public function testLogoutUser()
 	{
-		// TODO
-		$this->markTestIncomplete('Not yet implemented');
+		$this->markTestSkipped('Cannot test user login / logout from CLI');
 	}
 
 	/**
@@ -473,7 +467,6 @@ class PlatformJoomlaTest extends FOFTestCase
 	 */
 	public function testGetUserStateFromRequest()
 	{
-		// TODO
-		$this->markTestIncomplete('Not yet implemented');
+		$this->markTestSkipped('Cannot implement request in CLI');
 	}
 }
