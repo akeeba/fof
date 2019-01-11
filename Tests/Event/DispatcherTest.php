@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Event;
 
 
@@ -34,9 +33,9 @@ class DispatcherTest extends ApplicationTestCase
 	 */
 	public function testConstructor()
 	{
-		$container = new Container(array(
-			'componentName' => 'com_eastwood'
-		));
+		$container = new Container([
+			'componentName' => 'com_eastwood',
+		]);
 
 		$myDispatcher = new Dispatcher($container);
 
@@ -67,8 +66,8 @@ class DispatcherTest extends ApplicationTestCase
 	 */
 	public function testAttach()
 	{
-		ReflectionHelper::setValue($this->object, 'observers', array());
-		ReflectionHelper::setValue($this->object, 'events', array());
+		ReflectionHelper::setValue($this->object, 'observers', []);
+		ReflectionHelper::setValue($this->object, 'events', []);
 
 		// Test that an observer is auto-attached to the observable dispatcher
 		$observer1 = new FirstObserver($this->object);
@@ -84,7 +83,7 @@ class DispatcherTest extends ApplicationTestCase
 
 		// Test that we cannot attach a new instance of the same observer class
 		$observer1new = new FirstObserver($this->object);
-		$observers = ReflectionHelper::getValue($this->object, 'observers');
+		$observers    = ReflectionHelper::getValue($this->object, 'observers');
 		$this->assertCount(2, $observers);
 		$this->assertNotEquals($observer1new, $observers[get_class($observer1)]);
 	}
@@ -94,8 +93,8 @@ class DispatcherTest extends ApplicationTestCase
 	 */
 	public function testDetach()
 	{
-		ReflectionHelper::setValue($this->object, 'observers', array());
-		ReflectionHelper::setValue($this->object, 'events', array());
+		ReflectionHelper::setValue($this->object, 'observers', []);
+		ReflectionHelper::setValue($this->object, 'events', []);
 
 		$observer1 = new FirstObserver($this->object);
 		$observer2 = new SecondObserver($this->object);
@@ -125,13 +124,13 @@ class DispatcherTest extends ApplicationTestCase
 	 */
 	public function testHasObserver()
 	{
-		ReflectionHelper::setValue($this->object, 'observers', array());
-		ReflectionHelper::setValue($this->object, 'events', array());
+		ReflectionHelper::setValue($this->object, 'observers', []);
+		ReflectionHelper::setValue($this->object, 'events', []);
 
 		$observer1 = new FirstObserver($this->object);
 
 		$otherDispatcher = new Dispatcher(static::$container);
-		$observer2 = new SecondObserver($otherDispatcher);
+		$observer2       = new SecondObserver($otherDispatcher);
 
 		$actual = $this->object->hasObserver($observer1);
 		$this->assertTrue($actual);
@@ -145,35 +144,35 @@ class DispatcherTest extends ApplicationTestCase
 	 */
 	public function testTrigger()
 	{
-		ReflectionHelper::setValue($this->object, 'observers', array());
-		ReflectionHelper::setValue($this->object, 'events', array());
+		ReflectionHelper::setValue($this->object, 'observers', []);
+		ReflectionHelper::setValue($this->object, 'events', []);
 
 		$observer1 = new FirstObserver($this->object);
 		$observer2 = new SecondObserver($this->object);
 
 		// Trigger a non-existent event
 		$result = $this->object->trigger('notthere');
-		$this->assertEquals(array(), $result);
+		$this->assertEquals([], $result);
 
 		// Trigger a non-existent event with data
-		$result = $this->object->trigger('notthere', array('whatever', 'nevermind'));
-		$this->assertEquals(array(), $result);
+		$result = $this->object->trigger('notthere', ['whatever', 'nevermind']);
+		$this->assertEquals([], $result);
 
 		// Trigger an event with one observer responding to it
 		$result = $this->object->trigger('onlySecond');
-		$this->assertEquals(array('only second'), $result);
+		$this->assertEquals(['only second'], $result);
 
 		// Trigger an event with two observers responding to it
 		$result = $this->object->trigger('identifyYourself');
-		$this->assertEquals(array('one', 'two'), $result);
+		$this->assertEquals(['one', 'two'], $result);
 
 		// Trigger an event with two observers responding to it, with parameters
-		$result = $this->object->trigger('returnConditional', array('one'));
-		$this->assertEquals(array(true, false), $result);
+		$result = $this->object->trigger('returnConditional', ['one']);
+		$this->assertEquals([true, false], $result);
 
 		// Trigger an event with two observers responding to it, with parameters
-		$result = $this->object->trigger('returnConditional', array('two'));
-		$this->assertEquals(array(false, true), $result);
+		$result = $this->object->trigger('returnConditional', ['two']);
+		$this->assertEquals([false, true], $result);
 	}
 
 	/**
@@ -181,8 +180,8 @@ class DispatcherTest extends ApplicationTestCase
 	 */
 	public function testChainHandle()
 	{
-		ReflectionHelper::setValue($this->object, 'observers', array());
-		ReflectionHelper::setValue($this->object, 'events', array());
+		ReflectionHelper::setValue($this->object, 'observers', []);
+		ReflectionHelper::setValue($this->object, 'events', []);
 
 		$observer1 = new FirstObserver($this->object);
 		$observer2 = new SecondObserver($this->object);
@@ -192,7 +191,7 @@ class DispatcherTest extends ApplicationTestCase
 		$this->assertNull($result);
 
 		// Trigger a non-existent event with data
-		$result = $this->object->chainHandle('notthere', array('whatever', 'nevermind'));
+		$result = $this->object->chainHandle('notthere', ['whatever', 'nevermind']);
 		$this->assertNull($result);
 
 		// Trigger an event with one observer responding to it
@@ -204,19 +203,19 @@ class DispatcherTest extends ApplicationTestCase
 		$this->assertEquals('one', $result);
 
 		// Trigger an event with two observers responding to it, with parameters
-		$result = $this->object->chainHandle('returnConditional', array('one'));
+		$result = $this->object->chainHandle('returnConditional', ['one']);
 		$this->assertEquals(true, $result);
 
 		// Trigger an event with two observers responding to it, with parameters
-		$result = $this->object->chainHandle('returnConditional', array('two'));
+		$result = $this->object->chainHandle('returnConditional', ['two']);
 		$this->assertEquals(false, $result);
 
 		// Trigger a real chain handler
-		$result = $this->object->chainHandle('chain', array('one'));
+		$result = $this->object->chainHandle('chain', ['one']);
 		$this->assertEquals('one', $result);
 
 		// Trigger a real chain handler
-		$result = $this->object->chainHandle('chain', array('two'));
+		$result = $this->object->chainHandle('chain', ['two']);
 		$this->assertEquals('two', $result);
 	}
 
@@ -227,6 +226,6 @@ class DispatcherTest extends ApplicationTestCase
 
 	protected function tearDown()
 	{
-		ReflectionHelper::setValue($this->object, 'instances', array());
+		ReflectionHelper::setValue($this->object, 'instances', []);
 	}
 }

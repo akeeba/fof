@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Timer;
 
 use FOF40\Tests\Helpers\Timer\FakeTimer;

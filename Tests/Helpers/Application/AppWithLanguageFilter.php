@@ -6,20 +6,19 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Application;
 
 class AppWithLanguageFilter
 {
-    protected $languageFilter;
+	protected $languageFilter;
 
-    public function __construct($filter)
-    {
-        $this->languageFilter = $filter;
-    }
+	public function __construct($filter)
+	{
+		$this->languageFilter = $filter;
+	}
 
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
-    }
+	public function getLanguageFilter()
+	{
+		return $this->languageFilter;
+	}
 }

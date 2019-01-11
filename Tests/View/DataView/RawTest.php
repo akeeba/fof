@@ -6,14 +6,13 @@
  */
 
 
-
 namespace FOF40\Tests\View;
 
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Stubs\View\DataView\RawStub;
 
-require_once __DIR__.'/RawDataprovider.php';
+require_once __DIR__ . '/RawDataprovider.php';
 
 /**
  * @covers      FOF40\View\DataView\Raw::<protected>
@@ -22,161 +21,161 @@ require_once __DIR__.'/RawDataprovider.php';
  */
 class RawTest extends FOFTestCase
 {
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::__construct
-     * @dataProvider    RawDataprovider::getTest__construct
-     */
-    public function test__construct($test, $check)
-    {
-        $msg = 'Raw::__construct %s - Case: '.$check['case'];
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::__construct
+	 * @dataProvider    RawDataprovider::getTest__construct
+	 */
+	public function test__construct($test, $check)
+	{
+		$msg = 'Raw::__construct %s - Case: ' . $check['case'];
 
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
-        $platform::$isCli = $test['mock']['isCli'];
-        $platform::$authorise = function(){
-            return false;
-        };
+		$platform             = static::$container->platform;
+		$platform::$uriBase   = 'www.example.com';
+		$platform::$template  = 'fake_test_template';
+		$platform::$isCli     = $test['mock']['isCli'];
+		$platform::$authorise = function () {
+			return false;
+		};
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $permissions = ReflectionHelper::getValue($view, 'permissions');
+		$permissions = ReflectionHelper::getValue($view, 'permissions');
 
-        $this->assertEquals($check['permissions'], $permissions, sprintf($msg, 'Failed to set the permissions'));
-    }
+		$this->assertEquals($check['permissions'], $permissions, sprintf($msg, 'Failed to set the permissions'));
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getLists
-     */
-    public function testGetLists()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getLists
+	 */
+	public function testGetLists()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = (object)array('order' => '', 'order_Dir' => '');
+		$value = (object) ['order' => '', 'order_Dir' => ''];
 
-        ReflectionHelper::setValue($view, 'lists', $value);
+		ReflectionHelper::setValue($view, 'lists', $value);
 
-        $this->assertSame($value, $view->getLists(), 'Raw::getLists Failed to return the internal lists');
-    }
+		$this->assertSame($value, $view->getLists(), 'Raw::getLists Failed to return the internal lists');
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getPerms
-     */
-    public function testGetPerms()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getPerms
+	 */
+	public function testGetPerms()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = (object)array('edit' => true);
+		$value = (object) ['edit' => true];
 
-        ReflectionHelper::setValue($view, 'permissions', $value);
+		ReflectionHelper::setValue($view, 'permissions', $value);
 
-        $this->assertSame($value, $view->getPerms(), 'Raw::getPerms Failed to return the internal permissions');
-    }
+		$this->assertSame($value, $view->getPerms(), 'Raw::getPerms Failed to return the internal permissions');
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getPagination
-     */
-    public function testGetPagination()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getPagination
+	 */
+	public function testGetPagination()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = (object)array('test' => 'test');
+		$value = (object) ['test' => 'test'];
 
-        ReflectionHelper::setValue($view, 'pagination', $value);
+		ReflectionHelper::setValue($view, 'pagination', $value);
 
-        $this->assertSame($value, $view->getPagination(), 'Raw::getPagination Failed to return the internal pagination');
-    }
+		$this->assertSame($value, $view->getPagination(), 'Raw::getPagination Failed to return the internal pagination');
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getItems
-     */
-    public function testGetItems()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getItems
+	 */
+	public function testGetItems()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = array('test', 'dummy');
+		$value = ['test', 'dummy'];
 
-        ReflectionHelper::setValue($view, 'items', $value);
+		ReflectionHelper::setValue($view, 'items', $value);
 
-        $this->assertSame($value, $view->getItems(), 'Raw::getItems Failed to return the internal item list');
-    }
+		$this->assertSame($value, $view->getItems(), 'Raw::getItems Failed to return the internal item list');
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getItem
-     */
-    public function testGetItem()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getItem
+	 */
+	public function testGetItem()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = (object)array('id' => 1, 'dummy' => 'test');
+		$value = (object) ['id' => 1, 'dummy' => 'test'];
 
-        ReflectionHelper::setValue($view, 'item', $value);
+		ReflectionHelper::setValue($view, 'item', $value);
 
-        $this->assertSame($value, $view->getItem(), 'Raw::getItem Failed to return the internal item');
-    }
+		$this->assertSame($value, $view->getItem(), 'Raw::getItem Failed to return the internal item');
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getItemCount
-     */
-    public function testGetItemCount()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getItemCount
+	 */
+	public function testGetItemCount()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = 5;
+		$value = 5;
 
-        ReflectionHelper::setValue($view, 'itemCount', $value);
+		ReflectionHelper::setValue($view, 'itemCount', $value);
 
-        $this->assertSame($value, $view->getItemCount(), 'Raw::getItemCount Failed to return the amount of items');
-    }
+		$this->assertSame($value, $view->getItemCount(), 'Raw::getItemCount Failed to return the amount of items');
+	}
 
-    /**
-     * @group           DataViewRaw
-     * @covers          FOF40\View\DataView\Raw::getPageParams
-     */
-    public function testGetPageParams()
-    {
-        $platform = static::$container->platform;
-        $platform::$uriBase = 'www.example.com';
-        $platform::$template = 'fake_test_template';
+	/**
+	 * @group           DataViewRaw
+	 * @covers          FOF40\View\DataView\Raw::getPageParams
+	 */
+	public function testGetPageParams()
+	{
+		$platform            = static::$container->platform;
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$template = 'fake_test_template';
 
-        $view = new RawStub(static::$container);
+		$view = new RawStub(static::$container);
 
-        $value = (object)array('test' => 1, 'dummy' => 'test');
+		$value = (object) ['test' => 1, 'dummy' => 'test'];
 
-        ReflectionHelper::setValue($view, 'pageParams', $value);
+		ReflectionHelper::setValue($view, 'pageParams', $value);
 
-        $this->assertSame($value, $view->getPageParams(), 'Raw::getPageParams Failed to return the internal item');
-    }
+		$this->assertSame($value, $view->getPageParams(), 'Raw::getPageParams Failed to return the internal item');
+	}
 }
 

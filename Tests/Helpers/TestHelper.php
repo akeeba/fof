@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers;
 
 /**
@@ -21,9 +20,9 @@ class TestHelper
 	 *
 	 * This method assumes that the mock callback is named {mock}{method name}.
 	 *
-	 * @param   \PHPUnit_Framework_MockObject_MockObject  $mockObject  The mock object that the callbacks are being assigned to.
-	 * @param   \PHPUnit_Framework_TestCase               $test        The test.
-	 * @param   array                                     $array       An array of methods names to mock with callbacks.
+	 * @param   \PHPUnit_Framework_MockObject_MockObject $mockObject The mock object that the callbacks are being assigned to.
+	 * @param   \PHPUnit_Framework_TestCase              $test       The test.
+	 * @param   array                                    $array      An array of methods names to mock with callbacks.
 	 *
 	 * @return  void
 	 *
@@ -36,12 +35,12 @@ class TestHelper
 			if (is_array($method))
 			{
 				$methodName = $index;
-				$callback = $method;
+				$callback   = $method;
 			}
 			else
 			{
 				$methodName = $method;
-				$callback = array(get_called_class(), 'mock' . $method);
+				$callback   = [get_called_class(), 'mock' . $method];
 			}
 
 			$mockObject->expects($test->any())
@@ -53,9 +52,9 @@ class TestHelper
 	/**
 	 * Assigns mock values to methods.
 	 *
-	 * @param   \PHPUnit_Framework_MockObject_MockObject  $mockObject  The mock object.
-	 * @param   \PHPUnit_Framework_TestCase               $test        The test.
-	 * @param   array                                     $array       An associative array of methods to mock with return values:<br />
+	 * @param   \PHPUnit_Framework_MockObject_MockObject $mockObject   The mock object.
+	 * @param   \PHPUnit_Framework_TestCase              $test         The test.
+	 * @param   array                                    $array        An associative array of methods to mock with return values:<br />
 	 *                                                                 string (method name) => mixed (return value)
 	 *
 	 * @return  void
@@ -75,8 +74,8 @@ class TestHelper
 	/**
 	 * Helper method that gets a protected or private property in a class by relfection.
 	 *
-	 * @param   object  $object        The object from which to return the property value.
-	 * @param   string  $propertyName  The name of the property to return.
+	 * @param   object $object       The object from which to return the property value.
+	 * @param   string $propertyName The name of the property to return.
 	 *
 	 * @return  mixed  The value of the property.
 	 *
@@ -116,8 +115,8 @@ class TestHelper
 	 * $this->assertTrue(TestHelper::invoke($this->object, 'methodName', 123));
 	 * where 123 is the input parameter for your method
 	 *
-	 * @param   object  $object      The object on which to invoke the method.
-	 * @param   string  $methodName  The name of the method to invoke.
+	 * @param   object $object     The object on which to invoke the method.
+	 * @param   string $methodName The name of the method to invoke.
 	 *
 	 * @return  mixed
 	 *
@@ -143,9 +142,9 @@ class TestHelper
 	/**
 	 * Helper method that sets a protected or private property in a class by relfection.
 	 *
-	 * @param   object  $object        The object for which to set the property.
-	 * @param   string  $propertyName  The name of the property to set.
-	 * @param   mixed   $value         The value to set for the property.
+	 * @param   object $object       The object for which to set the property.
+	 * @param   string $propertyName The name of the property to set.
+	 * @param   mixed  $value        The value to set for the property.
 	 *
 	 * @return  void
 	 *

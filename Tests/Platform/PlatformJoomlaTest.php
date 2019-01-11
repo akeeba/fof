@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Platform;
 
 
@@ -61,8 +60,8 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::isCli
-	 * @covers FOF40\Platform\Joomla\Platform::isCliAdmin
+	 * @covers       FOF40\Platform\Joomla\Platform::isCli
+	 * @covers       FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsCli
 	 */
@@ -76,8 +75,8 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::isBackend
-	 * @covers FOF40\Platform\Joomla\Platform::isCliAdmin
+	 * @covers       FOF40\Platform\Joomla\Platform::isBackend
+	 * @covers       FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsBackend
 	 */
@@ -91,8 +90,8 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::isFrontend
-	 * @covers FOF40\Platform\Joomla\Platform::isCliAdmin
+	 * @covers       FOF40\Platform\Joomla\Platform::isFrontend
+	 * @covers       FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsFrontend
 	 */
@@ -111,8 +110,8 @@ class PlatformJoomlaTest extends FOFTestCase
 	private function forceApplicationTypeAndResetPlatformCliAdminCache($mockApplicationType)
 	{
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
-		$config = \JFactory::getConfig(JPATH_SITE . '/configuration.php');
-		\JFactory::$session = $this->getMockSession();
+		$config               = \JFactory::getConfig(JPATH_SITE . '/configuration.php');
+		\JFactory::$session   = $this->getMockSession();
 
 		// Get the correct mock application
 		switch ($mockApplicationType)
@@ -154,18 +153,18 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$baseDirs = $this->platform->getPlatformBaseDirs();
 
-		$expectedDirs = array(
+		$expectedDirs = [
 			'root'   => JPATH_ROOT,
 			'public' => JPATH_ROOT,
 			'admin'  => JPATH_ROOT . '/administrator',
 			'tmp'    => JPATH_ROOT . '/tmp',
-			'log'    => JPATH_ROOT . '/logs'
-		);
+			'log'    => JPATH_ROOT . '/logs',
+		];
 
 		$this->assertInternalType('array', $baseDirs);
 
 		$expectedDirs = array_map('realpath', $expectedDirs);
-		$baseDirs = array_map('realpath', $baseDirs);
+		$baseDirs     = array_map('realpath', $baseDirs);
 
 		foreach ($expectedDirs as $k => $v)
 		{
@@ -175,7 +174,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getComponentBaseDirs
+	 * @covers       FOF40\Platform\Joomla\Platform::getComponentBaseDirs
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestComponentBaseDirs
 	 */
@@ -187,14 +186,14 @@ class PlatformJoomlaTest extends FOFTestCase
 
 		$this->assertInternalType('array', $actual);
 
-		$expected = array(
-			'site' => JPATH_SITE . '/components/com_foobar',
+		$expected = [
+			'site'  => JPATH_SITE . '/components/com_foobar',
 			'admin' => JPATH_SITE . '/administrator/components/com_foobar',
-			'main' => JPATH_SITE . '/' . $expectedMain,
-			'alt' => JPATH_SITE . '/' . $expectedAlt,
-		);
+			'main'  => JPATH_SITE . '/' . $expectedMain,
+			'alt'   => JPATH_SITE . '/' . $expectedAlt,
+		];
 
-		$actual = array_map('realpath', $actual);
+		$actual   = array_map('realpath', $actual);
 		$expected = array_map('realpath', $expected);
 
 		foreach ($expected as $k => $v)
@@ -214,7 +213,7 @@ class PlatformJoomlaTest extends FOFTestCase
 		\JFactory::$session = $this->getMockSession();
 
 		$expected = \JFactory::getApplication('site')->getTemplate();
-		$actual = $this->platform->getTemplate();
+		$actual   = $this->platform->getTemplate();
 
 		$this->assertEquals($expected, $actual, "getTemplate() must return the application's template");
 	}
@@ -227,7 +226,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
 
-		$fakeSession = $this->getMockSession();
+		$fakeSession        = $this->getMockSession();
 		\JFactory::$session = $fakeSession;
 
 		// Required to let JFactory know which application to load
@@ -248,7 +247,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
 
-		$fakeSession = $this->getMockSession();
+		$fakeSession        = $this->getMockSession();
 		\JFactory::$session = $fakeSession;
 
 		// Required to let JFactory know which application to load
@@ -283,7 +282,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	public function testGetLanguage()
 	{
 		$expected = \JFactory::getLanguage();
-		$actual = $this->platform->getLanguage();
+		$actual   = $this->platform->getLanguage();
 
 		$this->assertInstanceOf('\JLanguage', $actual, "getLanguage() must return a JLanguage object");
 		$this->assertEquals($expected, $actual, "getLanguage() must return the language object from JFactory");
@@ -296,14 +295,14 @@ class PlatformJoomlaTest extends FOFTestCase
 	public function testGetDbo()
 	{
 		$expected = \JFactory::getDbo();
-		$actual = $this->platform->getDbo();
+		$actual   = $this->platform->getDbo();
 
 		$this->assertInstanceOf('\JDatabaseDriver', $actual, "getDbo() must return a JDatabaseDriver object");
 		$this->assertEquals($expected, $actual, "getDbo() must return the database object from JFactory");
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getTemplateSuffixes
+	 * @covers          FOF40\Platform\Joomla\Platform::getTemplateSuffixes
 	 *
 	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateSuffixes
 	 *
@@ -317,10 +316,10 @@ class PlatformJoomlaTest extends FOFTestCase
 			$this->markTestIncomplete('testGetTemplateSuffixes will only run on Joomla! 3');
 		}
 
-		$expected = array(
+		$expected = [
 			'.j3' . substr($jversion->RELEASE, 2),
-			'.j3'
-		);
+			'.j3',
+		];
 
 		$actual = $this->platform->getTemplateSuffixes();
 
@@ -328,7 +327,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getTemplateOverridePath
+	 * @covers       FOF40\Platform\Joomla\Platform::getTemplateOverridePath
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateOverridePath
 	 *
@@ -339,10 +338,10 @@ class PlatformJoomlaTest extends FOFTestCase
 
 		if ($applicationType != 'cli')
 		{
-			$app = \JFactory::getApplication();
-			$fakeTemplate = (object)array(
-				'template' => 'system'
-			);
+			$app          = \JFactory::getApplication();
+			$fakeTemplate = (object) [
+				'template' => 'system',
+			];
 			ReflectionHelper::setValue($app, 'template', $fakeTemplate);
 		}
 
@@ -352,7 +351,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::loadTranslations
+	 * @covers       FOF40\Platform\Joomla\Platform::loadTranslations
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoadTranslations
 	 *
@@ -361,25 +360,25 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$this->forceApplicationTypeAndResetPlatformCliAdminCache($appType);
 
-		$mockLanguage = MockLanguage::create($this);
-		MockLanguage::$loadedLanguages = array();
-		\JFactory::$language = $mockLanguage;
+		$mockLanguage                  = MockLanguage::create($this);
+		MockLanguage::$loadedLanguages = [];
+		\JFactory::$language           = $mockLanguage;
 
 		$this->platform->loadTranslations('com_foobar');
 
-		$expected = array(
+		$expected = [
 			// $extension = 'joomla', $basePath = JPATH_BASE, $lang = null, $reload = false, $default = true
-			array('com_foobar', $regularPath, 'en-GB', true, true),
-			array('com_foobar', $regularPath, null, true, true),
-			array('com_foobar', $otherPath, 'en-GB', true, true),
-			array('com_foobar', $otherPath, null, true, true),
-		);
+			['com_foobar', $regularPath, 'en-GB', true, true],
+			['com_foobar', $regularPath, null, true, true],
+			['com_foobar', $otherPath, 'en-GB', true, true],
+			['com_foobar', $otherPath, null, true, true],
+		];
 
 		$this->assertEquals($expected, MockLanguage::$loadedLanguages, $message);
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::authorizeAdmin
+	 * @covers       FOF40\Platform\Joomla\Platform::authorizeAdmin
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorizeAdmin
 	 *
@@ -388,9 +387,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$this->forceApplicationTypeAndResetPlatformCliAdminCache($appType);
 
-		$fakeUser = new UserForAdminAuth();
+		$fakeUser               = new UserForAdminAuth();
 		$fakeUser->allowedAuths = $auths;
-		MockSession::$user = $fakeUser;
+		MockSession::$user      = $fakeUser;
 
 		$actual = $this->platform->authorizeAdmin('com_foobar');
 
@@ -398,7 +397,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::authorise
+	 * @covers       FOF40\Platform\Joomla\Platform::authorise
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorise
 	 *
@@ -407,9 +406,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$this->forceApplicationTypeAndResetPlatformCliAdminCache($appType);
 
-		$fakeUser = new UserForAdminAuth();
+		$fakeUser               = new UserForAdminAuth();
 		$fakeUser->allowedAuths = $auths;
-		MockSession::$user = $fakeUser;
+		MockSession::$user      = $fakeUser;
 
 		$actual = $this->platform->authorise($action, $assetName);
 
@@ -417,7 +416,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::loginUser
+	 * @covers          FOF40\Platform\Joomla\Platform::loginUser
 	 *
 	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoginUser
 	 *
@@ -429,7 +428,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getDate
+	 * @covers       FOF40\Platform\Joomla\Platform::getDate
 	 *
 	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestDate
 	 */
@@ -455,7 +454,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::logoutUser
+	 * @covers          FOF40\Platform\Joomla\Platform::logoutUser
 	 *
 	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLogoutUser
 	 *
@@ -467,7 +466,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getUserStateFromRequest
+	 * @covers          FOF40\Platform\Joomla\Platform::getUserStateFromRequest
 	 *
 	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetUserStateFromRequest
 	 *

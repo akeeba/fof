@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Database;
 
 
@@ -39,7 +38,7 @@ class InstallerTest extends FOFTestCase
 	}
 
 	/**
-     * @group   Installer
+	 * @group   Installer
 	 * @covers  FOF40\Database\Installer::__construct
 	 * @covers  FOF40\Database\Installer::updateSchema
 	 * @covers  FOF40\Database\Installer::findSchemaXml
@@ -50,13 +49,13 @@ class InstallerTest extends FOFTestCase
 	 */
 	public function testCreateNewTable()
 	{
-		$db = static::$container->db;
+		$db     = static::$container->db;
 		$tables = $db->setQuery('SHOW TABLES')->loadColumn();
 		$prefix = $db->getPrefix();
 		$this->assertFalse(in_array($prefix . 'foobar_example', $tables), 'The table must not exist before testing starts');
 
 		$installer = new Installer($db, __DIR__ . '/../_data/installer/pick_right');
-        ReflectionHelper::setValue($installer, 'allTables', array());
+		ReflectionHelper::setValue($installer, 'allTables', []);
 
 		$installer->updateSchema();
 
@@ -66,7 +65,7 @@ class InstallerTest extends FOFTestCase
 	}
 
 	/**
-     * @group   Installer
+	 * @group   Installer
 	 * @covers  FOF40\Database\Installer::__construct
 	 * @covers  FOF40\Database\Installer::updateSchema
 	 * @covers  FOF40\Database\Installer::findSchemaXml
@@ -79,64 +78,64 @@ class InstallerTest extends FOFTestCase
 	{
 		$db = static::$container->db;
 
-        // Be sure the table exists
-        $this->createTable();
+		// Be sure the table exists
+		$this->createTable();
 
 		$installer = new Installer($db, __DIR__ . '/../_data/installer');
 		$installer->setForcedFile(__DIR__ . '/../_data/installer/test_equals.xml');
 		$installer->updateSchema();
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 1');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 1');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example one', $actual, 'Equals with select');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 2');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 2');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example two', $actual, 'Test not operator');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 3');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 3');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example three', $actual, 'Test type=true');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 4');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 4');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertNotEquals('Example four', $actual, 'Test type=false');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 5');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 5');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example 5', $actual, 'Test operator OR positive');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 6');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 6');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertNotEquals('Example 6', $actual, 'Test operator OR negative');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 7');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 7');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example 7', $actual, 'Test operator NOR positive');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 8');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 8');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertNotEquals('Example 8', $actual, 'Test operator NOR negative');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 9');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 9');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example 9', $actual, 'Test operator XOR positive');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 10');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 10');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertNotEquals('Example 10', $actual, 'Test operator XOR negative');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 11');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 11');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertEquals('Example 11', $actual, 'Test operator MAYBE positive');
 
-		$query = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 12');
+		$query  = $db->getQuery(true)->select('description')->from('#__foobar_example')->where('example_id = 12');
 		$actual = $db->setQuery($query)->loadResult();
 		$this->assertNotEquals('Example 12', $actual, 'Test operator MAYBE negative');
 	}
 
 	/**
-     * @group   Installer
+	 * @group   Installer
 	 * @covers  FOF40\Database\Installer::__construct
 	 * @covers  FOF40\Database\Installer::updateSchema
 	 * @covers  FOF40\Database\Installer::findSchemaXml
@@ -149,7 +148,7 @@ class InstallerTest extends FOFTestCase
 	{
 		$db = static::$container->db;
 
-        $this->createTable();
+		$this->createTable();
 
 		$installer = new Installer($db, __DIR__ . '/../_data/installer');
 		$installer->setForcedFile(__DIR__ . '/../_data/installer/test_type.xml');
@@ -161,7 +160,7 @@ class InstallerTest extends FOFTestCase
 	}
 
 	/**
-     * @group   Installer
+	 * @group   Installer
 	 * @covers  FOF40\Database\Installer::__construct
 	 * @covers  FOF40\Database\Installer::updateSchema
 	 * @covers  FOF40\Database\Installer::findSchemaXml
@@ -181,7 +180,7 @@ class InstallerTest extends FOFTestCase
 	}
 
 	/**
-     * @group   Installer
+	 * @group   Installer
 	 * @covers  FOF40\Database\Installer::__construct
 	 * @covers  FOF40\Database\Installer::updateSchema
 	 * @covers  FOF40\Database\Installer::findSchemaXml
@@ -203,14 +202,14 @@ class InstallerTest extends FOFTestCase
 	}
 
 	/**
-     * @group   Installer
+	 * @group   Installer
 	 * @covers  FOF40\Database\Installer::removeSchema
 	 */
 	public function testRemoveSchema()
 	{
 		$db = static::$container->db;
 
-        $this->createTable();
+		$this->createTable();
 
 		$tables = $db->setQuery('SHOW TABLES')->loadColumn();
 		$prefix = $db->getPrefix();
@@ -224,17 +223,17 @@ class InstallerTest extends FOFTestCase
 		$this->assertFalse(in_array($prefix . 'foobar_example', $tables), 'The table must not exist after running removeSchema');
 	}
 
-    private function createTable()
-    {
-        $db = static::$container->db;
+	private function createTable()
+	{
+		$db = static::$container->db;
 
-        $create = "CREATE TABLE IF NOT EXISTS `#__foobar_example` (
+		$create = "CREATE TABLE IF NOT EXISTS `#__foobar_example` (
         `example_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
         `description` varchar(255) NOT NULL,
         `text` longtext,
     PRIMARY KEY (`example_id`)
     ) DEFAULT CHARACTER SET utf8;";
 
-        $db->setQuery($create)->execute();
-    }
+		$db->setQuery($create)->execute();
+	}
 }

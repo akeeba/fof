@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers;
 
 use FOF40\Container\Container;
@@ -16,20 +15,19 @@ use FOF40\Container\Container;
  */
 class TestContainer extends Container
 {
-	public function __construct(array $values = array())
+	public function __construct(array $values = [])
 	{
-        if(!isset($values['componentName']))
-        {
-            $values['componentName'] = 'com_fakeapp';
-        }
+		if (!isset($values['componentName']))
+		{
+			$values['componentName'] = 'com_fakeapp';
+		}
 
-        if(!isset($values['platform']))
-        {
-            $values['platform'] = function(Container $c)
-            {
-                return new TestJoomlaPlatform($c);
-            };
-        }
+		if (!isset($values['platform']))
+		{
+			$values['platform'] = function (Container $c) {
+				return new TestJoomlaPlatform($c);
+			};
+		}
 
 		return parent::__construct($values);
 	}

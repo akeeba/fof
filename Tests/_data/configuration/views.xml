@@ -14,8 +14,8 @@
             <task name="browse">foobar.something</task>
         </acl>
         <toolbar title="COM_FOOBAR_TOOLBAR_GENERIC" task="browse">
-            <button type="apply" alt="Apply" />
-            <button type="cancel" />
+            <button type="apply" alt="Apply"/>
+            <button type="cancel"/>
         </toolbar>
         <config>
             <option name="behaviors">filter,access</option>
@@ -26,17 +26,17 @@
             <task name="list">browse</task>
         </taskmap>
         <acl>
-            <task name="dosomething" />
+            <task name="dosomething"/>
             <task name="somethingelse">core.manage</task>
         </acl>
         <config>
             <option name="autoRouting">3</option>
         </config>
         <toolbar title="COM_FOOBAR_TOOLBAR_ITEM" task="edit">
-            <button type="save" />
-            <button type="saveclose" />
-            <button type="savenew" />
-            <button type="cancel" />
+            <button type="save"/>
+            <button type="saveclose"/>
+            <button type="savenew"/>
+            <button type="cancel"/>
         </toolbar>
     </view>
     <view name="Bad">
@@ -49,7 +49,7 @@
             <task name="show">foo.bar</task>
         </acl>
         <config>
-            <option name="behaviors" />
+            <option name="behaviors"/>
         </config>
         <toolbar title="COM_FOOBAR_TOOLBAR_GENERIC" task="browse">
             <button type="other"/>

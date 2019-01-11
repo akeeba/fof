@@ -6,56 +6,55 @@
  */
 
 
-
 class ContentHistoryDataprovider
 {
-    public static function getTestOnAfterSave()
-    {
-        $data[] = array(
-            'input' => array(
-                'save_history' => 1
-            ),
-            'check' => array(
-                'case' => 'Component enables history saving',
-                'store' => 1
-            )
-        );
+	public static function getTestOnAfterSave()
+	{
+		$data[] = [
+			'input' => [
+				'save_history' => 1,
+			],
+			'check' => [
+				'case'  => 'Component enables history saving',
+				'store' => 1,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'save_history' => 0
-            ),
-            'check' => array(
-                'case' => 'Component does not enable history saving',
-                'store' => 0
-            )
-        );
+		$data[] = [
+			'input' => [
+				'save_history' => 0,
+			],
+			'check' => [
+				'case'  => 'Component does not enable history saving',
+				'store' => 0,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestOnBeforeDelete()
-    {
-        $data[] = array(
-            'input' => array(
-                'save_history' => 1
-            ),
-            'check' => array(
-                'case' => 'Component enables history saving',
-                'delete' => 1
-            )
-        );
+	public static function getTestOnBeforeDelete()
+	{
+		$data[] = [
+			'input' => [
+				'save_history' => 1,
+			],
+			'check' => [
+				'case'   => 'Component enables history saving',
+				'delete' => 1,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'save_history' => 0
-            ),
-            'check' => array(
-                'case' => 'Component does not enable history saving',
-                'delete' => 0
-            )
-        );
+		$data[] = [
+			'input' => [
+				'save_history' => 0,
+			],
+			'check' => [
+				'case'   => 'Component does not enable history saving',
+				'delete' => 0,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 }

@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Download;
 
 /**
@@ -50,18 +49,18 @@ class FakeCurl extends FakeBase
 	 */
 	public static function reset()
 	{
-		static::$returnSize = 1048576;
+		static::$returnSize   = 1048576;
 		static::$reportedSize = 1048576;
-		static::$url = 'http://www.example.com/donwload.dat';
-		static::$errno = 0;
-		static::$error = '';
-		static::$httpstatus = 200;
+		static::$url          = 'http://www.example.com/donwload.dat';
+		static::$errno        = 0;
+		static::$error        = '';
+		static::$httpstatus   = 200;
 	}
 
 	/**
 	 * Apply a configuration array
 	 *
-	 * @param  array  $configuration
+	 * @param  array $configuration
 	 */
 	public static function setUp(array $configuration)
 	{
@@ -120,7 +119,7 @@ class FakeCurl extends FakeBase
 			case CURLOPT_RANGE:
 				list($from, $to) = explode('-', $value);
 				$this->from = $from;
-				$this->to = $to;
+				$this->to   = $to;
 				break;
 
 			case CURLOPT_HEADER:
@@ -146,6 +145,7 @@ class FakeCurl extends FakeBase
 		if ($this->header)
 		{
 			$reportedSize = self::$reportedSize;
+
 			return <<< HTTPRESPONSE
 HTTP/1.1 200 OK
 Content-Length: $reportedSize
@@ -159,7 +159,7 @@ HTTPRESPONSE;
 		}
 
 		$from = $this->from;
-		$to = $this->to;
+		$to   = $this->to;
 
 		if (empty($from))
 		{

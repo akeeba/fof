@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Hal\Render;
 
 use FOF40\Hal\Document;
@@ -25,24 +24,24 @@ class JsonTest extends FOFTestCase
 	 */
 	protected function setUp()
 	{
-		$data = array(
+		$data = [
 			'key1' => 'val1',
 			'key2' => 'val2',
-		);
+		];
 
 		$this->document = new Document($data);
 
-		$data = array(
+		$data         = [
 			'detail1_1' => 'val1_1',
 			'detail1_2' => 'val1_2',
-		);
+		];
 		$subDocument1 = new Document($data);
 		$this->document->addEmbedded('detail', $subDocument1, false);
 
-		$data = array(
+		$data         = [
 			'detail2_1' => 'val2_1',
 			'detail2_2' => 'val2_2',
-		);
+		];
 		$subDocument2 = new Document($data);
 		$this->document->addEmbedded('detail', $subDocument2, false);
 
@@ -91,7 +90,7 @@ class JsonTest extends FOFTestCase
 
 		$this->assertEquals(
 			$expected,
-			(array)$result,
+			(array) $result,
 			'Line: ' . __LINE__ . '.'
 		);
 	}
@@ -101,7 +100,7 @@ class JsonTest extends FOFTestCase
 	 */
 	public function testRender()
 	{
-        $renderer = new Json($this->document);
+		$renderer = new Json($this->document);
 
 		// Full render
 		$expected = '{"_links":{"prev":{"href":"http:\/\/www.example.com\/test.json?page=1"},"next":{"href":"http:\/\/www.example.com\/test.json?page=3"}},"_embedded":{"detail":["{\"_links\":{},\"_list\":{\"detail1_1\":\"val1_1\",\"detail1_2\":\"val1_2\"}}","{\"_links\":{},\"_list\":{\"detail2_1\":\"val2_1\",\"detail2_2\":\"val2_2\"}}"]},"_list":{"key1":"val1","key2":"val2"}}';
@@ -150,73 +149,73 @@ class JsonTest extends FOFTestCase
 	 */
 	public function getTestGetLink()
 	{
-		return array(
-			array(
+		return [
+			[
 				new Link(
 					'http://www.example.com/foo.json'
 				),
-				array(
-					'href' => 'http://www.example.com/foo.json'
-				)
-			),
-			array(
+				[
+					'href' => 'http://www.example.com/foo.json',
+				],
+			],
+			[
 				new Link(
 					'http://www.example.com/foo{?id}.json', true
 				),
-				array(
+				[
 					'href'      => 'http://www.example.com/foo{?id}.json',
-					'templated' => 'true'
-				)
-			),
-			array(
+					'templated' => 'true',
+				],
+			],
+			[
 				new Link(
 					'http://www.example.com/foo.json', false, 'foo'
 				),
-				array(
+				[
 					'href' => 'http://www.example.com/foo.json',
-					'name' => 'foo'
-				)
-			),
-			array(
+					'name' => 'foo',
+				],
+			],
+			[
 				new Link(
 					'http://www.example.com/foo{?id}.json', true, 'foo'
 				),
-				array(
+				[
 					'href'      => 'http://www.example.com/foo{?id}.json',
 					'templated' => 'true',
-					'name'      => 'foo'
-				)
-			),
-			array(
+					'name'      => 'foo',
+				],
+			],
+			[
 				new Link(
 					'http://www.example.com/foo.json', false, null, 'en-GB'
 				),
-				array(
+				[
 					'href'     => 'http://www.example.com/foo.json',
-					'hreflang' => 'en-GB'
-				)
-			),
-			array(
+					'hreflang' => 'en-GB',
+				],
+			],
+			[
 				new Link(
 					'http://www.example.com/foo.json', false, null, null, 'foobar'
 				),
-				array(
+				[
 					'href'  => 'http://www.example.com/foo.json',
-					'title' => 'foobar'
-				)
-			),
-			array(
+					'title' => 'foobar',
+				],
+			],
+			[
 				new Link(
 					'http://www.example.com/foo{?id}.json', true, 'foo', 'en-GB', 'foobar'
 				),
-				array(
+				[
 					'href'      => 'http://www.example.com/foo{?id}.json',
 					'templated' => 'true',
 					'name'      => 'foo',
 					'hreflang'  => 'en-GB',
-					'title'     => 'foobar'
-				)
-			),
-		);
+					'title'     => 'foobar',
+				],
+			],
+		];
 	}
 }

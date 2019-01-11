@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Encrypt;
 
 use FOF40\Encrypt\Totp;
@@ -28,10 +27,10 @@ class TotpTest extends FOFTestCase
 	protected function setUp()
 	{
 		// VARS: $timeStep = 30, $passCodeLength = 6, $secretLength = 10, $base32=null
-		$timeStep 				= 30;
-		$passCodeLength 		= 6;
-		$secretLength 			= 10;
-		$this->secretLength 	= $secretLength;
+		$timeStep           = 30;
+		$passCodeLength     = 6;
+		$secretLength       = 10;
+		$this->secretLength = $secretLength;
 
 		$this->totp = new Totp($timeStep, $passCodeLength, $secretLength);
 	}
@@ -78,9 +77,9 @@ class TotpTest extends FOFTestCase
 	public function testCheckCode()
 	{
 		$secret = '4FDAGLLSP6BIVU5H';
-		$time = 1375000339;
+		$time   = 1375000339;
 
-		$code = $this->totp->getCode($secret, $time);
+		$code     = $this->totp->getCode($secret, $time);
 		$codePrev = $this->totp->getCode($secret, $time - 30);
 		$codeNext = $this->totp->getCode($secret, $time + 30);
 

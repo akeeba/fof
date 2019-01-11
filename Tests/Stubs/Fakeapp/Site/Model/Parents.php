@@ -6,20 +6,19 @@
  */
 
 
-
 namespace Fakeapp\Site\Model;
 
-use FOF40\Model\DataModel;
 use FOF40\Container\Container;
+use FOF40\Model\DataModel;
 
 class Parents extends DataModel
 {
-    public function __construct(Container $container, array $config = array())
-    {
-        // I have to manually disable autoChecks, otherwise FOF will try to search for the form, raising
-        // a fatal error
-        $config['autoChecks'] = false;
+	public function __construct(Container $container, array $config = [])
+	{
+		// I have to manually disable autoChecks, otherwise FOF will try to search for the form, raising
+		// a fatal error
+		$config['autoChecks'] = false;
 
-        parent::__construct($container, $config);
-    }
+		parent::__construct($container, $config);
+	}
 }

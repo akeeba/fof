@@ -33,11 +33,11 @@ namespace FOF40\Tests\Stubs\Pimple;
 
 class Invokable
 {
-    public function __invoke($value = null)
-    {
-        $service = new Service();
-        $service->value = $value;
+	public function __invoke($value = null)
+	{
+		$service        = new Service();
+		$service->value = $value;
 
-        return $service;
-    }
+		return $service;
+	}
 }

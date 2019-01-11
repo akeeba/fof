@@ -6,11 +6,11 @@
   -->
 
 <fof>
-  <common>
-    <view name="Foobars">
-      <taskmap>
-        <task name="browse">read</task>
-      </taskmap>
-    </view>
-  </common>
+    <common>
+        <view name="Foobars">
+            <taskmap>
+                <task name="browse">read</task>
+            </taskmap>
+        </view>
+    </common>
 </fof>

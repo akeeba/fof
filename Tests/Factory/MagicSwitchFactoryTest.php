@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Factory;
 
 use FOF40\Factory\MagicSwitchFactory;
@@ -22,109 +21,109 @@ require_once 'MagicSwitchFactoryDataprovider.php';
  */
 class MagicSwitchFactoryTest extends FOFTestCase
 {
-    /**
-     * @group           MagicSwitchFactory
-     * @covers          FOF40\Factory\MagicSwitchFactory::controller
-     * @dataProvider    MagicSwitchFactoryDataprovider::getTestController
-     */
-    public function testController($test, $check)
-    {
-        $msg   = 'MagicSwitchFactory::controller %s - Case: '.$check['case'];
+	/**
+	 * @group           MagicSwitchFactory
+	 * @covers          FOF40\Factory\MagicSwitchFactory::controller
+	 * @dataProvider    MagicSwitchFactoryDataprovider::getTestController
+	 */
+	public function testController($test, $check)
+	{
+		$msg = 'MagicSwitchFactory::controller %s - Case: ' . $check['case'];
 
-        $factory = new MagicSwitchFactory(static::$container);
+		$factory = new MagicSwitchFactory(static::$container);
 
-        $result = $factory->controller($test['view']);
+		$result = $factory->controller($test['view']);
 
-        $this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
-    }
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
+	}
 
-    /**
-     * @group           MagicSwitchFactory
-     * @covers          FOF40\Factory\MagicSwitchFactory::model
-     * @dataProvider    MagicSwitchFactoryDataprovider::getTestModel
-     */
-    public function testModel($test, $check)
-    {
-        $msg   = 'MagicSwitchFactory::model %s - Case: '.$check['case'];
+	/**
+	 * @group           MagicSwitchFactory
+	 * @covers          FOF40\Factory\MagicSwitchFactory::model
+	 * @dataProvider    MagicSwitchFactoryDataprovider::getTestModel
+	 */
+	public function testModel($test, $check)
+	{
+		$msg = 'MagicSwitchFactory::model %s - Case: ' . $check['case'];
 
-        $factory = new MagicSwitchFactory(static::$container);
+		$factory = new MagicSwitchFactory(static::$container);
 
-        $result = $factory->model($test['view']);
+		$result = $factory->model($test['view']);
 
-        $this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
-    }
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
+	}
 
-    /**
-     * @group           MagicSwitchFactory
-     * @covers          FOF40\Factory\MagicSwitchFactory::view
-     * @dataProvider    MagicSwitchFactoryDataprovider::getTestView
-     */
-    public function testView($test, $check)
-    {
-        $msg   = 'MagicSwitchFactory::view %s - Case: '.$check['case'];
+	/**
+	 * @group           MagicSwitchFactory
+	 * @covers          FOF40\Factory\MagicSwitchFactory::view
+	 * @dataProvider    MagicSwitchFactoryDataprovider::getTestView
+	 */
+	public function testView($test, $check)
+	{
+		$msg = 'MagicSwitchFactory::view %s - Case: ' . $check['case'];
 
-        $platform = static::$container->platform;
-        $platform::$template = 'fake_test_template';
-        $platform::$uriBase  = 'www.example.com';
+		$platform            = static::$container->platform;
+		$platform::$template = 'fake_test_template';
+		$platform::$uriBase  = 'www.example.com';
 
-        $factory = new MagicSwitchFactory(static::$container);
+		$factory = new MagicSwitchFactory(static::$container);
 
-        $result = $factory->view($test['view']);
+		$result = $factory->view($test['view']);
 
-        $this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
-    }
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
+	}
 
-    /**
-     * @group           MagicSwitchFactory
-     * @covers          FOF40\Factory\MagicSwitchFactory::dispatcher
-     * @dataProvider    MagicSwitchFactoryDataprovider::getTestDispatcher
-     */
-    public function testDispatcher($test, $check)
-    {
-        $msg   = 'MagicSwitchFactory::dispatcher %s - Case: '.$check['case'];
+	/**
+	 * @group           MagicSwitchFactory
+	 * @covers          FOF40\Factory\MagicSwitchFactory::dispatcher
+	 * @dataProvider    MagicSwitchFactoryDataprovider::getTestDispatcher
+	 */
+	public function testDispatcher($test, $check)
+	{
+		$msg = 'MagicSwitchFactory::dispatcher %s - Case: ' . $check['case'];
 
-        $container = new TestContainer(array(
-            'componentName' => $test['component'],
-            'backEndPath' => $test['backend_path']
-        ));
+		$container = new TestContainer([
+			'componentName' => $test['component'],
+			'backEndPath'   => $test['backend_path'],
+		]);
 
-        $platform = $container->platform;
-        $platform::$isAdmin = $test['backend'];
+		$platform           = $container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-        // Required so we force FOF to read the fof.xml file
-        $dummy = $container->appConfig;
+		// Required so we force FOF to read the fof.xml file
+		$dummy = $container->appConfig;
 
-        $factory = new MagicSwitchFactory($container);
+		$factory = new MagicSwitchFactory($container);
 
-        $result = $factory->dispatcher();
+		$result = $factory->dispatcher();
 
-        $this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
-    }
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
+	}
 
-    /**
-     * @group           MagicSwitchFactory
-     * @covers          FOF40\Factory\MagicSwitchFactory::transparentAuthentication
-     * @dataProvider    MagicSwitchFactoryDataprovider::getTestTransparentAuthentication
-     */
-    public function testTransparentAuthentication($test, $check)
-    {
-        $msg   = 'MagicSwitchFactory::transparentAuthentication %s - Case: '.$check['case'];
+	/**
+	 * @group           MagicSwitchFactory
+	 * @covers          FOF40\Factory\MagicSwitchFactory::transparentAuthentication
+	 * @dataProvider    MagicSwitchFactoryDataprovider::getTestTransparentAuthentication
+	 */
+	public function testTransparentAuthentication($test, $check)
+	{
+		$msg = 'MagicSwitchFactory::transparentAuthentication %s - Case: ' . $check['case'];
 
-        $container = new TestContainer(array(
-            'componentName' => $test['component'],
-            'backEndPath' => $test['backend_path']
-        ));
+		$container = new TestContainer([
+			'componentName' => $test['component'],
+			'backEndPath'   => $test['backend_path'],
+		]);
 
-        $platform = $container->platform;
-        $platform::$isAdmin = $test['backend'];
+		$platform           = $container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-        // Required so we force FOF to read the fof.xml file
-        $dummy = $container->appConfig;
+		// Required so we force FOF to read the fof.xml file
+		$dummy = $container->appConfig;
 
-        $factory = new MagicSwitchFactory($container);
+		$factory = new MagicSwitchFactory($container);
 
-        $result = $factory->transparentAuthentication();
+		$result = $factory->transparentAuthentication();
 
-        $this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
-    }
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
+	}
 }

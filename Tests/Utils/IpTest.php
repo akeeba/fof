@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Utils;
 
 use FOF40\Tests\Helpers\FOFTestCase;
@@ -21,12 +20,12 @@ require_once 'IpDataprovider.php';
 class IpTest extends FOFTestCase
 {
 	/**
-	 * @group			Ip
-	 * @dataProvider    IpDataprovider::getDetectAndCleanIP
+	 * @group            Ip
+	 * @dataProvider     IpDataprovider::getDetectAndCleanIP
 	 */
 	public function testDetectAndCleanIP($test, $check)
 	{
-		$msg = 'Ip::detectIP %s - Case: '.$check['case'];
+		$msg = 'Ip::detectIP %s - Case: ' . $check['case'];
 
 		$ip = new IpStub();
 

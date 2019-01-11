@@ -6,81 +6,80 @@
  */
 
 
-
 class AccessDataprovider
 {
-    public static function getTestOnAfterBuildQuery()
-    {
-        $data[] = array(
-            array(
-                'tableid' => 'foftest_bare_id',
-                'table'   => '#__foftest_bares'
-            ),
-            array(
-                'access' => false
-            )
-        );
+	public static function getTestOnAfterBuildQuery()
+	{
+		$data[] = [
+			[
+				'tableid' => 'foftest_bare_id',
+				'table'   => '#__foftest_bares',
+			],
+			[
+				'access' => false,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'tableid' => 'foftest_foobar_id',
-                'table'   => '#__foftest_foobars'
-            ),
-            array(
-                'access' => true
-            )
-        );
+		$data[] = [
+			[
+				'tableid' => 'foftest_foobar_id',
+				'table'   => '#__foftest_foobars',
+			],
+			[
+				'access' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestOnAfterLoad()
-    {
-        // DataModel has not the access field
-        $data[] = array(
-            array(
-                'tableid' => 'foftest_bare_id',
-                'table'   => '#__foftest_bares',
-                'mock'    => array(
-                    'userAccess' => '',
-                    'access'     => ''
-                )
-            ),
-            array(
-                'reset' => false
-            )
-        );
+	public static function getTestOnAfterLoad()
+	{
+		// DataModel has not the access field
+		$data[] = [
+			[
+				'tableid' => 'foftest_bare_id',
+				'table'   => '#__foftest_bares',
+				'mock'    => [
+					'userAccess' => '',
+					'access'     => '',
+				],
+			],
+			[
+				'reset' => false,
+			],
+		];
 
-        // User has access to the data
-        $data[] = array(
-            array(
-                'tableid' => 'foftest_foobar_id',
-                'table'   => '#__foftest_foobars',
-                'mock'    => array(
-                    'userAccess' => array(10,5,1),
-                    'access'     => 10
-                )
-            ),
-            array(
-                'reset' => false
-            )
-        );
+		// User has access to the data
+		$data[] = [
+			[
+				'tableid' => 'foftest_foobar_id',
+				'table'   => '#__foftest_foobars',
+				'mock'    => [
+					'userAccess' => [10, 5, 1],
+					'access'     => 10,
+				],
+			],
+			[
+				'reset' => false,
+			],
+		];
 
-        // No access
-        $data[] = array(
-            array(
-                'tableid' => 'foftest_foobar_id',
-                'table'   => '#__foftest_foobars',
-                'mock'    => array(
-                    'userAccess' => array(5,1),
-                    'access'     => 10
-                )
-            ),
-            array(
-                'reset' => true
-            )
-        );
+		// No access
+		$data[] = [
+			[
+				'tableid' => 'foftest_foobar_id',
+				'table'   => '#__foftest_foobars',
+				'mock'    => [
+					'userAccess' => [5, 1],
+					'access'     => 10,
+				],
+			],
+			[
+				'reset' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 }

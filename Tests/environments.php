@@ -6,8 +6,7 @@
  */
 
 
-
-$environments = array(
+$environments = [
 	// The paths to Joomla cloned repo
-	'staging'     => realpath(__DIR__.'/environments/staging'),
-);
+	'staging' => realpath(__DIR__ . '/environments/staging'),
+];

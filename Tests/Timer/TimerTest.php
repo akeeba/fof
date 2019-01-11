@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Timer;
 
 use FOF40\Tests\Helpers\FOFTestCase;
@@ -58,11 +57,11 @@ class TimerTest extends FOFTestCase
 	public function testWakeup()
 	{
 		FakeTimer::$microtime = 123456;
-		$timer = new Timer(8, 33);
-		$serialisedTimer = serialize($timer);
+		$timer                = new Timer(8, 33);
+		$serialisedTimer      = serialize($timer);
 		unset($timer);
 		FakeTimer::$microtime = 876543.21;
-		$timer = unserialize($serialisedTimer);
+		$timer                = unserialize($serialisedTimer);
 
 		$this->assertEquals(876543.21, ReflectionHelper::getValue($timer, 'start_time'), 'The start time must be fetched from scratch after waking up', 0.0000000001);
 	}
@@ -73,7 +72,7 @@ class TimerTest extends FOFTestCase
 	public function testResetTime()
 	{
 		FakeTimer::$microtime = 123456;
-		$timer = new Timer(8, 33);
+		$timer                = new Timer(8, 33);
 		FakeTimer::$microtime = 876543.21;
 		$timer->resetTime();
 
@@ -87,21 +86,21 @@ class TimerTest extends FOFTestCase
 	public function testGetRunningTime()
 	{
 		FakeTimer::$microtime = 123456;
-		$timer = new Timer(8, 33);
+		$timer                = new Timer(8, 33);
 
 		FakeTimer::$microtime = 123456.64;
-		$runningTime = $timer->getRunningTime();
+		$runningTime          = $timer->getRunningTime();
 
 		$this->assertEquals(0.64, $runningTime, 'Running time must depend on current microtime', 0.0000000001);
 
 		FakeTimer::$microtime = 123458.64;
-		$runningTime = $timer->getRunningTime();
+		$runningTime          = $timer->getRunningTime();
 
 		$this->assertEquals(2.64, $runningTime, 'Running time must depend on current microtime (2)', 0.0000000001);
 
 
 		FakeTimer::$microtime = 123459.64;
-		$runningTime = $timer->getRunningTime();
+		$runningTime          = $timer->getRunningTime();
 
 		$this->assertEquals(3.64, $runningTime, 'Running time must depend on current microtime (3)', 0.0000000001);
 	}
@@ -112,21 +111,21 @@ class TimerTest extends FOFTestCase
 	public function testGetTimeLeft()
 	{
 		FakeTimer::$microtime = 123456;
-		$timer = new Timer(8, 33);
+		$timer                = new Timer(8, 33);
 
 		FakeTimer::$microtime = 123456.64;
-		$timeLeft = $timer->getTimeLeft();
+		$timeLeft             = $timer->getTimeLeft();
 
 		$this->assertEquals(2.0, $timeLeft, 'Time left must depend on current microtime', 0.0000000001);
 
 		FakeTimer::$microtime = 123458.64;
-		$timeLeft = $timer->getTimeLeft();
+		$timeLeft             = $timer->getTimeLeft();
 
 		$this->assertEquals(0, $timeLeft, 'Time left must depend on current microtime (2)', 0.0000000001);
 
 
 		FakeTimer::$microtime = 123459.64;
-		$timeLeft = $timer->getTimeLeft();
+		$timeLeft             = $timer->getTimeLeft();
 
 		$this->assertEquals(-1.0, $timeLeft, 'Time left can be negative when we have run out of time', 0.0000000001);
 	}

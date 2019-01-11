@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Application;
 
 
@@ -20,7 +19,7 @@ class MockApplicationWeb extends MockApplicationBase
 	 * @var    array
 	 * @since  12.2
 	 */
-	public static $body = array();
+	public static $body = [];
 
 	/**
 	 * Mock storage for the response headers.
@@ -28,7 +27,7 @@ class MockApplicationWeb extends MockApplicationBase
 	 * @var    array
 	 * @since  3.2
 	 */
-	public static $headers = array();
+	public static $headers = [];
 
 	/**
 	 * Mock storage for the response cache status.
@@ -48,7 +47,7 @@ class MockApplicationWeb extends MockApplicationBase
 	public static function getMethods()
 	{
 		// Collect all the relevant methods in JApplicationWeb (work in progress).
-		$methods = array(
+		$methods = [
 			'allowCache',
 			'appendBody',
 			'clearHeaders',
@@ -69,7 +68,7 @@ class MockApplicationWeb extends MockApplicationBase
 			'set',
 			'setBody',
 			'setHeader',
-		);
+		];
 
 		return array_merge($methods, parent::getMethods());
 	}
@@ -77,9 +76,9 @@ class MockApplicationWeb extends MockApplicationBase
 	/**
 	 * Adds mock objects for some methods.
 	 *
-	 * @param  FOFTestCase                                 $test        A test object.
-	 * @param  \PHPUnit_Framework_MockObject_MockObject  $mockObject  The mock object.
-	 * @param  array                                    $options     A set of options to configure the mock.
+	 * @param  FOFTestCase                              $test       A test object.
+	 * @param  \PHPUnit_Framework_MockObject_MockObject $mockObject The mock object.
+	 * @param  array                                    $options    A set of options to configure the mock.
 	 *
 	 * @return  \PHPUnit_Framework_MockObject_MockObject  The object with the behaviours added
 	 *
@@ -105,23 +104,35 @@ class MockApplicationWeb extends MockApplicationBase
 
 		$test->assignMockCallbacks(
 			$mockObject,
-			array(
-				'appendBody' => array((is_callable(array($test, 'mockAppendBody')) ? $test : get_called_class()), 'mockAppendBody'),
-				'getBody' => array((is_callable(array($test, 'mockGetBody')) ? $test : get_called_class()), 'mockGetBody'),
-				'prependBody' => array((is_callable(array($test, 'mockPrependBody')) ? $test : get_called_class()), 'mockPrependBody'),
-				'setBody' => array((is_callable(array($test, 'mockSetBody')) ? $test : get_called_class()), 'mockSetBody'),
-				'getHeaders' => array((is_callable(array($test, 'mockGetHeaders')) ? $test : get_called_class()), 'mockGetHeaders'),
-				'setHeader' => array((is_callable(array($test, 'mockSetHeader')) ? $test : get_called_class()), 'mockSetHeader'),
-				'clearHeaders' => array((is_callable(array($test, 'mockClearHeaders')) ? $test : get_called_class()), 'mockClearHeaders'),
-				'allowCache' => array((is_callable(array($test, 'mockAllowCache')) ? $test : get_called_class()), 'mockAllowCache'),
-			)
+			[
+				'appendBody'   => [
+					(is_callable([$test, 'mockAppendBody']) ? $test : get_called_class()), 'mockAppendBody',
+				],
+				'getBody'      => [(is_callable([$test, 'mockGetBody']) ? $test : get_called_class()), 'mockGetBody'],
+				'prependBody'  => [
+					(is_callable([$test, 'mockPrependBody']) ? $test : get_called_class()), 'mockPrependBody',
+				],
+				'setBody'      => [(is_callable([$test, 'mockSetBody']) ? $test : get_called_class()), 'mockSetBody'],
+				'getHeaders'   => [
+					(is_callable([$test, 'mockGetHeaders']) ? $test : get_called_class()), 'mockGetHeaders',
+				],
+				'setHeader'    => [
+					(is_callable([$test, 'mockSetHeader']) ? $test : get_called_class()), 'mockSetHeader',
+				],
+				'clearHeaders' => [
+					(is_callable([$test, 'mockClearHeaders']) ? $test : get_called_class()), 'mockClearHeaders',
+				],
+				'allowCache'   => [
+					(is_callable([$test, 'mockAllowCache']) ? $test : get_called_class()), 'mockAllowCache',
+				],
+			]
 		);
 
 		// Reset the body storage.
-		static::$body = array();
+		static::$body = [];
 
 		// Reset the headers storage.
-		static::$headers = array();
+		static::$headers = [];
 
 		// Reset the cache storage.
 		static::$cachable = false;
@@ -143,14 +154,14 @@ class MockApplicationWeb extends MockApplicationBase
 	 *
 	 * If any *Body methods are implemented in the test class, all should be implemented otherwise behaviour will be unreliable.
 	 *
-	 * @param   FOFTestCase  $test     A test object.
-	 * @param   array     $options  A set of options to configure the mock.
+	 * @param   FOFTestCase $test    A test object.
+	 * @param   array       $options A set of options to configure the mock.
 	 *
 	 * @return  \PHPUnit_Framework_MockObject_MockObject
 	 *
 	 * @since   11.3
 	 */
-	public static function create($test, $options = array())
+	public static function create($test, $options = [])
 	{
 		// Set expected server variables.
 		if (!isset($_SERVER['HTTP_HOST']))
@@ -164,7 +175,7 @@ class MockApplicationWeb extends MockApplicationBase
 		// Create the mock.
 		$mockObject = $test->getMockBuilder('\JApplicationWeb')
 			->setMethods($methods)
-			->setConstructorArgs(array())
+			->setConstructorArgs([])
 			->setMockClassName('')
 			->getMock();
 
@@ -176,7 +187,7 @@ class MockApplicationWeb extends MockApplicationBase
 	/**
 	 * Mock JApplicationWeb->appendBody method.
 	 *
-	 * @param   string  $content  The content to append to the response body.
+	 * @param   string $content The content to append to the response body.
 	 *
 	 * @return  mixed
 	 *
@@ -190,7 +201,7 @@ class MockApplicationWeb extends MockApplicationBase
 	/**
 	 * Mock JApplicationWeb->getBody method.
 	 *
-	 * @param   boolean  $asArray  True to return the body as an array of strings.
+	 * @param   boolean $asArray True to return the body as an array of strings.
 	 *
 	 * @return  mixed
 	 *
@@ -204,7 +215,7 @@ class MockApplicationWeb extends MockApplicationBase
 	/**
 	 * Mock JApplicationWeb->appendBody method.
 	 *
-	 * @param   string  $content  The content to append to the response body.
+	 * @param   string $content The content to append to the response body.
 	 *
 	 * @return  mixed
 	 *
@@ -218,7 +229,7 @@ class MockApplicationWeb extends MockApplicationBase
 	/**
 	 * Mock JApplicationWeb->setBody method.
 	 *
-	 * @param   string  $content  The body of the response.
+	 * @param   string $content The body of the response.
 	 *
 	 * @return  void
 	 *
@@ -226,7 +237,7 @@ class MockApplicationWeb extends MockApplicationBase
 	 */
 	public static function mockSetBody($content)
 	{
-		static::$body = array($content);
+		static::$body = [$content];
 	}
 
 	/**
@@ -244,9 +255,9 @@ class MockApplicationWeb extends MockApplicationBase
 	/**
 	 * Mock JApplicationWeb->setHeader method.
 	 *
-	 * @param   string   $name     The name of the header to set.
-	 * @param   string   $value    The value of the header to set.
-	 * @param   boolean  $replace  True to replace any headers with the same name.
+	 * @param   string  $name    The name of the header to set.
+	 * @param   string  $value   The value of the header to set.
+	 * @param   boolean $replace True to replace any headers with the same name.
 	 *
 	 * @return  void
 	 *
@@ -255,7 +266,7 @@ class MockApplicationWeb extends MockApplicationBase
 	public function mockSetHeader($name, $value, $replace = false)
 	{
 		// Sanitize the input values.
-		$name = (string) $name;
+		$name  = (string) $name;
 		$value = (string) $value;
 
 		// If the replace flag is set, unset all known headers with the given name.
@@ -274,7 +285,7 @@ class MockApplicationWeb extends MockApplicationBase
 		}
 
 		// Add the header to the internal array.
-		static::$headers[] = array('name' => $name, 'value' => $value);
+		static::$headers[] = ['name' => $name, 'value' => $value];
 	}
 
 	/**
@@ -286,13 +297,13 @@ class MockApplicationWeb extends MockApplicationBase
 	 */
 	public static function mockClearHeaders()
 	{
-		static::$headers = array();
+		static::$headers = [];
 	}
 
 	/**
 	 * Mock JApplicationWeb->allowCache method.
 	 *
-	 * @param   boolean  $allow  True to allow browser caching.
+	 * @param   boolean $allow True to allow browser caching.
 	 *
 	 * @return  boolean
 	 *

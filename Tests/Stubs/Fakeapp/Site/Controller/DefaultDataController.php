@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\Controller;
 
 use FOF40\Controller\DataController;

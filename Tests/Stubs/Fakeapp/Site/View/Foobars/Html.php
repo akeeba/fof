@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\View\Foobars;
 
 use FOF40\View\View;

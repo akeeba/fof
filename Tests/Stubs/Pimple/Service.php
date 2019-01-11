@@ -36,5 +36,5 @@ namespace FOF40\Tests\Stubs\Pimple;
  */
 class Service
 {
-    public $value;
+	public $value;
 }

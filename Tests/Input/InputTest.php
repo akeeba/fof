@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Input;
 
 use FOF40\Input\Input;
@@ -29,16 +28,16 @@ class InputTest extends FOFTestCase
 	public function testConstructor($source, $superGlobals, $match, $message)
 	{
 		// Initialise superglobals for this test
-		$_GET = isset($superGlobals['get']) ? $superGlobals['get'] : array();
-		$_POST = isset($superGlobals['post']) ? $superGlobals['post'] : array();
-		$_FILES = isset($superGlobals['files']) ? $superGlobals['files'] : array();
-		$_COOKIE = isset($superGlobals['cookie']) ? $superGlobals['cookie'] : array();
-		$_ENV = isset($superGlobals['env']) ? $superGlobals['env'] : array();
-		$_SERVER = isset($superGlobals['server']) ? $superGlobals['server'] : array();
-		$_REQUEST = isset($superGlobals['request']) ? $superGlobals['request'] : array();
+		$_GET     = isset($superGlobals['get']) ? $superGlobals['get'] : [];
+		$_POST    = isset($superGlobals['post']) ? $superGlobals['post'] : [];
+		$_FILES   = isset($superGlobals['files']) ? $superGlobals['files'] : [];
+		$_COOKIE  = isset($superGlobals['cookie']) ? $superGlobals['cookie'] : [];
+		$_ENV     = isset($superGlobals['env']) ? $superGlobals['env'] : [];
+		$_SERVER  = isset($superGlobals['server']) ? $superGlobals['server'] : [];
+		$_REQUEST = isset($superGlobals['request']) ? $superGlobals['request'] : [];
 
 		$input = new Input($source);
-		$data = ReflectionHelper::getValue($input, 'data');
+		$data  = ReflectionHelper::getValue($input, 'data');
 
 		$this->assertInternalType('array', $data, $message);
 
@@ -57,12 +56,12 @@ class InputTest extends FOFTestCase
 	 */
 	public function testGet($key, $filter, $expected, $message)
 	{
-		$input = new Input(InputProvider::getSampleInputData());
+		$input  = new Input(InputProvider::getSampleInputData());
 		$actual = $input->get($key, null, $filter);
 
 		$delta = 0.0;
 
-		if (in_array($filter, array('float', 'double')))
+		if (in_array($filter, ['float', 'double']))
 		{
 			$delta = 0.000001;
 		}
@@ -92,12 +91,12 @@ class InputTest extends FOFTestCase
 	{
 		$method = 'get' . ucfirst($filter);
 
-		$input = new Input(InputProvider::getSampleInputData());
+		$input  = new Input(InputProvider::getSampleInputData());
 		$actual = $input->$method($key, null);
 
 		$delta = 0.0;
 
-		if (in_array($filter, array('float', 'double')))
+		if (in_array($filter, ['float', 'double']))
 		{
 			$delta = 0.000001;
 		}

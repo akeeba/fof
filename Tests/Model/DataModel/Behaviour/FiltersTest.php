@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\DataModel;
 
 use FOF40\Model\DataModel\Behaviour\Filters;
@@ -21,44 +20,45 @@ require_once 'FiltersDataprovider.php';
  */
 class FiltersTest extends DatabaseTest
 {
-    /**
-     * @group           Behaviour
-     * @group           FiltersOnAfterBuildQuery
-     * @covers          FOF40\Model\DataModel\Behaviour\Filters::onAfterBuildQuery
-     * @dataProvider    FiltersDataprovider::getTestOnAfterBuildQuery
-     */
-    public function testOnAfterBuildQuery($test, $check)
-    {
-        //\PHPUnit_Framework_Error_Warning::$enabled = false;
+	/**
+	 * @group           Behaviour
+	 * @group           FiltersOnAfterBuildQuery
+	 * @covers          FOF40\Model\DataModel\Behaviour\Filters::onAfterBuildQuery
+	 * @dataProvider    FiltersDataprovider::getTestOnAfterBuildQuery
+	 */
+	public function testOnAfterBuildQuery($test, $check)
+	{
+		//\PHPUnit_Framework_Error_Warning::$enabled = false;
 
-        $msg = 'Filters::onAfterBuildQuery %s - Case: '.$check['case'];
+		$msg = 'Filters::onAfterBuildQuery %s - Case: ' . $check['case'];
 
-        $config = array(
-            'idFieldName' => 'foftest_foobar_id',
-            'tableName'   => '#__foftest_foobars'
-        );
+		$config = [
+			'idFieldName' => 'foftest_foobar_id',
+			'tableName'   => '#__foftest_foobars',
+		];
 
-        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
-            ->setMethods(array('getState'))
-            ->setConstructorArgs(array(static::$container, $config))
-            ->getMock();
+		$model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
+			->setMethods(['getState'])
+			->setConstructorArgs([static::$container, $config])
+			->getMock();
 
-        $model->method('getState')->willReturnCallback(function($key, $default = null) use ($test){
-            if(isset($test['mock']['state'][$key])){
-                return $test['mock']['state'][$key];
-            }
+		$model->method('getState')->willReturnCallback(function ($key, $default = null) use ($test) {
+			if (isset($test['mock']['state'][$key]))
+			{
+				return $test['mock']['state'][$key];
+			}
 
-            return $default;
-        });
+			return $default;
+		});
 
-        $model->setIgnoreRequest($test['ignore']);
+		$model->setIgnoreRequest($test['ignore']);
 
-        $query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
-        $dispatcher = $model->getBehavioursDispatcher();
-        $filter     = new Filters($dispatcher);
+		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$dispatcher = $model->getBehavioursDispatcher();
+		$filter     = new Filters($dispatcher);
 
-        $filter->onAfterBuildQuery($model, $query);
+		$filter->onAfterBuildQuery($model, $query);
 
-        $this->assertEquals($check['query'], trim((string) $query), sprintf($msg, 'Failed to build the query'));
-    }
+		$this->assertEquals($check['query'], trim((string) $query), sprintf($msg, 'Failed to build the query'));
+	}
 }

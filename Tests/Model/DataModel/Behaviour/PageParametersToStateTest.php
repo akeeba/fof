@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\DataModel;
 
 use FOF40\Input\Input;
@@ -25,74 +24,74 @@ require_once 'PageParametersToStateDataprovider.php';
  */
 class PageParametersToStateTest extends DatabaseTest
 {
-    protected $savedApplication;
+	protected $savedApplication;
 
-    public function setUp()
-    {
-        parent::setUp();
+	public function setUp()
+	{
+		parent::setUp();
 
-        $this->saveFactoryState();
-    }
+		$this->saveFactoryState();
+	}
 
-    protected function tearDown()
-    {
-        $this->restoreFactoryState();
+	protected function tearDown()
+	{
+		$this->restoreFactoryState();
 
-        parent::tearDown();
-    }
+		parent::tearDown();
+	}
 
-    /**
-     * @group           Behaviour
-     * @group           PageParametersToStateOnAfterConstruct
-     * @covers          FOF40\Model\DataModel\Behaviour\PageParametersToState::onAfterConstruct
-     * @dataProvider    PageParametersToStateDataprovider::getTestOnAfterConstruct
-     */
-    public function testOnAfterConstruct($test, $check)
-    {
-        $msg = 'PageParametersToState::onAfterConstruct %s - Case: '.$check['case'];
+	/**
+	 * @group           Behaviour
+	 * @group           PageParametersToStateOnAfterConstruct
+	 * @covers          FOF40\Model\DataModel\Behaviour\PageParametersToState::onAfterConstruct
+	 * @dataProvider    PageParametersToStateDataprovider::getTestOnAfterConstruct
+	 */
+	public function testOnAfterConstruct($test, $check)
+	{
+		$msg = 'PageParametersToState::onAfterConstruct %s - Case: ' . $check['case'];
 
-        // Use a table without assets support, otherwise we have to mock the application
-        // while we need it to set the state
-        $config = array(
-            'idFieldName' => 'foftest_bare_id',
-            'tableName'   => '#__foftest_bares'
-        );
+		// Use a table without assets support, otherwise we have to mock the application
+		// while we need it to set the state
+		$config = [
+			'idFieldName' => 'foftest_bare_id',
+			'tableName'   => '#__foftest_bares',
+		];
 
-        $container = new TestContainer(array(
-            'componentName'	=> 'com_fakeapp',
-            'input'         => new Input($test['input'])
-        ));
+		$container = new TestContainer([
+			'componentName' => 'com_fakeapp',
+			'input'         => new Input($test['input']),
+		]);
 
-        /** @var \FOF40\Tests\Helpers\TestJoomlaPlatform $platform */
-        $platform = $container->platform;
-        $platform::$isAdmin = $test['mock']['admin'];
-        $platform::$user = (object)array('id' => 99);
-        $platform::$getUserStateFromRequest = 'do_not_mock';
+		/** @var \FOF40\Tests\Helpers\TestJoomlaPlatform $platform */
+		$platform                           = $container->platform;
+		$platform::$isAdmin                 = $test['mock']['admin'];
+		$platform::$user                    = (object) ['id' => 99];
+		$platform::$getUserStateFromRequest = 'do_not_mock';
 
-        $model = new DataModelStub($container, $config);
+		$model = new DataModelStub($container, $config);
 
-        foreach($test['state'] as $key => $value)
-        {
-            $model->setState($key, $value);
-        }
+		foreach ($test['state'] as $key => $value)
+		{
+			$model->setState($key, $value);
+		}
 
-        $dispatcher = $model->getBehavioursDispatcher();
+		$dispatcher = $model->getBehavioursDispatcher();
 
-        $pageparams = new PageParametersToState($dispatcher);
+		$pageparams = new PageParametersToState($dispatcher);
 
-        $fakeApp = new ClosureHelper(array(
-            'getPageParameters' => function() use($test){
-                return new \JRegistry($test['params']);
-            }
-        ));
+		$fakeApp = new ClosureHelper([
+			'getPageParameters' => function () use ($test) {
+				return new \JRegistry($test['params']);
+			},
+		]);
 
-        \JFactory::$application = $fakeApp;
+		\JFactory::$application = $fakeApp;
 
-        $pageparams->onAfterConstruct($model);
+		$pageparams->onAfterConstruct($model);
 
-        foreach($check['state'] as $key => $value)
-        {
-            $this->assertEquals($value, $model->getState($key), sprintf($msg, 'Failed to set the correct value for the key: '.$key));
-        }
-    }
+		foreach ($check['state'] as $key => $value)
+		{
+			$this->assertEquals($value, $model->getState($key), sprintf($msg, 'Failed to set the correct value for the key: ' . $key));
+		}
+	}
 }

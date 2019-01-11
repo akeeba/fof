@@ -6,7 +6,6 @@
  */
 
 
-
 class JSessionHandlerFake implements JSessionHandlerInterface
 {
 	private $id = 'FAKE_ID';

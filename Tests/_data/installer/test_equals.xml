@@ -31,7 +31,7 @@ INSERT INTO `#__foobar_example`
             <condition type="equals" operator="and" value="1"><![CDATA[
 SELECT COUNT(*) FROM `#__foobar_example` WHERE `example_id` = 1;
             ]]></condition>
-            <condition type="missing" operator="not" value="description" />
+            <condition type="missing" operator="not" value="description"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -41,7 +41,7 @@ INSERT INTO `#__foobar_example`
 
         <!-- Always insert -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="true" operator="and" />
+            <condition type="true" operator="and"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -51,7 +51,7 @@ INSERT INTO `#__foobar_example`
 
         <!-- Never insert -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="and" />
+            <condition type="false" operator="and"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -61,7 +61,7 @@ INSERT INTO `#__foobar_example`
 
         <!-- Test OR positive -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="or" /> <!-- default state is TRUE, that's why it works -->
+            <condition type="false" operator="or"/> <!-- default state is TRUE, that's why it works -->
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -72,8 +72,8 @@ INSERT INTO `#__foobar_example`
 
         <!-- Test OR negative -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="and" /> <!-- default state is TRUE, that's why we have AND here -->
-            <condition type="false" operator="or" />
+            <condition type="false" operator="and"/> <!-- default state is TRUE, that's why we have AND here -->
+            <condition type="false" operator="or"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -84,8 +84,8 @@ INSERT INTO `#__foobar_example`
 
         <!-- Test NOR positive. WARNING: NOR logic matrix, see http://en.wikipedia.org/wiki/NOR_gate Both inputs must be false -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="and" /> <!-- default state is TRUE, that's why we have AND here -->
-            <condition type="false" operator="nor" />
+            <condition type="false" operator="and"/> <!-- default state is TRUE, that's why we have AND here -->
+            <condition type="false" operator="nor"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -95,7 +95,7 @@ INSERT INTO `#__foobar_example`
 
         <!-- Test NOR negative -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="nor" /> <!-- default is TRUE. true NOR false = false -->
+            <condition type="false" operator="nor"/> <!-- default is TRUE. true NOR false = false -->
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -105,7 +105,7 @@ INSERT INTO `#__foobar_example`
 
         <!-- XOR positive test -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="xor" /> <!-- default state is TRUE, that's why it works -->
+            <condition type="false" operator="xor"/> <!-- default state is TRUE, that's why it works -->
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -115,7 +115,7 @@ INSERT INTO `#__foobar_example`
 
         <!-- XOR negative test -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="true" operator="xor" /> <!-- default state is TRUE, that's why it works -->
+            <condition type="true" operator="xor"/> <!-- default state is TRUE, that's why it works -->
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -125,8 +125,8 @@ INSERT INTO `#__foobar_example`
 
         <!-- MAYBE positive test -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="and" /> <!-- default state is TRUE, that's why it is needed -->
-            <condition type="true" operator="maybe" />
+            <condition type="false" operator="and"/> <!-- default state is TRUE, that's why it is needed -->
+            <condition type="true" operator="maybe"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES
@@ -136,8 +136,8 @@ INSERT INTO `#__foobar_example`
 
         <!-- MAYBE negative test -->
         <action table="#__foobar_example" canfail="0">
-            <condition type="false" operator="and" /> <!-- default state is TRUE, that's why it is needed -->
-            <condition type="false" operator="maybe" />
+            <condition type="false" operator="and"/> <!-- default state is TRUE, that's why it is needed -->
+            <condition type="false" operator="maybe"/>
             <query><![CDATA[
 INSERT INTO `#__foobar_example`
 (`example_id`,`description`, `text`) VALUES

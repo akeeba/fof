@@ -6,134 +6,133 @@
  */
 
 
-
 class PageParametersToStateDataprovider
 {
-    public static function getTestOnAfterConstruct()
-    {
-        $data[] = array(
-            'input' => array(
-                'input' => array(),
-                'mock'  => array(
-                    'admin' => true
-                ),
-                'state'  => array(
-                    'foo' => 'bar'
-                ),
-                'params' => array()
-            ),
-            'check' => array(
-                'case' => 'We are on the backend',
-                'state' => array(
-                    'foo' => 'bar'
-                )
-            )
-        );
+	public static function getTestOnAfterConstruct()
+	{
+		$data[] = [
+			'input' => [
+				'input'  => [],
+				'mock'   => [
+					'admin' => true,
+				],
+				'state'  => [
+					'foo' => 'bar',
+				],
+				'params' => [],
+			],
+			'check' => [
+				'case'  => 'We are on the backend',
+				'state' => [
+					'foo' => 'bar',
+				],
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'input' => array(),
-                'mock'  => array(
-                    'admin' => false
-                ),
-                'state'  => array(
-                    'foo' => 'bar'
-                ),
-                'params' => array()
-            ),
-            'check' => array(
-                'case' => 'Page params are empty',
-                'state' => array(
-                    'foo' => 'bar'
-                )
-            )
-        );
+		$data[] = [
+			'input' => [
+				'input'  => [],
+				'mock'   => [
+					'admin' => false,
+				],
+				'state'  => [
+					'foo' => 'bar',
+				],
+				'params' => [],
+			],
+			'check' => [
+				'case'  => 'Page params are empty',
+				'state' => [
+					'foo' => 'bar',
+				],
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'input' => array(),
-                'mock'  => array(
-                    'admin' => false
-                ),
-                'state'  => array(
-                    'foo' => 'bar'
-                ),
-                'params' => array(
-                    'hello' => 'world'
-                )
-            ),
-            'check' => array(
-                'case' => 'Page params not present inside model state',
-                'state' => array(
-                    'foo' => 'bar',
-                    'hello' => 'world'
-                )
-            )
-        );
+		$data[] = [
+			'input' => [
+				'input'  => [],
+				'mock'   => [
+					'admin' => false,
+				],
+				'state'  => [
+					'foo' => 'bar',
+				],
+				'params' => [
+					'hello' => 'world',
+				],
+			],
+			'check' => [
+				'case'  => 'Page params not present inside model state',
+				'state' => [
+					'foo'   => 'bar',
+					'hello' => 'world',
+				],
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'input' => array(),
-                'mock'  => array(
-                    'admin' => false
-                ),
-                'state'  => array(
-                    'foo' => 'bar'
-                ),
-                'params' => array(
-                    'foo' => 'new'
-                )
-            ),
-            'check' => array(
-                'case' => 'Param already set in the model state',
-                'state' => array(
-                    'foo' => 'bar',
-                )
-            )
-        );
+		$data[] = [
+			'input' => [
+				'input'  => [],
+				'mock'   => [
+					'admin' => false,
+				],
+				'state'  => [
+					'foo' => 'bar',
+				],
+				'params' => [
+					'foo' => 'new',
+				],
+			],
+			'check' => [
+				'case'  => 'Param already set in the model state',
+				'state' => [
+					'foo' => 'bar',
+				],
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'input' => array(),
-                'mock'  => array(
-                    'admin' => false
-                ),
-                'state'  => array(
-                    'foo' => 0
-                ),
-                'params' => array(
-                    'foo' => 'new'
-                )
-            ),
-            'check' => array(
-                'case' => 'Param already set in the model state (empty value)',
-                'state' => array(
-                    'foo' => 0,
-                )
-            )
-        );
+		$data[] = [
+			'input' => [
+				'input'  => [],
+				'mock'   => [
+					'admin' => false,
+				],
+				'state'  => [
+					'foo' => 0,
+				],
+				'params' => [
+					'foo' => 'new',
+				],
+			],
+			'check' => [
+				'case'  => 'Param already set in the model state (empty value)',
+				'state' => [
+					'foo' => 0,
+				],
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'input' => array(
-                    'foo' => 'bar'
-                ),
-                'mock'  => array(
-                    'admin' => false
-                ),
-                'state'  => array(),
-                'params' => array(
-                    'foo' => 'new'
-                )
-            ),
-            'check' => array(
-                'case' => 'Param already set in the input',
-                'state' => array(
-                    'foo' => 'bar',
-                )
-            )
-        );
+		$data[] = [
+			'input' => [
+				'input'  => [
+					'foo' => 'bar',
+				],
+				'mock'   => [
+					'admin' => false,
+				],
+				'state'  => [],
+				'params' => [
+					'foo' => 'new',
+				],
+			],
+			'check' => [
+				'case'  => 'Param already set in the input',
+				'state' => [
+					'foo' => 'bar',
+				],
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 }

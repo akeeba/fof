@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers;
 
 use FOF40\Container\Container;
@@ -34,8 +33,8 @@ abstract class ApplicationTestCase extends \PHPUnit_Framework_TestCase
 	public static function rebuildContainer()
 	{
 		static::$container = null;
-		static::$container = new TestContainer(array(
-			'componentName'	=> 'com_fakeapp',
-		));
+		static::$container = new TestContainer([
+			'componentName' => 'com_fakeapp',
+		]);
 	}
 }

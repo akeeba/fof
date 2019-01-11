@@ -17,7 +17,7 @@
     </meta>
     <sql>
         <action table="#__foobar_example" canfail="0">
-            <condition type="missing" value="" />
+            <condition type="missing" value=""/>
             <query><![CDATA[
     CREATE TABLE `#__foobar_example` (
         `example_id` int(10) unsigned NOT NULL AUTO_INCREMENT,

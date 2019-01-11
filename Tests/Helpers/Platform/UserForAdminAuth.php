@@ -6,13 +6,12 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Platform;
 
 
 class UserForAdminAuth extends \JUser
 {
-	public $allowedAuths = array(); // e.g. core.admin#com_foobar
+	public $allowedAuths = []; // e.g. core.admin#com_foobar
 
 	public function authorise($action, $assetname = null)
 	{

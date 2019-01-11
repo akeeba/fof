@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Configuration\Domain;
 
 use FOF40\Configuration\Domain\Views;
@@ -22,7 +21,7 @@ class ViewsTest extends FOFTestCase
 	protected $object = null;
 
 	/** @var   array  The data returned from parsing the XML file, used to test fetching data */
-	protected $data = array();
+	protected $data = [];
 
 	/**
 	 * @return  void
@@ -32,7 +31,7 @@ class ViewsTest extends FOFTestCase
 		$this->object = new Views();
 
 		$file = realpath(__DIR__ . '/../../_data/configuration/views.xml');
-		$xml = simplexml_load_file($file);
+		$xml  = simplexml_load_file($file);
 
 		$this->object->parseDomain($xml, $this->data);
 	}
@@ -44,10 +43,10 @@ class ViewsTest extends FOFTestCase
 	 */
 	public function testParseDomain()
 	{
-		$this->data = array();
+		$this->data = [];
 
 		$file = realpath(__DIR__ . '/../../_data/configuration/views.xml');
-		$xml = simplexml_load_file($file);
+		$xml  = simplexml_load_file($file);
 
 		$this->object->parseDomain($xml, $this->data);
 
@@ -90,7 +89,7 @@ class ViewsTest extends FOFTestCase
 	 */
 	public function testGetTaskmap($key, $expected, $included, $message)
 	{
-		$actual = $this->object->get($this->data, $key, array());
+		$actual = $this->object->get($this->data, $key, []);
 
 		$this->assertInternalType('array', $actual);
 
@@ -117,14 +116,17 @@ class ViewsTest extends FOFTestCase
 
 	public function getTestGetTaskmap()
 	{
-		return array(
-			array('*.taskmap', array('show' => 'browse'), 1, 'Taskmap: explictly named taskmap, star view'),
-			array('Item.taskmap', array('show' => 'browse'), 1, 'Taskmap: implicit taskmap from star view'),
-			array('Item.taskmap', array('list' => 'browse'), 1, 'Taskmap: explictly named taskmap, explicit view'),
-			array('notthere.taskmap', array('show' => 'browse'), 1, 'Taskmap: explictly named taskmap, inexistant view'),
-			array('Bad.taskmap', array('show' => 'show'), 1, 'Taskmap: explictly named taskmap overrides explicit star view'),
-			array('Baz.taskmap', array('show' => 'show'), -1, 'Taskmap: explictly named taskmap does not override implicit star view'),
-		);
+		return [
+			['*.taskmap', ['show' => 'browse'], 1, 'Taskmap: explictly named taskmap, star view'],
+			['Item.taskmap', ['show' => 'browse'], 1, 'Taskmap: implicit taskmap from star view'],
+			['Item.taskmap', ['list' => 'browse'], 1, 'Taskmap: explictly named taskmap, explicit view'],
+			['notthere.taskmap', ['show' => 'browse'], 1, 'Taskmap: explictly named taskmap, inexistant view'],
+			['Bad.taskmap', ['show' => 'show'], 1, 'Taskmap: explictly named taskmap overrides explicit star view'],
+			[
+				'Baz.taskmap', ['show' => 'show'], -1,
+				'Taskmap: explictly named taskmap does not override implicit star view',
+			],
+		];
 	}
 
 	/**
@@ -156,16 +158,16 @@ class ViewsTest extends FOFTestCase
 
 	public function getTestGetAcl()
 	{
-		return array(
-			array('*.acl.browse', 'foobar.something', 1, 'ACL: explictly named acl, star view'),
-			array('*.acl.baz', null, 1, 'ACL: non-existent acl, star view'),
-			array('Item.acl.browse', 'foobar.something', 1, 'ACL: implicitly named acl, existing view'),
-			array('Item.acl.dosomething', '', 1, 'ACL: explicitly named empty acl, existing view'),
-			array('Item.acl.somethingelse', 'core.manage', 1, 'ACL: explicitly named non-empty acl, existing view'),
-			array('Bad.acl.browse', 'kot', 1, 'ACL: explicitly named non-empty acl, existing view, override star view'),
-			array('notthere.acl.browse', 'foobar.something', 1, 'ACL: implicitly named acl, not-existent view'),
-			array('notthere.acl.kot', '', 1, 'ACL: not-existent acl, not-existent view'),
-		);
+		return [
+			['*.acl.browse', 'foobar.something', 1, 'ACL: explictly named acl, star view'],
+			['*.acl.baz', null, 1, 'ACL: non-existent acl, star view'],
+			['Item.acl.browse', 'foobar.something', 1, 'ACL: implicitly named acl, existing view'],
+			['Item.acl.dosomething', '', 1, 'ACL: explicitly named empty acl, existing view'],
+			['Item.acl.somethingelse', 'core.manage', 1, 'ACL: explicitly named non-empty acl, existing view'],
+			['Bad.acl.browse', 'kot', 1, 'ACL: explicitly named non-empty acl, existing view, override star view'],
+			['notthere.acl.browse', 'foobar.something', 1, 'ACL: implicitly named acl, not-existent view'],
+			['notthere.acl.kot', '', 1, 'ACL: not-existent acl, not-existent view'],
+		];
 	}
 
 	/**
@@ -197,15 +199,18 @@ class ViewsTest extends FOFTestCase
 
 	public function getTestGetConfig()
 	{
-		return array(
-			array('*.config.behaviors', 'filter,access', 1, 'Config: explictly named config, star view'),
-			array('*.config.foobar', null, 1, 'Config: non-existent config, star view'),
-			array('Item.config.behaviors', 'filter,access', 1, 'Config: implicitly named config, existing view'),
-			array('Item.config.autoRouting', '3', 1, 'Config: explicitly named empty config, existing view'),
-			array('Bad.config.behaviors', '', 1, 'Config: explicitly named non-empty config, existing view, override star view'),
-			array('notthere.config.behaviors', 'filter,access', 1, 'Config: implicitly named config, not-existent view'),
-			array('notthere.config.kot', '', 1, 'Config: not-existent config, not-existent view'),
-		);
+		return [
+			['*.config.behaviors', 'filter,access', 1, 'Config: explictly named config, star view'],
+			['*.config.foobar', null, 1, 'Config: non-existent config, star view'],
+			['Item.config.behaviors', 'filter,access', 1, 'Config: implicitly named config, existing view'],
+			['Item.config.autoRouting', '3', 1, 'Config: explicitly named empty config, existing view'],
+			[
+				'Bad.config.behaviors', '', 1,
+				'Config: explicitly named non-empty config, existing view, override star view',
+			],
+			['notthere.config.behaviors', 'filter,access', 1, 'Config: implicitly named config, not-existent view'],
+			['notthere.config.kot', '', 1, 'Config: not-existent config, not-existent view'],
+		];
 	}
 
 
@@ -225,7 +230,7 @@ class ViewsTest extends FOFTestCase
 	 */
 	public function testGetToolbar($key, $expected, $included, $message)
 	{
-		$actual = $this->object->get($this->data, $key, array());
+		$actual = $this->object->get($this->data, $key, []);
 
 		$this->assertInternalType('array', $actual);
 
@@ -256,17 +261,29 @@ class ViewsTest extends FOFTestCase
 
 	public function getTestGetToolbar()
 	{
-		return array(
-			array('*.toolbar.browse', array('title' => array('value' => 'COM_FOOBAR_TOOLBAR_GENERIC')), 1, 'Toolbar: explictly named Toolbar, star view'),
-			array('*.toolbar.notthere', array('title' => null), 0, 'Toolbar: non-existent Toolbar, star view'),
-			array('Item.toolbar.browse', array('title' => array('value' => 'COM_FOOBAR_TOOLBAR_GENERIC')), 1, 'Toolbar: implicitly named Toolbar, existing view'),
-			array('Item.toolbar.browse', array('title' => array('value' => 'COM_FOOBAR_TOOLBAR_GENERIC')), 1, 'Toolbar: implicitly named Toolbar, existing view'),
-			array('Item.toolbar.notthere', array('title' => null), 0, 'Toolbar: non-existent Toolbar, existing view'),
-			array('Item.toolbar.edit', array('title' => array('value' => 'COM_FOOBAR_TOOLBAR_ITEM')), 1, 'Toolbar: explicitly named Toolbar, existing view'),
-			array('Item.toolbar.edit', array('save' => null), 2, 'Toolbar: explicitly named Toolbar, existing view'),
-			array('Item.toolbar.edit', array('saveclose' => null), 2, 'Toolbar: explicitly named Toolbar, existing view'),
-			array('Item.toolbar.edit', array('apply' => null), 0, 'Toolbar: explicitly named Toolbar, existing view'),
-			array('Item.bad.browse', array('apply' => null), 0, 'Toolbar: explicitly named Toolbar, override star view'),
-		);
+		return [
+			[
+				'*.toolbar.browse', ['title' => ['value' => 'COM_FOOBAR_TOOLBAR_GENERIC']], 1,
+				'Toolbar: explictly named Toolbar, star view',
+			],
+			['*.toolbar.notthere', ['title' => null], 0, 'Toolbar: non-existent Toolbar, star view'],
+			[
+				'Item.toolbar.browse', ['title' => ['value' => 'COM_FOOBAR_TOOLBAR_GENERIC']], 1,
+				'Toolbar: implicitly named Toolbar, existing view',
+			],
+			[
+				'Item.toolbar.browse', ['title' => ['value' => 'COM_FOOBAR_TOOLBAR_GENERIC']], 1,
+				'Toolbar: implicitly named Toolbar, existing view',
+			],
+			['Item.toolbar.notthere', ['title' => null], 0, 'Toolbar: non-existent Toolbar, existing view'],
+			[
+				'Item.toolbar.edit', ['title' => ['value' => 'COM_FOOBAR_TOOLBAR_ITEM']], 1,
+				'Toolbar: explicitly named Toolbar, existing view',
+			],
+			['Item.toolbar.edit', ['save' => null], 2, 'Toolbar: explicitly named Toolbar, existing view'],
+			['Item.toolbar.edit', ['saveclose' => null], 2, 'Toolbar: explicitly named Toolbar, existing view'],
+			['Item.toolbar.edit', ['apply' => null], 0, 'Toolbar: explicitly named Toolbar, existing view'],
+			['Item.bad.browse', ['apply' => null], 0, 'Toolbar: explicitly named Toolbar, override star view'],
+		];
 	}
 }

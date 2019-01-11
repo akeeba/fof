@@ -6,7 +6,6 @@
  */
 
 
-
 // Required to load FOF and Joomla!
 use FOF40\Tests\Helpers\TravisLogger;
 
@@ -165,9 +164,9 @@ $config->set('session_handler', 'none');
 // We need to set up the JSession object
 require_once 'Stubs/Session/FakeSession.php';
 $sessionHandler = new JSessionHandlerFake();
-$session = JSession::getInstance('none', array(), $sessionHandler);
-$input = new JInputCli();
-$dispatcher = new JEventDispatcher();
+$session        = JSession::getInstance('none', [], $sessionHandler);
+$input          = new JInputCli();
+$dispatcher     = new JEventDispatcher();
 $session->initialise($input, $dispatcher);
 JFactory::$session = $session;
 

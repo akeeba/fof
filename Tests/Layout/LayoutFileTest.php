@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Layout;
 
 
@@ -29,8 +28,8 @@ class LayoutFileTest extends FOFTestCase
 
 	public static function tearDownAfterClass()
 	{
-		TestJoomlaPlatform::$baseDirs = null;
-		TestJoomlaPlatform::$template = null;
+		TestJoomlaPlatform::$baseDirs         = null;
+		TestJoomlaPlatform::$template         = null;
 		TestJoomlaPlatform::$templateSuffixes = null;
 
 		parent::tearDownAfterClass();
@@ -61,7 +60,7 @@ class LayoutFileTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF40\Layout\LayoutFile::getPath
+	 * @covers       FOF40\Layout\LayoutFile::getPath
 	 *
 	 * @dataProvider FOF40\Tests\Layout\LayoutFileTestProvider::getTestGetPath
 	 *
@@ -73,19 +72,19 @@ class LayoutFileTest extends FOFTestCase
 	public function testGetPath($layoutId, $platformSetup, $expectedPath, $message)
 	{
 		// Set up the platform
-		$defaultPlatformSetup = array(
-			'baseDirs' => null,
-			'template' => null,
-			'templateSuffixes' => null
-		);
+		$defaultPlatformSetup = [
+			'baseDirs'         => null,
+			'template'         => null,
+			'templateSuffixes' => null,
+		];
 
 		if (!is_array($platformSetup))
 		{
-			$platformSetup = array();
+			$platformSetup = [];
 		}
 
 		$platformSetup = array_merge($defaultPlatformSetup, $platformSetup);
-		$reflector = new \ReflectionClass('FOF40\\Tests\\Helpers\\TestJoomlaPlatform');
+		$reflector     = new \ReflectionClass('FOF40\\Tests\\Helpers\\TestJoomlaPlatform');
 
 		foreach ($platformSetup as $k => $v)
 		{
@@ -95,15 +94,15 @@ class LayoutFileTest extends FOFTestCase
 		unset($reflector);
 
 		// Set up a fake options JRegistry object
-		$fakeOptions = new \JRegistry(array(
+		$fakeOptions = new \JRegistry([
 			'option' => 'com_foobar',
 			'client' => 0,
-		));
+		]);
 
 		$fakeBase = realpath(__DIR__ . '/../_data/layout/base');
 
 		// Create the layout file object
-		$layoutFile = new LayoutFile($layoutId, $fakeBase, $fakeOptions);
+		$layoutFile            = new LayoutFile($layoutId, $fakeBase, $fakeOptions);
 		$layoutFile->container = static::$container;
 
 		// Call the protected method. Dirty, but that's what we have to test without loading and displaying an actual
@@ -111,7 +110,7 @@ class LayoutFileTest extends FOFTestCase
 		$actual = ReflectionHelper::invoke($layoutFile, 'getPath');
 
 		$expectedPath = realpath($expectedPath);
-		$actual = realpath($actual);
+		$actual       = realpath($actual);
 
 		$this->assertEquals($expectedPath, $actual, $message);
 	}

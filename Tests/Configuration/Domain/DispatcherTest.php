@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Configuration\Domain;
 
 use FOF40\Configuration\Domain\Dispatcher;
@@ -22,7 +21,7 @@ class DispatcherTest extends FOFTestCase
 	protected $object = null;
 
 	/** @var   array  The data returned from parsing the XML file, used to test fetching data */
-	protected $data = array();
+	protected $data = [];
 
 	/**
 	 * @return  void
@@ -32,7 +31,7 @@ class DispatcherTest extends FOFTestCase
 		$this->object = new Dispatcher();
 
 		$file = __DIR__ . '/../../_data/configuration/dispatcher.xml';
-		$xml = simplexml_load_file($file);
+		$xml  = simplexml_load_file($file);
 
 		$this->object->parseDomain($xml, $this->data);
 	}
@@ -44,10 +43,10 @@ class DispatcherTest extends FOFTestCase
 	 */
 	public function testParseDomain()
 	{
-		$this->data = array();
+		$this->data = [];
 
 		$file = __DIR__ . '/../../_data/configuration/dispatcher.xml';
-		$xml = simplexml_load_file($file);
+		$xml  = simplexml_load_file($file);
 
 		$this->object->parseDomain($xml, $this->data);
 
@@ -60,14 +59,14 @@ class DispatcherTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF40\Configuration\Domain\Dispatcher::get
+	 * @covers       FOF40\Configuration\Domain\Dispatcher::get
 	 *
 	 * @dataProvider getTestGet
 	 *
-	 * @param   string  $key       Key to read
-	 * @param   mixed   $default   Default value
-	 * @param   mixed   $expected  Expected value
-	 * @param   string  $message   Failure message
+	 * @param   string $key      Key to read
+	 * @param   mixed  $default  Default value
+	 * @param   mixed  $expected Expected value
+	 * @param   string $message  Failure message
 	 *
 	 * @return  void
 	 */
@@ -79,11 +78,11 @@ class DispatcherTest extends FOFTestCase
 
 	public function getTestGet()
 	{
-		return array(
-			array('some', 'NOPE', 'thing', 'Existing option must be read correctly'),
-			array('foo', 'NOPE', 'bar', 'Existing option must be read correctly'),
-			array('godzilla', 'narf', 'narf', 'Non-existing option must return default value'),
-            array('*', '', array('some' => 'thing', 'foo' => 'bar'), 'Retrieving all the options')
-		);
+		return [
+			['some', 'NOPE', 'thing', 'Existing option must be read correctly'],
+			['foo', 'NOPE', 'bar', 'Existing option must be read correctly'],
+			['godzilla', 'narf', 'narf', 'Non-existing option must return default value'],
+			['*', '', ['some' => 'thing', 'foo' => 'bar'], 'Retrieving all the options'],
+		];
 	}
 }

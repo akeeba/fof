@@ -31,29 +31,29 @@
 
 namespace FOF40\Tests\Stubs\Pimple;
 
-use \FOF40\Pimple\Pimple;
-use \FOF40\Pimple\ServiceProviderInterface;
+use FOF40\Pimple\Pimple;
+use FOF40\Pimple\ServiceProviderInterface;
 
 class PimpleServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * Registers services on the given container.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param Pimple $pimple An Container instance
-     */
-    public function register(Pimple $pimple)
-    {
-        $pimple['param'] = 'value';
+	/**
+	 * Registers services on the given container.
+	 *
+	 * This method should only be used to configure services and parameters.
+	 * It should not get services.
+	 *
+	 * @param Pimple $pimple An Container instance
+	 */
+	public function register(Pimple $pimple)
+	{
+		$pimple['param'] = 'value';
 
-        $pimple['service'] = function () {
-            return new Service();
-        };
+		$pimple['service'] = function () {
+			return new Service();
+		};
 
-        $pimple['factory'] = $pimple->factory(function () {
-            return new Service();
-        });
-    }
+		$pimple['factory'] = $pimple->factory(function () {
+			return new Service();
+		});
+	}
 }

@@ -33,7 +33,7 @@ namespace FOF40\Tests\Stubs\Pimple;
 
 class NonInvokable
 {
-    public function __call($a, $b)
-    {
-    }
+	public function __call($a, $b)
+	{
+	}
 }

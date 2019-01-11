@@ -21,111 +21,111 @@ require_once 'CreatedDataprovider.php';
  */
 class CreatedTest extends DatabaseTest
 {
-    /**
-     * @group           Behaviour
-     * @group           CreatedOnBeforeCheck
-     * @covers          FOF40\Model\DataModel\Behaviour\Created::onBeforeCheck
-     */
-    public function testOnBeforeCheck()
-    {
-        $config = array(
-            'idFieldName' => 'foftest_foobar_id',
-            'tableName'   => '#__foftest_foobars'
-        );
+	/**
+	 * @group           Behaviour
+	 * @group           CreatedOnBeforeCheck
+	 * @covers          FOF40\Model\DataModel\Behaviour\Created::onBeforeCheck
+	 */
+	public function testOnBeforeCheck()
+	{
+		$config = [
+			'idFieldName' => 'foftest_foobar_id',
+			'tableName'   => '#__foftest_foobars',
+		];
 
-        $platform = static::$container->platform;
-        $platform::$user = (object)array('id' => 99);
+		$platform        = static::$container->platform;
+		$platform::$user = (object) ['id' => 99];
 
-        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
-            ->setMethods(array('addSkipCheckField'))
-            ->setConstructorArgs(array(static::$container, $config))
-            ->getMock();
-        $model->expects($this->exactly(2))->method('addSkipCheckField')
-            ->withConsecutive(
-                array($this->equalTo('created_on')),
-                array($this->equalTo('created_by'))
-            );
+		$model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
+			->setMethods(['addSkipCheckField'])
+			->setConstructorArgs([static::$container, $config])
+			->getMock();
+		$model->expects($this->exactly(2))->method('addSkipCheckField')
+			->withConsecutive(
+				[$this->equalTo('created_on')],
+				[$this->equalTo('created_by')]
+			);
 
-        $dispatcher = $model->getBehavioursDispatcher();
-        $behavior   = new Created($dispatcher);
+		$dispatcher = $model->getBehavioursDispatcher();
+		$behavior   = new Created($dispatcher);
 
-        $behavior->onBeforeCheck($model);
-    }
+		$behavior->onBeforeCheck($model);
+	}
 
-    /**
-     * @group           Behaviour
-     * @group           CreatedOnBeforeCreate
-     * @covers          FOF40\Model\DataModel\Behaviour\Created::onBeforeCreate
-     * @dataProvider    CreatedDataprovider::getTestOnBeforeCreate
-     */
-    public function testOnBeforeCreate($test, $check)
-    {
-        $msg = 'Created::onAfterBuildQuery %s - Case: '.$check['case'];
+	/**
+	 * @group           Behaviour
+	 * @group           CreatedOnBeforeCreate
+	 * @covers          FOF40\Model\DataModel\Behaviour\Created::onBeforeCreate
+	 * @dataProvider    CreatedDataprovider::getTestOnBeforeCreate
+	 */
+	public function testOnBeforeCreate($test, $check)
+	{
+		$msg = 'Created::onAfterBuildQuery %s - Case: ' . $check['case'];
 
-        $config = array(
-            'idFieldName' => $test['tableid'],
-            'tableName'   => $test['table'],
-            'aliasFields' => $test['aliases']
-        );
+		$config = [
+			'idFieldName' => $test['tableid'],
+			'tableName'   => $test['table'],
+			'aliasFields' => $test['aliases'],
+		];
 
-        $platform = static::$container->platform;
-        $platform::$user = (object)array('id' => 99);
+		$platform        = static::$container->platform;
+		$platform::$user = (object) ['id' => 99];
 
-        $model      = new DataModelStub(static::$container, $config);
-        $dataObject = new \stdClass();
+		$model      = new DataModelStub(static::$container, $config);
+		$dataObject = new \stdClass();
 
-        // Let's set some values inside the model
-        if($test['created_on'])
-        {
-            $model->setFieldValue('created_on', $test['created_on']);
-        }
+		// Let's set some values inside the model
+		if ($test['created_on'])
+		{
+			$model->setFieldValue('created_on', $test['created_on']);
+		}
 
-        if($test['created_by'])
-        {
-            $model->setFieldValue('created_by', $test['created_by']);
-        }
+		if ($test['created_by'])
+		{
+			$model->setFieldValue('created_by', $test['created_by']);
+		}
 
-        $dispatcher = $model->getBehavioursDispatcher();
-        $behavior   = new Created($dispatcher);
+		$dispatcher = $model->getBehavioursDispatcher();
+		$behavior   = new Created($dispatcher);
 
-        $before_on = $model->getFieldValue('created_on');
-        $before_by = $model->getFieldValue('created_by');
+		$before_on = $model->getFieldValue('created_on');
+		$before_by = $model->getFieldValue('created_by');
 
-        $behavior->onBeforeCreate($model, $dataObject);
+		$behavior->onBeforeCreate($model, $dataObject);
 
-        $created_on = $model->getFieldAlias('created_on');
-        $created_by = $model->getFieldAlias('created_by');
+		$created_on = $model->getFieldAlias('created_on');
+		$created_by = $model->getFieldAlias('created_by');
 
-        if($check['created_on'])
-        {
-            // First of all let's check that the model and the dataobject have the same data
-            $this->assertEquals($model->getFieldValue('created_on'), $dataObject->$created_on, sprintf($msg, 'Model and dataobject values are different for created_on'));
+		if ($check['created_on'])
+		{
+			// First of all let's check that the model and the dataobject have the same data
+			$this->assertEquals($model->getFieldValue('created_on'), $dataObject->$created_on, sprintf($msg, 'Model and dataobject values are different for created_on'));
 
-            // Of course I can't check the exact value of the timestamp, so I'll just check if they are not empty
-            $this->assertNotEmpty($model->getFieldValue('created_on'), sprintf($msg, 'Saved the wrong value of created_on inside the model'));
-            $this->assertNotEmpty($dataObject->$created_on, sprintf($msg, 'Saved the wrong value of created_on inside the dataobject'));
+			// Of course I can't check the exact value of the timestamp, so I'll just check if they are not empty
+			$this->assertNotEmpty($model->getFieldValue('created_on'), sprintf($msg, 'Saved the wrong value of created_on inside the model'));
+			$this->assertNotEmpty($dataObject->$created_on, sprintf($msg, 'Saved the wrong value of created_on inside the dataobject'));
 
-            $this->assertNotEquals('0000-00-00 00:00:00', $model->getFieldValue('created_on'), sprintf($msg, 'Saved the wrong value of created_on inside the model'));
-            $this->assertNotEquals('0000-00-00 00:00:00', $dataObject->$created_on, sprintf($msg, 'Saved the wrong value of created_on inside the dataobject'));
-        }
-        else
-        {
-            $this->assertEquals($before_on, $model->getFieldValue('created_on'), sprintf($msg, 'The model field created_on should be unchanged'));
-            $this->assertObjectNotHasAttribute($created_on, $dataObject, sprintf($msg, 'The dataobject should not have the created_on field'));
-        }
+			$this->assertNotEquals('0000-00-00 00:00:00', $model->getFieldValue('created_on'), sprintf($msg, 'Saved the wrong value of created_on inside the model'));
+			$this->assertNotEquals('0000-00-00 00:00:00', $dataObject->$created_on, sprintf($msg, 'Saved the wrong value of created_on inside the dataobject'));
+		}
+		else
+		{
+			$this->assertEquals($before_on, $model->getFieldValue('created_on'), sprintf($msg, 'The model field created_on should be unchanged'));
+			$this->assertObjectNotHasAttribute($created_on, $dataObject, sprintf($msg, 'The dataobject should not have the created_on field'));
+		}
 
-        if($check['created_by'])
-        {
-            // First of all let's check that the model and the dataobject have the same data
-            $this->assertEquals($model->getFieldValue('created_by'), $dataObject->$created_by, sprintf($msg, 'Model and dataobject values are different for created_by'));
+		if ($check['created_by'])
+		{
+			// First of all let's check that the model and the dataobject have the same data
+			$this->assertEquals($model->getFieldValue('created_by'), $dataObject->$created_by, sprintf($msg, 'Model and dataobject values are different for created_by'));
 
-            $this->assertEquals($check['created_by'], $model->getFieldValue('created_by'), sprintf($msg, 'Saved the wrong value of created_by inside the model'));
-            $this->assertEquals($check['created_by'], $dataObject->$created_by, sprintf($msg, 'Saved the wrong value of created_by inside the dataobject'));
-        }
-        else
-        {
-            $this->assertEquals($before_by, $model->getFieldValue('created_by'), sprintf($msg, 'The model field created_by should be unchanged'));
-            $this->assertObjectNotHasAttribute($created_by, $dataObject, sprintf($msg, 'The dataobject should not have the created_by field'));
-        }
-    }
+			$this->assertEquals($check['created_by'], $model->getFieldValue('created_by'), sprintf($msg, 'Saved the wrong value of created_by inside the model'));
+			$this->assertEquals($check['created_by'], $dataObject->$created_by, sprintf($msg, 'Saved the wrong value of created_by inside the dataobject'));
+		}
+		else
+		{
+			$this->assertEquals($before_by, $model->getFieldValue('created_by'), sprintf($msg, 'The model field created_by should be unchanged'));
+			$this->assertObjectNotHasAttribute($created_by, $dataObject, sprintf($msg, 'The dataobject should not have the created_by field'));
+		}
+	}
 }

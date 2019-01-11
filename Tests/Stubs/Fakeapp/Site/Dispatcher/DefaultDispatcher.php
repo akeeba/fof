@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\Dispatcher;
 
 class DefaultDispatcher extends \FOF40\Dispatcher\Dispatcher

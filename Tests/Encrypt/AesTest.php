@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Encrypt;
 
 
@@ -48,7 +47,7 @@ class AesTest extends FOFTestCase
 			$this->markTestSkipped('mcrypt is deprecated in PHP 7');
 		}
 
-		$functions_enabled = array(
+		$functions_enabled = [
 			'mcrypt_get_key_size',
 			'mcrypt_get_iv_size',
 			'mcrypt_create_iv',
@@ -58,18 +57,18 @@ class AesTest extends FOFTestCase
 			'hash',
 			'hash_algos',
 			'base64_encode',
-			'base64_decode'
-		);
+			'base64_decode',
+		];
 
-		$algorithms = array(
+		$algorithms = [
 			'rijndael-128',
 			'rijndael-192',
 			'rijndael-256',
-		);
+		];
 
-		$hashAlgos = array(
-			'sha256'
-		);
+		$hashAlgos = [
+			'sha256',
+		];
 
 		// Create a mock php function with all prerequisites met
 		$phpfunc = new MockPhpfunc();
@@ -84,17 +83,17 @@ class AesTest extends FOFTestCase
 		$this->assertTrue(Aes::isSupported($phpfunc), 'All prerequisites met = supported');
 
 		// No hash algorithms = not supported
-		$phpfunc->setHashAlgorithms(array());
+		$phpfunc->setHashAlgorithms([]);
 		$this->assertFalse(Aes::isSupported($phpfunc), 'No hash algorithms = not supported');
 		$phpfunc->setHashAlgorithms($hashAlgos);
 
 		// No mcrypt algorithms = not supported
-		$phpfunc->setMcryptAlgorithms(array());
+		$phpfunc->setMcryptAlgorithms([]);
 		$this->assertFalse(Aes::isSupported($phpfunc), 'No mcrypt algorithms = not supported');
 		$phpfunc->setMcryptAlgorithms($algorithms);
 
 		// No required functions available = not supported
-		$phpfunc->setFunctions(array());
+		$phpfunc->setFunctions([]);
 		$this->assertFalse(Aes::isSupported($phpfunc), 'No required functions available = not supported');
 		$phpfunc->setFunctions($functions_enabled);
 
@@ -128,7 +127,7 @@ class AesTest extends FOFTestCase
 	 */
 	public function testIsSupportedOpenSSL()
 	{
-		$functions_enabled = array(
+		$functions_enabled = [
 			'openssl_get_cipher_methods',
 			'openssl_random_pseudo_bytes',
 			'openssl_cipher_iv_length',
@@ -137,16 +136,16 @@ class AesTest extends FOFTestCase
 			'hash',
 			'hash_algos',
 			'base64_encode',
-			'base64_decode'
-		);
+			'base64_decode',
+		];
 
-		$algorithms = array(
+		$algorithms = [
 			'aes-128-cbc',
-		);
+		];
 
-		$hashAlgos = array(
-			'sha256'
-		);
+		$hashAlgos = [
+			'sha256',
+		];
 
 		// Create a mock php function with all prerequisites met
 		$phpfunc = new MockPhpfunc();
@@ -161,17 +160,17 @@ class AesTest extends FOFTestCase
 		$this->assertTrue(Aes::isSupported($phpfunc), 'All prerequisites met = supported');
 
 		// No hash algorithms = not supported
-		$phpfunc->setHashAlgorithms(array());
+		$phpfunc->setHashAlgorithms([]);
 		$this->assertFalse(Aes::isSupported($phpfunc), 'No hash algorithms = not supported');
 		$phpfunc->setHashAlgorithms($hashAlgos);
 
 		// No OpenSSL algorithms = not supported
-		$phpfunc->setOpenSSLAlgorithms(array());
+		$phpfunc->setOpenSSLAlgorithms([]);
 		$this->assertFalse(Aes::isSupported($phpfunc), 'No OpenSSL algorithms = not supported');
 		$phpfunc->setOpenSSLAlgorithms($algorithms);
 
 		// No required functions available = not supported
-		$phpfunc->setFunctions(array());
+		$phpfunc->setFunctions([]);
 		$this->assertFalse(Aes::isSupported($phpfunc), 'No required functions available = not supported');
 		$phpfunc->setFunctions($functions_enabled);
 
@@ -208,7 +207,7 @@ class AesTest extends FOFTestCase
 		if (function_exists('openssl_encrypt'))
 		{
 			$phpfunc = new MockPhpfunc();
-			$phpfunc->setFunctions(array(
+			$phpfunc->setFunctions([
 				'openssl_get_cipher_methods',
 				'openssl_random_pseudo_bytes',
 				'openssl_cipher_iv_length',
@@ -217,8 +216,8 @@ class AesTest extends FOFTestCase
 				'hash',
 				'hash_algos',
 				'base64_encode',
-				'base64_decode'
-			));
+				'base64_decode',
+			]);
 
 			// Regular string
 			$str = 'THATISINSANE';
@@ -269,7 +268,7 @@ class AesTest extends FOFTestCase
 		if (function_exists('mcrypt_module_open') && function_exists('openssl_encrypt'))
 		{
 			$phpfunc = new MockPhpfunc();
-			$phpfunc->setFunctions(array(
+			$phpfunc->setFunctions([
 				'openssl_get_cipher_methods',
 				'openssl_random_pseudo_bytes',
 				'openssl_cipher_iv_length',
@@ -278,8 +277,8 @@ class AesTest extends FOFTestCase
 				'hash',
 				'hash_algos',
 				'base64_encode',
-				'base64_decode'
-			));
+				'base64_decode',
+			]);
 
 			$aes   = new Aes('x123456789012345678901234567890x', 128, 'cbc', $phpfunc);
 			$mcAes = new Aes('The quick brown fox jumped over the lazy dog', 128, 'cbc');
@@ -525,7 +524,7 @@ class AesTest extends FOFTestCase
 	{
 		if (function_exists('mcrypt_module_open') || function_exists('openssl_encrypt'))
 		{
-			$aes   = new Aes('x123456789012345678901234567890x', 128, 'cbc');
+			$aes = new Aes('x123456789012345678901234567890x', 128, 'cbc');
 
 			// Yeah, a terrible password.
 			$aes->setPassword('p@$$w0rd');
@@ -538,7 +537,7 @@ class AesTest extends FOFTestCase
 			$sameDecrypted = rtrim($sameDecrypted, "\0");
 			$this->assertTrue($sameDecrypted == $clearText, 'Same object must be able to decrypt the original message');
 
-			$wrongAes = new Aes('p@$$w0rd', 128, 'cbc');
+			$wrongAes       = new Aes('p@$$w0rd', 128, 'cbc');
 			$wrongDecrypted = $wrongAes->decryptString($encrypted);
 			// Remember, the decrypted result is zero-padded!
 			$wrongDecrypted = rtrim($wrongDecrypted, "\0");

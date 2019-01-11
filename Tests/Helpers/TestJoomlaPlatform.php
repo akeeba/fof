@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers;
 
 use FOF40\Platform\Joomla\Platform as PlatformJoomla;
@@ -31,87 +30,87 @@ class TestJoomlaPlatform extends PlatformJoomla
 	/** @var array|null The platform base directories to return */
 	public static $baseDirs = null;
 
-    /** @var object|null The current user */
-    public static $user = null;
+	/** @var object|null The current user */
+	public static $user = null;
 
-    public static $uriBase = null;
+	public static $uriBase = null;
 
-    public static $uriRoot = null;
+	public static $uriRoot = null;
 
-    /** @var \Closure Supply a closure to perform additional checks */
-    public static $authorise = null;
+	/** @var \Closure Supply a closure to perform additional checks */
+	public static $authorise = null;
 
-    /** @var \Closure Supply a closure to perform additional checks */
-    public static $getUserStateFromRequest = null;
+	/** @var \Closure Supply a closure to perform additional checks */
+	public static $getUserStateFromRequest = null;
 
-    /** @var \Closure Supply a closure to perform additional checks */
-    public static $runPlugins = null;
+	/** @var \Closure Supply a closure to perform additional checks */
+	public static $runPlugins = null;
 
-    /** @var  \Closure Supply a closure to mock the language object */
-    public static $language;
+	/** @var  \Closure Supply a closure to mock the language object */
+	public static $language;
 
-    /** @var  \Closure Supply a closure to mock the config object */
-    public static $config;
+	/** @var  \Closure Supply a closure to mock the config object */
+	public static $config;
 
-    /**
-     * Resets all the mock variables to their default value
-     */
-    public function reset()
-    {
-        static::$isCli            = false;
-        static::$isAdmin          = false;
-        static::$template         = null;
-        static::$templateSuffixes = null;
-        static::$baseDirs         = null;
-        static::$user             = null;
-        static::$uriBase          = null;
-        static::$uriRoot          = null;
-        static::$authorise        = null;
-        static::$runPlugins       = null;
-        static::$config           = null;
+	/**
+	 * Resets all the mock variables to their default value
+	 */
+	public function reset()
+	{
+		static::$isCli            = false;
+		static::$isAdmin          = false;
+		static::$template         = null;
+		static::$templateSuffixes = null;
+		static::$baseDirs         = null;
+		static::$user             = null;
+		static::$uriBase          = null;
+		static::$uriRoot          = null;
+		static::$authorise        = null;
+		static::$runPlugins       = null;
+		static::$config           = null;
 
-        static::$getUserStateFromRequest = null;
-    }
+		static::$getUserStateFromRequest = null;
+	}
 
-    public function getUser($id = null)
-    {
-        if(isset(static::$user))
-        {
-            return static::$user;
-        }
+	public function getUser($id = null)
+	{
+		if (isset(static::$user))
+		{
+			return static::$user;
+		}
 
-        return parent::getUser($id);
-    }
+		return parent::getUser($id);
+	}
 
-    public function URIbase($pathonly = false)
-    {
-        if(isset(static::$uriBase))
-        {
-            return static::$uriBase;
-        }
+	public function URIbase($pathonly = false)
+	{
+		if (isset(static::$uriBase))
+		{
+			return static::$uriBase;
+		}
 
-        return parent::URIbase($pathonly);
-    }
+		return parent::URIbase($pathonly);
+	}
 
-    public function URIroot($pathonly = false, $path = null)
-    {
-        if(isset(static::$uriRoot))
-        {
-            return static::$uriRoot;
-        }
+	public function URIroot($pathonly = false, $path = null)
+	{
+		if (isset(static::$uriRoot))
+		{
+			return static::$uriRoot;
+		}
 
-        return parent::URIroot($pathonly, $path);
-    }
+		return parent::URIroot($pathonly, $path);
+	}
 
-    public function authorise($action, $assetname)
-    {
-        if(is_callable(static::$authorise))
-        {
-            return call_user_func_array(static::$authorise, array($action, $assetname));
-        }
+	public function authorise($action, $assetname)
+	{
+		if (is_callable(static::$authorise))
+		{
+			return call_user_func_array(static::$authorise, [$action, $assetname]);
+		}
 
-        return parent::authorise($action, $assetname);
-    }
+		return parent::authorise($action, $assetname);
+	}
 
 	/**
 	 * Main function to detect if we're running in a CLI environment and we're admin. This method is designed to lie.
@@ -120,13 +119,13 @@ class TestJoomlaPlatform extends PlatformJoomla
 	 */
 	protected function isCliAdmin()
 	{
-		return array(self::$isCli, self::$isAdmin);
+		return [self::$isCli, self::$isAdmin];
 	}
 
 	/**
 	 * Returns the application's template name
 	 *
-	 * @param   boolean|array  $params  An optional associative array of configuration settings
+	 * @param   boolean|array $params An optional associative array of configuration settings
 	 *
 	 * @return  string  The template name. System is the fallback.
 	 */
@@ -168,43 +167,45 @@ class TestJoomlaPlatform extends PlatformJoomla
 		list(self::$isCli, self::$isAdmin) = parent::isCliAdmin();
 	}
 
-    public function getUserStateFromRequest($key, $request, $input, $default = null, $type = 'none', $setUserState = true)
-    {
-        if(is_callable(static::$getUserStateFromRequest))
-        {
-            return call_user_func_array(static::$getUserStateFromRequest, array($key, $request, $input, $default, $type, $setUserState));
-        }
+	public function getUserStateFromRequest($key, $request, $input, $default = null, $type = 'none', $setUserState = true)
+	{
+		if (is_callable(static::$getUserStateFromRequest))
+		{
+			return call_user_func_array(static::$getUserStateFromRequest, [
+				$key, $request, $input, $default, $type, $setUserState,
+			]);
+		}
 
-        return parent::getUserStateFromRequest($key, $request, $input, $default, $type, $setUserState);
-    }
+		return parent::getUserStateFromRequest($key, $request, $input, $default, $type, $setUserState);
+	}
 
-    public function runPlugins($event, $data)
-    {
-        if(is_callable(static::$runPlugins))
-        {
-            return call_user_func_array(static::$runPlugins, array($event, $data));
-        }
+	public function runPlugins($event, $data)
+	{
+		if (is_callable(static::$runPlugins))
+		{
+			return call_user_func_array(static::$runPlugins, [$event, $data]);
+		}
 
-        return parent::runPlugins($event, $data);
-    }
+		return parent::runPlugins($event, $data);
+	}
 
-    public function getLanguage()
-    {
-        if(is_callable(static::$language))
-        {
-            return call_user_func(static::$language);
-        }
+	public function getLanguage()
+	{
+		if (is_callable(static::$language))
+		{
+			return call_user_func(static::$language);
+		}
 
-        return parent::getLanguage();
-    }
+		return parent::getLanguage();
+	}
 
-    public function getConfig()
-    {
-        if(is_callable(static::$config))
-        {
-            return call_user_func(static::$config);
-        }
+	public function getConfig()
+	{
+		if (is_callable(static::$config))
+		{
+			return call_user_func(static::$config);
+		}
 
-        return parent::getConfig();
-    }
+		return parent::getConfig();
+	}
 }

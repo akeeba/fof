@@ -6,14 +6,13 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Application;
 
 use FOF40\Tests\Helpers\FOFTestCase;
 
 class MockLanguage
 {
-	public static $loadedLanguages = array();
+	public static $loadedLanguages = [];
 
 	/**
 	 * Creates and instance of the mock JLanguage object.
@@ -32,27 +31,27 @@ class MockLanguage
 		// Create the mock.
 		$mockObject = $test->getMockBuilder('\JLanguage')
 			->setMethods($methods)
-			->setConstructorArgs(array())
+			->setConstructorArgs([])
 			->setMockClassName('')
 			->disableOriginalConstructor()
 			->getMock();
 
 		// Mock selected methods.
 		$test->assignMockReturns(
-			$mockObject, array(
+			$mockObject, [
 				'getInstance' => $mockObject,
 				'getTag'      => 'en-GB',
 				// An additional 'test' method for confirming this object is successfully mocked.
 				'test'        => 'ok',
-			)
+			]
 		);
 
 		$test->assignMockCallbacks(
 			$mockObject,
-			array(
-				'_' => array(get_called_class(), 'mock_'),
-				'load' => array(get_called_class(), 'mockload'),
-			)
+			[
+				'_'    => [get_called_class(), 'mock_'],
+				'load' => [get_called_class(), 'mockload'],
+			]
 		);
 
 		return $mockObject;
@@ -60,13 +59,13 @@ class MockLanguage
 
 	public static function getMethods()
 	{
-		return array(
+		return [
 			'_',
 			'getInstance',
 			'getTag',
 			'test',
-			'load'
-		);
+			'load',
+		];
 	}
 
 	/**
@@ -87,6 +86,6 @@ class MockLanguage
 
 	public static function mockload($extension = 'joomla', $basePath = JPATH_BASE, $lang = null, $reload = false, $default = true)
 	{
-		static::$loadedLanguages[] = array($extension, $basePath, $lang, $reload, $default);
+		static::$loadedLanguages[] = [$extension, $basePath, $lang, $reload, $default];
 	}
 }

@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\DataModel\Filter\Boolean;
 
 use FOF40\Model\DataModel\Filter\Boolean;
@@ -21,19 +20,19 @@ require_once 'BooleanDataprovider.php';
  */
 class BooleanTest extends DatabaseTest
 {
-    /**
-     * @group           BooleanFilter
-     * @group           BooleanFilterIsEmpty
-     * @covers          FOF40\Model\DataModel\Filter\Boolean::isEmpty
-     * @dataProvider    BooleanDataprovider::getTestIsEmpty
-     */
-    public function testIsEmpty($test, $check)
-    {
-        $msg    = 'Boolean::isEmpty %s - Case: '.$check['case'];
-        $filter = new Boolean(\JFactory::getDbo(), (object)array('name' => 'test', 'type' => 'tinyint(1)'));
+	/**
+	 * @group           BooleanFilter
+	 * @group           BooleanFilterIsEmpty
+	 * @covers          FOF40\Model\DataModel\Filter\Boolean::isEmpty
+	 * @dataProvider    BooleanDataprovider::getTestIsEmpty
+	 */
+	public function testIsEmpty($test, $check)
+	{
+		$msg    = 'Boolean::isEmpty %s - Case: ' . $check['case'];
+		$filter = new Boolean(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'tinyint(1)']);
 
-        $result = $filter->isEmpty($test['value']);
+		$result = $filter->isEmpty($test['value']);
 
-        $this->assertEquals($check['result'], $result, sprintf($msg, 'Failed to detect if a variable is empty'));
-    }
+		$this->assertEquals($check['result'], $result, sprintf($msg, 'Failed to detect if a variable is empty'));
+	}
 }

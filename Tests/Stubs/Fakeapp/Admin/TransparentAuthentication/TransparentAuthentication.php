@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Admin\TransparentAuthentication;
 
 

@@ -6,10 +6,8 @@
  */
 
 
-
 namespace FOF40\Tests\Inflector;
 
-use FOF40\Inflector\Inflector;
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
@@ -28,142 +26,142 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestPluralizeData()
 	{
-		return array(
-			array("move", "moves", "Pluralise: Move"),
-			array("moves", "moves", "Pluralise: Moves"),
-			array("sex", "sexes", "Pluralise: Sex"),
-			array("sexes", "sexes", "Pluralise: Sexes"),
-			array("child", "children", "Pluralise: Child"),
-			array("children", "children", "Pluralise: Children"),
-			array("woman", "women", "Pluralisation of words in -an not honoured"),
-			array("women", "women", "Should return the same as it's already a plural (words in -an)"),
-			array("foot", "feet", "Pluralise: Foot"),
-			array("feet", "feet", "Pluralise: Feet"),
-			array("person", "people", "Pluralise: Person"),
-			array("people", "people", "Pluralise: People"),
-			array("taxon", "taxa", "Pluralise: Taxon"),
-			array("taxa", "taxa", "Pluralise: Taxa"),
-			array("quiz", "quizzes", "Pluralise: Quiz"),
-			array("quizzes", "quizzes", "Pluralise: Quizzes"),
-			array("ox", "oxen", "Pluralise: Ox"),
-			array("oxen", "oxen", "Pluralise: Oxen"),
-			array("mouse", "mice", "Pluralise: Mouse"),
-			array("mice", "mice", "Pluralise: Mice"),
-			array("matrix", "matrices", "Pluralise: Matrix"),
-			array("matrices", "matrices", "Pluralise: Matrices"),
-			array("vertex", "vertices", "Pluralise: Vertex"),
-			array("vertices", "vertices", "Pluralise: Vertices"),
-			array("index", "indices", "Pluralise: Index"),
-			array("indices", "indices", "Pluralise: Indices"),
-			array("suffix", "suffices", "Pluralise: Suffix"),
-			array("suffices", "suffices", "Pluralise: Suffices"),
-			array("codex", "codices", "Pluralise: Codex"),
-			array("codices", "codices", "Pluralise: Codices"),
-			array("onyx", "onyxes", "Pluralise: onyx"),
-			array("onyxes", "onyxes", "Pluralise: onyxes"),
-			array("leech", "leeches", "Pluralise: Leech"),
-			array("leeches", "leeches", "Pluralise: Leeches"),
-			array("glass", "glasses", "Pluralise: Glass"),
-			array("glasses", "glasses", "Pluralise: Glasses"),
-			array("mesh", "meshes", "Pluralise: Mesh"),
-			array("meshes", "meshes", "Pluralise: Meshes"),
-			array("soliloquy", "soliloquies", "Pluralise: Soliloquy"),
-			array("soliloquies", "soliloquies", "Pluralise: Soliloquies"),
-			array("baby", "babies", "Pluralise: Baby"),
-			array("babies", "babies", "Pluralise: Babies"),
-			array("elf", "elves", "Pluralise: Elf"),
-			array("elves", "elves", "Pluralise: Elves"),
-			array("life", "lives", "Pluralise: Life"),
-			array("lives", "lives", "Pluralise: Lives"),
-			array("antithesis", "antitheses", "Pluralise: Antitheses"),
-			array("antitheses", "antitheses", "Pluralise: Antitheses"),
-			array("consortium", "consortia", "Pluralise: consortium"),
-			array("consortia", "consortia", "Pluralise: consortia"),
-			array("addendum", "addenda", "Pluralise: addendum"),
-			array("addenda", "addenda", "Pluralise: addenda"),
-			array("alumna", "alumnae", "Pluralise: alumna"),
-			array("alumnae", "alumnae", "Pluralise: alumnae"),
-			array("formula", "formulae", "Pluralise: formula"),
-			array("formulae", "formulae", "Pluralise: formulae"),
-			array("buffalo", "buffaloes", "Pluralise: buffalo"),
-			array("buffaloes", "buffaloes", "Pluralise: buffaloes"),
-			array("tomato", "tomatoes", "Pluralise: tomato"),
-			array("tomatoes", "tomatoes", "Pluralise: tomatoes"),
-			array("hero", "heroes", "Pluralise: hero"),
-			array("heroes", "heroes", "Pluralise: heroes"),
-			array("bus", "buses", "Pluralise: bus"),
-			array("buses", "buses", "Pluralise: buses"),
-			array("alias", "aliases", "Pluralise: alias"),
-			array("aliases", "aliases", "Pluralise: aliases"),
-			array("octopus", "octopi", "Pluralise: octopus"),
-			array("octopi", "octopi", "Pluralise: octopi"),
-			array("virus", "viri", "Pluralise: virus"),
-			array("viri", "viri", "Pluralise: viri"),
-			array("genus", "genera", "Pluralise: genus"),
-			array("genera", "genera", "Pluralise: genera"),
-			array("axis", "axes", "Pluralise: axis"),
-			array("axes", "axes", "Pluralise: axes"),
-			array("testis", "testes", "Pluralise: testis"),
-			array("testes", "testes", "Pluralise: testes"),
+		return [
+			["move", "moves", "Pluralise: Move"],
+			["moves", "moves", "Pluralise: Moves"],
+			["sex", "sexes", "Pluralise: Sex"],
+			["sexes", "sexes", "Pluralise: Sexes"],
+			["child", "children", "Pluralise: Child"],
+			["children", "children", "Pluralise: Children"],
+			["woman", "women", "Pluralisation of words in -an not honoured"],
+			["women", "women", "Should return the same as it's already a plural (words in -an)"],
+			["foot", "feet", "Pluralise: Foot"],
+			["feet", "feet", "Pluralise: Feet"],
+			["person", "people", "Pluralise: Person"],
+			["people", "people", "Pluralise: People"],
+			["taxon", "taxa", "Pluralise: Taxon"],
+			["taxa", "taxa", "Pluralise: Taxa"],
+			["quiz", "quizzes", "Pluralise: Quiz"],
+			["quizzes", "quizzes", "Pluralise: Quizzes"],
+			["ox", "oxen", "Pluralise: Ox"],
+			["oxen", "oxen", "Pluralise: Oxen"],
+			["mouse", "mice", "Pluralise: Mouse"],
+			["mice", "mice", "Pluralise: Mice"],
+			["matrix", "matrices", "Pluralise: Matrix"],
+			["matrices", "matrices", "Pluralise: Matrices"],
+			["vertex", "vertices", "Pluralise: Vertex"],
+			["vertices", "vertices", "Pluralise: Vertices"],
+			["index", "indices", "Pluralise: Index"],
+			["indices", "indices", "Pluralise: Indices"],
+			["suffix", "suffices", "Pluralise: Suffix"],
+			["suffices", "suffices", "Pluralise: Suffices"],
+			["codex", "codices", "Pluralise: Codex"],
+			["codices", "codices", "Pluralise: Codices"],
+			["onyx", "onyxes", "Pluralise: onyx"],
+			["onyxes", "onyxes", "Pluralise: onyxes"],
+			["leech", "leeches", "Pluralise: Leech"],
+			["leeches", "leeches", "Pluralise: Leeches"],
+			["glass", "glasses", "Pluralise: Glass"],
+			["glasses", "glasses", "Pluralise: Glasses"],
+			["mesh", "meshes", "Pluralise: Mesh"],
+			["meshes", "meshes", "Pluralise: Meshes"],
+			["soliloquy", "soliloquies", "Pluralise: Soliloquy"],
+			["soliloquies", "soliloquies", "Pluralise: Soliloquies"],
+			["baby", "babies", "Pluralise: Baby"],
+			["babies", "babies", "Pluralise: Babies"],
+			["elf", "elves", "Pluralise: Elf"],
+			["elves", "elves", "Pluralise: Elves"],
+			["life", "lives", "Pluralise: Life"],
+			["lives", "lives", "Pluralise: Lives"],
+			["antithesis", "antitheses", "Pluralise: Antitheses"],
+			["antitheses", "antitheses", "Pluralise: Antitheses"],
+			["consortium", "consortia", "Pluralise: consortium"],
+			["consortia", "consortia", "Pluralise: consortia"],
+			["addendum", "addenda", "Pluralise: addendum"],
+			["addenda", "addenda", "Pluralise: addenda"],
+			["alumna", "alumnae", "Pluralise: alumna"],
+			["alumnae", "alumnae", "Pluralise: alumnae"],
+			["formula", "formulae", "Pluralise: formula"],
+			["formulae", "formulae", "Pluralise: formulae"],
+			["buffalo", "buffaloes", "Pluralise: buffalo"],
+			["buffaloes", "buffaloes", "Pluralise: buffaloes"],
+			["tomato", "tomatoes", "Pluralise: tomato"],
+			["tomatoes", "tomatoes", "Pluralise: tomatoes"],
+			["hero", "heroes", "Pluralise: hero"],
+			["heroes", "heroes", "Pluralise: heroes"],
+			["bus", "buses", "Pluralise: bus"],
+			["buses", "buses", "Pluralise: buses"],
+			["alias", "aliases", "Pluralise: alias"],
+			["aliases", "aliases", "Pluralise: aliases"],
+			["octopus", "octopi", "Pluralise: octopus"],
+			["octopi", "octopi", "Pluralise: octopi"],
+			["virus", "viri", "Pluralise: virus"],
+			["viri", "viri", "Pluralise: viri"],
+			["genus", "genera", "Pluralise: genus"],
+			["genera", "genera", "Pluralise: genera"],
+			["axis", "axes", "Pluralise: axis"],
+			["axes", "axes", "Pluralise: axes"],
+			["testis", "testes", "Pluralise: testis"],
+			["testes", "testes", "Pluralise: testes"],
 
-			array("dwarf", "dwarves", "Pluralise: Dwarf"),
-			array("dwarves", "dwarves", "Pluralise: Dwarves"),
-			array("guy", "guys", "Pluralise: Guy"),
-			array("guy", "guys", "Pluralise: Guy"),
-			array("relief", "reliefs", "Pluralise: Relief"),
-			array("reliefs", "reliefs", "Pluralise: Reliefs"),
+			["dwarf", "dwarves", "Pluralise: Dwarf"],
+			["dwarves", "dwarves", "Pluralise: Dwarves"],
+			["guy", "guys", "Pluralise: Guy"],
+			["guy", "guys", "Pluralise: Guy"],
+			["relief", "reliefs", "Pluralise: Relief"],
+			["reliefs", "reliefs", "Pluralise: Reliefs"],
 
-			array("aircraft", "aircraft", "Pluralise: aircraft (special)"),
-			array("cannon", "cannon", "Pluralise: cannon (special)"),
-			array("deer", "deer", "Pluralise: deer (special)"),
-			array("equipment", "equipment", "Pluralise: equipment (special)"),
-			array("fish", "fish", "Pluralise: Fish (special)"),
-			array("information", "information", "Pluralise: information (special)"),
-			array("money", "money", "Pluralise: money (special)"),
-			array("moose", "moose", "Pluralise: moose (special)"),
-			array("rice", "rice", "Pluralise: rice (special)"),
-			array("series", "series", "Pluralise: series (special)"),
-			array("sheep", "sheep", "Pluralise: sheep (special)"),
-			array("species", "species", "Pluralise: species (special)"),
-			array("swine", "swine", "Pluralise: swine (special)"),
+			["aircraft", "aircraft", "Pluralise: aircraft (special)"],
+			["cannon", "cannon", "Pluralise: cannon (special)"],
+			["deer", "deer", "Pluralise: deer (special)"],
+			["equipment", "equipment", "Pluralise: equipment (special)"],
+			["fish", "fish", "Pluralise: Fish (special)"],
+			["information", "information", "Pluralise: information (special)"],
+			["money", "money", "Pluralise: money (special)"],
+			["moose", "moose", "Pluralise: moose (special)"],
+			["rice", "rice", "Pluralise: rice (special)"],
+			["series", "series", "Pluralise: series (special)"],
+			["sheep", "sheep", "Pluralise: sheep (special)"],
+			["species", "species", "Pluralise: species (special)"],
+			["swine", "swine", "Pluralise: swine (special)"],
 
-			array("word", "words", 'Should return plural'),
-			array("words", "words", "Should return the same as it's already a plural"),
+			["word", "words", 'Should return plural'],
+			["words", "words", "Should return the same as it's already a plural"],
 
-			array("cookie", "cookies", "Pluralise: cookie"),
-			array("cookies", "cookies", "Pluralise: cookies"),
-			array("database", "databases", "Pluralise: database"),
-			array("databases", "databases", "Pluralise: databases"),
-			array("crisis", "crises", "Pluralise: crisis"),
-			array("crises", "crises", "Pluralise: crises"),
-			array("shoe", "shoes", "Pluralise: shoe"),
-			array("shoes", "shoes", "Pluralise: shoes"),
-			array("backhoe", "backhoes", "Pluralise: backhoe"),
-			array("backhoes", "backhoes", "Pluralise: backhoes"),
-			array("movie", "movies", "Pluralise: movie"),
-			array("movies", "movies", "Pluralise: movies"),
-			array("vie", "vies", "Pluralise: vie"),
-			array("vies", "vies", "Pluralise: vies"),
-			array("narrative", "narratives", "Pluralise: narrative"),
-			array("narratives", "narratives", "Pluralise: narratives"),
-			array("hive", "hives", "Pluralise: hive"),
-			array("hives", "hives", "Pluralise: hives"),
-			array("analysis", "analyses", "Pluralise: analysis"),
-			array("analyses", "analyses", "Pluralise: analyses"),
-			array("basis", "bases", "Pluralise: basis"),
-			array("bases", "bases", "Pluralise: bases"),
-			array("diagnosis", "diagnoses", "Pluralise: diagnosis"),
-			array("diagnoses", "diagnoses", "Pluralise: diagnoses"),
-			array("parenthesis", "parentheses", "Pluralise: parenthesis"),
-			array("parentheses", "parentheses", "Pluralise: parentheses"),
-			array("prognosis", "prognoses", "Pluralise: prognosis"),
-			array("prognoses", "prognoses", "Pluralise: prognoses"),
-			array("synopsis", "synopses", "Pluralise: synopsis"),
-			array("synopses", "synopses", "Pluralise: synopses"),
-			array("thesis", "theses", "Pluralise: thesis"),
-			array("theses", "theses", "Pluralise: theses"),
-			array("news", "news", "Pluralise: news"),
-		);
+			["cookie", "cookies", "Pluralise: cookie"],
+			["cookies", "cookies", "Pluralise: cookies"],
+			["database", "databases", "Pluralise: database"],
+			["databases", "databases", "Pluralise: databases"],
+			["crisis", "crises", "Pluralise: crisis"],
+			["crises", "crises", "Pluralise: crises"],
+			["shoe", "shoes", "Pluralise: shoe"],
+			["shoes", "shoes", "Pluralise: shoes"],
+			["backhoe", "backhoes", "Pluralise: backhoe"],
+			["backhoes", "backhoes", "Pluralise: backhoes"],
+			["movie", "movies", "Pluralise: movie"],
+			["movies", "movies", "Pluralise: movies"],
+			["vie", "vies", "Pluralise: vie"],
+			["vies", "vies", "Pluralise: vies"],
+			["narrative", "narratives", "Pluralise: narrative"],
+			["narratives", "narratives", "Pluralise: narratives"],
+			["hive", "hives", "Pluralise: hive"],
+			["hives", "hives", "Pluralise: hives"],
+			["analysis", "analyses", "Pluralise: analysis"],
+			["analyses", "analyses", "Pluralise: analyses"],
+			["basis", "bases", "Pluralise: basis"],
+			["bases", "bases", "Pluralise: bases"],
+			["diagnosis", "diagnoses", "Pluralise: diagnosis"],
+			["diagnoses", "diagnoses", "Pluralise: diagnoses"],
+			["parenthesis", "parentheses", "Pluralise: parenthesis"],
+			["parentheses", "parentheses", "Pluralise: parentheses"],
+			["prognosis", "prognoses", "Pluralise: prognosis"],
+			["prognoses", "prognoses", "Pluralise: prognoses"],
+			["synopsis", "synopses", "Pluralise: synopsis"],
+			["synopses", "synopses", "Pluralise: synopses"],
+			["thesis", "theses", "Pluralise: thesis"],
+			["theses", "theses", "Pluralise: theses"],
+			["news", "news", "Pluralise: news"],
+		];
 	}
 
 	/**
@@ -173,142 +171,142 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestIsSingular()
 	{
-		return array(
-			array("move", true, "isSingular: Move"),
-			array("moves", false, "isSingular: Moves"),
-			array("sex", true, "isSingular: Sex"),
-			array("sexes", false, "isSingular: Sexes"),
-			array("child", true, "isSingular: Child"),
-			array("children", false, "isSingular: Children"),
-			array("woman", true, "Pluralisation of words in -an not honoured"),
-			array("women", false, "Should return the same as it's already a plural (words in -an)"),
-			array("foot", true, "isSingular: Foot"),
-			array("feet", false, "isSingular: Feet"),
-			array("person", true, "isSingular: Person"),
-			array("people", false, "isSingular: People"),
-			array("taxon", true, "isSingular: Taxon"),
-			array("taxa", false, "isSingular: Taxa"),
-			array("quiz", true, "isSingular: Quiz"),
-			array("quizzes", false, "isSingular: Quizzes"),
-			array("ox", true, "isSingular: Ox"),
-			array("oxen", false, "isSingular: Oxen"),
-			array("mouse", true, "isSingular: Mouse"),
-			array("mice", false, "isSingular: Mice"),
-			array("matrix", true, "isSingular: Matrix"),
-			array("matrices", false, "isSingular: Matrices"),
-			array("vertex", true, "isSingular: Vertex"),
-			array("vertices", false, "isSingular: Vertices"),
-			array("index", true, "isSingular: Index"),
-			array("indices", false, "isSingular: Indices"),
-			array("suffix", true, "isSingular: Suffix"),
-			array("suffices", false, "isSingular: Suffices"),
-			array("codex", true, "isSingular: Codex"),
-			array("codices", false, "isSingular: Codices"),
-			array("onyx", true, "isSingular: onyx"),
-			array("onyxes", false, "isSingular: onyxes"),
-			array("leech", true, "isSingular: Leech"),
-			array("leeches", false, "isSingular: Leeches"),
-			array("glass", true, "isSingular: Glass"),
-			array("glasses", false, "isSingular: Glasses"),
-			array("mesh", true, "isSingular: Mesh"),
-			array("meshes", false, "isSingular: Meshes"),
-			array("soliloquy", true, "isSingular: Soliloquy"),
-			array("soliloquies", false, "isSingular: Soliloquies"),
-			array("baby", true, "isSingular: Baby"),
-			array("babies", false, "isSingular: Babies"),
-			array("elf", true, "isSingular: Elf"),
-			array("elves", false, "isSingular: Elves"),
-			array("life", true, "isSingular: Life"),
-			array("lives", false, "isSingular: Lives"),
-			array("antithesis", true, "isSingular: Antitheses"),
-			array("antitheses", false, "isSingular: Antitheses"),
-			array("consortium", true, "isSingular: consortium"),
-			array("consortia", false, "isSingular: consortia"),
-			array("addendum", true, "isSingular: addendum"),
-			array("addenda", false, "isSingular: addenda"),
-			array("alumna", true, "isSingular: alumna"),
-			array("alumnae", false, "isSingular: alumnae"),
-			array("formula", true, "isSingular: formula"),
-			array("formulae", false, "isSingular: formulae"),
-			array("buffalo", true, "isSingular: buffalo"),
-			array("buffaloes", false, "isSingular: buffaloes"),
-			array("tomato", true, "isSingular: tomato"),
-			array("tomatoes", false, "isSingular: tomatoes"),
-			array("hero", true, "isSingular: hero"),
-			array("heroes", false, "isSingular: heroes"),
-			array("bus", true, "isSingular: bus"),
-			array("buses", false, "isSingular: buses"),
-			array("alias", true, "isSingular: alias"),
-			array("aliases", false, "isSingular: aliases"),
-			array("octopus", true, "isSingular: octopus"),
-			array("octopi", false, "isSingular: octopi"),
-			array("virus", true, "isSingular: virus"),
-			array("viri", false, "isSingular: viri"),
-			array("genus", true, "isSingular: genus"),
-			array("genera", false, "isSingular: genera"),
-			array("axis", true, "isSingular: axis"),
-			array("axes", false, "isSingular: axes"),
-			array("testis", true, "isSingular: testis"),
-			array("testes", false, "isSingular: testes"),
+		return [
+			["move", true, "isSingular: Move"],
+			["moves", false, "isSingular: Moves"],
+			["sex", true, "isSingular: Sex"],
+			["sexes", false, "isSingular: Sexes"],
+			["child", true, "isSingular: Child"],
+			["children", false, "isSingular: Children"],
+			["woman", true, "Pluralisation of words in -an not honoured"],
+			["women", false, "Should return the same as it's already a plural (words in -an)"],
+			["foot", true, "isSingular: Foot"],
+			["feet", false, "isSingular: Feet"],
+			["person", true, "isSingular: Person"],
+			["people", false, "isSingular: People"],
+			["taxon", true, "isSingular: Taxon"],
+			["taxa", false, "isSingular: Taxa"],
+			["quiz", true, "isSingular: Quiz"],
+			["quizzes", false, "isSingular: Quizzes"],
+			["ox", true, "isSingular: Ox"],
+			["oxen", false, "isSingular: Oxen"],
+			["mouse", true, "isSingular: Mouse"],
+			["mice", false, "isSingular: Mice"],
+			["matrix", true, "isSingular: Matrix"],
+			["matrices", false, "isSingular: Matrices"],
+			["vertex", true, "isSingular: Vertex"],
+			["vertices", false, "isSingular: Vertices"],
+			["index", true, "isSingular: Index"],
+			["indices", false, "isSingular: Indices"],
+			["suffix", true, "isSingular: Suffix"],
+			["suffices", false, "isSingular: Suffices"],
+			["codex", true, "isSingular: Codex"],
+			["codices", false, "isSingular: Codices"],
+			["onyx", true, "isSingular: onyx"],
+			["onyxes", false, "isSingular: onyxes"],
+			["leech", true, "isSingular: Leech"],
+			["leeches", false, "isSingular: Leeches"],
+			["glass", true, "isSingular: Glass"],
+			["glasses", false, "isSingular: Glasses"],
+			["mesh", true, "isSingular: Mesh"],
+			["meshes", false, "isSingular: Meshes"],
+			["soliloquy", true, "isSingular: Soliloquy"],
+			["soliloquies", false, "isSingular: Soliloquies"],
+			["baby", true, "isSingular: Baby"],
+			["babies", false, "isSingular: Babies"],
+			["elf", true, "isSingular: Elf"],
+			["elves", false, "isSingular: Elves"],
+			["life", true, "isSingular: Life"],
+			["lives", false, "isSingular: Lives"],
+			["antithesis", true, "isSingular: Antitheses"],
+			["antitheses", false, "isSingular: Antitheses"],
+			["consortium", true, "isSingular: consortium"],
+			["consortia", false, "isSingular: consortia"],
+			["addendum", true, "isSingular: addendum"],
+			["addenda", false, "isSingular: addenda"],
+			["alumna", true, "isSingular: alumna"],
+			["alumnae", false, "isSingular: alumnae"],
+			["formula", true, "isSingular: formula"],
+			["formulae", false, "isSingular: formulae"],
+			["buffalo", true, "isSingular: buffalo"],
+			["buffaloes", false, "isSingular: buffaloes"],
+			["tomato", true, "isSingular: tomato"],
+			["tomatoes", false, "isSingular: tomatoes"],
+			["hero", true, "isSingular: hero"],
+			["heroes", false, "isSingular: heroes"],
+			["bus", true, "isSingular: bus"],
+			["buses", false, "isSingular: buses"],
+			["alias", true, "isSingular: alias"],
+			["aliases", false, "isSingular: aliases"],
+			["octopus", true, "isSingular: octopus"],
+			["octopi", false, "isSingular: octopi"],
+			["virus", true, "isSingular: virus"],
+			["viri", false, "isSingular: viri"],
+			["genus", true, "isSingular: genus"],
+			["genera", false, "isSingular: genera"],
+			["axis", true, "isSingular: axis"],
+			["axes", false, "isSingular: axes"],
+			["testis", true, "isSingular: testis"],
+			["testes", false, "isSingular: testes"],
 
-			array("dwarf", true, "isSingular: Dwarf"),
-			array("dwarves", false, "isSingular: Dwarves"),
-			array("guy", true, "isSingular: Guy"),
-			array("guys", false, "isSingular: Guys"),
-			array("relief", true, "isSingular: Relief"),
-			array("reliefs", false, "isSingular: Reliefs"),
+			["dwarf", true, "isSingular: Dwarf"],
+			["dwarves", false, "isSingular: Dwarves"],
+			["guy", true, "isSingular: Guy"],
+			["guys", false, "isSingular: Guys"],
+			["relief", true, "isSingular: Relief"],
+			["reliefs", false, "isSingular: Reliefs"],
 
-			array("aircraft", true, "isSingular: aircraft (special)"),
-			array("cannon", true, "isSingular: cannon (special)"),
-			array("deer", true, "isSingular: deer (special)"),
-			array("equipment", true, "isSingular: equipment (special)"),
-			array("fish", true, "isSingular: Fish (special)"),
-			array("information", true, "isSingular: information (special)"),
-			array("money", true, "isSingular: money (special)"),
-			array("moose", true, "isSingular: moose (special)"),
-			array("rice", true, "isSingular: rice (special)"),
-			array("series", true, "isSingular: series (special)"),
-			array("sheep", true, "isSingular: sheep (special)"),
-			array("species", true, "isSingular: species (special)"),
-			array("swine", true, "isSingular: swine (special)"),
+			["aircraft", true, "isSingular: aircraft (special)"],
+			["cannon", true, "isSingular: cannon (special)"],
+			["deer", true, "isSingular: deer (special)"],
+			["equipment", true, "isSingular: equipment (special)"],
+			["fish", true, "isSingular: Fish (special)"],
+			["information", true, "isSingular: information (special)"],
+			["money", true, "isSingular: money (special)"],
+			["moose", true, "isSingular: moose (special)"],
+			["rice", true, "isSingular: rice (special)"],
+			["series", true, "isSingular: series (special)"],
+			["sheep", true, "isSingular: sheep (special)"],
+			["species", true, "isSingular: species (special)"],
+			["swine", true, "isSingular: swine (special)"],
 
-			array("word", true, 'isSingular: word'),
-			array("words", false, "isSingular: words"),
+			["word", true, 'isSingular: word'],
+			["words", false, "isSingular: words"],
 
-			array("cookie", true, "isSingular: cookie"),
-			array("cookies", false, "isSingular: cookies"),
-			array("database", true, "isSingular: database"),
-			array("databases", false, "isSingular: databases"),
-			array("crisis", true, "isSingular: crisis"),
-			array("crises", false, "isSingular: crises"),
-			array("shoe", true, "isSingular: shoe"),
-			array("shoes", false, "isSingular: shoes"),
-			array("backhoe", true, "isSingular: backhoe"),
-			array("backhoes", false, "isSingular: backhoes"),
-			array("movie", true, "isSingular: movie"),
-			array("movies", false, "isSingular: movies"),
-			array("vie", true, "isSingular: vie"),
-			array("vies", false, "isSingular: vies"),
-			array("narrative", true, "isSingular: narrative"),
-			array("narratives", false, "isSingular: narratives"),
-			array("hive", true, "isSingular: hive"),
-			array("hives", false, "isSingular: hives"),
-			array("analysis", true, "isSingular: analysis"),
-			array("analyses", false, "isSingular: analyses"),
-			array("basis", true, "isSingular: basis"),
-			array("bases", false, "isSingular: bases"),
-			array("diagnosis", true, "isSingular: diagnosis"),
-			array("diagnoses", false, "isSingular: diagnoses"),
-			array("parenthesis", true, "isSingular: parenthesis"),
-			array("parentheses", false, "isSingular: parentheses"),
-			array("prognosis", true, "isSingular: prognosis"),
-			array("prognoses", false, "isSingular: prognoses"),
-			array("synopsis", true, "isSingular: synopsis"),
-			array("synopses", false, "isSingular: synopses"),
-			array("thesis", true, "isSingular: thesis"),
-			array("theses", false, "isSingular: theses"),
-			array("news", true, "isSingular: news"),
-		);
+			["cookie", true, "isSingular: cookie"],
+			["cookies", false, "isSingular: cookies"],
+			["database", true, "isSingular: database"],
+			["databases", false, "isSingular: databases"],
+			["crisis", true, "isSingular: crisis"],
+			["crises", false, "isSingular: crises"],
+			["shoe", true, "isSingular: shoe"],
+			["shoes", false, "isSingular: shoes"],
+			["backhoe", true, "isSingular: backhoe"],
+			["backhoes", false, "isSingular: backhoes"],
+			["movie", true, "isSingular: movie"],
+			["movies", false, "isSingular: movies"],
+			["vie", true, "isSingular: vie"],
+			["vies", false, "isSingular: vies"],
+			["narrative", true, "isSingular: narrative"],
+			["narratives", false, "isSingular: narratives"],
+			["hive", true, "isSingular: hive"],
+			["hives", false, "isSingular: hives"],
+			["analysis", true, "isSingular: analysis"],
+			["analyses", false, "isSingular: analyses"],
+			["basis", true, "isSingular: basis"],
+			["bases", false, "isSingular: bases"],
+			["diagnosis", true, "isSingular: diagnosis"],
+			["diagnoses", false, "isSingular: diagnoses"],
+			["parenthesis", true, "isSingular: parenthesis"],
+			["parentheses", false, "isSingular: parentheses"],
+			["prognosis", true, "isSingular: prognosis"],
+			["prognoses", false, "isSingular: prognoses"],
+			["synopsis", true, "isSingular: synopsis"],
+			["synopses", false, "isSingular: synopses"],
+			["thesis", true, "isSingular: thesis"],
+			["theses", false, "isSingular: theses"],
+			["news", true, "isSingular: news"],
+		];
 	}
 
 	/**
@@ -319,13 +317,13 @@ class InflectorTest extends FOFTestCase
 	public function getTestIsPlural()
 	{
 		$temp = $this->getTestIsSingular();
-		$ret = array();
+		$ret  = [];
 
 		foreach ($temp as $items)
 		{
 			$items[1] = !$items[1];
 			$items[2] = str_replace('isSingular:', 'isPlural:', $items[2]);
-			$ret[] = $items;
+			$ret[]    = $items;
 		}
 
 		return $ret;
@@ -338,145 +336,145 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestSingularizeData()
 	{
-		return array(
-			array("move", "move", "Singularise: Move"),
-			array("moves", "move", "Singularise: Moves"),
-			array("sex", "sex", "Singularise: Sex"),
-			array("sexes", "sex", "Singularise: Sexes"),
-			array("child", "child", "Singularise: Child"),
-			array("children", "child", "Singularise: Children"),
-			array("woman", "woman", "Pluralisation of words in -an not honoured"),
-			array("women", "woman", "Should return the same as it's already a plural (words in -an)"),
-			array("foot", "foot", "Singularise: Foot"),
-			array("feet", "foot", "Singularise: Feet"),
-			array("person", "person", "Singularise: Person"),
-			array("people", "person", "Singularise: People"),
-			array("taxon", "taxon", "Singularise: Taxon"),
-			array("taxa", "taxon", "Singularise: Taxa"),
-			array("quiz", "quiz", "Singularise: Quiz"),
-			array("quizzes", "quiz", "Singularise: Quizzes"),
-			array("ox", "ox", "Singularise: Ox"),
-			array("oxen", "ox", "Singularise: Oxen"),
-			array("mouse", "mouse", "Singularise: Mouse"),
-			array("mice", "mouse", "Singularise: Mice"),
-			array("matrix", "matrix", "Singularise: Matrix"),
-			array("matrices", "matrix", "Singularise: Matrices"),
-			array("vertex", "vertex", "Singularise: Vertex"),
-			array("vertices", "vertex", "Singularise: Vertices"),
-			array("index", "index", "Singularise: Index"),
-			array("indices", "index", "Singularise: Indices"),
-			array("suffix", "suffix", "Singularise: Suffix"),
-			array("suffices", "suffix", "Singularise: Suffices"),
-			array("codex", "codex", "Singularise: Codex"),
-			array("codices", "codex", "Singularise: Codices"),
-			array("onyx", "onyx", "Singularise: onyx"),
-			array("onyxes", "onyx", "Singularise: onyxes"),
-			array("leech", "leech", "Singularise: Leech"),
-			array("leeches", "leech", "Singularise: Leeches"),
-			array("glass", "glass", "Singularise: Glass"),
-			array("glasses", "glass", "Singularise: Glasses"),
-			array("mesh", "mesh", "Singularise: Mesh"),
-			array("meshes", "mesh", "Singularise: Meshes"),
-			array("soliloquy", "soliloquy", "Singularise: Soliloquy"),
-			array("soliloquies", "soliloquy", "Singularise: Soliloquies"),
-			array("baby", "baby", "Singularise: Baby"),
-			array("babies", "baby", "Singularise: Babies"),
-			array("elf", "elf", "Singularise: Elf"),
-			array("elves", "elf", "Singularise: Elves"),
-			array("life", "life", "Singularise: Life"),
-			array("lives", "life", "Singularise: Lives"),
-			array("antithesis", "antithesis", "Singularise: Antitheses"),
-			array("antitheses", "antithesis", "Singularise: Antitheses"),
-			array("consortium", "consortium", "Singularise: consortium"),
-			array("consortia", "consortium", "Singularise: consortia"),
-			array("addendum", "addendum", "Singularise: addendum"),
-			array("addenda", "addendum", "Singularise: addenda"),
-			array("alumna", "alumna", "Singularise: alumna"),
-			array("alumnae", "alumna", "Singularise: alumnae"),
-			array("formula", "formula", "Singularise: formula"),
-			array("formulae", "formula", "Singularise: formulae"),
-			array("buffalo", "buffalo", "Singularise: buffalo"),
-			array("buffaloes", "buffalo", "Singularise: buffaloes"),
-			array("tomato", "tomato", "Singularise: tomato"),
-			array("tomatoes", "tomato", "Singularise: tomatoes"),
-			array("hero", "hero", "Singularise: hero"),
-			array("heroes", "hero", "Singularise: heroes"),
-			array("bus", "bus", "Singularise: bus"),
-			array("buses", "bus", "Singularise: buses"),
-			array("alias", "alias", "Singularise: alias"),
-			array("aliases", "alias", "Singularise: aliases"),
-			array("octopus", "octopus", "Singularise: octopus"),
-			array("octopi", "octopus", "Singularise: octopi"),
-			array("virus", "virus", "Singularise: virus"),
-			array("viri", "virus", "Singularise: viri"),
-			array("genus", "genus", "Singularise: genus"),
-			array("genera", "genus", "Singularise: genera"),
-			array("axis", "axis", "Singularise: axis"),
-			array("axes", "axis", "Singularise: axes"),
-			array("testis", "testis", "Singularise: testis"),
-			array("testes", "testis", "Singularise: testes"),
+		return [
+			["move", "move", "Singularise: Move"],
+			["moves", "move", "Singularise: Moves"],
+			["sex", "sex", "Singularise: Sex"],
+			["sexes", "sex", "Singularise: Sexes"],
+			["child", "child", "Singularise: Child"],
+			["children", "child", "Singularise: Children"],
+			["woman", "woman", "Pluralisation of words in -an not honoured"],
+			["women", "woman", "Should return the same as it's already a plural (words in -an)"],
+			["foot", "foot", "Singularise: Foot"],
+			["feet", "foot", "Singularise: Feet"],
+			["person", "person", "Singularise: Person"],
+			["people", "person", "Singularise: People"],
+			["taxon", "taxon", "Singularise: Taxon"],
+			["taxa", "taxon", "Singularise: Taxa"],
+			["quiz", "quiz", "Singularise: Quiz"],
+			["quizzes", "quiz", "Singularise: Quizzes"],
+			["ox", "ox", "Singularise: Ox"],
+			["oxen", "ox", "Singularise: Oxen"],
+			["mouse", "mouse", "Singularise: Mouse"],
+			["mice", "mouse", "Singularise: Mice"],
+			["matrix", "matrix", "Singularise: Matrix"],
+			["matrices", "matrix", "Singularise: Matrices"],
+			["vertex", "vertex", "Singularise: Vertex"],
+			["vertices", "vertex", "Singularise: Vertices"],
+			["index", "index", "Singularise: Index"],
+			["indices", "index", "Singularise: Indices"],
+			["suffix", "suffix", "Singularise: Suffix"],
+			["suffices", "suffix", "Singularise: Suffices"],
+			["codex", "codex", "Singularise: Codex"],
+			["codices", "codex", "Singularise: Codices"],
+			["onyx", "onyx", "Singularise: onyx"],
+			["onyxes", "onyx", "Singularise: onyxes"],
+			["leech", "leech", "Singularise: Leech"],
+			["leeches", "leech", "Singularise: Leeches"],
+			["glass", "glass", "Singularise: Glass"],
+			["glasses", "glass", "Singularise: Glasses"],
+			["mesh", "mesh", "Singularise: Mesh"],
+			["meshes", "mesh", "Singularise: Meshes"],
+			["soliloquy", "soliloquy", "Singularise: Soliloquy"],
+			["soliloquies", "soliloquy", "Singularise: Soliloquies"],
+			["baby", "baby", "Singularise: Baby"],
+			["babies", "baby", "Singularise: Babies"],
+			["elf", "elf", "Singularise: Elf"],
+			["elves", "elf", "Singularise: Elves"],
+			["life", "life", "Singularise: Life"],
+			["lives", "life", "Singularise: Lives"],
+			["antithesis", "antithesis", "Singularise: Antitheses"],
+			["antitheses", "antithesis", "Singularise: Antitheses"],
+			["consortium", "consortium", "Singularise: consortium"],
+			["consortia", "consortium", "Singularise: consortia"],
+			["addendum", "addendum", "Singularise: addendum"],
+			["addenda", "addendum", "Singularise: addenda"],
+			["alumna", "alumna", "Singularise: alumna"],
+			["alumnae", "alumna", "Singularise: alumnae"],
+			["formula", "formula", "Singularise: formula"],
+			["formulae", "formula", "Singularise: formulae"],
+			["buffalo", "buffalo", "Singularise: buffalo"],
+			["buffaloes", "buffalo", "Singularise: buffaloes"],
+			["tomato", "tomato", "Singularise: tomato"],
+			["tomatoes", "tomato", "Singularise: tomatoes"],
+			["hero", "hero", "Singularise: hero"],
+			["heroes", "hero", "Singularise: heroes"],
+			["bus", "bus", "Singularise: bus"],
+			["buses", "bus", "Singularise: buses"],
+			["alias", "alias", "Singularise: alias"],
+			["aliases", "alias", "Singularise: aliases"],
+			["octopus", "octopus", "Singularise: octopus"],
+			["octopi", "octopus", "Singularise: octopi"],
+			["virus", "virus", "Singularise: virus"],
+			["viri", "virus", "Singularise: viri"],
+			["genus", "genus", "Singularise: genus"],
+			["genera", "genus", "Singularise: genera"],
+			["axis", "axis", "Singularise: axis"],
+			["axes", "axis", "Singularise: axes"],
+			["testis", "testis", "Singularise: testis"],
+			["testes", "testis", "Singularise: testes"],
 
-			array("dwarf", "dwarf", "Singularise: Dwarf"),
-			array("dwarves", "dwarf", "Singularise: Dwarves"),
-			array("guy", "guy", "Singularise: Guy"),
-			array("guy", "guy", "Singularise: Guy"),
-			array("relief", "relief", "Singularise: Relief"),
-			array("reliefs", "relief", "Singularise: Reliefs"),
+			["dwarf", "dwarf", "Singularise: Dwarf"],
+			["dwarves", "dwarf", "Singularise: Dwarves"],
+			["guy", "guy", "Singularise: Guy"],
+			["guy", "guy", "Singularise: Guy"],
+			["relief", "relief", "Singularise: Relief"],
+			["reliefs", "relief", "Singularise: Reliefs"],
 
-			array("aircraft", "aircraft", "Singularise: aircraft (special)"),
-			array("cannon", "cannon", "Singularise: cannon (special)"),
-			array("deer", "deer", "Singularise: deer (special)"),
-			array("equipment", "equipment", "Singularise: equipment (special)"),
-			array("fish", "fish", "Singularise: Fish (special)"),
-			array("information", "information", "Singularise: information (special)"),
-			array("money", "money", "Singularise: money (special)"),
-			array("moose", "moose", "Singularise: moose (special)"),
-			array("rice", "rice", "Singularise: rice (special)"),
-			array("series", "series", "Singularise: series (special)"),
-			array("sheep", "sheep", "Singularise: sheep (special)"),
-			array("species", "species", "Singularise: species (special)"),
-			array("swine", "swine", "Singularise: swine (special)"),
+			["aircraft", "aircraft", "Singularise: aircraft (special)"],
+			["cannon", "cannon", "Singularise: cannon (special)"],
+			["deer", "deer", "Singularise: deer (special)"],
+			["equipment", "equipment", "Singularise: equipment (special)"],
+			["fish", "fish", "Singularise: Fish (special)"],
+			["information", "information", "Singularise: information (special)"],
+			["money", "money", "Singularise: money (special)"],
+			["moose", "moose", "Singularise: moose (special)"],
+			["rice", "rice", "Singularise: rice (special)"],
+			["series", "series", "Singularise: series (special)"],
+			["sheep", "sheep", "Singularise: sheep (special)"],
+			["species", "species", "Singularise: species (special)"],
+			["swine", "swine", "Singularise: swine (special)"],
 
-			array("word", "word", 'Should return singular'),
-			array("words", "word", "Should return the same as it's already a singular"),
+			["word", "word", 'Should return singular'],
+			["words", "word", "Should return the same as it's already a singular"],
 
-			array("cookie", "cookie", "Singularise: cookie"),
-			array("cookies", "cookie", "Singularise: cookies"),
-			array("database", "database", "Singularise: database"),
-			array("databases", "database", "Singularise: databases"),
-			array("crisis", "crisis", "Singularise: crisis"),
-			array("crises", "crisis", "Singularise: crises"),
-			array("shoe", "shoe", "Singularise: shoe"),
-			array("shoes", "shoe", "Singularise: shoes"),
-			array("backhoe", "backhoe", "Singularise: backhoe"),
-			array("backhoes", "backhoe", "Singularise: backhoes"),
-			array("menu", "menu", "Singularise: menu"),
-			array("menus", "menu", "Singularise: menu"),
-			array("movie", "movie", "Singularise: movie"),
-			array("movies", "movie", "Singularise: movies"),
-			array("vie", "vie", "Singularise: vie"),
-			array("vies", "vie", "Singularise: vies"),
-			array("narrative", "narrative", "Singularise: narrative"),
-			array("narratives", "narrative", "Singularise: narratives"),
-			array("hive", "hive", "Singularise: hive"),
-			array("hives", "hive", "Singularise: hives"),
-			array("analysis", "analysis", "Singularise: analysis"),
-			array("analyses", "analysis", "Singularise: analyses"),
-			array("basis", "basis", "Singularise: basis"),
-			array("bases", "basis", "Singularise: bases"),
-			array("diagnosis", "diagnosis", "Singularise: diagnosis"),
-			array("diagnoses", "diagnosis", "Singularise: diagnoses"),
-			array("parenthesis", "parenthesis", "Singularise: parenthesis"),
-			array("parentheses", "parenthesis", "Singularise: parentheses"),
-			array("prognosis", "prognosis", "Singularise: prognosis"),
-			array("prognoses", "prognosis", "Singularise: prognoses"),
-			array("synopsis", "synopsis", "Singularise: synopsis"),
-			array("synopses", "synopsis", "Singularise: synopses"),
-			array("thesis", "thesis", "Singularise: thesis"),
-			array("theses", "thesis", "Singularise: theses"),
-			array("news", "news", "Singularise: news"),
+			["cookie", "cookie", "Singularise: cookie"],
+			["cookies", "cookie", "Singularise: cookies"],
+			["database", "database", "Singularise: database"],
+			["databases", "database", "Singularise: databases"],
+			["crisis", "crisis", "Singularise: crisis"],
+			["crises", "crisis", "Singularise: crises"],
+			["shoe", "shoe", "Singularise: shoe"],
+			["shoes", "shoe", "Singularise: shoes"],
+			["backhoe", "backhoe", "Singularise: backhoe"],
+			["backhoes", "backhoe", "Singularise: backhoes"],
+			["menu", "menu", "Singularise: menu"],
+			["menus", "menu", "Singularise: menu"],
+			["movie", "movie", "Singularise: movie"],
+			["movies", "movie", "Singularise: movies"],
+			["vie", "vie", "Singularise: vie"],
+			["vies", "vie", "Singularise: vies"],
+			["narrative", "narrative", "Singularise: narrative"],
+			["narratives", "narrative", "Singularise: narratives"],
+			["hive", "hive", "Singularise: hive"],
+			["hives", "hive", "Singularise: hives"],
+			["analysis", "analysis", "Singularise: analysis"],
+			["analyses", "analysis", "Singularise: analyses"],
+			["basis", "basis", "Singularise: basis"],
+			["bases", "basis", "Singularise: bases"],
+			["diagnosis", "diagnosis", "Singularise: diagnosis"],
+			["diagnoses", "diagnosis", "Singularise: diagnoses"],
+			["parenthesis", "parenthesis", "Singularise: parenthesis"],
+			["parentheses", "parenthesis", "Singularise: parentheses"],
+			["prognosis", "prognosis", "Singularise: prognosis"],
+			["prognoses", "prognosis", "Singularise: prognoses"],
+			["synopsis", "synopsis", "Singularise: synopsis"],
+			["synopses", "synopsis", "Singularise: synopses"],
+			["thesis", "thesis", "Singularise: thesis"],
+			["theses", "thesis", "Singularise: theses"],
+			["news", "news", "Singularise: news"],
 
-		);
+		];
 	}
 
 	/**
@@ -486,12 +484,12 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestCamelizeData()
 	{
-		return array(
-			array("foo_bar", "FooBar", 'Underscores must act as camelization points'),
-			array("foo bar", "FooBar", 'Spaces must act as camelization points'),
-			array("foo's bar", "FooSBar", 'Punctuation must be stripped out'),
-			array("foo.bar.123", "FooBar123", 'Numbers must be preserved'),
-		);
+		return [
+			["foo_bar", "FooBar", 'Underscores must act as camelization points'],
+			["foo bar", "FooBar", 'Spaces must act as camelization points'],
+			["foo's bar", "FooSBar", 'Punctuation must be stripped out'],
+			["foo.bar.123", "FooBar123", 'Numbers must be preserved'],
+		];
 	}
 
 	/**
@@ -501,10 +499,10 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestUnderscoreData()
 	{
-		return array(
-			array("foo bar", "foo_bar", 'Spaces must act as underscore points'),
-			array("FooBar", "foo_bar", 'CamelCase must be converted'),
-		);
+		return [
+			["foo bar", "foo_bar", 'Spaces must act as underscore points'],
+			["FooBar", "foo_bar", 'CamelCase must be converted'],
+		];
 	}
 
 	/**
@@ -514,10 +512,10 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestExplodeData()
 	{
-		return array(
-			array("foo bar", array('foo', 'bar'), 'Spaces must act as underscore points'),
-			array("FooBar", array('foo', 'bar'), 'CamelCase must be converted'),
-		);
+		return [
+			["foo bar", ['foo', 'bar'], 'Spaces must act as underscore points'],
+			["FooBar", ['foo', 'bar'], 'CamelCase must be converted'],
+		];
 	}
 
 	/**
@@ -527,9 +525,9 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestImplodeData()
 	{
-		return array(
-			array(array('foo', 'bar'), "FooBar", 'Implosion failed'),
-		);
+		return [
+			[['foo', 'bar'], "FooBar", 'Implosion failed'],
+		];
 	}
 
 	/**
@@ -539,10 +537,10 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestHumanizeData()
 	{
-		return array(
-			array("foo_bar", 'Foo Bar', 'Humanize failed'),
-			array("this_is_a_test", 'This Is A Test', 'Humanize failed'),
-		);
+		return [
+			["foo_bar", 'Foo Bar', 'Humanize failed'],
+			["this_is_a_test", 'This Is A Test', 'Humanize failed'],
+		];
 	}
 
 	/**
@@ -552,30 +550,30 @@ class InflectorTest extends FOFTestCase
 	 */
 	public function getTestVariableizeData()
 	{
-		return array(
-			array("foo_bar", "fooBar", 'Underscores must act as camelization points'),
-			array("foo bar", "fooBar", 'Spaces must act as camelization points'),
-			array("foo's bar", "fooSBar", 'Punctuation must be stripped out'),
-			array("foo.bar.123", "fooBar123", 'Numbers must be preserved'),
-		);
+		return [
+			["foo_bar", "fooBar", 'Underscores must act as camelization points'],
+			["foo bar", "fooBar", 'Spaces must act as camelization points'],
+			["foo's bar", "fooSBar", 'Punctuation must be stripped out'],
+			["foo.bar.123", "fooBar123", 'Numbers must be preserved'],
+		];
 	}
 
 	/**
 	 * Test deleteCache method
 	 *
 	 * @covers FOF40\Inflector\Inflector::deleteCache
-	 * @uses FOF40\Tests\Helpers\ReflectionHelper::setValue
-	 * @uses FOF40\Tests\Helpers\ReflectionHelper::getValue
+	 * @uses   FOF40\Tests\Helpers\ReflectionHelper::setValue
+	 * @uses   FOF40\Tests\Helpers\ReflectionHelper::getValue
 	 *
 	 * @return  void
 	 */
 	public function testDeleteCache()
 	{
 		$container = new TestContainer();
-		$myCache = array(
-			'singularized' => array('foobar' => 'foobars'),
-			'pluralized'   => array('foobars' => 'foobar'),
-		);
+		$myCache   = [
+			'singularized' => ['foobar' => 'foobars'],
+			'pluralized'   => ['foobars' => 'foobar'],
+		];
 		ReflectionHelper::setValue($container->inflector, 'cache', $myCache);
 
 		$container->inflector->deleteCache();
@@ -597,8 +595,8 @@ class InflectorTest extends FOFTestCase
 	 * Test addWord method
 	 *
 	 * @covers FOF40\Inflector\Inflector::addWord
-	 * @uses FOF40\Inflector\Inflector::singularize
-	 * @uses FOF40\Inflector\Inflector::pluralize
+	 * @uses   FOF40\Inflector\Inflector::singularize
+	 * @uses   FOF40\Inflector\Inflector::pluralize
 	 *
 	 * @return  void
 	 */
@@ -618,8 +616,8 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test pluralize method
 	 *
-	 * @covers FOF40\Inflector\Inflector::pluralize
-	 * @uses FOF40\Inflector\Inflector::deleteCache
+	 * @covers       FOF40\Inflector\Inflector::pluralize
+	 * @uses         FOF40\Inflector\Inflector::deleteCache
 	 *
 	 * @dataProvider getTestPluralizeData
 	 */
@@ -638,8 +636,8 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test singularize method
 	 *
-	 * @covers FOF40\Inflector\Inflector::singularize
-	 * @uses FOF40\Inflector\Inflector::deleteCache
+	 * @covers       FOF40\Inflector\Inflector::singularize
+	 * @uses         FOF40\Inflector\Inflector::deleteCache
 	 *
 	 * @dataProvider getTestSingularizeData
 	 */
@@ -658,14 +656,14 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test camelize method
 	 *
-	 * @covers FOF40\Inflector\Inflector::camelize
+	 * @covers       FOF40\Inflector\Inflector::camelize
 	 *
 	 * @dataProvider getTestCamelizeData
 	 */
 	public function testCamelize($word, $expect, $message)
 	{
 		$container = new TestContainer();
-		$res = $container->inflector->camelize($word);
+		$res       = $container->inflector->camelize($word);
 		$this->assertEquals(
 			$res,
 			$expect,
@@ -676,14 +674,14 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test underscore method
 	 *
-	 * @covers FOF40\Inflector\Inflector::underscore
+	 * @covers       FOF40\Inflector\Inflector::underscore
 	 *
 	 * @dataProvider getTestUnderscoreData
 	 */
 	public function testUnderscore($word, $expect, $message)
 	{
 		$container = new TestContainer();
-		$res = $container->inflector->underscore($word);
+		$res       = $container->inflector->underscore($word);
 		$this->assertEquals(
 			$res,
 			$expect,
@@ -694,14 +692,14 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test explode method
 	 *
-	 * @covers FOF40\Inflector\Inflector::explode
+	 * @covers       FOF40\Inflector\Inflector::explode
 	 *
 	 * @dataProvider getTestExplodeData
 	 */
 	public function testExplode($word, $expect, $message)
 	{
 		$container = new TestContainer();
-		$res = $container->inflector->explode($word);
+		$res       = $container->inflector->explode($word);
 		$this->assertEquals(
 			$res,
 			$expect,
@@ -712,14 +710,14 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test implode method
 	 *
-	 * @covers FOF40\Inflector\Inflector::implode
+	 * @covers       FOF40\Inflector\Inflector::implode
 	 *
 	 * @dataProvider getTestImplodeData
 	 */
 	public function testImplode($word, $expect, $message)
 	{
 		$container = new TestContainer();
-		$res = $container->inflector->implode($word);
+		$res       = $container->inflector->implode($word);
 		$this->assertEquals(
 			$res,
 			$expect,
@@ -730,14 +728,14 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test humanize method
 	 *
-	 * @covers FOF40\Inflector\Inflector::humanize
+	 * @covers       FOF40\Inflector\Inflector::humanize
 	 *
 	 * @dataProvider getTestHumanizeData
 	 */
 	public function testHumanize($word, $expect, $message)
 	{
 		$container = new TestContainer();
-		$res = $container->inflector->humanize($word);
+		$res       = $container->inflector->humanize($word);
 		$this->assertEquals(
 			$res,
 			$expect,
@@ -748,14 +746,14 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test variableize method
 	 *
-	 * @covers FOF40\Inflector\Inflector::variablize
+	 * @covers       FOF40\Inflector\Inflector::variablize
 	 *
 	 * @dataProvider getTestVariableizeData
 	 */
 	public function testVariableize($word, $expect, $message)
 	{
 		$container = new TestContainer();
-		$res = $container->inflector->variablize($word);
+		$res       = $container->inflector->variablize($word);
 		$this->assertEquals(
 			$res,
 			$expect,
@@ -766,8 +764,8 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test isSingular method
 	 *
-	 * @covers FOF40\Inflector\Inflector::isSingular
-	 * @uses FOF40\Inflector\Inflector::deleteCache
+	 * @covers       FOF40\Inflector\Inflector::isSingular
+	 * @uses         FOF40\Inflector\Inflector::deleteCache
 	 *
 	 * @dataProvider getTestIsSingular
 	 */
@@ -787,8 +785,8 @@ class InflectorTest extends FOFTestCase
 	/**
 	 * Test isPlural method
 	 *
-	 * @covers FOF40\Inflector\Inflector::isPlural
-	 * @uses FOF40\Inflector\Inflector::deleteCache
+	 * @covers       FOF40\Inflector\Inflector::isPlural
+	 * @uses         FOF40\Inflector\Inflector::deleteCache
 	 *
 	 * @dataProvider getTestIsPlural
 	 */

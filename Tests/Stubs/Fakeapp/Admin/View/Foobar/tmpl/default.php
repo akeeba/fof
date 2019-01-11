@@ -6,5 +6,4 @@
  */
 
 
-
 echo "Layout text";

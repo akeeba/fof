@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Stubs\Utils;
 
 use FOF40\Utils\Ip;
@@ -15,7 +14,7 @@ class IpStub extends Ip
 {
 	public static $fakeIP = null;
 
-    protected static function detectIP()
+	protected static function detectIP()
 	{
 		if (!is_null(static::$fakeIP))
 		{

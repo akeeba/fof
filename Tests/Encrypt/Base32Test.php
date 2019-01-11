@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Encrypt;
 
 
@@ -82,9 +81,9 @@ class Base32Test extends FOFTestCase
 
 	public function getTestBin2StrExceptions()
 	{
-		return array(
-			array('101010101', 'Not divisable by 8'),
-			array('0A0A0A0A', 'Not binary data'),
-		);
+		return [
+			['101010101', 'Not divisable by 8'],
+			['0A0A0A0A', 'Not binary data'],
+		];
 	}
 }

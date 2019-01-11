@@ -15,7 +15,7 @@
     <!-- Table options for a specific table -->
     <model name="Orders">
         <field name="enabled">published</field>
-        <relation type="children" name="items" />
+        <relation type="children" name="items"/>
         <relation type="multiple"
                   name="transactions"
                   localKey="foobar_order_id"
@@ -23,8 +23,8 @@
                   theirPivotKey="foobar_transaction_id"
                   remoteKey="foobar_transaction_id"
                   pivotTable="#__foobar_orders_transactions"
-                  default="true" />
-        <relation type="child" name="client" tableClass="Fakeapp\Model\Users" />
+                  default="true"/>
+        <relation type="child" name="client" tableClass="Fakeapp\Model\Users"/>
         <behaviors>foo,bar,baz</behaviors>
     </model>
     <model name="Users">

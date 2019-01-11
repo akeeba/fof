@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\Model;
 
 use FOF40\Tests\Stubs\Model\DataModelStub;

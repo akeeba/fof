@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Configuration\Domain;
 
 use FOF40\Tests\Helpers\FOFTestCase;
@@ -18,7 +17,7 @@ use FOF40\Tests\Helpers\FOFTestCase;
 class ConfigurationTest extends FOFTestCase
 {
 	/** @var   array  The data returned from parsing the XML file, used to test fetching data */
-	protected $data = array();
+	protected $data = [];
 
 	/**
 	 * @return  void

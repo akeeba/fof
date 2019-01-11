@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Input;
 
 use FOF40\Input\Input as FOFInput;
@@ -20,12 +19,12 @@ abstract class InputProvider
 	 */
 	public static function getSampleInputData()
 	{
-		return array(
-			'arrayVar'    => array(
+		return [
+			'arrayVar'    => [
 				'one' => 1,
 				'two' => 2.34,
-				'lol' => 'wut'
-			),
+				'lol' => 'wut',
+			],
 			'cmdOK'       => 'This_Is_Sparta.300-HotgateS',
 			'cmdNotOK'    => 'Implode This !@#$%^&*()String {}:"|<>?,/;\'\[]123', // ImplodeThisString123
 			'intOK'       => 1,
@@ -51,8 +50,8 @@ abstract class InputProvider
 			'html'        => '<p>In Code We Trust</p>',
 			'path'        => JPATH_SITE . '/administrator',
 			'pathNotOK'   => JPATH_SITE . '/../administrator', // JPATH_SITE . '//administrator'
-			'raw'         => "Αποτέλεσμα με UTF8 χαρακτήρες\nκαι\tειδικούς χαρακτήρες\rελέγχου"
-		);
+			'raw'         => "Αποτέλεσμα με UTF8 χαρακτήρες\nκαι\tειδικούς χαρακτήρες\rελέγχου",
+		];
 	}
 
 	public static function getTestConstructor()
@@ -61,20 +60,20 @@ abstract class InputProvider
 
 		$sampleInputData = self::getSampleInputData();
 
-		return array(
-			array($sampleInputData, array(), $sampleInputData, 'Initialising with an array'),
-			array((object)$sampleInputData, array(), $sampleInputData, 'Initialising with an array'),
-			array(new \JInput($sampleInputData), array(), $sampleInputData, 'Initialising with a JInput object'),
-			array(new FOFInput($sampleInputData), array(), $sampleInputData, 'Initialising with a FOF Input object'),
-			array('get', array('get' => $sampleInputData), $sampleInputData, 'Initialising with $_GET'),
-			array('post', array('post' => $sampleInputData), $sampleInputData, 'Initialising with $_POST'),
-			array('files', array('files' => $sampleInputData), $sampleInputData, 'Initialising with $_FILES'),
-			array('cookie', array('cookie' => $sampleInputData), $sampleInputData, 'Initialising with $_COOKIE'),
-			array('env', array('env' => $sampleInputData), $sampleInputData, 'Initialising with $_ENV'),
-			array('server', array('server' => $sampleInputData), $sampleInputData, 'Initialising with $_SERVER'),
-			array('request', array('request' => $sampleInputData), $sampleInputData, 'Initialising with $_REQUEST'),
-			array(null, array('request' => $sampleInputData), $sampleInputData, 'Initialising with implicit request'),
-		);
+		return [
+			[$sampleInputData, [], $sampleInputData, 'Initialising with an array'],
+			[(object) $sampleInputData, [], $sampleInputData, 'Initialising with an array'],
+			[new \JInput($sampleInputData), [], $sampleInputData, 'Initialising with a JInput object'],
+			[new FOFInput($sampleInputData), [], $sampleInputData, 'Initialising with a FOF Input object'],
+			['get', ['get' => $sampleInputData], $sampleInputData, 'Initialising with $_GET'],
+			['post', ['post' => $sampleInputData], $sampleInputData, 'Initialising with $_POST'],
+			['files', ['files' => $sampleInputData], $sampleInputData, 'Initialising with $_FILES'],
+			['cookie', ['cookie' => $sampleInputData], $sampleInputData, 'Initialising with $_COOKIE'],
+			['env', ['env' => $sampleInputData], $sampleInputData, 'Initialising with $_ENV'],
+			['server', ['server' => $sampleInputData], $sampleInputData, 'Initialising with $_SERVER'],
+			['request', ['request' => $sampleInputData], $sampleInputData, 'Initialising with $_REQUEST'],
+			[null, ['request' => $sampleInputData], $sampleInputData, 'Initialising with implicit request'],
+		];
 	}
 
 	public static function getTestGet()
@@ -82,41 +81,47 @@ abstract class InputProvider
 		$sampleData = self::getSampleInputData();
 
 		// $key, $filter, $expected, $message
-		return array(
-			array('arrayVar', 'array', $sampleData['arrayVar'], 'Get ARRAY data'),
-			array('cmdOK', 'cmd', 'This_Is_Sparta.300-HotgateS', 'Get CMD data'),
-			array('cmdNotOK', 'cmd', 'ImplodeThisString123', 'Get CMD data, filter applied'),
-			array('intOK', 'int', 1, 'Get INT data'),
-			array('intNotOK1', 'int', 1, 'Get INT data, filter applied'),
-			array('intNotOK2', 'int', 1, 'Get INT data, filter applied (2)'),
-			array('uintOK', 'uint', 128, 'Get UINT data'),
-			array('uintNotOK1', 'uint', 128, 'Get UINT data, filter applied'),
-			array('uintNotOK2', 'uint', 128, 'Get UINT data, filter applied (2)'),
-			array('floatOK', 'float', 3.1415, 'Get FLOAT data'),
-			array('floatNotOK1', 'float', 3.1415, 'Get FLOAT data, filter applied'),
-			array('floatOK', 'double', 3.1415, 'Get DOUBLE data'),
-			array('floatNotOK1', 'double', 3.1415, 'Get DOUBLE data, filter applied'),
-			array('boolOK1', 'bool', true, 'Get BOOL data'),
-			array('boolOK2', 'bool', false, 'Get BOOL data'),
-			array('boolOK1', 'boolean', true, 'Get BOOLEAN data'),
-			array('boolOK2', 'boolean', false, 'Get BOOLEAN data'),
-			array('wordOK', 'word', 'This_Is_OK', 'Get WORD data'),
-			array('wordNotOK1', 'word', 'ThisIsNotOK', 'Get WORD data, filtered'),
-			array('wordNotOK2', 'word', 'bottles_of_rum', 'Get WORD data, filtered (2)'),
-			array('alnumOK', 'alnum', 'ThisIsOK123', 'Get ALNUM data'),
-			array('alnumNotOK1', 'alnum', 'ThisIsNotOK123', 'Get ALNUM data, filtered'),
-			array('base64OK', 'base64', 'abcdef01234567890/+=', 'Get BASE64 data'),
-			array('base64NotOK', 'base64', 'abcdef01234567890/+=', 'Get BASE64 data, filtered'),
-			array('stringOK', 'string', 'Fifteen men on the dead man\'s chest-- ...Yo-ho-ho, and a bottle of rum!', 'Get STRING data, explicit'),
-			array('stringOK', 'whatever', 'Fifteen men on the dead man\'s chest-- ...Yo-ho-ho, and a bottle of rum!', 'Get STRING data, implicit'),
-			array('stringOK2', 'string', 'Δοκιμή και με UTF8 χαρακτήρες', 'Get STRING data, explicit, UTF8'),
-			array('stringOK2', 'whatever', 'Δοκιμή και με UTF8 χαρακτήρες', 'Get STRING data, implicit, UTF8'),
-			array('html', 'html', 'In Code We Trust', 'Get HTML data, filtered'),
+		return [
+			['arrayVar', 'array', $sampleData['arrayVar'], 'Get ARRAY data'],
+			['cmdOK', 'cmd', 'This_Is_Sparta.300-HotgateS', 'Get CMD data'],
+			['cmdNotOK', 'cmd', 'ImplodeThisString123', 'Get CMD data, filter applied'],
+			['intOK', 'int', 1, 'Get INT data'],
+			['intNotOK1', 'int', 1, 'Get INT data, filter applied'],
+			['intNotOK2', 'int', 1, 'Get INT data, filter applied (2)'],
+			['uintOK', 'uint', 128, 'Get UINT data'],
+			['uintNotOK1', 'uint', 128, 'Get UINT data, filter applied'],
+			['uintNotOK2', 'uint', 128, 'Get UINT data, filter applied (2)'],
+			['floatOK', 'float', 3.1415, 'Get FLOAT data'],
+			['floatNotOK1', 'float', 3.1415, 'Get FLOAT data, filter applied'],
+			['floatOK', 'double', 3.1415, 'Get DOUBLE data'],
+			['floatNotOK1', 'double', 3.1415, 'Get DOUBLE data, filter applied'],
+			['boolOK1', 'bool', true, 'Get BOOL data'],
+			['boolOK2', 'bool', false, 'Get BOOL data'],
+			['boolOK1', 'boolean', true, 'Get BOOLEAN data'],
+			['boolOK2', 'boolean', false, 'Get BOOLEAN data'],
+			['wordOK', 'word', 'This_Is_OK', 'Get WORD data'],
+			['wordNotOK1', 'word', 'ThisIsNotOK', 'Get WORD data, filtered'],
+			['wordNotOK2', 'word', 'bottles_of_rum', 'Get WORD data, filtered (2)'],
+			['alnumOK', 'alnum', 'ThisIsOK123', 'Get ALNUM data'],
+			['alnumNotOK1', 'alnum', 'ThisIsNotOK123', 'Get ALNUM data, filtered'],
+			['base64OK', 'base64', 'abcdef01234567890/+=', 'Get BASE64 data'],
+			['base64NotOK', 'base64', 'abcdef01234567890/+=', 'Get BASE64 data, filtered'],
+			[
+				'stringOK', 'string', 'Fifteen men on the dead man\'s chest-- ...Yo-ho-ho, and a bottle of rum!',
+				'Get STRING data, explicit',
+			],
+			[
+				'stringOK', 'whatever', 'Fifteen men on the dead man\'s chest-- ...Yo-ho-ho, and a bottle of rum!',
+				'Get STRING data, implicit',
+			],
+			['stringOK2', 'string', 'Δοκιμή και με UTF8 χαρακτήρες', 'Get STRING data, explicit, UTF8'],
+			['stringOK2', 'whatever', 'Δοκιμή και με UTF8 χαρακτήρες', 'Get STRING data, implicit, UTF8'],
+			['html', 'html', 'In Code We Trust', 'Get HTML data, filtered'],
 			//array('path', 'path', JPATH_SITE . '/administrator', 'Get PATH data'),
 			//array('pathNotOK', 'path', JPATH_SITE . '//administrator', 'Get PATH data, filtered'),
-			array('raw', 'raw', "Αποτέλεσμα με UTF8 χαρακτήρες\nκαι\tειδικούς χαρακτήρες\rελέγχου", 'Get RAW data'),
-			array('IDoNotExist', 'raw', null, 'Not existing key returns default value'),
-		);
+			['raw', 'raw', "Αποτέλεσμα με UTF8 χαρακτήρες\nκαι\tειδικούς χαρακτήρες\rελέγχου", 'Get RAW data'],
+			['IDoNotExist', 'raw', null, 'Not existing key returns default value'],
+		];
 	}
 
 	public static function getTestMagicCall()

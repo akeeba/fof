@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Download\Adapter;
 
 /**

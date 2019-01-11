@@ -6,331 +6,330 @@
  */
 
 
-
 namespace FOF40\Tests\Download;
 
 class DownloadDataprovider
 {
 	public static function getTestSetAdapter()
 	{
-		return array(
-			array('Fopen', true),
-			array('FOPEN', true),
-			array('fopen', true),
-			array('\\FOF40\\Download\\Adapter\\Fopen', true),
-			array('Curl', false),
-			array('CURL', false),
-			array('curl', false),
-			array('\\FOF40\\Download\\Adapter\\Curl', false),
-			array('Spike', false),
-			array('\\JRegistry', false),
-			array(null, false),
-		);
+		return [
+			['Fopen', true],
+			['FOPEN', true],
+			['fopen', true],
+			['\\FOF40\\Download\\Adapter\\Fopen', true],
+			['Curl', false],
+			['CURL', false],
+			['curl', false],
+			['\\FOF40\\Download\\Adapter\\Curl', false],
+			['Spike', false],
+			['\\JRegistry', false],
+			[null, false],
+		];
 	}
 
 	public static function getTestGetAdapterName()
 	{
-		return array(
-			array('Fopen', 'fopen'),
-			array('FOPEN', 'fopen'),
-			array('fopen', 'fopen'),
-			array('Curl', 'curl'),
-			array('CURL', 'curl'),
-			array('curl', 'curl'),
-			array('\\FOF40\\Download\\Adapter\\Fopen', 'fopen'),
-			array('\\FOF40\\Download\\Adapter\\Curl', 'curl'),
-			array('Spike', 'curl'),
-			array('\\JRegistry', 'curl'),
-			array(null, 'curl'),
-		);
+		return [
+			['Fopen', 'fopen'],
+			['FOPEN', 'fopen'],
+			['fopen', 'fopen'],
+			['Curl', 'curl'],
+			['CURL', 'curl'],
+			['curl', 'curl'],
+			['\\FOF40\\Download\\Adapter\\Fopen', 'fopen'],
+			['\\FOF40\\Download\\Adapter\\Curl', 'curl'],
+			['Spike', 'curl'],
+			['\\JRegistry', 'curl'],
+			[null, 'curl'],
+		];
 	}
 
 	public static function getTestGetFromUrl()
 	{
-		return array(
-			array(
-				'setup' => array(
+		return [
+			[
+				'setup' => [
 					'httpstatus' => 200,
-				),
-				'test'  => array(
+				],
+				'test'  => [
 					'url'     => 'http://www.example.com/donwload.dat',
 					'from'    => 0,
 					'to'      => 0,
 					'retSize' => 1048576,
 					'false'   => false,
-					'message' => 'Download a simple 1M file'
-				)
-			),
+					'message' => 'Download a simple 1M file',
+				],
+			],
 
-			array(
-				'setup' => array(),
-				'test'  => array(
+			[
+				'setup' => [],
+				'test'  => [
 					'url'     => 'http://www.example.com/IDoNotExist.dat',
 					'from'    => 0,
 					'to'      => 0,
 					'retSize' => 0,
 					'false'   => true,
-					'message' => '404 on non-existent file results in Exception'
-				)
-			),
+					'message' => '404 on non-existent file results in Exception',
+				],
+			],
 
-			array(
-				'setup' => array(
+			[
+				'setup' => [
 					'httpstatus' => 403,
-				),
-				'test'  => array(
+				],
+				'test'  => [
 					'url'     => 'http://www.example.com/donwload.dat',
 					'from'    => 0,
 					'to'      => 0,
 					'retSize' => 0,
 					'false'   => true,
-					'message' => '403 Forbidden results in Exception'
-				)
-			),
+					'message' => '403 Forbidden results in Exception',
+				],
+			],
 
-			array(
-				'setup' => array(
+			[
+				'setup' => [
 					'errno' => 999,
 					'error' => 'Foobar',
-				),
-				'test'  => array(
+				],
+				'test'  => [
 					'url'     => 'http://www.example.com/donwload.dat',
 					'from'    => 0,
 					'to'      => 0,
 					'retSize' => 0,
 					'false'   => true,
-					'message' => '403 Forbidden'
-				)
-			),
-		);
+					'message' => '403 Forbidden',
+				],
+			],
+		];
 	}
 
 	public static function getTestImportFromUrl()
 	{
-		return array(
-			array(
-				'setup'  => array(
+		return [
+			[
+				'setup'  => [
 					'httpstatus' => 200,
-				),
-				'params' => array(
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
+				],
+				'test'   => [
 					'retSize' => 1048576,
 					'loop'    => false,
-					'expect'  => array(
+					'expect'  => [
 						'status'    => true,
 						'error'     => '',
 						'frag'      => -1, // Done file
 						'totalSize' => 1048576,
 						'doneSize'  => 1048576,
-						'percent'   => 100
-					),
-					'message' => 'Download a simple 1M file'
-				)
-			),
+						'percent'   => 100,
+					],
+					'message' => 'Download a simple 1M file',
+				],
+			],
 
-			array(
-				'setup'  => array(
+			[
+				'setup'  => [
 					'httpstatus' => 200,
-				),
-				'params' => array(
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
-					'retSize' => 1048576,
-					'loop'    => false,
+				],
+				'test'   => [
+					'retSize'   => 1048576,
+					'loop'      => false,
 					'localfile' => null,
-					'expect'  => array(
+					'expect'    => [
 						'status'    => true,
 						'error'     => '',
 						'frag'      => -1, // Done file
 						'totalSize' => 1048576,
 						'doneSize'  => 1048576,
-						'percent'   => 100
-					),
-					'message' => 'Download a simple 1M file without specifying a local file'
-				)
-			),
+						'percent'   => 100,
+					],
+					'message'   => 'Download a simple 1M file without specifying a local file',
+				],
+			],
 
-			array(
-				'setup'  => array(
-					'returnSize'	=> 5242880,
-					'reportedSize'	=> 5242880,
-					'httpstatus' => 200,
-				),
-				'params' => array(
+			[
+				'setup'  => [
+					'returnSize'   => 5242880,
+					'reportedSize' => 5242880,
+					'httpstatus'   => 200,
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
+				],
+				'test'   => [
 					'retSize' => 5242880,
 					'loop'    => true,
-					'expect'  => array(
+					'expect'  => [
 						'status'    => true,
 						'error'     => '',
 						'frag'      => -1, // Done file
 						'totalSize' => 5242880,
 						'doneSize'  => 5242880,
-						'percent'   => 100
-					),
-					'message' => 'Fully download a staggered 5M file'
-				)
-			),
+						'percent'   => 100,
+					],
+					'message' => 'Fully download a staggered 5M file',
+				],
+			],
 
-			array(
-				'setup'  => array(
-					'returnSize'	=> 5242880,
-					'reportedSize'	=> 5242880,
-					'httpstatus' => 200,
-				),
-				'params' => array(
+			[
+				'setup'  => [
+					'returnSize'   => 5242880,
+					'reportedSize' => 5242880,
+					'httpstatus'   => 200,
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
+				],
+				'test'   => [
 					'retSize' => 1048576,
 					'loop'    => false,
-					'expect'  => array(
+					'expect'  => [
 						'status'    => true,
 						'error'     => '',
 						'frag'      => 1,
 						'totalSize' => 5242880,
 						'doneSize'  => 1048576,
-						'percent'   => 20
-					),
-					'message' => 'Download the first 1M chunk of a staggered 5M file'
-				)
-			),
+						'percent'   => 20,
+					],
+					'message' => 'Download the first 1M chunk of a staggered 5M file',
+				],
+			],
 
 
-			array(
-				'setup'  => array(
-					'returnSize'	=> 5242880,
-					'reportedSize'	=> -1,
-					'httpstatus' => 200,
-				),
-				'params' => array(
+			[
+				'setup'  => [
+					'returnSize'   => 5242880,
+					'reportedSize' => -1,
+					'httpstatus'   => 200,
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
+				],
+				'test'   => [
 					'retSize' => 1048576,
 					'loop'    => false,
-					'expect'  => array(
+					'expect'  => [
 						'status'    => true,
 						'error'     => '',
 						'frag'      => 1,
 						'totalSize' => 0,
 						'doneSize'  => 1048576,
-						'percent'   => 0
-					),
-					'message' => 'Download the first 1M chunk of a staggered 5M file which does not return its size'
-				)
-			),
+						'percent'   => 0,
+					],
+					'message' => 'Download the first 1M chunk of a staggered 5M file which does not return its size',
+				],
+			],
 
-			array(
-				'setup'  => array(
-					'returnSize'	=> 5242880,
-					'reportedSize'	=> -1,
-					'httpstatus' => 200,
-				),
-				'params' => array(
+			[
+				'setup'  => [
+					'returnSize'   => 5242880,
+					'reportedSize' => -1,
+					'httpstatus'   => 200,
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
+				],
+				'test'   => [
 					'retSize' => 5242880,
 					'loop'    => true,
-					'expect'  => array(
+					'expect'  => [
 						'status'    => true,
 						'error'     => '',
 						'frag'      => -1, // Done file
 						'totalSize' => 5242880,
 						'doneSize'  => 5242880,
-						'percent'   => 100
-					),
-					'message' => 'Fully download a staggered 5M file which doesn\'t return its size'
-				)
-			),
+						'percent'   => 100,
+					],
+					'message' => 'Fully download a staggered 5M file which doesn\'t return its size',
+				],
+			],
 
-			array(
-				'setup'  => array(
+			[
+				'setup'  => [
 					'httpstatus' => 200,
-				),
-				'params' => array(
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/donwload.dat',
 					'length' => 1048576,
-				),
-				'test'   => array(
-					'retSize' => 1048576,
-					'loop'    => false,
+				],
+				'test'   => [
+					'retSize'   => 1048576,
+					'loop'      => false,
 					'localfile' => '/foo/bar/baz.dat',
-					'expect'  => array(
-						'status'    => false,
-						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE',
-					),
-					'message' => 'Unwritable local file leads to error'
-				)
-			),
+					'expect'    => [
+						'status' => false,
+						'error'  => 'LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE',
+					],
+					'message'   => 'Unwritable local file leads to error',
+				],
+			],
 
-			array(
-				'setup' => array(),
-				'params' => array(
+			[
+				'setup'  => [],
+				'params' => [
 					'url'    => 'http://www.example.com/IDoNotExist.dat',
 					'length' => 1048576,
-				),
-				'test'  => array(
+				],
+				'test'   => [
 					'retSize' => 0,
 					'loop'    => false,
-					'expect'  => array(
-						'status'    => false,
-						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
-					),
-					'message' => 'HTTP 404 results in error'
-				)
-			),
+					'expect'  => [
+						'status' => false,
+						'error'  => 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
+					],
+					'message' => 'HTTP 404 results in error',
+				],
+			],
 
-			array(
-				'setup' => array(
+			[
+				'setup'  => [
 					'httpstatus' => 403,
-				),
-				'params' => array(
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/IDoNotExist.dat',
 					'length' => 1048576,
-				),
-				'test'  => array(
+				],
+				'test'   => [
 					'retSize' => 0,
 					'loop'    => false,
-					'expect'  => array(
-						'status'    => false,
-						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
-					),
-					'message' => 'HTTP 403 results in error'
-				)
-			),
+					'expect'  => [
+						'status' => false,
+						'error'  => 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
+					],
+					'message' => 'HTTP 403 results in error',
+				],
+			],
 
-			array(
-				'setup' => array(
+			[
+				'setup'  => [
 					'errno' => 999,
 					'error' => 'Foobar',
-				),
-				'params' => array(
+				],
+				'params' => [
 					'url'    => 'http://www.example.com/IDoNotExist.dat',
 					'length' => 1048576,
-				),
-				'test'  => array(
+				],
+				'test'   => [
 					'retSize' => 0,
 					'loop'    => false,
-					'expect'  => array(
-						'status'    => false,
-						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_CURL_ERROR',
-					),
-					'message' => 'cURL error results in error returned'
-				)
-			),
-		);
+					'expect'  => [
+						'status' => false,
+						'error'  => 'LIB_FOF40_DOWNLOAD_ERR_CURL_ERROR',
+					],
+					'message' => 'cURL error results in error returned',
+				],
+			],
+		];
 	}
 }

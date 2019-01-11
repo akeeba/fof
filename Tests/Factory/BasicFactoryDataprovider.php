@@ -6,401 +6,400 @@
  */
 
 
-
 class BasicFactoryDataprovider
 {
-    public static function getTestController()
-    {
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'mock' => array(
-                    'create' => array(true)
-                )
-            ),
-            array(
-                'case' => 'Controller is immediately found',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\Controller\Foobars')
-            )
-        );
+	public static function getTestController()
+	{
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'mock' => [
+					'create' => [true],
+				],
+			],
+			[
+				'case'      => 'Controller is immediately found',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\Controller\Foobars'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'mock' => array(
-                    'create' => array(
-                        'FOF40\Factory\Exception\ControllerNotFound',
-                        true
-                    )
-                )
-            ),
-            array(
-                'case' => 'Controller is found at second try',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\Controller\Foobars', '\Fakeapp\Site\Controller\Foobar')
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'mock' => [
+					'create' => [
+						'FOF40\Factory\Exception\ControllerNotFound',
+						true,
+					],
+				],
+			],
+			[
+				'case'      => 'Controller is found at second try',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\Controller\Foobars', '\Fakeapp\Site\Controller\Foobar'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'mock' => array(
-                    'create' => array(
-                        'FOF40\Factory\Exception\ControllerNotFound',
-                        'FOF40\Factory\Exception\ControllerNotFound'
-                    )
-                )
-            ),
-            array(
-                'case' => 'Controller is not found',
-                'exception' => 'FOF40\Factory\Exception\ControllerNotFound',
-                'names' => array()
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'mock' => [
+					'create' => [
+						'FOF40\Factory\Exception\ControllerNotFound',
+						'FOF40\Factory\Exception\ControllerNotFound',
+					],
+				],
+			],
+			[
+				'case'      => 'Controller is not found',
+				'exception' => 'FOF40\Factory\Exception\ControllerNotFound',
+				'names'     => [],
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestModel()
-    {
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'mock' => array(
-                    'create' => array(true)
-                )
-            ),
-            array(
-                'case' => 'Model is immediately found',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\Model\Foobars')
-            )
-        );
+	public static function getTestModel()
+	{
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'mock' => [
+					'create' => [true],
+				],
+			],
+			[
+				'case'      => 'Model is immediately found',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\Model\Foobars'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'mock' => array(
-                    'create' => array(
-                        'FOF40\Factory\Exception\ModelNotFound',
-                        true
-                    )
-                )
-            ),
-            array(
-                'case' => 'Model is found at second try',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\Model\Foobars', '\Fakeapp\Site\Model\Foobar')
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'mock' => [
+					'create' => [
+						'FOF40\Factory\Exception\ModelNotFound',
+						true,
+					],
+				],
+			],
+			[
+				'case'      => 'Model is found at second try',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\Model\Foobars', '\Fakeapp\Site\Model\Foobar'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'mock' => array(
-                    'create' => array(
-                        'FOF40\Factory\Exception\ModelNotFound',
-                        'FOF40\Factory\Exception\ModelNotFound'
-                    )
-                )
-            ),
-            array(
-                'case' => 'Model is not found',
-                'exception' => 'FOF40\Factory\Exception\ModelNotFound',
-                'names' => array()
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'mock' => [
+					'create' => [
+						'FOF40\Factory\Exception\ModelNotFound',
+						'FOF40\Factory\Exception\ModelNotFound',
+					],
+				],
+			],
+			[
+				'case'      => 'Model is not found',
+				'exception' => 'FOF40\Factory\Exception\ModelNotFound',
+				'names'     => [],
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestView()
-    {
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'type' => 'html',
-                'mock' => array(
-                    'create' => array(true)
-                )
-            ),
-            array(
-                'case' => 'View is immediately found',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\View\Foobars\Html')
-            )
-        );
+	public static function getTestView()
+	{
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'type' => 'html',
+				'mock' => [
+					'create' => [true],
+				],
+			],
+			[
+				'case'      => 'View is immediately found',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\View\Foobars\Html'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'type' => 'json',
-                'mock' => array(
-                    'create' => array(true)
-                )
-            ),
-            array(
-                'case' => 'View is immediately found, JSON type',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\View\Foobars\Json')
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'type' => 'json',
+				'mock' => [
+					'create' => [true],
+				],
+			],
+			[
+				'case'      => 'View is immediately found, JSON type',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\View\Foobars\Json'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'type' => 'html',
-                'mock' => array(
-                    'create' => array(
-                        'FOF40\Factory\Exception\ViewNotFound',
-                        true
-                    )
-                )
-            ),
-            array(
-                'case' => 'View is found at second try',
-                'exception' => '',
-                'names' => array('\Fakeapp\Site\View\Foobars\Html', '\Fakeapp\Site\View\Foobar\Html')
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'type' => 'html',
+				'mock' => [
+					'create' => [
+						'FOF40\Factory\Exception\ViewNotFound',
+						true,
+					],
+				],
+			],
+			[
+				'case'      => 'View is found at second try',
+				'exception' => '',
+				'names'     => ['\Fakeapp\Site\View\Foobars\Html', '\Fakeapp\Site\View\Foobar\Html'],
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'foobars',
-                'type' => 'html',
-                'mock' => array(
-                    'create' => array(
-                        'FOF40\Factory\Exception\ViewNotFound',
-                        'FOF40\Factory\Exception\ViewNotFound'
-                    )
-                )
-            ),
-            array(
-                'case' => 'View is not found',
-                'exception' => 'FOF40\Factory\Exception\ViewNotFound',
-                'names' => array()
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'foobars',
+				'type' => 'html',
+				'mock' => [
+					'create' => [
+						'FOF40\Factory\Exception\ViewNotFound',
+						'FOF40\Factory\Exception\ViewNotFound',
+					],
+				],
+			],
+			[
+				'case'      => 'View is not found',
+				'exception' => 'FOF40\Factory\Exception\ViewNotFound',
+				'names'     => [],
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestDispatcher()
-    {
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'create' => true
-                )
-            ),
-            array(
-                'case' => 'Dispatcher found',
-                'name' => '\Fakeapp\Site\Dispatcher\Dispatcher',
-                'result' => true
-            )
-        );
+	public static function getTestDispatcher()
+	{
+		$data[] = [
+			[
+				'mock' => [
+					'create' => true,
+				],
+			],
+			[
+				'case'   => 'Dispatcher found',
+				'name'   => '\Fakeapp\Site\Dispatcher\Dispatcher',
+				'result' => true,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'create' => 'FOF40\Factory\Exception\DispatcherNotFound'
-                )
-            ),
-            array(
-                'case' => 'Dispatcher not found, fall back to the default one',
-                'name' => '\Fakeapp\Site\Dispatcher\Dispatcher',
-                'result' => true
-            )
-        );
+		$data[] = [
+			[
+				'mock' => [
+					'create' => 'FOF40\Factory\Exception\DispatcherNotFound',
+				],
+			],
+			[
+				'case'   => 'Dispatcher not found, fall back to the default one',
+				'name'   => '\Fakeapp\Site\Dispatcher\Dispatcher',
+				'result' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestToolbar()
-    {
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'create' => true
-                )
-            ),
-            array(
-                'case' => 'Toolbar found',
-                'name' => '\Fakeapp\Site\Toolbar\Toolbar',
-                'result' => true
-            )
-        );
+	public static function getTestToolbar()
+	{
+		$data[] = [
+			[
+				'mock' => [
+					'create' => true,
+				],
+			],
+			[
+				'case'   => 'Toolbar found',
+				'name'   => '\Fakeapp\Site\Toolbar\Toolbar',
+				'result' => true,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'create' => 'FOF40\Factory\Exception\ToolbarNotFound'
-                )
-            ),
-            array(
-                'case' => 'Toolbar not found, fall back to the default one',
-                'name' => '\Fakeapp\Site\Toolbar\Toolbar',
-                'result' => true
-            )
-        );
+		$data[] = [
+			[
+				'mock' => [
+					'create' => 'FOF40\Factory\Exception\ToolbarNotFound',
+				],
+			],
+			[
+				'case'   => 'Toolbar not found, fall back to the default one',
+				'name'   => '\Fakeapp\Site\Toolbar\Toolbar',
+				'result' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestTransparentAuthentication()
-    {
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'create' => true
-                )
-            ),
-            array(
-                'case' => 'Authentication found',
-                'name' => '\Fakeapp\Site\TransparentAuthentication\TransparentAuthentication',
-                'result' => true
-            )
-        );
+	public static function getTestTransparentAuthentication()
+	{
+		$data[] = [
+			[
+				'mock' => [
+					'create' => true,
+				],
+			],
+			[
+				'case'   => 'Authentication found',
+				'name'   => '\Fakeapp\Site\TransparentAuthentication\TransparentAuthentication',
+				'result' => true,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'create' => 'FOF40\Factory\Exception\TransparentAuthenticationNotFound'
-                )
-            ),
-            array(
-                'case' => 'Authentication not found, fall back to the default one',
-                'name' => '\Fakeapp\Site\TransparentAuthentication\TransparentAuthentication',
-                'result' => true
-            )
-        );
+		$data[] = [
+			[
+				'mock' => [
+					'create' => 'FOF40\Factory\Exception\TransparentAuthenticationNotFound',
+				],
+			],
+			[
+				'case'   => 'Authentication not found, fall back to the default one',
+				'name'   => '\Fakeapp\Site\TransparentAuthentication\TransparentAuthentication',
+				'result' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestForm()
-    {
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'formFilename' => false,
-                    'scaffolding'  => false
-                ),
-                'name' => 'item',
-                'source' => 'form.default',
-                'view' => 'children',
-                'options' => array(),
-                'replace' => true,
-                'xpath' => false
-            ),
-            array(
-                'case'   => 'No scaffolding, no filename, source is the name of the form',
-                'result' => null,
-                'exception' => false
-            )
-        );
+	public static function getTestForm()
+	{
+		$data[] = [
+			[
+				'mock'    => [
+					'formFilename' => false,
+					'scaffolding'  => false,
+				],
+				'name'    => 'item',
+				'source'  => 'form.default',
+				'view'    => 'children',
+				'options' => [],
+				'replace' => true,
+				'xpath'   => false,
+			],
+			[
+				'case'      => 'No scaffolding, no filename, source is the name of the form',
+				'result'    => null,
+				'exception' => false,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'formFilename' => false,
-                    'scaffolding'  => true
-                ),
-                'name' => 'item',
-                'source' => 'form.default',
-                'view' => 'children',
-                'options' => array(),
-                'replace' => true,
-                'xpath' => false
-            ),
-            array(
-                'case'   => 'With scaffolding, no filename, source is the name of the form',
-                'result' => true,
-                'exception' => false
-            )
-        );
+		$data[] = [
+			[
+				'mock'    => [
+					'formFilename' => false,
+					'scaffolding'  => true,
+				],
+				'name'    => 'item',
+				'source'  => 'form.default',
+				'view'    => 'children',
+				'options' => [],
+				'replace' => true,
+				'xpath'   => false,
+			],
+			[
+				'case'      => 'With scaffolding, no filename, source is the name of the form',
+				'result'    => true,
+				'exception' => false,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'formFilename' => JPATH_TESTS.'/_data/form/form.default.xml',
-                    'scaffolding'  => true
-                ),
-                'name' => 'item',
-                'source' => 'form.default',
-                'view' => 'children',
-                'options' => array(),
-                'replace' => true,
-                'xpath' => false
-            ),
-            array(
-                'case'   => 'With scaffolding, with filename, source is the name of the form',
-                'result' => true,
-                'exception' => false
-            )
-        );
+		$data[] = [
+			[
+				'mock'    => [
+					'formFilename' => JPATH_TESTS . '/_data/form/form.default.xml',
+					'scaffolding'  => true,
+				],
+				'name'    => 'item',
+				'source'  => 'form.default',
+				'view'    => 'children',
+				'options' => [],
+				'replace' => true,
+				'xpath'   => false,
+			],
+			[
+				'case'      => 'With scaffolding, with filename, source is the name of the form',
+				'result'    => true,
+				'exception' => false,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'formFilename' => 'wrong_path',
-                    'scaffolding'  => true
-                ),
-                'name' => 'item',
-                'source' => 'form.default',
-                'view' => 'children',
-                'options' => array(),
-                'replace' => true,
-                'xpath' => false
-            ),
-            array(
-                'case'      => 'With scaffolding, with filename (not existing), source is the name of the form',
-                'result'    => true,
-                'exception' => 'FOF40\Factory\Exception\FormLoadFile'
-            )
-        );
+		$data[] = [
+			[
+				'mock'    => [
+					'formFilename' => 'wrong_path',
+					'scaffolding'  => true,
+				],
+				'name'    => 'item',
+				'source'  => 'form.default',
+				'view'    => 'children',
+				'options' => [],
+				'replace' => true,
+				'xpath'   => false,
+			],
+			[
+				'case'      => 'With scaffolding, with filename (not existing), source is the name of the form',
+				'result'    => true,
+				'exception' => 'FOF40\Factory\Exception\FormLoadFile',
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'formFilename' => 'wrong_path',
-                    'scaffolding'  => true
-                ),
-                'name' => 'item',
-                'source' => file_get_contents(JPATH_TESTS.'/_data/form/form.default.xml'),
-                'view' => 'children',
-                'options' => array(),
-                'replace' => true,
-                'xpath' => false
-            ),
-            array(
-                'case'      => 'With scaffolding, no filename, source is a correct string',
-                'result'    => true,
-                'exception' => false
-            )
-        );
+		$data[] = [
+			[
+				'mock'    => [
+					'formFilename' => 'wrong_path',
+					'scaffolding'  => true,
+				],
+				'name'    => 'item',
+				'source'  => file_get_contents(JPATH_TESTS . '/_data/form/form.default.xml'),
+				'view'    => 'children',
+				'options' => [],
+				'replace' => true,
+				'xpath'   => false,
+			],
+			[
+				'case'      => 'With scaffolding, no filename, source is a correct string',
+				'result'    => true,
+				'exception' => false,
+			],
+		];
 
-        $data[] = array(
-            array(
-                'mock' => array(
-                    'formFilename' => 'wrong_path',
-                    'scaffolding'  => true
-                ),
-                'name' => 'item',
-                'source' => '<form this is simply wrong',
-                'view' => 'children',
-                'options' => array(),
-                'replace' => true,
-                'xpath' => false
-            ),
-            array(
-                'case'      => 'With scaffolding, no filename, source is a malformed string',
-                'result'    => true,
-                'exception' => 'FOF40\Factory\Exception\FormLoadData'
-            )
-        );
+		$data[] = [
+			[
+				'mock'    => [
+					'formFilename' => 'wrong_path',
+					'scaffolding'  => true,
+				],
+				'name'    => 'item',
+				'source'  => '<form this is simply wrong',
+				'view'    => 'children',
+				'options' => [],
+				'replace' => true,
+				'xpath'   => false,
+			],
+			[
+				'case'      => 'With scaffolding, no filename, source is a malformed string',
+				'result'    => true,
+				'exception' => 'FOF40\Factory\Exception\FormLoadData',
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 }

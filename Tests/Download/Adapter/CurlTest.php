@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Download\Adapter;
 
 use FOF40\Download\Adapter\Curl;
@@ -55,7 +54,7 @@ class CurlTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF40\Download\Adapter\Curl::downloadAndReturn
+	 * @covers          FOF40\Download\Adapter\Curl::downloadAndReturn
 	 *
 	 * @dataProvider    FOF40\Tests\Download\Adapter\CurlDataprovider::getTestDownloadAndReturn
 	 *
@@ -72,7 +71,7 @@ class CurlTest extends FOFTestCase
 			$this->setExpectedException($test['exception']['name'], $test['exception']['message'], $test['exception']['code']);
 		}
 
-		$ret = $adapter->downloadAndReturn($test['url'], $test['from'], $test['to']);
+		$ret     = $adapter->downloadAndReturn($test['url'], $test['from'], $test['to']);
 		$retSize = 0;
 
 		if (is_string($ret))
@@ -84,7 +83,7 @@ class CurlTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF40\Download\Adapter\Curl::getFileSize
+	 * @covers          FOF40\Download\Adapter\Curl::getFileSize
 	 *
 	 * @dataProvider    FOF40\Tests\Download\Adapter\CurlDataprovider::getTestGetFileSize
 	 *

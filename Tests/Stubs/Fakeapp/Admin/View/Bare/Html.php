@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Admin\View\Bare;
 
 use FOF40\View\View;

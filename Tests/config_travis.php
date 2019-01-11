@@ -6,11 +6,10 @@
  */
 
 
-
-$fofTestConfig = array(
+$fofTestConfig = [
 	// Connection details to Travis database
-    'host'     => '127.0.0.1',
-    'user'     => 'fof_db',
-    'password' => 'fof',
-    'db'       => 'fof_test',
-);
+	'host'     => '127.0.0.1',
+	'user'     => 'fof_db',
+	'password' => 'fof',
+	'db'       => 'fof_test',
+];

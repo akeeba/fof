@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\DataModel;
 
 use FOF40\Model\DataModel\Behaviour\Access;
@@ -23,65 +22,65 @@ require_once 'AccessDataprovider.php';
  */
 class AccessTest extends DatabaseTest
 {
-    /**
-     * @group           Behaviour
-     * @group           AccessOnAfterBuildQuery
-     * @covers          FOF40\Model\DataModel\Behaviour\Access::onAfterBuildQuery
-     * @dataProvider    AccessDataprovider::getTestOnAfterBuildQuery
-     */
-    public function testOnAfterBuildQuery($test, $check)
-    {
-        $config = array(
-            'idFieldName' => $test['tableid'],
-            'tableName'   => $test['table']
-        );
+	/**
+	 * @group           Behaviour
+	 * @group           AccessOnAfterBuildQuery
+	 * @covers          FOF40\Model\DataModel\Behaviour\Access::onAfterBuildQuery
+	 * @dataProvider    AccessDataprovider::getTestOnAfterBuildQuery
+	 */
+	public function testOnAfterBuildQuery($test, $check)
+	{
+		$config = [
+			'idFieldName' => $test['tableid'],
+			'tableName'   => $test['table'],
+		];
 
-        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
-            ->setMethods(array('applyAccessFiltering'))
-            ->setConstructorArgs(array(static::$container, $config))
-            ->getMock();
+		$model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
+			->setMethods(['applyAccessFiltering'])
+			->setConstructorArgs([static::$container, $config])
+			->getMock();
 
-        $model->expects($check['access'] ? $this->once() : $this->never())->method('applyAccessFiltering');
+		$model->expects($check['access'] ? $this->once() : $this->never())->method('applyAccessFiltering');
 
-        $query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
-        $dispatcher = $model->getBehavioursDispatcher();
-        $filter     = new Access($dispatcher);
+		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$dispatcher = $model->getBehavioursDispatcher();
+		$filter     = new Access($dispatcher);
 
-        $filter->onAfterBuildQuery($model, $query);
-    }
+		$filter->onAfterBuildQuery($model, $query);
+	}
 
-    /**
-     * @group           Behaviour
-     * @group           AccessOnAfterLoad
-     * @covers          FOF40\Model\DataModel\Behaviour\Access::onAfterLoad
-     * @dataProvider    AccessDataprovider::getTestOnAfterLoad
-     */
-    public function testOnAfterLoad($test, $check)
-    {
-        $container = new TestContainer();
-        $platform  = $container->platform;
-        $platform::$user = new ClosureHelper(array(
-            'getAuthorisedViewLevels' => function() use ($test){
-                return $test['mock']['userAccess'];
-            }
-        ));
+	/**
+	 * @group           Behaviour
+	 * @group           AccessOnAfterLoad
+	 * @covers          FOF40\Model\DataModel\Behaviour\Access::onAfterLoad
+	 * @dataProvider    AccessDataprovider::getTestOnAfterLoad
+	 */
+	public function testOnAfterLoad($test, $check)
+	{
+		$container       = new TestContainer();
+		$platform        = $container->platform;
+		$platform::$user = new ClosureHelper([
+			'getAuthorisedViewLevels' => function () use ($test) {
+				return $test['mock']['userAccess'];
+			},
+		]);
 
-        $config = array(
-            'idFieldName' => $test['tableid'],
-            'tableName'   => $test['table']
-        );
+		$config = [
+			'idFieldName' => $test['tableid'],
+			'tableName'   => $test['table'],
+		];
 
-        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
-            ->setMethods(array('reset', 'getFieldValue'))
-            ->setConstructorArgs(array($container, $config))
-            ->getMock();
-        $model->expects($check['reset'] ? $this->once() : $this->never())->method('reset');
-        $model->method('getFieldValue')->willReturn($test['mock']['access']);
+		$model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
+			->setMethods(['reset', 'getFieldValue'])
+			->setConstructorArgs([$container, $config])
+			->getMock();
+		$model->expects($check['reset'] ? $this->once() : $this->never())->method('reset');
+		$model->method('getFieldValue')->willReturn($test['mock']['access']);
 
-        $query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
-        $dispatcher = $model->getBehavioursDispatcher();
-        $filter     = new Access($dispatcher);
+		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$dispatcher = $model->getBehavioursDispatcher();
+		$filter     = new Access($dispatcher);
 
-        $filter->onAfterLoad($model, $query);
-    }
+		$filter->onAfterLoad($model, $query);
+	}
 }

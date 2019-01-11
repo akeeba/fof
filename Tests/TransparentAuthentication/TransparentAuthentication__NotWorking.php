@@ -6,14 +6,13 @@
  */
 
 
-
 namespace FOF40\Tests\TransparentAuthentication;
 
-use FOF40\Tests\Helpers\FOFTestCase;
-use FOF40\TransparentAuthentication\TransparentAuthentication;
 use FOF40\Encrypt\Aes;
 use FOF40\Encrypt\Totp;
+use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\TransparentAuthentication\TransparentAuthentication;
 
 /**
  * Class TransparentAuthenticationTest
@@ -39,55 +38,55 @@ class TransparentAuthenticationTest extends FOFTestCase
 
 	public function testAddAuthenticationMethod()
 	{
-		$this->auth->setAuthenticationMethods(array(
-			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext
-		));
+		$this->auth->setAuthenticationMethods([
+			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext,
+		]);
 
 		// Try adding an existing method
 		$this->auth->addAuthenticationMethod(TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext);
 
-		$this->assertEquals(array(
+		$this->assertEquals([
 			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext,
-		), ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
+		], ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
 
 		// Try adding a non-existent method
 		$this->auth->addAuthenticationMethod(TransparentAuthentication::Auth_HTTPBasicAuth_TOTP);
 
-		$this->assertEquals(array(
+		$this->assertEquals([
 			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext,
-			TransparentAuthentication::Auth_HTTPBasicAuth_TOTP
-		), ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
+			TransparentAuthentication::Auth_HTTPBasicAuth_TOTP,
+		], ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
 
 		// Try adding an existing method again
 		$this->auth->addAuthenticationMethod(TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext);
 
-		$this->assertEquals(array(
+		$this->assertEquals([
 			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext,
-			TransparentAuthentication::Auth_HTTPBasicAuth_TOTP
-		), ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
+			TransparentAuthentication::Auth_HTTPBasicAuth_TOTP,
+		], ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
 	}
 
 	public function testRemoveAuthenticationMethod()
 	{
-		$this->auth->setAuthenticationMethods(array(
+		$this->auth->setAuthenticationMethods([
 			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext,
 			TransparentAuthentication::Auth_HTTPBasicAuth_TOTP,
-		));
+		]);
 
 		// Try removing a non-existing method
 		$this->auth->removeAuthenticationMethod(TransparentAuthentication::Auth_QueryString_Plaintext);
 
-		$this->assertEquals(array(
+		$this->assertEquals([
 			TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext,
 			TransparentAuthentication::Auth_HTTPBasicAuth_TOTP,
-		), ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
+		], ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
 
 		// Try removing an existing method
 		$this->auth->removeAuthenticationMethod(TransparentAuthentication::Auth_HTTPBasicAuth_Plaintext);
 
-		$this->assertEquals(array(
-			1 => TransparentAuthentication::Auth_HTTPBasicAuth_TOTP
-		), ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
+		$this->assertEquals([
+			1 => TransparentAuthentication::Auth_HTTPBasicAuth_TOTP,
+		], ReflectionHelper::getValue($this->auth, 'authenticationMethods'));
 	}
 
 	/**
@@ -95,15 +94,15 @@ class TransparentAuthenticationTest extends FOFTestCase
 	 */
 	public function testGetTransparentAuthenticationCredentials($inputData, $serverGlobals, $shouldSucceed)
 	{
-        $input = static::$container->input;
+		$input = static::$container->input;
 
-        // Clear input data
-        ReflectionHelper::setValue($input, 'data', array());
+		// Clear input data
+		ReflectionHelper::setValue($input, 'data', []);
 
 		// Push input data if so defined
 		if (!is_null($inputData))
 		{
-            ReflectionHelper::setValue($input, 'data', $inputData);
+			ReflectionHelper::setValue($input, 'data', $inputData);
 		}
 
 		// Override server globals if necessary
@@ -135,230 +134,230 @@ class TransparentAuthenticationTest extends FOFTestCase
 	public function GetTestGetTransparentAuthenticationCredentials()
 	{
 		// Let's do some TOTP encoding
-		$totp = new Totp();
-		$otp = $totp->getCode(static::$totpKey);
+		$totp      = new Totp();
+		$otp       = $totp->getCode(static::$totpKey);
 		$cryptoKey = hash('sha256', static::$totpKey . $otp);
-		$aes = new Aes($cryptoKey);
+		$aes       = new Aes($cryptoKey);
 
-		$plainText_right = json_encode(array('username' => 'FOF40test', 'password' => 'dummy'));
-		$plainText_missingPassword = json_encode(array('username' => 'FOF40test'));
-		$plainText_missingUsername = json_encode(array('password' => 'dummy'));
-		$plainText_crap = 'crap_data';
-		$encoded_right = $aes->encryptString($plainText_right);
-		$encoded_missingPassword = $aes->encryptString($plainText_missingPassword);
-		$encoded_missingUsername = $aes->encryptString($plainText_missingUsername);
-		$encoded_crap = $aes->encryptString($plainText_crap);
+		$plainText_right           = json_encode(['username' => 'FOF40test', 'password' => 'dummy']);
+		$plainText_missingPassword = json_encode(['username' => 'FOF40test']);
+		$plainText_missingUsername = json_encode(['password' => 'dummy']);
+		$plainText_crap            = 'crap_data';
+		$encoded_right             = $aes->encryptString($plainText_right);
+		$encoded_missingPassword   = $aes->encryptString($plainText_missingPassword);
+		$encoded_missingUsername   = $aes->encryptString($plainText_missingUsername);
+		$encoded_crap              = $aes->encryptString($plainText_crap);
 
-		$otp = $totp->getCode(static::$totpKey, time() - 86400);
-		$cryptoKey = hash('sha256', static::$totpKey . $otp);
-		$aes = new Aes($cryptoKey);
+		$otp             = $totp->getCode(static::$totpKey, time() - 86400);
+		$cryptoKey       = hash('sha256', static::$totpKey . $otp);
+		$aes             = new Aes($cryptoKey);
 		$encodedOutdated = $aes->encryptString($plainText_right);
 
 		// Input data, server globals, do I expect correct username/password
-		return array(
+		return [
 			// HTTP Basic Auth, plaintext
-			array(
+			[
 				null,
-				array(
+				[
 					'PHP_AUTH_USER' => 'FOF40test',
 					'PHP_AUTH_PW'   => 'dummy',
-				),
-				true
-			),
+				],
+				true,
+			],
 			// HTTP Basic Auth, missing username
-			array(
+			[
 				null,
-				array(
+				[
 					'PHP_AUTH_PW' => 'dummy',
-				),
-				false
-			),
+				],
+				false,
+			],
 			// HTTP Basic Auth, missing password
-			array(
+			[
 				null,
-				array(
+				[
 					'PHP_AUTH_USER' => 'FOF40test',
-				),
-				false
-			),
+				],
+				false,
+			],
 
 			// Query string, plaintext
-			array(
-				array(
-					'testAuth' => json_encode(array(
+			[
+				[
+					'testAuth' => json_encode([
 						'username' => 'FOF40test',
-						'password' => 'dummy'
-					))
-				),
+						'password' => 'dummy',
+					]),
+				],
 				null,
-				true
-			),
+				true,
+			],
 			// Query string, missing username
-			array(
-				array(
-					'testAuth' => json_encode(array(
-						'password' => 'dummy'
-					))
-				),
+			[
+				[
+					'testAuth' => json_encode([
+						'password' => 'dummy',
+					]),
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// Query string, missing password
-			array(
-				array(
-					'testAuth' => json_encode(array(
+			[
+				[
+					'testAuth' => json_encode([
 						'username' => 'FOF40test',
-					))
-				),
+					]),
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// Query string, crap string
-			array(
-				array(
-					'testAuth' => 'stupid_string_is_no_good_json_data'
-				),
+			[
+				[
+					'testAuth' => 'stupid_string_is_no_good_json_data',
+				],
 				null,
-				false
-			),
+				false,
+			],
 
 			// Split query string
-			array(
-				array(
-					'FOF40Username'	=> 'FOF40test',
-					'FOF40Password'	=> 'dummy',
-				),
+			[
+				[
+					'FOF40Username' => 'FOF40test',
+					'FOF40Password' => 'dummy',
+				],
 				null,
-				true
-			),
+				true,
+			],
 			// Split query string, missing username
-			array(
-				array(
-					'FOF40Password'	=> 'dummy',
-				),
+			[
+				[
+					'FOF40Password' => 'dummy',
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// Split query string, missing password
-			array(
-				array(
-					'FOF40Username'	=> 'FOF40test',
-				),
+			[
+				[
+					'FOF40Username' => 'FOF40test',
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// Split query string, junk fed
-			array(
-				array(
-					'junk'	=> 'food',
-				),
+			[
+				[
+					'junk' => 'food',
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// HTTP Basic Auth, TOTP, correct
-			array(
+			[
 				null,
-				array(
-					'PHP_AUTH_USER'	=> 'FOF40user',
-					'PHP_AUTH_PW'	=> $encoded_right,
-				),
-				true
-			),
+				[
+					'PHP_AUTH_USER' => 'FOF40user',
+					'PHP_AUTH_PW'   => $encoded_right,
+				],
+				true,
+			],
 			// HTTP Basic Auth, TOTP, missing username
-			array(
+			[
 				null,
-				array(
-					'PHP_AUTH_USER'	=> 'FOF40user',
-					'PHP_AUTH_PW'	=> $encoded_missingUsername,
-				),
-				false
-			),
+				[
+					'PHP_AUTH_USER' => 'FOF40user',
+					'PHP_AUTH_PW'   => $encoded_missingUsername,
+				],
+				false,
+			],
 			// HTTP Basic Auth, TOTP, missing password
-			array(
+			[
 				null,
-				array(
-					'PHP_AUTH_USER'	=> 'FOF40user',
-					'PHP_AUTH_PW'	=> $encoded_missingPassword,
-				),
-				false
-			),
+				[
+					'PHP_AUTH_USER' => 'FOF40user',
+					'PHP_AUTH_PW'   => $encoded_missingPassword,
+				],
+				false,
+			],
 			// HTTP Basic Auth, TOTP, crap encoded data
-			array(
+			[
 				null,
-				array(
-					'PHP_AUTH_USER'	=> 'FOF40user',
-					'PHP_AUTH_PW'	=> $encoded_crap,
-				),
-				false
-			),
+				[
+					'PHP_AUTH_USER' => 'FOF40user',
+					'PHP_AUTH_PW'   => $encoded_crap,
+				],
+				false,
+			],
 			// HTTP Basic Auth, TOTP, crap non-encoded data
-			array(
+			[
 				null,
-				array(
-					'PHP_AUTH_USER'	=> 'FOF40user',
-					'PHP_AUTH_PW'	=> 'this_is_crap_data',
-				),
-				false
-			),
+				[
+					'PHP_AUTH_USER' => 'FOF40user',
+					'PHP_AUTH_PW'   => 'this_is_crap_data',
+				],
+				false,
+			],
 			// HTTP Basic Auth, TOTP, outdated but otherwise correctly encrypted data
-			array(
+			[
 				null,
-				array(
-					'PHP_AUTH_USER'	=> 'FOF40user',
-					'PHP_AUTH_PW'	=> $encodedOutdated,
-				),
-				false
-			),
+				[
+					'PHP_AUTH_USER' => 'FOF40user',
+					'PHP_AUTH_PW'   => $encodedOutdated,
+				],
+				false,
+			],
 
 			// Query string, TOTP, correct
-			array(
-				array(
-					'testAuth' => $encoded_right
-				),
+			[
+				[
+					'testAuth' => $encoded_right,
+				],
 				null,
-				true
-			),
+				true,
+			],
 			// Query string, TOTP, missing username
-			array(
-				array(
-					'testAuth' => $encoded_missingUsername
-				),
+			[
+				[
+					'testAuth' => $encoded_missingUsername,
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// Query string, TOTP, missing password
-			array(
+			[
 				null,
-				array(
-					'testAuth' => $encoded_missingPassword
-				),
-				false
-			),
+				[
+					'testAuth' => $encoded_missingPassword,
+				],
+				false,
+			],
 			// Query string, TOTP, crap encoded data
-			array(
+			[
 				null,
-				array(
-					'testAuth'	=> $encoded_crap,
-				),
-				false
-			),
+				[
+					'testAuth' => $encoded_crap,
+				],
+				false,
+			],
 			// Query string, TOTP, crap non-encoded data
-			array(
-				array(
-					'testAuth'	=> 'this_is_crap_data',
-				),
+			[
+				[
+					'testAuth' => 'this_is_crap_data',
+				],
 				null,
-				false
-			),
+				false,
+			],
 			// Query string, TOTP, outdated but otherwise correctly encrypted data
-			array(
-				array(
-					'testAuth'	=> $encodedOutdated,
-				),
+			[
+				[
+					'testAuth' => $encodedOutdated,
+				],
 				null,
-				false
-			),
-		);
+				false,
+			],
+		];
 	}
 
 	protected function setUp()
@@ -366,7 +365,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 		parent::setUp();
 
 		$this->auth = new TransparentAuthentication(static::$container);
-		$this->auth->setAuthenticationMethods(array(1,2,3,4,5));
+		$this->auth->setAuthenticationMethods([1, 2, 3, 4, 5]);
 		$this->auth->setBasicAuthUsername('FOF40user');
 		$this->auth->setQueryParam('testAuth');
 		$this->auth->setQueryParamPassword('FOF40Password');

@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Utils;
 
 use FOF40\Tests\Helpers\FOFTestCase;
@@ -61,7 +60,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	 */
 	private static function deleteCustomUsers()
 	{
-		$db    = \JFactory::getDbo();
+		$db = \JFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->delete($db->qn('#__users'))
@@ -104,7 +103,7 @@ class TimezoneWranglerTest extends FOFTestCase
 			'id'       => 1002,
 			'name'     => 'User Without TZ',
 			'email'    => 'user1002@fof.test',
-			'username' => 'user1002'
+			'username' => 'user1002',
 		];
 		$userGroupMapObject = (object) [
 			'user_id'  => 1002,

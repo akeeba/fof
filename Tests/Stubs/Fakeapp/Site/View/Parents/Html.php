@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\View\Parents;
 
 use FOF40\View\View;

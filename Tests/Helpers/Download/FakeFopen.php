@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Download;
 
 /**
@@ -33,7 +32,7 @@ class FakeFopen extends FakeBase
 	public static function reset()
 	{
 		static::$returnSize = 1048576;
-		static::$url = 'http://www.example.com/donwload.dat';
+		static::$url        = 'http://www.example.com/donwload.dat';
 		static::$httpstatus = 200;
 		static::$setHeaders = true;
 	}
@@ -41,7 +40,7 @@ class FakeFopen extends FakeBase
 	/**
 	 * Apply a configuration array
 	 *
-	 * @param  array  $configuration
+	 * @param  array $configuration
 	 */
 	public static function setUp(array $configuration)
 	{
@@ -88,7 +87,7 @@ class FakeFopen extends FakeBase
 
 		if (self::$setHeaders && (self::$httpstatus != 404))
 		{
-			$http_response_header_test = array('HTTP/1.1 ' . self::$httpstatus);
+			$http_response_header_test = ['HTTP/1.1 ' . self::$httpstatus];
 		}
 		else
 		{
@@ -102,7 +101,7 @@ class FakeFopen extends FakeBase
 
 		// Get the from/to from the context
 		$from = 0;
-		$to = 0;
+		$to   = 0;
 
 		if (is_resource($context))
 		{

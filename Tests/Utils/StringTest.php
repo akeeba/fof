@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Utils;
 
 use FOF40\Tests\Helpers\FOFTestCase;

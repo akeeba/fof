@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Factory\Magic;
 
 use FOF40\Tests\Helpers\FOFTestCase;
@@ -19,15 +18,15 @@ use FOF40\Tests\Helpers\ReflectionHelper;
  */
 class BaseFactoryTest extends FOFTestCase
 {
-    /**
-     * @covers      FOF40\Factory\Magic\BaseFactory::__construct
-     */
-    public function test__construct()
-    {
-        $container = static::$container;
+	/**
+	 * @covers      FOF40\Factory\Magic\BaseFactory::__construct
+	 */
+	public function test__construct()
+	{
+		$container = static::$container;
 
-        $factory = $this->getMockForAbstractClass('FOF40\Factory\Magic\BaseFactory', array($container));
+		$factory = $this->getMockForAbstractClass('FOF40\Factory\Magic\BaseFactory', [$container]);
 
-        $this->assertSame($container, ReflectionHelper::getValue($factory, 'container'));
-    }
+		$this->assertSame($container, ReflectionHelper::getValue($factory, 'container'));
+	}
 }

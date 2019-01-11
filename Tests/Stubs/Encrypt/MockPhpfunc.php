@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Stubs\Encrypt;
 
 
@@ -14,7 +13,7 @@ use FOF40\Utils\Phpfunc;
 
 class MockPhpfunc extends Phpfunc
 {
-	protected $extensions = array();
+	protected $extensions = [];
 
 	protected $functions_enabled = null;
 
@@ -57,7 +56,7 @@ class MockPhpfunc extends Phpfunc
 	public function extension_loaded($name)
 	{
 		// for parent coverage
-		$this->__call('extension_loaded', array($name));
+		$this->__call('extension_loaded', [$name]);
 
 		// for testing
 		return in_array($name, $this->extensions);
@@ -66,7 +65,7 @@ class MockPhpfunc extends Phpfunc
 	public function function_exists($name)
 	{
 		// for parent coverage
-		$result = $this->__call('function_exists', array($name));
+		$result = $this->__call('function_exists', [$name]);
 
 		if (is_null($this->functions_enabled))
 		{
@@ -80,7 +79,7 @@ class MockPhpfunc extends Phpfunc
 	public function mcrypt_list_algorithms()
 	{
 		// for parent coverage
-		$result = $this->__call('mcrypt_list_algorithms', array());
+		$result = $this->__call('mcrypt_list_algorithms', []);
 
 		if (is_null($this->mcrypt_algorithms))
 		{
@@ -94,7 +93,7 @@ class MockPhpfunc extends Phpfunc
 	public function openssl_get_cipher_methods()
 	{
 		// for parent coverage
-		$result = $this->__call('openssl_get_cipher_methods', array());
+		$result = $this->__call('openssl_get_cipher_methods', []);
 
 		if (is_null($this->openssl_algorithms))
 		{
@@ -108,7 +107,7 @@ class MockPhpfunc extends Phpfunc
 	public function hash_algos()
 	{
 		// for parent coverage
-		$result = $this->__call('hash_algos', array());
+		$result = $this->__call('hash_algos', []);
 
 		if (is_null($this->hash_algorithms))
 		{

@@ -6,131 +6,130 @@
  */
 
 
-
 class MagicFactoryDataprovider
 {
-    public static function getTestController()
-    {
-        $data[] = array(
-            array(
-                'view' => 'foobars'
-            ),
-            array(
-                'case' => 'Controller is immediately found',
-                'result' => 'Fakeapp\Site\Controller\Foobars'
-            )
-        );
+	public static function getTestController()
+	{
+		$data[] = [
+			[
+				'view' => 'foobars',
+			],
+			[
+				'case'   => 'Controller is immediately found',
+				'result' => 'Fakeapp\Site\Controller\Foobars',
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'nothere'
-            ),
-            array(
-                'case' => 'Controller is not found',
-                'result' => 'Fakeapp\Site\Controller\DefaultDataController'
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'nothere',
+			],
+			[
+				'case'   => 'Controller is not found',
+				'result' => 'Fakeapp\Site\Controller\DefaultDataController',
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestModel()
-    {
-        $data[] = array(
-            array(
-                'view' => 'foobars'
-            ),
-            array(
-                'case' => 'Model is immediately found',
-                'result' => 'Fakeapp\Site\Model\Foobar'
-            )
-        );
+	public static function getTestModel()
+	{
+		$data[] = [
+			[
+				'view' => 'foobars',
+			],
+			[
+				'case'   => 'Model is immediately found',
+				'result' => 'Fakeapp\Site\Model\Foobar',
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'tests'
-            ),
-            array(
-                'case' => 'Model is not found',
-                'result' => 'FOF40\Model\DataModel'
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'tests',
+			],
+			[
+				'case'   => 'Model is not found',
+				'result' => 'FOF40\Model\DataModel',
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestView()
-    {
-        $data[] = array(
-            array(
-                'view' => 'foobars'
-            ),
-            array(
-                'case' => 'View is immediately found',
-                'result' => 'Fakeapp\Site\View\Foobars\Html'
-            )
-        );
+	public static function getTestView()
+	{
+		$data[] = [
+			[
+				'view' => 'foobars',
+			],
+			[
+				'case'   => 'View is immediately found',
+				'result' => 'Fakeapp\Site\View\Foobars\Html',
+			],
+		];
 
-        $data[] = array(
-            array(
-                'view' => 'tests'
-            ),
-            array(
-                'case' => 'View is not found',
-                'result' => 'FOF40\View\DataView\Html'
-            )
-        );
+		$data[] = [
+			[
+				'view' => 'tests',
+			],
+			[
+				'case'   => 'View is not found',
+				'result' => 'FOF40\View\DataView\Html',
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestDispatcher()
-    {
-        $data[] = array(
-            array(
-                'backend' => true
-            ),
-            array(
-                'case' => 'Dispatcher is found',
-                'result' => 'Fakeapp\Admin\Dispatcher\Dispatcher'
-            )
-        );
+	public static function getTestDispatcher()
+	{
+		$data[] = [
+			[
+				'backend' => true,
+			],
+			[
+				'case'   => 'Dispatcher is found',
+				'result' => 'Fakeapp\Admin\Dispatcher\Dispatcher',
+			],
+		];
 
-        $data[] = array(
-            array(
-                'backend' => false
-            ),
-            array(
-                'case' => 'Dispatcher not found',
-                'result' => 'FOF40\Dispatcher\Dispatcher'
-            )
-        );
+		$data[] = [
+			[
+				'backend' => false,
+			],
+			[
+				'case'   => 'Dispatcher not found',
+				'result' => 'FOF40\Dispatcher\Dispatcher',
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestTransparentAuthentication()
-    {
-        $data[] = array(
-            array(
-                'backend' => true
-            ),
-            array(
-                'case' => 'TransparentAuthentication is found',
-                'result' => 'Fakeapp\Admin\TransparentAuthentication\TransparentAuthentication'
-            )
-        );
+	public static function getTestTransparentAuthentication()
+	{
+		$data[] = [
+			[
+				'backend' => true,
+			],
+			[
+				'case'   => 'TransparentAuthentication is found',
+				'result' => 'Fakeapp\Admin\TransparentAuthentication\TransparentAuthentication',
+			],
+		];
 
-        $data[] = array(
-            array(
-                'backend' => false
-            ),
-            array(
-                'case' => 'TransparentAuthentication not found',
-                'result' => 'FOF40\TransparentAuthentication\TransparentAuthentication'
-            )
-        );
+		$data[] = [
+			[
+				'backend' => false,
+			],
+			[
+				'case'   => 'TransparentAuthentication not found',
+				'result' => 'FOF40\TransparentAuthentication\TransparentAuthentication',
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 }

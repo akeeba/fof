@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\DataModel;
 
 use Fakeapp\Site\Model\Parents;
@@ -22,43 +21,43 @@ require_once 'RelationFiltersDataprovider.php';
  */
 class RelationFiltersTest extends DatabaseTest
 {
-    /**
-     * @group           Behaviour
-     * @group           RelationFiltersOnAfterBuildQuery
-     * @covers          FOF40\Model\DataModel\Behaviour\RelationFilters::onAfterBuildQuery
-     * @dataProvider    RelationFiltersDataprovider::getTestOnAfterBuildQuery
-     */
-    public function testOnAfterBuildQuery($test, $check)
-    {
-        \PHPUnit_Framework_Error_Warning::$enabled = false;
+	/**
+	 * @group           Behaviour
+	 * @group           RelationFiltersOnAfterBuildQuery
+	 * @covers          FOF40\Model\DataModel\Behaviour\RelationFilters::onAfterBuildQuery
+	 * @dataProvider    RelationFiltersDataprovider::getTestOnAfterBuildQuery
+	 */
+	public function testOnAfterBuildQuery($test, $check)
+	{
+		\PHPUnit_Framework_Error_Warning::$enabled = false;
 
-        $msg = 'RelationFilters::onAfterBuildQuery %s - Case: '.$check['case'];
+		$msg = 'RelationFilters::onAfterBuildQuery %s - Case: ' . $check['case'];
 
-        $config = array(
-            'relations'   => array(
-                array(
-                    'itemName' => 'children',
-                    'type' => 'hasMany',
-                    'foreignModelClass' => 'Children',
-                    'localKey' => 'fakeapp_parent_id',
-                    'foreignKey' => 'fakeapp_parent_id'
-                )
-            )
-        );
+		$config = [
+			'relations' => [
+				[
+					'itemName'          => 'children',
+					'type'              => 'hasMany',
+					'foreignModelClass' => 'Children',
+					'localKey'          => 'fakeapp_parent_id',
+					'foreignKey'        => 'fakeapp_parent_id',
+				],
+			],
+		];
 
-        /** @var \FOF40\Model\DataModel $model */
-        $model = new Parents(static::$container, $config);
+		/** @var \FOF40\Model\DataModel $model */
+		$model = new Parents(static::$container, $config);
 
-        $query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
-        $dispatcher = $model->getBehavioursDispatcher();
-        $filter     = new RelationFilters($dispatcher);
+		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$dispatcher = $model->getBehavioursDispatcher();
+		$filter     = new RelationFilters($dispatcher);
 
-        // I have to setup a filter
-        $model->has('children', $test['operator'], $test['value']);
+		// I have to setup a filter
+		$model->has('children', $test['operator'], $test['value']);
 
-        $filter->onAfterBuildQuery($model, $query);
+		$filter->onAfterBuildQuery($model, $query);
 
-        $this->assertEquals($check['query'], trim((string) $query), sprintf($msg, 'Failed to build the search query'));
-    }
+		$this->assertEquals($check['query'], trim((string) $query), sprintf($msg, 'Failed to build the search query'));
+	}
 }
 

@@ -6,15 +6,12 @@
  */
 
 
-
 namespace FOF40\Tests\Download\Adapter;
 
-use FOF40\Download\Adapter\Curl;
 use FOF40\Download\Download;
 use FOF40\Tests\Helpers\Download\FakeCurl;
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
-use FOF40\Timer\Timer;
 
 require_once __DIR__ . '/../Helpers/Download/FakeCurlImporter.php';
 require_once __DIR__ . '/DownloadDataprovider.php';
@@ -54,7 +51,7 @@ class DownloadTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Download\Download::setAdapter
+	 * @covers          FOF40\Download\Download::setAdapter
 	 *
 	 * @dataProvider    FOF40\Tests\Download\DownloadDataprovider::getTestSetAdapter
 	 */
@@ -76,7 +73,7 @@ class DownloadTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Download\Download::getAdapterName
+	 * @covers          FOF40\Download\Download::getAdapterName
 	 *
 	 * @dataProvider    FOF40\Tests\Download\DownloadDataprovider::getTestGetAdapterName
 	 */
@@ -91,7 +88,7 @@ class DownloadTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF40\Download\Download::getFromUrl
+	 * @covers          FOF40\Download\Download::getFromUrl
 	 *
 	 * @dataProvider    FOF40\Tests\Download\DownloadDataprovider::getTestGetFromUrl
 	 *
@@ -126,7 +123,7 @@ class DownloadTest extends FOFTestCase
 
 
 	/**
-	 * @covers  FOF40\Download\Download::importFromUrl
+	 * @covers          FOF40\Download\Download::importFromUrl
 	 *
 	 * @dataProvider    FOF40\Tests\Download\DownloadDataprovider::getTestImportFromUrl
 	 *
@@ -147,8 +144,8 @@ class DownloadTest extends FOFTestCase
 		$loopAllowed = $test['loop'];
 
 		// Get the output file name
-		$platformDirs = static::$container->platform->getPlatformBaseDirs();
-		$tmpDir = $platformDirs['tmp'];
+		$platformDirs  = static::$container->platform->getPlatformBaseDirs();
+		$tmpDir        = $platformDirs['tmp'];
 		$localFilename = $tmpDir . '/test.dat';
 
 		// Set up the download parameters
@@ -186,8 +183,7 @@ class DownloadTest extends FOFTestCase
 			{
 				$localFilename = $params['localFilename'];
 			}
-		}
-		while ($loopAllowed);
+		} while ($loopAllowed);
 
 		foreach ($test['expect'] as $k => $v)
 		{

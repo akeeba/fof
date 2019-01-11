@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Stubs\Event;
 
 use FOF40\Event\Observer;

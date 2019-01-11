@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\DataModel;
 
 use FOF40\Model\DataModel\Behaviour\Assets;
@@ -22,113 +21,113 @@ require_once 'AssetsDataprovider.php';
  */
 class AssetsTest extends DatabaseTest
 {
-    /**
-     * @group           Behaviour
-     * @group           AssetsOnAfterSave
-     * @covers          FOF40\Model\DataModel\Behaviour\Assets::onAfterSave
-     * @dataProvider    AssetsDataprovider::getTestOnAfterSave
-     */
-    public function testOnAfterSave($test, $check)
-    {
-        $msg = 'Assets::onAfterBuildQuery %s - Case: '.$check['case'];
-        $db  = \JFactory::getDbo();
+	/**
+	 * @group           Behaviour
+	 * @group           AssetsOnAfterSave
+	 * @covers          FOF40\Model\DataModel\Behaviour\Assets::onAfterSave
+	 * @dataProvider    AssetsDataprovider::getTestOnAfterSave
+	 */
+	public function testOnAfterSave($test, $check)
+	{
+		$msg = 'Assets::onAfterBuildQuery %s - Case: ' . $check['case'];
+		$db  = \JFactory::getDbo();
 
-        $config = array(
-            'idFieldName' => $test['tableid'],
-            'tableName'   => $test['table']
-        );
+		$config = [
+			'idFieldName' => $test['tableid'],
+			'tableName'   => $test['table'],
+		];
 
-        $model      = new DataModelStub(static::$container, $config);
-        $dispatcher = $model->getBehavioursDispatcher();
-        $behavior   = new Assets($dispatcher);
+		$model      = new DataModelStub(static::$container, $config);
+		$dispatcher = $model->getBehavioursDispatcher();
+		$behavior   = new Assets($dispatcher);
 
-        $model->setAssetsTracked($test['track']);
+		$model->setAssetsTracked($test['track']);
 
-        if($test['load'])
-        {
-            $model->find($test['load']);
-        }
+		if ($test['load'])
+		{
+			$model->find($test['load']);
+		}
 
-        if($test['rules'])
-        {
-            $model->setRules($test['rules']);
-        }
+		if ($test['rules'])
+		{
+			$model->setRules($test['rules']);
+		}
 
-        $query       = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
-        $beforeTotal = $db->setQuery($query)->loadResult();
+		$query       = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
+		$beforeTotal = $db->setQuery($query)->loadResult();
 
-        $result = $behavior->onAfterSave($model);
+		$result = $behavior->onAfterSave($model);
 
-        $this->assertTrue($result, sprintf($msg, 'Should always return true'));
+		$this->assertTrue($result, sprintf($msg, 'Should always return true'));
 
-        $asset = null;
+		$asset = null;
 
-        if($check['count'] == 0)
-        {
-            $query      = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
-            $afterTotal = $db->setQuery($query)->loadResult();
+		if ($check['count'] == 0)
+		{
+			$query      = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
+			$afterTotal = $db->setQuery($query)->loadResult();
 
-            $this->assertEquals(0, $beforeTotal - $afterTotal, sprintf($msg, 'Wrong number of assets saved'));
-        }
-        else
-        {
-            // Let's check what has been saved
-            $query = $db->getQuery(true)
-                ->select('id, rules')
-                ->from('#__assets')
-                ->where('name = '.$db->q($model->getAssetName()));
-            $asset = $db->setQuery($query)->loadObject();
+			$this->assertEquals(0, $beforeTotal - $afterTotal, sprintf($msg, 'Wrong number of assets saved'));
+		}
+		else
+		{
+			// Let's check what has been saved
+			$query = $db->getQuery(true)
+				->select('id, rules')
+				->from('#__assets')
+				->where('name = ' . $db->q($model->getAssetName()));
+			$asset = $db->setQuery($query)->loadObject();
 
-            $this->assertEquals($check['count'], (int) (!is_null($asset)), sprintf('Wrong number of assets saved'));
-        }
+			$this->assertEquals($check['count'], (int) (!is_null($asset)), sprintf('Wrong number of assets saved'));
+		}
 
-        if(!is_null($check['rules']))
-        {
-            $this->assertEquals($check['rules'], $asset->rules, sprintf($msg, 'Wrong rule stored'));
-        }
+		if (!is_null($check['rules']))
+		{
+			$this->assertEquals($check['rules'], $asset->rules, sprintf($msg, 'Wrong rule stored'));
+		}
 
-        if($asset)
-        {
-            $asset_field = $model->getFieldAlias('asset_id');
-            $model->find($test['load']);
+		if ($asset)
+		{
+			$asset_field = $model->getFieldAlias('asset_id');
+			$model->find($test['load']);
 
-            $this->assertEquals($asset->id, $model->$asset_field, sprintf($msg, 'Asset id not stored inside the model'));
-        }
-    }
+			$this->assertEquals($asset->id, $model->$asset_field, sprintf($msg, 'Asset id not stored inside the model'));
+		}
+	}
 
-    /**
-     * @group           Behaviour
-     * @group           AssetsOnAfterBind
-     * @covers          FOF40\Model\DataModel\Behaviour\Assets::onAfterBind
-     * @dataProvider    AssetsDataprovider::getTestOnAfterBind
-     */
-    public function testOnAfterBind($test, $check)
-    {
-        $msg = 'Assets::onAfterBuildQuery %s - Case: '.$check['case'];
+	/**
+	 * @group           Behaviour
+	 * @group           AssetsOnAfterBind
+	 * @covers          FOF40\Model\DataModel\Behaviour\Assets::onAfterBind
+	 * @dataProvider    AssetsDataprovider::getTestOnAfterBind
+	 */
+	public function testOnAfterBind($test, $check)
+	{
+		$msg = 'Assets::onAfterBuildQuery %s - Case: ' . $check['case'];
 
-        $config = array(
-            'idFieldName' => $test['tableid'],
-            'tableName'   => $test['table']
-        );
+		$config = [
+			'idFieldName' => $test['tableid'],
+			'tableName'   => $test['table'],
+		];
 
-        $model      = new DataModelStub(static::$container, $config);
-        $dispatcher = $model->getBehavioursDispatcher();
-        $behavior   = new Assets($dispatcher);
+		$model      = new DataModelStub(static::$container, $config);
+		$dispatcher = $model->getBehavioursDispatcher();
+		$behavior   = new Assets($dispatcher);
 
-        $model->setAssetsTracked($test['track']);
+		$model->setAssetsTracked($test['track']);
 
-        if($test['load'])
-        {
-            $model->find($test['load']);
-        }
+		if ($test['load'])
+		{
+			$model->find($test['load']);
+		}
 
-        $return = $behavior->onAfterBind($model, $test['bind']);
+		$return = $behavior->onAfterBind($model, $test['bind']);
 
-        $rules  = $model->getRules();
+		$rules = $model->getRules();
 
-        $this->assertTrue($return, sprintf($msg, 'Returned a wrong value'));
+		$this->assertTrue($return, sprintf($msg, 'Returned a wrong value'));
 
-        if (empty($check['rules']))
+		if (empty($check['rules']))
 		{
 			$this->assertEquals($check['rules'], (string) $rules, sprintf($msg, 'Set rules wrong'));
 		}
@@ -138,48 +137,48 @@ class AssetsTest extends DatabaseTest
 		}
 	}
 
-    /**
-     * @group           Behaviour
-     * @group           AssetsOnBeforeDelete
-     * @covers          FOF40\Model\DataModel\Behaviour\Assets::onBeforeDelete
-     * @dataProvider    AssetsDataprovider::getTestOnBeforeDelete
-     */
-    public function testOnBeforeDelete($test, $check)
-    {
-        $msg = 'Assets::onBeforeDelete %s - Case: '.$check['case'];
-        $db  = \JFactory::getDbo();
+	/**
+	 * @group           Behaviour
+	 * @group           AssetsOnBeforeDelete
+	 * @covers          FOF40\Model\DataModel\Behaviour\Assets::onBeforeDelete
+	 * @dataProvider    AssetsDataprovider::getTestOnBeforeDelete
+	 */
+	public function testOnBeforeDelete($test, $check)
+	{
+		$msg = 'Assets::onBeforeDelete %s - Case: ' . $check['case'];
+		$db  = \JFactory::getDbo();
 
-        $config = array(
-            'idFieldName' => $test['tableid'],
-            'tableName'   => $test['table']
-        );
+		$config = [
+			'idFieldName' => $test['tableid'],
+			'tableName'   => $test['table'],
+		];
 
-        $model      = new DataModelStub(static::$container, $config);
-        $dispatcher = $model->getBehavioursDispatcher();
-        $behavior   = new Assets($dispatcher);
+		$model      = new DataModelStub(static::$container, $config);
+		$dispatcher = $model->getBehavioursDispatcher();
+		$behavior   = new Assets($dispatcher);
 
-        $model->setAssetsTracked($test['track']);
+		$model->setAssetsTracked($test['track']);
 
-        if($test['load'])
-        {
-            $model->find($test['load']);
-        }
+		if ($test['load'])
+		{
+			$model->find($test['load']);
+		}
 
-        if($check['exception'])
-        {
-            $this->setExpectedException('FOF40\Model\DataModel\Exception\NoAssetKey');
-        }
+		if ($check['exception'])
+		{
+			$this->setExpectedException('FOF40\Model\DataModel\Exception\NoAssetKey');
+		}
 
-        $query       = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
-        $beforeTotal = $db->setQuery($query)->loadResult();
+		$query       = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
+		$beforeTotal = $db->setQuery($query)->loadResult();
 
-        $result = $behavior->onBeforeDelete($model, $test['id']);
+		$result = $behavior->onBeforeDelete($model, $test['id']);
 
-        $this->assertTrue($result, sprintf($msg, 'Returned a wrong value'));
+		$this->assertTrue($result, sprintf($msg, 'Returned a wrong value'));
 
-        $query      = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
-        $afterTotal = $db->setQuery($query)->loadResult();
+		$query      = $db->getQuery(true)->select('COUNT(*)')->from('#__assets');
+		$afterTotal = $db->setQuery($query)->loadResult();
 
-        $this->assertEquals($check['count'], $beforeTotal - $afterTotal, sprintf($msg, 'Deleted a wrong number of assets'));
-    }
+		$this->assertEquals($check['count'], $beforeTotal - $afterTotal, sprintf($msg, 'Deleted a wrong number of assets'));
+	}
 }

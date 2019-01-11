@@ -6,12 +6,11 @@
  */
 
 
-
-$fofTestConfig = array(
-    // Connection details for our local database
-    'host'      => 'localhost',
-    'user'      => 'root',
-    'password'  => 'root',
-    'db'        => 'unittesting3',
-	'site_root' => realpath(__DIR__ . '/environments/staging')
-);
+$fofTestConfig = [
+	// Connection details for our local database
+	'host'      => 'localhost',
+	'user'      => 'root',
+	'password'  => 'root',
+	'db'        => 'unittesting3',
+	'site_root' => realpath(__DIR__ . '/environments/staging'),
+];

@@ -6,190 +6,189 @@
  */
 
 
-
 class TagsDataprovider
 {
-    public static function getTestOnAfterSave()
-    {
-        $data[] = array(
-            'input' => array(
-                'tags' => null,
-                'input' => array(
-                    'task' => 'publish'
-                ),
-                'mock' => array(
-                    'postProc' => true
-                )
-            ),
-            'check' => array(
-                'case' => 'Task we are not interested into',
-                'exception' => false,
-                'contentType' => 0,
-                'checkContent' => false
-            )
-        );
+	public static function getTestOnAfterSave()
+	{
+		$data[] = [
+			'input' => [
+				'tags'  => null,
+				'input' => [
+					'task' => 'publish',
+				],
+				'mock'  => [
+					'postProc' => true,
+				],
+			],
+			'check' => [
+				'case'         => 'Task we are not interested into',
+				'exception'    => false,
+				'contentType'  => 0,
+				'checkContent' => false,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'tags' => null,
-                'input' => array(
-                    'task' => 'apply'
-                ),
-                'mock' => array(
-                    'postProc' => true
-                )
-            ),
-            'check' => array(
-                'case' => 'Apply task',
-                'exception' => false,
-                'contentType' => 2,
-                'checkContent' => true
-            )
-        );
+		$data[] = [
+			'input' => [
+				'tags'  => null,
+				'input' => [
+					'task' => 'apply',
+				],
+				'mock'  => [
+					'postProc' => true,
+				],
+			],
+			'check' => [
+				'case'         => 'Apply task',
+				'exception'    => false,
+				'contentType'  => 2,
+				'checkContent' => true,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'tags' => null,
-                'input' => array(
-                    'task' => 'save'
-                ),
-                'mock' => array(
-                    'postProc' => true
-                )
-            ),
-            'check' => array(
-                'case' => 'Save task',
-                'exception' => false,
-                'contentType' => 2,
-                'checkContent' => true
-            )
-        );
+		$data[] = [
+			'input' => [
+				'tags'  => null,
+				'input' => [
+					'task' => 'save',
+				],
+				'mock'  => [
+					'postProc' => true,
+				],
+			],
+			'check' => [
+				'case'         => 'Save task',
+				'exception'    => false,
+				'contentType'  => 2,
+				'checkContent' => true,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'tags' => null,
-                'input' => array(
-                    'task' => 'savenew'
-                ),
-                'mock' => array(
-                    'postProc' => true
-                )
-            ),
-            'check' => array(
-                'case' => 'Savenew task',
-                'exception' => false,
-                'contentType' => 2,
-                'checkContent' => true
-            )
-        );
+		$data[] = [
+			'input' => [
+				'tags'  => null,
+				'input' => [
+					'task' => 'savenew',
+				],
+				'mock'  => [
+					'postProc' => true,
+				],
+			],
+			'check' => [
+				'case'         => 'Savenew task',
+				'exception'    => false,
+				'contentType'  => 2,
+				'checkContent' => true,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'tags' => array(99),
-                'input' => array(
-                    'task' => 'savenew'
-                ),
-                'mock' => array(
-                    'postProc' => false
-                )
-            ),
-            'check' => array(
-                'case' => "Tags didn't change",
-                'exception' => false,
-                'contentType' => 1,
-                'checkContent' => false
-            )
-        );
+		$data[] = [
+			'input' => [
+				'tags'  => [99],
+				'input' => [
+					'task' => 'savenew',
+				],
+				'mock'  => [
+					'postProc' => false,
+				],
+			],
+			'check' => [
+				'case'         => "Tags didn't change",
+				'exception'    => false,
+				'contentType'  => 1,
+				'checkContent' => false,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'tags' => null,
-                'input' => array(
-                    'task' => 'savenew'
-                ),
-                'mock' => array(
-                    'postProc' => false
-                )
-            ),
-            'check' => array(
-                'case' => 'An error occurs in post processing',
-                'exception' => true,
-                'contentType' => 2,
-                'checkContent' => true
-            )
-        );
+		$data[] = [
+			'input' => [
+				'tags'  => null,
+				'input' => [
+					'task' => 'savenew',
+				],
+				'mock'  => [
+					'postProc' => false,
+				],
+			],
+			'check' => [
+				'case'         => 'An error occurs in post processing',
+				'exception'    => true,
+				'contentType'  => 2,
+				'checkContent' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestOnAfterDelete()
-    {
-        $data[] = array(
-            'input' => array(
-                'mock' => array(
-                    'delete' => true
-                )
-            ),
-            'check' => array(
-                'exception' => false
-            )
-        );
+	public static function getTestOnAfterDelete()
+	{
+		$data[] = [
+			'input' => [
+				'mock' => [
+					'delete' => true,
+				],
+			],
+			'check' => [
+				'exception' => false,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'mock' => array(
-                    'delete' => false
-                )
-            ),
-            'check' => array(
-                'exception' => true
-            )
-        );
+		$data[] = [
+			'input' => [
+				'mock' => [
+					'delete' => false,
+				],
+			],
+			'check' => [
+				'exception' => true,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 
-    public static function getTestOnAfterBind()
-    {
-        $data[] = array(
-            'input' => array(
-                'load' => 0,
-                'tags' => '123'
-            ),
-            'check' => array(
-                'case' => 'Tag field already loaded',
-                'contentType' => false,
-                'addKnown' => false,
-                'result' => '123'
-            )
-        );
+	public static function getTestOnAfterBind()
+	{
+		$data[] = [
+			'input' => [
+				'load' => 0,
+				'tags' => '123',
+			],
+			'check' => [
+				'case'        => 'Tag field already loaded',
+				'contentType' => false,
+				'addKnown'    => false,
+				'result'      => '123',
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'load' => 1,
-                'tags' => null
-            ),
-            'check' => array(
-                'case' => 'Tag field empty - record loaded',
-                'contentType' => true,
-                'addKnown' => true,
-                'result' => 99
-            )
-        );
+		$data[] = [
+			'input' => [
+				'load' => 1,
+				'tags' => null,
+			],
+			'check' => [
+				'case'        => 'Tag field empty - record loaded',
+				'contentType' => true,
+				'addKnown'    => true,
+				'result'      => 99,
+			],
+		];
 
-        $data[] = array(
-            'input' => array(
-                'load' => 0,
-                'tags' => null
-            ),
-            'check' => array(
-                'case' => 'Tag field empty - record not loaded',
-                'contentType' => true,
-                'addKnown' => true,
-                'result' => 99
-            )
-        );
+		$data[] = [
+			'input' => [
+				'load' => 0,
+				'tags' => null,
+			],
+			'check' => [
+				'case'        => 'Tag field empty - record not loaded',
+				'contentType' => true,
+				'addKnown'    => true,
+				'result'      => 99,
+			],
+		];
 
-        return $data;
-    }
+		return $data;
+	}
 }

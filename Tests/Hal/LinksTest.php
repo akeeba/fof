@@ -6,11 +6,10 @@
  */
 
 
-
 namespace FOF40\Tests\Hal;
 
-use FOF40\Hal\Links;
 use FOF40\Hal\Link;
+use FOF40\Hal\Links;
 use FOF40\Tests\Helpers\FOFTestCase;
 
 class LinksTest extends FOFTestCase
@@ -21,7 +20,7 @@ class LinksTest extends FOFTestCase
 	function testAddLink()
 	{
 		// Create a sample link
-		$link = new Link('http://www.example.com/nada.json');
+		$link    = new Link('http://www.example.com/nada.json');
 		$linkset = new Links();
 
 		// ==== Add a link to a link set ====
@@ -37,7 +36,7 @@ class LinksTest extends FOFTestCase
 
 		// ==== Replace a link in the link set ====
 		$newlink = new Link('http://www.example.com/yeah.json', false, 'Something');
-		$result = $linkset->addLink('custom', $newlink, true);
+		$result  = $linkset->addLink('custom', $newlink, true);
 
 		$links = $this->readAttribute($linkset, '_links');
 
@@ -50,7 +49,7 @@ class LinksTest extends FOFTestCase
 		// ==== Add a link in the link set ====
 
 		$anotherlink = new Link('http://www.example.com/another.json', false, 'Something else');
-		$result = $linkset->addLink('custom', $anotherlink, false);
+		$result      = $linkset->addLink('custom', $anotherlink, false);
 
 		$links = $this->readAttribute($linkset, '_links');
 
@@ -68,11 +67,11 @@ class LinksTest extends FOFTestCase
 	function testAddLinks()
 	{
 		// Create a sample link
-		$link = new Link('http://www.example.com/nada.json');
+		$link    = new Link('http://www.example.com/nada.json');
 		$linkset = new Links();
 
 		// ==== Try to add an empty array ====
-		$result = $linkset->addLinks('boz', array());
+		$result = $linkset->addLinks('boz', []);
 
 		$this->assertFalse($result);
 
@@ -80,10 +79,10 @@ class LinksTest extends FOFTestCase
 		$result = $linkset->addLink('custom', $link);
 
 		// ==== Replace the link in the link set ====
-		$newlinks = array(
+		$newlinks = [
 			new Link('http://www.example.com/yeah.json', false, 'Something'),
-			new Link('http://www.example.com/another.json', false, 'Something else')
-		);
+			new Link('http://www.example.com/another.json', false, 'Something else'),
+		];
 
 		$result = $linkset->addLinks('custom', $newlinks, true);
 
@@ -118,16 +117,16 @@ class LinksTest extends FOFTestCase
 	function testGetLinks()
 	{
 		// Create a sample link
-		$newlinks = array(
-			'foo' => array(
+		$newlinks = [
+			'foo' => [
 				new Link('http://www.example.com/yeah.json', false, 'Something'),
-				new Link('http://www.example.com/another.json', false, 'Something else')
-			),
-			'bar' => array(
+				new Link('http://www.example.com/another.json', false, 'Something else'),
+			],
+			'bar' => [
 				new Link('http://www.example.com/foo{?id}.json', true, 'Foo link'),
-				new Link('http://www.example.com/bar{?id}.json', true, 'Bar link')
-			),
-		);
+				new Link('http://www.example.com/bar{?id}.json', true, 'Bar link'),
+			],
+		];
 
 		$linkset = new Links();
 

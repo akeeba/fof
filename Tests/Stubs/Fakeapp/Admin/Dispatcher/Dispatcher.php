@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Admin\Dispatcher;
 
 class Dispatcher extends \FOF40\Dispatcher\Dispatcher

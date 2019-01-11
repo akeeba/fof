@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Timer;
 
 /**
@@ -29,7 +28,7 @@ class FakeTimer
 			return static::$microtime;
 		}
 
-		$int = sprintf('%d', floor(static::$microtime));
+		$int     = sprintf('%d', floor(static::$microtime));
 		$decimal = sprintf('%0.6f', static::$microtime - floor(static::$microtime));
 
 		return $decimal . ' ' . $int;

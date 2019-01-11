@@ -6,13 +6,11 @@
  */
 
 
-
 namespace FOF40\Tests\Layout;
 
 
 use FOF40\Layout\LayoutHelper;
 use FOF40\Tests\Helpers\FOFTestCase;
-use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestJoomlaPlatform;
 
 /**
@@ -29,8 +27,8 @@ class LayoutHelperTest extends FOFTestCase
 
 	public static function tearDownAfterClass()
 	{
-		TestJoomlaPlatform::$baseDirs = null;
-		TestJoomlaPlatform::$template = null;
+		TestJoomlaPlatform::$baseDirs         = null;
+		TestJoomlaPlatform::$template         = null;
 		TestJoomlaPlatform::$templateSuffixes = null;
 
 		parent::tearDownAfterClass();
@@ -73,19 +71,19 @@ class LayoutHelperTest extends FOFTestCase
 	public function testRender($layoutId, $platformSetup, $expectedOutput, $message)
 	{
 		// Set up the platform
-		$defaultPlatformSetup = array(
+		$defaultPlatformSetup = [
 			'baseDirs'         => null,
 			'template'         => null,
-			'templateSuffixes' => null
-		);
+			'templateSuffixes' => null,
+		];
 
 		if (!is_array($platformSetup))
 		{
-			$platformSetup = array();
+			$platformSetup = [];
 		}
 
 		$platformSetup = array_merge($defaultPlatformSetup, $platformSetup);
-		$reflector = new \ReflectionClass('FOF40\\Tests\\Helpers\\TestJoomlaPlatform');
+		$reflector     = new \ReflectionClass('FOF40\\Tests\\Helpers\\TestJoomlaPlatform');
 
 		foreach ($platformSetup as $k => $v)
 		{
@@ -116,19 +114,19 @@ class LayoutHelperTest extends FOFTestCase
 	public function testRenderDefaultBase($layoutId, $platformSetup, $expectedOutput, $message)
 	{
 		// Set up the platform
-		$defaultPlatformSetup = array(
+		$defaultPlatformSetup = [
 			'baseDirs'         => null,
 			'template'         => null,
-			'templateSuffixes' => null
-		);
+			'templateSuffixes' => null,
+		];
 
 		if (!is_array($platformSetup))
 		{
-			$platformSetup = array();
+			$platformSetup = [];
 		}
 
 		$platformSetup = array_merge($defaultPlatformSetup, $platformSetup);
-		$reflector = new \ReflectionClass('FOF40\\Tests\\Helpers\\TestJoomlaPlatform');
+		$reflector     = new \ReflectionClass('FOF40\\Tests\\Helpers\\TestJoomlaPlatform');
 
 		foreach ($platformSetup as $k => $v)
 		{
@@ -142,7 +140,7 @@ class LayoutHelperTest extends FOFTestCase
 
 		// Create the layout file object
 		LayoutHelper::$defaultBasePath = $fakeBase;
-		$actual = LayoutHelper::render(self::$container, $layoutId);
+		$actual                        = LayoutHelper::render(self::$container, $layoutId);
 
 		$this->assertEquals($expectedOutput, $actual, $message);
 	}

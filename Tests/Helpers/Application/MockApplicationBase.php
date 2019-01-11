@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Application;
 
 use FOF40\Tests\Helpers\FOFTestCase;
@@ -22,14 +21,14 @@ class MockApplicationBase
 	 */
 	public static function getMethods()
 	{
-		return array(
+		return [
 			'close',
 			'getIdentity',
 			'registerEvent',
 			'triggerEvent',
 			'loadDispatcher',
 			'loadIdentity',
-		);
+		];
 	}
 
 	/**
@@ -47,7 +46,7 @@ class MockApplicationBase
 	{
 		$test->assignMockReturns(
 			$mockObject,
-			array('close' => true)
+			['close' => true]
 		);
 
 		return $mockObject;
@@ -63,7 +62,7 @@ class MockApplicationBase
 	 *
 	 * @since   11.3
 	 */
-	public static function create($test, $options = array())
+	public static function create($test, $options = [])
 	{
 		// Set expected server variables.
 		if (!isset($_SERVER['HTTP_HOST']))
@@ -77,7 +76,7 @@ class MockApplicationBase
 		// Create the mock.
 		$mockObject = $test->getMockBuilder('\JApplicationBase')
 			->setMethods($methods)
-			->setConstructorArgs(array())
+			->setConstructorArgs([])
 			->setMockClassName('')
 			->getMock();
 

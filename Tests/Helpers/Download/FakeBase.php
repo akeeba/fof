@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Download;
 
 abstract class FakeBase
@@ -14,7 +13,7 @@ abstract class FakeBase
 	/**
 	 * Return data which is $size bytes long.
 	 *
-	 * @param   int  $size  The number of bytes you want
+	 * @param   int $size The number of bytes you want
 	 *
 	 * @return  string
 	 */
@@ -23,9 +22,9 @@ abstract class FakeBase
 		$dummyData = file_get_contents(__DIR__ . '/data.dat');
 		$dummySize = strlen($dummyData);
 
-		$wholes = ($size - ($size % $dummySize)) / $dummySize;
+		$wholes    = ($size - ($size % $dummySize)) / $dummySize;
 		$remainder = $size % $dummySize;
-		$buffer = '';
+		$buffer    = '';
 
 		if ($wholes)
 		{

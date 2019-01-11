@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\Model\Behaviour\Nestedset;
 
 use FOF40\Event\Observer;

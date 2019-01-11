@@ -6,7 +6,6 @@
  */
 
 
-
 namespace Fakeapp\Site\Model\Behaviour;
 
 use FOF40\Event\Observer;

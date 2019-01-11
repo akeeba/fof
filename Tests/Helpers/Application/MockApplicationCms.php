@@ -6,7 +6,6 @@
  */
 
 
-
 namespace FOF40\Tests\Helpers\Application;
 
 
@@ -24,7 +23,7 @@ class MockApplicationCms extends MockApplicationWeb
 	public static function getMethods()
 	{
 		// Collect all the relevant methods in JApplicationCms (work in progress).
-		$methods = array(
+		$methods = [
 			'getMenu',
 			'getPathway',
 			'getTemplate',
@@ -33,8 +32,8 @@ class MockApplicationCms extends MockApplicationWeb
 			'isAdmin',
 			'isSite',
 			'getUserState',
-			'getUserStateFromRequest'
-		);
+			'getUserStateFromRequest',
+		];
 
 		return array_merge($methods, parent::getMethods());
 	}
@@ -42,9 +41,9 @@ class MockApplicationCms extends MockApplicationWeb
 	/**
 	 * Adds mock objects for some methods.
 	 *
-	 * @param   FOFTestCase                                 $test        A test object.
-	 * @param   \PHPUnit_Framework_MockObject_MockObject  $mockObject  The mock object.
-	 * @param   array                                    $options     A set of options to configure the mock.
+	 * @param   FOFTestCase                              $test       A test object.
+	 * @param   \PHPUnit_Framework_MockObject_MockObject $mockObject The mock object.
+	 * @param   array                                    $options    A set of options to configure the mock.
 	 *
 	 * @return  \PHPUnit_Framework_MockObject_MockObject  The object with the behaviours added
 	 *
@@ -69,15 +68,15 @@ class MockApplicationCms extends MockApplicationWeb
 	 *
 	 * If any *Body methods are implemented in the test class, all should be implemented otherwise behaviour will be unreliable.
 	 *
-	 * @param   FOFTestCase  $test         A test object.
-	 * @param   array     $options      A set of options to configure the mock.
-	 * @param   array     $constructor  An array containing constructor arguments to inject into the mock.
+	 * @param   FOFTestCase $test        A test object.
+	 * @param   array       $options     A set of options to configure the mock.
+	 * @param   array       $constructor An array containing constructor arguments to inject into the mock.
 	 *
 	 * @return  \PHPUnit_Framework_MockObject_MockObject
 	 *
 	 * @since   3.2
 	 */
-	public static function create($test, $options = array(), $constructor = array())
+	public static function create($test, $options = [], $constructor = [])
 	{
 		// Set expected server variables.
 		if (!isset($_SERVER['HTTP_HOST']))
@@ -89,11 +88,13 @@ class MockApplicationCms extends MockApplicationWeb
 
 		if (isset($options))
 			// Create the mock.
+		{
 			$mockObject = $test->getMockBuilder('\JApplicationCms')
 				->setMethods($methods)
 				->setConstructorArgs($constructor)
 				->setMockClassName('')
 				->getMock();
+		}
 
 		$mockObject = self::addBehaviours($test, $mockObject, $options);
 
