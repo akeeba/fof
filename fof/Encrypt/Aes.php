@@ -171,12 +171,19 @@ class Aes
 
 		if (!$adapter->isSupported($phpfunc))
 		{
-			$adapter = new Mcrypt();
-		}
+			if (defined('MCRYPT_RIJNDAEL_128'))
+			{
+				$adapter = new Mcrypt();
 
-		if (!$adapter->isSupported($phpfunc))
-		{
-			return false;
+				if (!$adapter->isSupported($phpfunc))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		if (!$phpfunc->function_exists('base64_encode'))

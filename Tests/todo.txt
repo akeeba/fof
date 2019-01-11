@@ -1,6 +1,5 @@
 Broken tests before refactoring
 
-FOF40\Tests\Encrypt\AesTest
 FOF40\Tests\Factory\BasicFactoryTest
 FOF40\Tests\Inflector\InflectorTest
 FOF40\Tests\Layout\LayoutFileTest
