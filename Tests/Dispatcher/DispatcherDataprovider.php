@@ -10,7 +10,7 @@ class DispatcherDataprovider
 {
 	public static function getTest__construct()
 	{
-		$data[] = [
+		$data['Nothing passed in the input, no default view'] = [
 			[
 				'mock' => [
 					'defaultView' => null,
@@ -19,14 +19,14 @@ class DispatcherDataprovider
 			],
 			[
 				'case'          => 'Nothing passed in the input, no default view',
-				'defaultView'   => 'main',
-				'view'          => 'main',
+				'defaultView'   => null,
+				'view'          => null,
 				'layout'        => '',
-				'containerView' => 'main',
+				'containerView' => null,
 			],
 		];
 
-		$data[] = [
+		$data['Nothing passed in the input, with default view'] = [
 			[
 				'mock' => [
 					'defaultView' => 'test',
@@ -42,7 +42,7 @@ class DispatcherDataprovider
 			],
 		];
 
-		$data[] = [
+		$data['Data passed in the input, no default view'] = [
 			[
 				'mock' => [
 					'defaultView' => null,
@@ -54,7 +54,7 @@ class DispatcherDataprovider
 			],
 			[
 				'case'          => 'Data passed in the input, no default view',
-				'defaultView'   => 'main',
+				'defaultView'   => null,
 				'view'          => 'foobars',
 				'layout'        => 'default',
 				'containerView' => 'foobars',
