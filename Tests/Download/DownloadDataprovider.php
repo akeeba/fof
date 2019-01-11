@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Download;
+namespace FOF40\Tests\Download;
 
 class DownloadDataprovider
 {
@@ -21,11 +21,11 @@ class DownloadDataprovider
 			array('Fopen', true),
 			array('FOPEN', true),
 			array('fopen', true),
-			array('\\FOF30\\Download\\Adapter\\Fopen', true),
+			array('\\FOF40\\Download\\Adapter\\Fopen', true),
 			array('Curl', false),
 			array('CURL', false),
 			array('curl', false),
-			array('\\FOF30\\Download\\Adapter\\Curl', false),
+			array('\\FOF40\\Download\\Adapter\\Curl', false),
 			array('Spike', false),
 			array('\\JRegistry', false),
 			array(null, false),
@@ -41,8 +41,8 @@ class DownloadDataprovider
 			array('Curl', 'curl'),
 			array('CURL', 'curl'),
 			array('curl', 'curl'),
-			array('\\FOF30\\Download\\Adapter\\Fopen', 'fopen'),
-			array('\\FOF30\\Download\\Adapter\\Curl', 'curl'),
+			array('\\FOF40\\Download\\Adapter\\Fopen', 'fopen'),
+			array('\\FOF40\\Download\\Adapter\\Curl', 'curl'),
 			array('Spike', 'curl'),
 			array('\\JRegistry', 'curl'),
 			array(null, 'curl'),
@@ -274,7 +274,7 @@ class DownloadDataprovider
 					'localfile' => '/foo/bar/baz.dat',
 					'expect'  => array(
 						'status'    => false,
-						'error'     => 'LIB_FOF_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE',
+						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE',
 					),
 					'message' => 'Unwritable local file leads to error'
 				)
@@ -291,7 +291,7 @@ class DownloadDataprovider
 					'loop'    => false,
 					'expect'  => array(
 						'status'    => false,
-						'error'     => 'LIB_FOF_DOWNLOAD_ERR_HTTPERROR',
+						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
 					),
 					'message' => 'HTTP 404 results in error'
 				)
@@ -310,7 +310,7 @@ class DownloadDataprovider
 					'loop'    => false,
 					'expect'  => array(
 						'status'    => false,
-						'error'     => 'LIB_FOF_DOWNLOAD_ERR_HTTPERROR',
+						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
 					),
 					'message' => 'HTTP 403 results in error'
 				)
@@ -330,7 +330,7 @@ class DownloadDataprovider
 					'loop'    => false,
 					'expect'  => array(
 						'status'    => false,
-						'error'     => 'LIB_FOF_DOWNLOAD_ERR_CURL_ERROR',
+						'error'     => 'LIB_FOF40_DOWNLOAD_ERR_CURL_ERROR',
 					),
 					'message' => 'cURL error results in error returned'
 				)

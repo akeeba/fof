@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Timer;
+namespace FOF40\Timer;
 
-use FOF30\Tests\Helpers\Timer\FakeTimer;
+use FOF40\Tests\Helpers\Timer\FakeTimer;
 
 global $fofTest_FakeTimer_Active;
 $fofTest_FakeTimer_Active = false;

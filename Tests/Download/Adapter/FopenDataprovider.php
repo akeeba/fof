@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Download\Adapter;
+namespace FOF40\Tests\Download\Adapter;
 
 class FopenDataprovider
 {
@@ -42,7 +42,7 @@ class FopenDataprovider
 					'retSize' 	=> 0,
 					'exception'	=> array(
 						'name'		=> 'Exception',
-						'message'	=> 'LIB_FOF_DOWNLOAD_ERR_FOPEN_ERROR',
+						'message'	=> 'LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR',
 						'code'		=> '404'
 					),
 					'message' 	=> '404 on non-existent file results in Exception'
@@ -60,7 +60,7 @@ class FopenDataprovider
 					'retSize' 	=> 0,
 					'exception'	=> array(
 						'name'		=> 'Exception',
-						'message'	=> 'LIB_FOF_DOWNLOAD_ERR_HTTPERROR',
+						'message'	=> 'LIB_FOF40_DOWNLOAD_ERR_HTTPERROR',
 						'code'		=> '403'
 					),
 					'message' 	=> '403 Forbidden results in Exception'

@@ -11,8 +11,8 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Encrypt;
-use FOF30\Container\Container;
+namespace FOF40\Encrypt;
+use FOF40\Container\Container;
 
 /**
  * Data encryption service for FOF-based components.
@@ -40,7 +40,7 @@ use FOF30\Container\Container;
  * - encrypt_key_const The constant for the key. By default it is COMPONENTNAME_FOF_ENCRYPT_SERVICE_SECRETKEY where
  *                     COMPONENTNAME corresponds to the uppercased com_componentname without the com_ prefix.
  *
- * @package     FOF30\Encrypt
+ * @package     FOF40\Encrypt
  *
  * @since       3.3.2
  */
@@ -146,7 +146,7 @@ class EncryptService
 			return;
 		}
 
-		$phpFunc   = new \FOF30\Utils\Phpfunc();
+		$phpFunc   = new \FOF40\Utils\Phpfunc();
 		$this->aes = new Aes($password, 128, 'cbc', $phpFunc);
 	}
 
@@ -258,7 +258,7 @@ class EncryptService
 			return;
 		}
 
-		$phpFunc      = new \FOF30\Utils\Phpfunc();
+		$phpFunc      = new \FOF40\Utils\Phpfunc();
 		$randval      = new Randval($phpFunc);
 		$secretKey    = $randval->getRandomPassword(64);
 		$constantName = $this->getConstantName();

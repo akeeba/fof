@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Render;
+namespace FOF40\Render;
 
-use FOF30\Container\Container;
-use FOF30\Form\Form;
+use FOF40\Container\Container;
+use FOF40\Form\Form;
 use JHtml;
 use JText;
 

@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Stubs\Controller;
+namespace FOF40\Tests\Stubs\Controller;
 
-use FOF30\Container\Container;
-use FOF30\Controller\Controller;
+use FOF40\Container\Container;
+use FOF40\Controller\Controller;
 
 class ControllerStub extends Controller
 {

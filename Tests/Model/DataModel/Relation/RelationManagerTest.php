@@ -11,28 +11,28 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel\RelationManager;
+namespace FOF40\Tests\DataModel\RelationManager;
 
-use FOF30\Model\DataModel\Collection;
-use FOF30\Model\DataModel\RelationManager;
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Stubs\Model\DataModelStub;
-use FOF30\Tests\Helpers\ClosureHelper;
+use FOF40\Model\DataModel\Collection;
+use FOF40\Model\DataModel\RelationManager;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Stubs\Model\DataModelStub;
+use FOF40\Tests\Helpers\ClosureHelper;
 
 require_once 'RelationManagerDataprovider.php';
 
 /**
- * @covers      FOF30\Model\DataModel\RelationManager::<protected>
- * @covers      FOF30\Model\DataModel\RelationManager::<private>
- * @package     FOF30\Tests\DataModel\RelationManager
+ * @covers      FOF40\Model\DataModel\RelationManager::<protected>
+ * @covers      FOF40\Model\DataModel\RelationManager::<private>
+ * @package     FOF40\Tests\DataModel\RelationManager
  */
 class RelationManagerTest extends DatabaseTest
 {
     /**
      * @group       RelationManager
      * @group       RelationManagerRebase
-     * @covers      FOF30\Model\DataModel\RelationManager::rebase
+     * @covers      FOF40\Model\DataModel\RelationManager::rebase
      */
     public function testRebase()
     {
@@ -63,7 +63,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerSetDataFromCollection
-     * @covers      FOF30\Model\DataModel\RelationManager::setDataFromCollection
+     * @covers      FOF40\Model\DataModel\RelationManager::setDataFromCollection
      */
     public function testSetDataFromCollection()
     {
@@ -86,11 +86,11 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerSetDataFromCollection
-     * @covers      FOF30\Model\DataModel\RelationManager::setDataFromCollection
+     * @covers      FOF40\Model\DataModel\RelationManager::setDataFromCollection
      */
     public function testSetDataFromCollectionException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Relation\Exception\RelationNotFound');
+        $this->setExpectedException('FOF40\Model\DataModel\Relation\Exception\RelationNotFound');
 
         $collection = new Collection();
         $model      = $this->buildModel();
@@ -102,7 +102,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group           RelationManager
      * @group           RelationManagerAddRelation
-     * @covers          FOF30\Model\DataModel\RelationManager::addRelation
+     * @covers          FOF40\Model\DataModel\RelationManager::addRelation
      * @dataProvider    RelationManagerDataprovider::getTestAddRelation
      */
     public function testAddRelation($test, $check)
@@ -121,7 +121,7 @@ class RelationManagerTest extends DatabaseTest
 
         $relations = ReflectionHelper::getValue($relation, 'relations');
 
-        $this->assertInstanceOf('FOF30\Model\DataModel', $result, sprintf($msg, 'Should return an instance of the parent model'));
+        $this->assertInstanceOf('FOF40\Model\DataModel', $result, sprintf($msg, 'Should return an instance of the parent model'));
         $this->assertArrayHasKey($check['relation'], $relations, sprintf($msg, 'Failed to set the relation name'));
         $this->assertNotEmpty($relations[$check['relation']], $relations, sprintf($msg, 'The new relation should not be empty'));
     }
@@ -129,7 +129,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerRemoveRelation
-     * @covers      FOF30\Model\DataModel\RelationManager::removeRelation
+     * @covers      FOF40\Model\DataModel\RelationManager::removeRelation
      */
     public function testRemoveRelation()
     {
@@ -145,14 +145,14 @@ class RelationManagerTest extends DatabaseTest
         $result    = $relation->removeRelation('test');
         $relations = ReflectionHelper::getValue($relation, 'relations');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, 'RelationManager::removeRelation Should return the parent model');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, 'RelationManager::removeRelation Should return the parent model');
         $this->assertArrayNotHasKey('test', $relations, 'RelationManager::removeRelation Failed to remove the relation');
     }
 
     /**
      * @group       RelationManager
      * @group       RelationManagerResetRelations
-     * @covers      FOF30\Model\DataModel\RelationManager::resetRelations
+     * @covers      FOF40\Model\DataModel\RelationManager::resetRelations
      */
     public function testResetRelations()
     {
@@ -174,7 +174,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetRelationNames
-     * @covers      FOF30\Model\DataModel\RelationManager::getRelationNames
+     * @covers      FOF40\Model\DataModel\RelationManager::getRelationNames
      */
     public function testGetRelationNames()
     {
@@ -191,7 +191,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetRelation
-     * @covers      FOF30\Model\DataModel\RelationManager::getRelation
+     * @covers      FOF40\Model\DataModel\RelationManager::getRelation
      */
     public function testGetRelation()
     {
@@ -208,11 +208,11 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetRelation
-     * @covers      FOF30\Model\DataModel\RelationManager::getRelation
+     * @covers      FOF40\Model\DataModel\RelationManager::getRelation
      */
     public function testGetRelationException()
     {
-        $this->setExpectedException('\FOF30\Model\DataModel\Relation\Exception\RelationNotFound');
+        $this->setExpectedException('\FOF40\Model\DataModel\Relation\Exception\RelationNotFound');
 
         $model      = $this->buildModel();
         $relation   = new RelationManager($model);
@@ -223,7 +223,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetNew
-     * @covers      FOF30\Model\DataModel\RelationManager::getNew
+     * @covers      FOF40\Model\DataModel\RelationManager::getNew
      */
     public function testGetNew()
     {
@@ -245,11 +245,11 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetNew
-     * @covers      FOF30\Model\DataModel\RelationManager::getNew
+     * @covers      FOF40\Model\DataModel\RelationManager::getNew
      */
     public function testGetNewException()
     {
-        $this->setExpectedException('\FOF30\Model\DataModel\Relation\Exception\RelationNotFound');
+        $this->setExpectedException('\FOF40\Model\DataModel\Relation\Exception\RelationNotFound');
 
         $model      = $this->buildModel();
         $relation   = new RelationManager($model);
@@ -260,7 +260,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group           RelationManager
      * @group           RelationManagerSave
-     * @covers          FOF30\Model\DataModel\RelationManager::save
+     * @covers          FOF40\Model\DataModel\RelationManager::save
      * @dataProvider    RelationManagerDataprovider::getTestSave
      */
     public function testSave($test, $check)
@@ -271,7 +271,7 @@ class RelationManagerTest extends DatabaseTest
         $fakeRelation = new ClosureHelper(array(
             'saveAll' => function() use (&$save, $test){
                 if($test['exception'] == 'notSupport'){
-                    throw new \FOF30\Model\DataModel\Relation\Exception\SaveNotSupported();
+                    throw new \FOF40\Model\DataModel\Relation\Exception\SaveNotSupported();
                 }
                 elseif($test['exception'] == 'exception'){
                     throw new \Exception();
@@ -293,14 +293,14 @@ class RelationManagerTest extends DatabaseTest
 
         $result = $relation->save($test['name']);
 
-        $this->assertInstanceOf('FOF30\Model\DataModel', $result, sprintf($msg, 'Should return an instance of the parent model'));
+        $this->assertInstanceOf('FOF40\Model\DataModel', $result, sprintf($msg, 'Should return an instance of the parent model'));
         $this->assertEquals($check['save'], $save, sprintf($msg, 'Failed to correctly invoke save on the relation'));
     }
 
     /**
      * @group       RelationManager
      * @group       RelationManagerGetData
-     * @covers      FOF30\Model\DataModel\RelationManager::getData
+     * @covers      FOF40\Model\DataModel\RelationManager::getData
      */
     public function testGetData()
     {
@@ -322,11 +322,11 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetData
-     * @covers      FOF30\Model\DataModel\RelationManager::getData
+     * @covers      FOF40\Model\DataModel\RelationManager::getData
      */
     public function testGetDataException()
     {
-        $this->setExpectedException('\FOF30\Model\DataModel\Relation\Exception\RelationNotFound');
+        $this->setExpectedException('\FOF40\Model\DataModel\Relation\Exception\RelationNotFound');
 
         $model      = $this->buildModel();
         $relation   = new RelationManager($model);
@@ -337,14 +337,14 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetForeignKeyMap
-     * @covers      FOF30\Model\DataModel\RelationManager::getForeignKeyMap
+     * @covers      FOF40\Model\DataModel\RelationManager::getForeignKeyMap
      */
     public function testGetForeignKeyMap()
     {
         $model      = $this->buildModel();
         $relation   = new RelationManager($model);
 
-        $hasMany = $this->getMockBuilder('FOF30\Model\DataModel\Relation\HasMany')
+        $hasMany = $this->getMockBuilder('FOF40\Model\DataModel\Relation\HasMany')
             ->setMethods(array('getForeignKeyMap'))
             ->setConstructorArgs(array($model, 'Fakeapp\Model\Children', ))
             ->getMock();
@@ -359,11 +359,11 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetForeignKeyMap
-     * @covers      FOF30\Model\DataModel\RelationManager::getForeignKeyMap
+     * @covers      FOF40\Model\DataModel\RelationManager::getForeignKeyMap
      */
     public function testGetForeignKeyMapException()
     {
-        $this->setExpectedException('\FOF30\Model\DataModel\Relation\Exception\RelationNotFound');
+        $this->setExpectedException('\FOF40\Model\DataModel\Relation\Exception\RelationNotFound');
 
         $model      = $this->buildModel();
         $relation   = new RelationManager($model);
@@ -374,7 +374,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetCountSubquery
-     * @covers      FOF30\Model\DataModel\RelationManager::getCountSubquery
+     * @covers      FOF40\Model\DataModel\RelationManager::getCountSubquery
      */
     public function testGetCountSubquery()
     {
@@ -396,11 +396,11 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group       RelationManager
      * @group       RelationManagerGetCountSubquery
-     * @covers      FOF30\Model\DataModel\RelationManager::getCountSubquery
+     * @covers      FOF40\Model\DataModel\RelationManager::getCountSubquery
      */
     public function testGetCountSubqueryException()
     {
-        $this->setExpectedException('\FOF30\Model\DataModel\Relation\Exception\RelationNotFound');
+        $this->setExpectedException('\FOF40\Model\DataModel\Relation\Exception\RelationNotFound');
 
         $model      = $this->buildModel();
         $relation   = new RelationManager($model);
@@ -411,7 +411,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group           RelationManager
      * @group           RelationManagerCall
-     * @covers          FOF30\Model\DataModel\RelationManager::__call
+     * @covers          FOF40\Model\DataModel\RelationManager::__call
      * @dataProvider    RelationManagerDataprovider::getTest__call
      */
     public function test__call($test, $check)
@@ -421,7 +421,7 @@ class RelationManagerTest extends DatabaseTest
 
         $model = $this->buildModel();
 
-        $relation = $this->getMockBuilder('FOF30\\Model\\DataModel\\RelationManager')
+        $relation = $this->getMockBuilder('FOF40\\Model\\DataModel\\RelationManager')
             ->setMethods(array('addRelation', 'getData'))
             ->setConstructorArgs(array($model))
             ->getMock();
@@ -486,13 +486,13 @@ class RelationManagerTest extends DatabaseTest
                 break;
         }
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\RelationManager', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\RelationManager', $result, sprintf($msg, 'Should return an instance of itself'));
     }
 
     /**
      * @group           RelationManager
      * @group           RelationManagerIsMagicMethod
-     * @covers          FOF30\Model\DataModel\RelationManager::isMagicMethod
+     * @covers          FOF40\Model\DataModel\RelationManager::isMagicMethod
      * @dataProvider    RelationManagerDataprovider::getTestIsMagicMethod
      */
     public function testIsMagicMethod($test, $check)
@@ -512,7 +512,7 @@ class RelationManagerTest extends DatabaseTest
     /**
      * @group           RelationManager
      * @group           RelationManagerIsMagicProperty
-     * @covers          FOF30\Model\DataModel\RelationManager::isMagicProperty
+     * @covers          FOF40\Model\DataModel\RelationManager::isMagicProperty
      * @dataProvider    RelationManagerDataprovider::getTestIsMagicProperty
      */
     public function testIsMagicProperty($test, $check)
@@ -533,7 +533,7 @@ class RelationManagerTest extends DatabaseTest
     {
         if(!$class)
         {
-            $class = '\\FOF30\\Tests\\Stubs\\Model\\DataModelStub';
+            $class = '\\FOF40\\Tests\\Stubs\\Model\\DataModelStub';
         }
 
         $config = array(

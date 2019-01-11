@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Event;
+namespace FOF40\Event;
 
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 
 defined('_JEXEC') or die;
 

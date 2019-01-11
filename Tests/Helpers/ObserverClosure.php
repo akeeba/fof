@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Helpers;
+namespace FOF40\Tests\Helpers;
 
-use FOF30\Event\Observable;
-use FOF30\Event\Observer;
+use FOF40\Event\Observable;
+use FOF40\Event\Observer;
 
 /**
  * This observer allows us to attach anonymous functions to the event, so we can dynamically perform all the tests we need

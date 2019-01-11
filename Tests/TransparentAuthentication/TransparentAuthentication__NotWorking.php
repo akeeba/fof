@@ -11,20 +11,20 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\TransparentAuthentication;
+namespace FOF40\Tests\TransparentAuthentication;
 
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\TransparentAuthentication\TransparentAuthentication;
-use FOF30\Encrypt\Aes;
-use FOF30\Encrypt\Totp;
-use FOF30\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\TransparentAuthentication\TransparentAuthentication;
+use FOF40\Encrypt\Aes;
+use FOF40\Encrypt\Totp;
+use FOF40\Tests\Helpers\ReflectionHelper;
 
 /**
  * Class TransparentAuthenticationTest
  *
- * @package FOF30\Tests\TransparentAuthentication
+ * @package FOF40\Tests\TransparentAuthentication
  *
- * @coversDefaultClass \FOF30\TransparentAuthentication\TransparentAuthentication
+ * @coversDefaultClass \FOF40\TransparentAuthentication\TransparentAuthentication
  */
 class TransparentAuthenticationTest extends FOFTestCase
 {
@@ -127,7 +127,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			$this->assertInternalType('array', $result);
 			$this->assertArrayHasKey('username', $result);
 			$this->assertArrayHasKey('password', $result);
-			$this->assertEquals('FOF30test', $result['username']);
+			$this->assertEquals('FOF40test', $result['username']);
 			$this->assertEquals('dummy', $result['password']);
 		}
 		else
@@ -144,8 +144,8 @@ class TransparentAuthenticationTest extends FOFTestCase
 		$cryptoKey = hash('sha256', static::$totpKey . $otp);
 		$aes = new Aes($cryptoKey);
 
-		$plainText_right = json_encode(array('username' => 'FOF30test', 'password' => 'dummy'));
-		$plainText_missingPassword = json_encode(array('username' => 'FOF30test'));
+		$plainText_right = json_encode(array('username' => 'FOF40test', 'password' => 'dummy'));
+		$plainText_missingPassword = json_encode(array('username' => 'FOF40test'));
 		$plainText_missingUsername = json_encode(array('password' => 'dummy'));
 		$plainText_crap = 'crap_data';
 		$encoded_right = $aes->encryptString($plainText_right);
@@ -164,7 +164,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER' => 'FOF30test',
+					'PHP_AUTH_USER' => 'FOF40test',
 					'PHP_AUTH_PW'   => 'dummy',
 				),
 				true
@@ -181,7 +181,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER' => 'FOF30test',
+					'PHP_AUTH_USER' => 'FOF40test',
 				),
 				false
 			),
@@ -190,7 +190,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				array(
 					'testAuth' => json_encode(array(
-						'username' => 'FOF30test',
+						'username' => 'FOF40test',
 						'password' => 'dummy'
 					))
 				),
@@ -211,7 +211,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				array(
 					'testAuth' => json_encode(array(
-						'username' => 'FOF30test',
+						'username' => 'FOF40test',
 					))
 				),
 				null,
@@ -229,8 +229,8 @@ class TransparentAuthenticationTest extends FOFTestCase
 			// Split query string
 			array(
 				array(
-					'FOF30Username'	=> 'FOF30test',
-					'FOF30Password'	=> 'dummy',
+					'FOF40Username'	=> 'FOF40test',
+					'FOF40Password'	=> 'dummy',
 				),
 				null,
 				true
@@ -238,7 +238,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			// Split query string, missing username
 			array(
 				array(
-					'FOF30Password'	=> 'dummy',
+					'FOF40Password'	=> 'dummy',
 				),
 				null,
 				false
@@ -246,7 +246,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			// Split query string, missing password
 			array(
 				array(
-					'FOF30Username'	=> 'FOF30test',
+					'FOF40Username'	=> 'FOF40test',
 				),
 				null,
 				false
@@ -263,7 +263,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER'	=> 'FOF30user',
+					'PHP_AUTH_USER'	=> 'FOF40user',
 					'PHP_AUTH_PW'	=> $encoded_right,
 				),
 				true
@@ -272,7 +272,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER'	=> 'FOF30user',
+					'PHP_AUTH_USER'	=> 'FOF40user',
 					'PHP_AUTH_PW'	=> $encoded_missingUsername,
 				),
 				false
@@ -281,7 +281,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER'	=> 'FOF30user',
+					'PHP_AUTH_USER'	=> 'FOF40user',
 					'PHP_AUTH_PW'	=> $encoded_missingPassword,
 				),
 				false
@@ -290,7 +290,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER'	=> 'FOF30user',
+					'PHP_AUTH_USER'	=> 'FOF40user',
 					'PHP_AUTH_PW'	=> $encoded_crap,
 				),
 				false
@@ -299,7 +299,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER'	=> 'FOF30user',
+					'PHP_AUTH_USER'	=> 'FOF40user',
 					'PHP_AUTH_PW'	=> 'this_is_crap_data',
 				),
 				false
@@ -308,7 +308,7 @@ class TransparentAuthenticationTest extends FOFTestCase
 			array(
 				null,
 				array(
-					'PHP_AUTH_USER'	=> 'FOF30user',
+					'PHP_AUTH_USER'	=> 'FOF40user',
 					'PHP_AUTH_PW'	=> $encodedOutdated,
 				),
 				false
@@ -371,10 +371,10 @@ class TransparentAuthenticationTest extends FOFTestCase
 
 		$this->auth = new TransparentAuthentication(static::$container);
 		$this->auth->setAuthenticationMethods(array(1,2,3,4,5));
-		$this->auth->setBasicAuthUsername('FOF30user');
+		$this->auth->setBasicAuthUsername('FOF40user');
 		$this->auth->setQueryParam('testAuth');
-		$this->auth->setQueryParamPassword('FOF30Password');
-		$this->auth->setQueryParamUsername('FOF30Username');
+		$this->auth->setQueryParamPassword('FOF40Password');
+		$this->auth->setQueryParamUsername('FOF40Username');
 		$this->auth->setTimeStep(30);
 		$this->auth->setTotpKey(self::$totpKey);
 	}

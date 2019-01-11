@@ -11,21 +11,21 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Factory\Magic;
+namespace FOF40\Tests\Factory\Magic;
 
-use FOF30\Factory\Magic\TransparentAuthenticationFactory;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\TestContainer;
+use FOF40\Factory\Magic\TransparentAuthenticationFactory;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\TestContainer;
 
 /**
- * @covers      FOF30\Factory\Magic\TransparentAuthenticationFactory::<protected>
- * @covers      FOF30\Factory\Magic\TransparentAuthenticationFactory::<private>
- * @package     FOF30\Tests\Factory
+ * @covers      FOF40\Factory\Magic\TransparentAuthenticationFactory::<protected>
+ * @covers      FOF40\Factory\Magic\TransparentAuthenticationFactory::<private>
+ * @package     FOF40\Tests\Factory
  */
 class TransparentAuthenticationFactoryTest extends FOFTestCase
 {
     /**
-     * @covers          FOF30\Factory\Magic\TransparentAuthenticationFactory::make
+     * @covers          FOF40\Factory\Magic\TransparentAuthenticationFactory::make
      * @dataProvider    getTestMake
      */
     public function testMake($test, $check)
@@ -71,7 +71,7 @@ class TransparentAuthenticationFactoryTest extends FOFTestCase
             ),
             array(
                 'case'   => 'TransparentAuthenticationFactory does not exist',
-                'result' => 'FOF30\\TransparentAuthentication\\TransparentAuthentication'
+                'result' => 'FOF40\\TransparentAuthentication\\TransparentAuthentication'
             )
         );
 

@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Form;
+namespace FOF40\Form;
 
 defined('_JEXEC') or die;
 

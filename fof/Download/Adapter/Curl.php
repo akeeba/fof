@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Download\Adapter;
+namespace FOF40\Download\Adapter;
 
-use FOF30\Download\DownloadInterface;
-use FOF30\Download\Exception\DownloadError;
+use FOF40\Download\DownloadInterface;
+use FOF40\Download\Exception\DownloadError;
 use JText;
 
 defined('_JEXEC') or die;
@@ -149,7 +149,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 
 		if ($result === false)
 		{
-			$error = JText::sprintf('LIB_FOF_DOWNLOAD_ERR_CURL_ERROR', $errno, $errmsg);
+			$error = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_CURL_ERROR', $errno, $errmsg);
 		}
 		elseif (($http_status >= 300) && ($http_status <= 399) && isset($this->headers['location']) && !empty($this->headers['location']))
 		{
@@ -159,7 +159,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 		{
 			$result = false;
 			$errno = $http_status;
-			$error = JText::sprintf('LIB_FOF_DOWNLOAD_ERR_HTTPERROR', $http_status);
+			$error = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_HTTPERROR', $http_status);
 		}
 
 		curl_close($ch);

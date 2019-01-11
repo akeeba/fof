@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Autoloader;
+namespace FOF40\Autoloader;
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 
@@ -277,5 +277,5 @@ class Autoloader
 }
 
 // Register the current namespace with the autoloader
-Autoloader::getInstance()->addMap('FOF30\\', array(realpath(__DIR__ . '/..')));
+Autoloader::getInstance()->addMap('FOF40\\', array(realpath(__DIR__ . '/..')));
 Autoloader::getInstance()->register();

@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Dispatcher\Exception;
+namespace FOF40\Dispatcher\Exception;
 
 use Exception;
 

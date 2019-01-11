@@ -14,7 +14,7 @@
 namespace Fakeapp\Admin\TransparentAuthentication;
 
 
-class TransparentAuthentication extends \FOF30\TransparentAuthentication\TransparentAuthentication
+class TransparentAuthentication extends \FOF40\TransparentAuthentication\TransparentAuthentication
 {
 
 }

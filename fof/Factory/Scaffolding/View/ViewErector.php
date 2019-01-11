@@ -11,12 +11,12 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Factory\Scaffolding\View;
+namespace FOF40\Factory\Scaffolding\View;
 
-use FOF30\View\DataView\Html;
+use FOF40\View\DataView\Html;
 
 /**
- * @package FOF30\Factory\Scaffolding
+ * @package FOF40\Factory\Scaffolding
  *
  * @deprecated 3.1  Support for XML forms will be removed in FOF 4
  */
@@ -25,14 +25,14 @@ class ViewErector implements ErectorInterface
     /**
      * The Builder which called us
      *
-     * @var \FOF30\Factory\Scaffolding\View\Builder
+     * @var \FOF40\Factory\Scaffolding\View\Builder
      */
     protected $builder = null;
 
     /**
      * The Controller attached to the view we're building
      *
-     * @var \FOF30\View\DataView\Html
+     * @var \FOF40\View\DataView\Html
      */
     protected $view = null;
 
@@ -52,7 +52,7 @@ class ViewErector implements ErectorInterface
 
     /**
      * Section used to build the namespace prefix. We have to pass it since in CLI scaffolding we need
-     * to force the section we're in (ie Site or Admin). {@see \FOF30\Container\Container::getNamespacePrefix() } for valid values
+     * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for valid values
      *
      * @var   string
      */

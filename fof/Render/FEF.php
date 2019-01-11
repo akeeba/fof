@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Render;
+namespace FOF40\Render;
 
-use FOF30\Container\Container;
-use FOF30\Form\Form;
+use FOF40\Container\Container;
+use FOF40\Form\Form;
 use JHtml;
 use JText;
 
@@ -36,7 +36,7 @@ defined('_JEXEC') or die;
  * Note: when Dark Mode is enabled the class akeeba-renderer-fef--dark is applied to the container DIV. You can use
  * remove_wrapper_classes to remove it e.g. when you want it to be enabled only through a JavaScript-powered toggle.
  *
- * @package FOF30\Render
+ * @package FOF40\Render
  */
 class FEF extends Joomla3
 {

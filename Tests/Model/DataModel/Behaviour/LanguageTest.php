@@ -11,21 +11,21 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel;
+namespace FOF40\Tests\DataModel;
 
-use FOF30\Input\Input;
-use FOF30\Model\DataModel\Behaviour\Language;
-use FOF30\Tests\Helpers\Application\AppWithLanguageFilter;
-use FOF30\Tests\Helpers\ClosureHelper;
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
+use FOF40\Input\Input;
+use FOF40\Model\DataModel\Behaviour\Language;
+use FOF40\Tests\Helpers\Application\AppWithLanguageFilter;
+use FOF40\Tests\Helpers\ClosureHelper;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
 
 require_once 'LanguageDataprovider.php';
 
 /**
- * @covers      FOF30\Model\DataModel\Behaviour\Language::<protected>
- * @covers      FOF30\Model\DataModel\Behaviour\Language::<private>
- * @package     FOF30\Tests\DataModel\Behaviour\Language
+ * @covers      FOF40\Model\DataModel\Behaviour\Language::<protected>
+ * @covers      FOF40\Model\DataModel\Behaviour\Language::<private>
+ * @package     FOF40\Tests\DataModel\Behaviour\Language
  */
 class LanguageTest extends DatabaseTest
 {
@@ -46,7 +46,7 @@ class LanguageTest extends DatabaseTest
     /**
      * @group           Behaviour
      * @group           LanguageOnBeforeBuildQuery
-     * @covers          FOF30\Model\DataModel\Behaviour\Language::onBeforeBuildQuery
+     * @covers          FOF40\Model\DataModel\Behaviour\Language::onBeforeBuildQuery
      * @dataProvider    LanguageDataprovider::getTestOnBeforeBuildQuery
      */
     public function testOnBeforeBuildQuery($test, $check)
@@ -66,7 +66,7 @@ class LanguageTest extends DatabaseTest
             ));
         };
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('blacklistFilters'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -116,7 +116,7 @@ class LanguageTest extends DatabaseTest
     /**
      * @group           Behaviour
      * @group           LanguageOnAfterLoad
-     * @covers          FOF30\Model\DataModel\Behaviour\Language::onAfterLoad
+     * @covers          FOF40\Model\DataModel\Behaviour\Language::onAfterLoad
      * @dataProvider    LanguageDataprovider::getTestOnAfterLoad
      */
     public function testOnAfterLoad($test, $check)
@@ -133,7 +133,7 @@ class LanguageTest extends DatabaseTest
             ));
         };
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('reset'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();

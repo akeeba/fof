@@ -11,11 +11,11 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Utils\FEFHelper;
+namespace FOF40\Utils\FEFHelper;
 
 defined('_JEXEC') or die;
 
-use FOF30\View\DataView\DataViewInterface;
+use FOF40\View\DataView\DataViewInterface;
 use JHtml;
 
 /**

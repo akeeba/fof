@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\DataModel\Filter;
+namespace FOF40\Model\DataModel\Filter;
 
 defined('_JEXEC') or die;
 

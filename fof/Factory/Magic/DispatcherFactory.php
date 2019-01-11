@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Factory\Magic;
+namespace FOF40\Factory\Magic;
 
-use FOF30\Dispatcher\Dispatcher;
+use FOF40\Dispatcher\Dispatcher;
 
 defined('_JEXEC') or die;
 
@@ -39,7 +39,7 @@ class DispatcherFactory extends BaseFactory
 
 		if (!class_exists($className, true))
 		{
-			$className = '\\FOF30\\Dispatcher\\Dispatcher';
+			$className = '\\FOF40\\Dispatcher\\Dispatcher';
 		}
 
 		$dispatcher = new $className($this->container, $config);

@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\Mixin;
+namespace FOF40\Model\Mixin;
 
-use FOF30\Date\Date;
-use FOF30\Model\DataModel;
+use FOF40\Date\Date;
+use FOF40\Model\DataModel;
 
 /**
  * Trait for date manipulations commonly used in models

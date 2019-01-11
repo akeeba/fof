@@ -11,24 +11,24 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\View;
+namespace FOF40\Tests\View;
 
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Stubs\View\DataView\RawStub;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Stubs\View\DataView\RawStub;
 
 require_once __DIR__.'/RawDataprovider.php';
 
 /**
- * @covers      FOF30\View\DataView\Raw::<protected>
- * @covers      FOF30\View\DataView\Raw::<private>
- * @package     FOF30\Tests\DataView\Raw
+ * @covers      FOF40\View\DataView\Raw::<protected>
+ * @covers      FOF40\View\DataView\Raw::<private>
+ * @package     FOF40\Tests\DataView\Raw
  */
 class RawTest extends FOFTestCase
 {
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::__construct
+     * @covers          FOF40\View\DataView\Raw::__construct
      * @dataProvider    RawDataprovider::getTest__construct
      */
     public function test__construct($test, $check)
@@ -52,7 +52,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getLists
+     * @covers          FOF40\View\DataView\Raw::getLists
      */
     public function testGetLists()
     {
@@ -71,7 +71,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getPerms
+     * @covers          FOF40\View\DataView\Raw::getPerms
      */
     public function testGetPerms()
     {
@@ -90,7 +90,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getPagination
+     * @covers          FOF40\View\DataView\Raw::getPagination
      */
     public function testGetPagination()
     {
@@ -109,7 +109,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getItems
+     * @covers          FOF40\View\DataView\Raw::getItems
      */
     public function testGetItems()
     {
@@ -128,7 +128,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getItem
+     * @covers          FOF40\View\DataView\Raw::getItem
      */
     public function testGetItem()
     {
@@ -147,7 +147,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getItemCount
+     * @covers          FOF40\View\DataView\Raw::getItemCount
      */
     public function testGetItemCount()
     {
@@ -166,7 +166,7 @@ class RawTest extends FOFTestCase
 
     /**
      * @group           DataViewRaw
-     * @covers          FOF30\View\DataView\Raw::getPageParams
+     * @covers          FOF40\View\DataView\Raw::getPageParams
      */
     public function testGetPageParams()
     {

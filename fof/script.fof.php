@@ -13,12 +13,12 @@
 
 defined('_JEXEC') or die();
 
-if (class_exists('file_fof30InstallerScript', false))
+if (class_exists('file_fof40InstallerScript', false))
 {
 	return;
 }
 
-class file_fof30InstallerScript
+class file_fof40InstallerScript
 {
 	/**
 	 * The minimum PHP version required to install this extension
@@ -46,7 +46,7 @@ class file_fof30InstallerScript
 	 *
 	 * @var   string
 	 */
-	protected $libraryFolder = 'fof30';
+	protected $libraryFolder = 'fof40';
 
 	/**
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
@@ -142,9 +142,9 @@ class file_fof30InstallerScript
 			$this->bugfixFilesNotCopiedOnUpdate($parent);
 		}
 
-		$this->loadFOF30();
+		$this->loadFOF40();
 
-		if (!defined('FOF30_INCLUDED'))
+		if (!defined('FOF40_INCLUDED'))
 		{
 			return;
 		}
@@ -164,7 +164,7 @@ class file_fof30InstallerScript
 
 		try
 		{
-			$dbInstaller = new FOF30\Database\Installer($db, $sqlSource);
+			$dbInstaller = new FOF40\Database\Installer($db, $sqlSource);
 			$dbInstaller->updateSchema();
 		}
 		catch (\Exception $e)
@@ -179,14 +179,14 @@ class file_fof30InstallerScript
 		$dbInstaller->nukeCache();
 
 		// Clear the FOF cache
-		$fakeController = \FOF30\Container\Container::getInstance('com_FOOBAR');
+		$fakeController = \FOF40\Container\Container::getInstance('com_FOOBAR');
 		$fakeController->platform->clearCache();
 
 		// Clear op-code caches
 		$this->clearOpcodeCaches();
 
 		// Get the extension ID of the FOF library package
-		$libID = $this->getOldFOF3LibraryExtensionID();
+		$libID = $this->getOldFOF4LibraryExtensionID();
 
 		// If I have an obsolete FOF library package...
 		if (!empty($libID))
@@ -209,7 +209,7 @@ class file_fof30InstallerScript
 	public function uninstall($parent)
 	{
 		// Check dependencies on FOF
-		$dependencyCount = count($this->getDependencies('fof30'));
+		$dependencyCount = count($this->getDependencies('fof40'));
 
 		if ($dependencyCount)
 		{
@@ -236,7 +236,7 @@ class file_fof30InstallerScript
 
 		$source = $grandpa->getPath('source');
 
-		$target = JPATH_LIBRARIES . '/fof30';
+		$target = JPATH_LIBRARIES . '/fof40';
 
 		// If FOF is not really installed (someone removed the directory instead of uninstalling?) I have to install it.
 		if (!JFolder::exists($target))
@@ -280,14 +280,14 @@ class file_fof30InstallerScript
 	/**
 	 * Loads FOF 3.0 if it's not already loaded
 	 */
-	protected function loadFOF30()
+	protected function loadFOF40()
 	{
 		// Load FOF if not already loaded
-		if (!defined('FOF30_INCLUDED'))
+		if (!defined('FOF40_INCLUDED'))
 		{
-			$filePath = JPATH_LIBRARIES . '/fof30/include.php';
+			$filePath = JPATH_LIBRARIES . '/fof40/include.php';
 
-			if (!defined('FOF30_INCLUDED') && file_exists($filePath))
+			if (!defined('FOF40_INCLUDED') && file_exists($filePath))
 			{
 				@include_once $filePath;
 			}
@@ -582,7 +582,7 @@ class file_fof30InstallerScript
 	 *
 	 * @return  int|null
 	 */
-	protected function getOldFOF3LibraryExtensionID()
+	protected function getOldFOF4LibraryExtensionID()
 	{
 		$db = JFactory::getDbo();
 
@@ -591,7 +591,7 @@ class file_fof30InstallerScript
 		$query->select('extension_id')
 			->from('#__extensions')
 			->where($db->qn('type') . ' = ' . $db->q('library'))
-			->where($db->qn('element') . ' = ' . $db->q('lib_fof30'));
+			->where($db->qn('element') . ' = ' . $db->q('lib_fof40'));
 		$db->setQuery($query);
 
 		try

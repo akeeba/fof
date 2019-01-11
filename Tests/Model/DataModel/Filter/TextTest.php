@@ -11,23 +11,23 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel\Text;
+namespace FOF40\Tests\DataModel\Text;
 
-use FOF30\Model\DataModel\Filter\Text;
-use FOF30\Tests\Helpers\DatabaseTest;
+use FOF40\Model\DataModel\Filter\Text;
+use FOF40\Tests\Helpers\DatabaseTest;
 
 require_once 'TextDataprovider.php';
 /**
- * @covers      FOF30\Model\DataModel\Filter\Text::<protected>
- * @covers      FOF30\Model\DataModel\Filter\Text::<private>
- * @package     FOF30\Tests\DataModel\Filter\Text
+ * @covers      FOF40\Model\DataModel\Filter\Text::<protected>
+ * @covers      FOF40\Model\DataModel\Filter\Text::<private>
+ * @package     FOF40\Tests\DataModel\Filter\Text
  */
 class TextTest extends DatabaseTest
 {
     /**
      * @group       TextFilter
      * @group       TextFilterConstruct
-     * @covers      FOF30\Model\DataModel\Filter\Text::__construct
+     * @covers      FOF40\Model\DataModel\Filter\Text::__construct
      */
     public function test__construct()
     {
@@ -41,7 +41,7 @@ class TextTest extends DatabaseTest
     /**
      * @group           TextFilter
      * @group           TextFilterPartial
-     * @covers          FOF30\Model\DataModel\Filter\Text::partial
+     * @covers          FOF40\Model\DataModel\Filter\Text::partial
      * @dataProvider    TextDataprovider::getTestPartial
      */
     public function testPartial($test, $check)
@@ -57,7 +57,7 @@ class TextTest extends DatabaseTest
     /**
      * @group           TextFilter
      * @group           TextFilterExact
-     * @covers          FOF30\Model\DataModel\Filter\Text::exact
+     * @covers          FOF40\Model\DataModel\Filter\Text::exact
      * @dataProvider    TextDataprovider::getTestExact
      */
     public function testExact($test, $check)
@@ -73,7 +73,7 @@ class TextTest extends DatabaseTest
     /**
      * @group           TextFilter
      * @group           TextFilterBetween
-     * @covers          FOF30\Model\DataModel\Filter\Text::between
+     * @covers          FOF40\Model\DataModel\Filter\Text::between
      */
     public function testBetween()
     {
@@ -85,7 +85,7 @@ class TextTest extends DatabaseTest
     /**
      * @group           TextFilter
      * @group           TextFilterOutside
-     * @covers          FOF30\Model\DataModel\Filter\Text::outside
+     * @covers          FOF40\Model\DataModel\Filter\Text::outside
      */
     public function testOutside()
     {
@@ -97,7 +97,7 @@ class TextTest extends DatabaseTest
     /**
      * @group           TextFilter
      * @group           TextFilterInterval
-     * @covers          FOF30\Model\DataModel\Filter\Text::interval
+     * @covers          FOF40\Model\DataModel\Filter\Text::interval
      */
     public function testInterval()
     {

@@ -11,11 +11,11 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Hal;
+namespace FOF40\Tests\Hal;
 
 
-use FOF30\Hal\Link;
-use FOF30\Tests\Helpers\FOFTestCase;
+use FOF40\Hal\Link;
+use FOF40\Tests\Helpers\FOFTestCase;
 
 class LinkTest extends FOFTestCase
 {
@@ -40,7 +40,7 @@ class LinkTest extends FOFTestCase
 
 	/**
 	 * @dataProvider	getTestCreateNoExceptionData
-	 * @covers			FOF30\Hal\Link::__construct
+	 * @covers			FOF40\Hal\Link::__construct
 	 */
 	public function testCreateNoException($href, $templated, $name, $hreflang, $title, $message)
 	{
@@ -95,9 +95,9 @@ class LinkTest extends FOFTestCase
 
 	/**
 	 * @dataProvider				getTestCreateExceptionData
-	 * @covers						FOF30\Hal\Link::__construct
+	 * @covers						FOF40\Hal\Link::__construct
 	 * @expectedException			\RuntimeException
-	 * @expectedExceptionMessage	LIB_FOF_HAL_ERR_INVALIDLINK
+	 * @expectedExceptionMessage	LIB_FOF40_HAL_ERR_INVALIDLINK
 	 */
 	public function testCreateException($href, $templated, $name, $hreflang, $title, $message)
 	{
@@ -117,7 +117,7 @@ class LinkTest extends FOFTestCase
 
 	/**
 	 * @dataProvider	getTestCheckData
-	 * @covers			FOF30\Hal\Link::check
+	 * @covers			FOF40\Hal\Link::check
 	 */
 	public function testCheck($href, $templated, $expect, $message)
 	{
@@ -139,7 +139,7 @@ class LinkTest extends FOFTestCase
 
 	/**
 	 * @dataProvider	getTestMagicGetterData
-	 * @covers			FOF30\Hal\Link::__get
+	 * @covers			FOF40\Hal\Link::__get
 	 */
 	public function testMagicGetter($property, $expect, $message)
 	{
@@ -162,7 +162,7 @@ class LinkTest extends FOFTestCase
 
 	/**
 	 * @dataProvider	getTestMagicGetterData
-	 * @covers			FOF30\Hal\Link::__set
+	 * @covers			FOF40\Hal\Link::__set
 	 */
 	public function testMagicSetter($property, $expect, $message)
 	{
@@ -175,7 +175,7 @@ class LinkTest extends FOFTestCase
 
 	/**
 	 * @dataProvider	getTestMagicGetterData
-	 * @covers			FOF30\Hal\Link::__set
+	 * @covers			FOF40\Hal\Link::__set
 	 */
 	public function testMagicSetterEmptyHref()
 	{

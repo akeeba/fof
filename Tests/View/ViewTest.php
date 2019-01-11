@@ -11,23 +11,23 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\View;
+namespace FOF40\Tests\View;
 
 use Fakeapp\Admin\View\Foobar\Html;
-use FOF30\Input\Input;
-use FOF30\Tests\Helpers\ClosureHelper;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Helpers\TestContainer;
-use FOF30\Tests\Stubs\Model\ModelStub;
-use FOF30\Tests\Stubs\View\ViewStub;
+use FOF40\Input\Input;
+use FOF40\Tests\Helpers\ClosureHelper;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\TestContainer;
+use FOF40\Tests\Stubs\Model\ModelStub;
+use FOF40\Tests\Stubs\View\ViewStub;
 
 require_once 'ViewDataprovider.php';
 
 /**
- * @covers      FOF30\View\View::<protected>
- * @covers      FOF30\View\View::<private>
- * @package     FOF30\Tests\View
+ * @covers      FOF40\View\View::<protected>
+ * @covers      FOF40\View\View::<private>
+ * @package     FOF40\Tests\View
  */
 class ViewTest extends FOFTestCase
 {
@@ -54,7 +54,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::__construct
+     * @covers          FOF40\View\View::__construct
      * @dataProvider    ViewDataprovider::getTest__construct
      */
     public function test__construct($test, $check)
@@ -91,7 +91,7 @@ class ViewTest extends FOFTestCase
 
     /**
      * @group           View
-     * @covers          FOF30\View\View::__get
+     * @covers          FOF40\View\View::__get
      * @dataProvider    ViewDataprovider::getTest__get
      */
     public function test__get($test, $check)
@@ -123,7 +123,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::getName
+     * @covers          FOF40\View\View::getName
      */
     public function testGetName()
     {
@@ -137,13 +137,13 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::getName
+     * @covers          FOF40\View\View::getName
      */
     public function testGetNameException()
     {
-        $this->setExpectedException('FOF30\View\Exception\CannotGetName');
+        $this->setExpectedException('FOF40\View\Exception\CannotGetName');
 
-        $view  = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view  = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('escape'))
             ->setConstructorArgs(array(static::$container, array(), array('getName' => 'parent')))
             ->getMock();
@@ -156,7 +156,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewEscape
-     * @covers          FOF30\View\View::escape
+     * @covers          FOF40\View\View::escape
      */
     public function testEscape()
     {
@@ -169,7 +169,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewGet
-     * @covers          FOF30\View\View::get
+     * @covers          FOF40\View\View::get
      * @dataProvider    ViewDataprovider::getTestGet
      */
     public function testGet($test, $check)
@@ -190,7 +190,7 @@ class ViewTest extends FOFTestCase
 
         if(is_object($result))
         {
-            $this->assertInstanceOf('\\FOF30\\Model\\Model', $result, sprintf($msg, 'Should return an instance of the model'));
+            $this->assertInstanceOf('\\FOF40\\Model\\Model', $result, sprintf($msg, 'Should return an instance of the model'));
         }
         else
         {
@@ -201,7 +201,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewGetModel
-     * @covers          FOF30\View\View::getModel
+     * @covers          FOF40\View\View::getModel
      * @dataProvider    ViewDataprovider::getTestGetModel
      */
     public function testGetModel($test, $check)
@@ -215,7 +215,7 @@ class ViewTest extends FOFTestCase
 
         if($check['exception'])
         {
-            $this->setExpectedException('FOF30\View\Exception\ModelNotFound');
+            $this->setExpectedException('FOF40\View\Exception\ModelNotFound');
         }
 
         $result = $view->getModel($test['name']);
@@ -226,13 +226,13 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewSetDefaultModel
-     * @covers          FOF30\View\View::setDefaultModel
+     * @covers          FOF40\View\View::setDefaultModel
      */
     public function testSetDefaultModel()
     {
         $model = new ModelStub(static::$container);
 
-        $view  = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view  = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('setDefaultModelName', 'setModel'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -246,7 +246,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewSetDefaultModelName
-     * @covers          FOF30\View\View::setDefaultModelName
+     * @covers          FOF40\View\View::setDefaultModelName
      */
     public function testDefaultModelName()
     {
@@ -261,7 +261,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewSetModel
-     * @covers          FOF30\View\View::setModel
+     * @covers          FOF40\View\View::setModel
      */
     public function testSetModel()
     {
@@ -278,7 +278,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewDisplay
-     * @covers          FOF30\View\View::display
+     * @covers          FOF40\View\View::display
      * @dataProvider    ViewDataprovider::getTestDisplay
      */
     public function testDisplay($test, $check)
@@ -312,7 +312,7 @@ class ViewTest extends FOFTestCase
             };
         }
 
-        $view = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('loadTemplate', 'preRender'))
             ->setConstructorArgs(array(static::$container, array(), $methods))
             ->getMock();
@@ -361,14 +361,14 @@ class ViewTest extends FOFTestCase
      *
      * @group           View
      * @group           ViewLoadTemplate
-     * @covers          FOF30\View\View::loadTemplate
+     * @covers          FOF40\View\View::loadTemplate
      * @dataProvider    ViewDataprovider::getTestLoadTemplate
      */
     public function testLoadTemplate($test, $check)
     {
         $msg = 'View::loadTemplate %s - Case: '.$check['case'];
 
-        $view  = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view  = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('loadAnyTemplate', 'getLayout'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -406,7 +406,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::loadAnyTemplate
+     * @covers          FOF40\View\View::loadAnyTemplate
      * @dataProvider    ViewDataprovider::getTestLoadAnyTemplate
      */
     public function testLoadAnyTemplate($testSetupValues, $expectedResult)
@@ -414,7 +414,7 @@ class ViewTest extends FOFTestCase
         $msg = 'View::loadAnyTemplate %s - Case: '.$expectedResult['case'];
         $resolvedPaths = array();
 
-        $view  = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view  = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('getEngine', 'incrementRender', 'decrementRender', 'flushSectionsIfDoneRendering'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -452,7 +452,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::incrementRender
+     * @covers          FOF40\View\View::incrementRender
      */
     public function testIncrementRender()
     {
@@ -468,7 +468,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::decrementRender
+     * @covers          FOF40\View\View::decrementRender
      */
     public function testDecrementRender()
     {
@@ -484,7 +484,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::doneRendering
+     * @covers          FOF40\View\View::doneRendering
      * @dataProvider    ViewDataprovider::getTestDoneRendering
      */
     public function testDoneRendering($test, $check)
@@ -500,14 +500,14 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::renderEach
+     * @covers          FOF40\View\View::renderEach
      * @dataProvider    ViewDataprovider::getTestRenderEach
      */
     public function testRenderEach($test, $check)
     {
         $msg = 'View::renderEach %s - Case: '.$check['case'];
 
-        $view  = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view  = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('loadAnyTemplate'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -525,7 +525,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewGetLayout
-     * @covers          FOF30\View\View::getLayout
+     * @covers          FOF40\View\View::getLayout
      */
     public function testGetLayout()
     {
@@ -539,7 +539,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewSetLayout
-     * @covers          FOF30\View\View::setLayout
+     * @covers          FOF40\View\View::setLayout
      * @dataProvider    ViewDataprovider::getTestSetLayout
      */
     public function testSetLayout($test, $check)
@@ -560,7 +560,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::startSection
+     * @covers          FOF40\View\View::startSection
      * @dataProvider    ViewDataprovider::getTestStartSection
      */
     public function testStartSection($test, $check)
@@ -586,7 +586,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::stopSection
+     * @covers          FOF40\View\View::stopSection
      * @dataProvider    ViewDataprovider::getTestStopSection
      */
     public function testStopSection($test, $check)
@@ -613,11 +613,11 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::stopSection
+     * @covers          FOF40\View\View::stopSection
      */
     public function testStopSectionException()
     {
-        $this->setExpectedException('FOF30\View\Exception\EmptyStack');
+        $this->setExpectedException('FOF40\View\Exception\EmptyStack');
 
         // I have to start the output buffering, since it will be stopped inside the function
         @ob_start();
@@ -628,7 +628,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::appendSection
+     * @covers          FOF40\View\View::appendSection
      * @dataProvider    ViewDataprovider::getTestAppendSection
      */
     public function testAppendSection($test, $check)
@@ -655,11 +655,11 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::appendSection
+     * @covers          FOF40\View\View::appendSection
      */
     public function testAppendSectionException()
     {
-        $this->setExpectedException('FOF30\View\Exception\EmptyStack');
+        $this->setExpectedException('FOF40\View\Exception\EmptyStack');
 
         // I have to start the output buffering, since it will be stopped inside the function
         @ob_start();
@@ -670,7 +670,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::yieldContent
+     * @covers          FOF40\View\View::yieldContent
      * @dataProvider    ViewDataprovider::getTestYieldContent
      */
     public function testYieldContent($test, $check)
@@ -686,7 +686,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::flushSections
+     * @covers          FOF40\View\View::flushSections
      */
     public function testFlushSections()
     {
@@ -702,12 +702,12 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::flushSectionsIfDoneRendering
+     * @covers          FOF40\View\View::flushSectionsIfDoneRendering
      * @dataProvider    ViewDataprovider::getTestFlushSectionsIfDoneRendering
      */
     public function testFlushSectionsIfDoneRendering($test, $check)
     {
-        $view  = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\View\\ViewStub')
+        $view  = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\View\\ViewStub')
             ->setMethods(array('doneRendering', 'flushSections'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -721,7 +721,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewGetLayoutTemplate
-     * @covers          FOF30\View\View::getLayoutTemplate
+     * @covers          FOF40\View\View::getLayoutTemplate
      */
     public function testGetLayoutTemplate()
     {
@@ -735,7 +735,7 @@ class ViewTest extends FOFTestCase
     /**
      * @group           View
      * @group           ViewGetContainer
-     * @covers          FOF30\View\View::getContainer
+     * @covers          FOF40\View\View::getContainer
      */
     public function testGetContainer()
     {
@@ -747,7 +747,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::getTask
+     * @covers          FOF40\View\View::getTask
      */
     public function testGetTask()
     {
@@ -759,7 +759,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::setTask
+     * @covers          FOF40\View\View::setTask
      */
     public function testSetTask()
     {
@@ -770,11 +770,11 @@ class ViewTest extends FOFTestCase
         $task = ReflectionHelper::getValue($view, 'task');
 
         $this->assertEquals('foobar', $task, 'View::setTask Failed to set the task');
-        $this->assertInstanceOf('FOF30\View\View', $result, 'View::setTask Should return an instance of itself');
+        $this->assertInstanceOf('FOF40\View\View', $result, 'View::setTask Should return an instance of itself');
     }
 
     /**
-     * @covers          FOF30\View\View::getDoTask
+     * @covers          FOF40\View\View::getDoTask
      */
     public function testGetDoTask()
     {
@@ -786,7 +786,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::setDoTask
+     * @covers          FOF40\View\View::setDoTask
      */
     public function testSetDoTask()
     {
@@ -797,11 +797,11 @@ class ViewTest extends FOFTestCase
         $task = ReflectionHelper::getValue($view, 'doTask');
 
         $this->assertEquals('foobar', $task, 'View::setDoTask Failed to set the task');
-        $this->assertInstanceOf('FOF30\View\View', $result, 'View::setDoTask Should return an instance of itself');
+        $this->assertInstanceOf('FOF40\View\View', $result, 'View::setDoTask Should return an instance of itself');
     }
 
     /**
-     * @covers          FOF30\View\View::setPreRender
+     * @covers          FOF40\View\View::setPreRender
      */
     public function testSetPreRender()
     {
@@ -814,7 +814,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::setPostRender
+     * @covers          FOF40\View\View::setPostRender
      */
     public function testSetPostRender()
     {
@@ -827,7 +827,7 @@ class ViewTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\View\View::alias
+     * @covers          FOF40\View\View::alias
      */
     public function testAlias()
     {

@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Configuration\Domain;
+namespace FOF40\Configuration\Domain;
 
 use SimpleXMLElement;
 

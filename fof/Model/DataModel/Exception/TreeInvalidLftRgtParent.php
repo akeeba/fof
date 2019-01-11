@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\DataModel\Exception;
+namespace FOF40\Model\DataModel\Exception;
 
 use Exception;
 
@@ -23,7 +23,7 @@ class TreeInvalidLftRgtParent extends TreeInvalidLftRgt
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF_MODEL_ERR_TREE_INVALIDLFTRGT_PARENT');
+			$message = \JText::_('LIB_FOF40_MODEL_ERR_TREE_INVALIDLFTRGT_PARENT');
 		}
 
 		parent::__construct( $message, $code, $previous );

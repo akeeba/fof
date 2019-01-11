@@ -56,7 +56,7 @@ class MagicSwitchFactoryDataprovider
             ),
             array(
                 'case' => 'Model is not found',
-                'result' => 'FOF30\Model\DataModel'
+                'result' => 'FOF40\Model\DataModel'
             )
         );
 
@@ -81,7 +81,7 @@ class MagicSwitchFactoryDataprovider
             ),
             array(
                 'case' => 'View is not found',
-                'result' => 'FOF30\View\DataView\Html'
+                'result' => 'FOF40\View\DataView\Html'
             )
         );
 
@@ -122,7 +122,7 @@ class MagicSwitchFactoryDataprovider
             ),
             array(
                 'case' => 'Dispatcher not found',
-                'result' => 'FOF30\Dispatcher\Dispatcher'
+                'result' => 'FOF40\Dispatcher\Dispatcher'
             )
         );
 
@@ -163,7 +163,7 @@ class MagicSwitchFactoryDataprovider
             ),
             array(
                 'case' => 'TransparentAuthentication not found',
-                'result' => 'FOF30\TransparentAuthentication\TransparentAuthentication'
+                'result' => 'FOF40\TransparentAuthentication\TransparentAuthentication'
             )
         );
 

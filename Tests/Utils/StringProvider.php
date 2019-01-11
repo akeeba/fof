@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Utils;
+namespace FOF40\Tests\Utils;
 
 class StringProvider
 {

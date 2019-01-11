@@ -897,8 +897,8 @@ class DataModelGenericDataprovider
 				'class' => 'Filters'
 			),
 			array(
-				'case'     => 'Adding behaviour from FOF30\\Model\\DataModel\\Behaviour',
-				'class'    => 'FOF30\\Model\\DataModel\\Behaviour\\Filters',
+				'case'     => 'Adding behaviour from FOF40\\Model\\DataModel\\Behaviour',
+				'class'    => 'FOF40\\Model\\DataModel\\Behaviour\\Filters',
 				'attached' => true
 			)
 		);
@@ -909,7 +909,7 @@ class DataModelGenericDataprovider
 			),
 			array(
 				'case'     => 'Trying to add non-existant behaviour',
-				'class'    => 'FOF30\\Model\\DataModel\\Behaviour\\Wrong',
+				'class'    => 'FOF40\\Model\\DataModel\\Behaviour\\Wrong',
 				'attached' => false
 			)
 		);
@@ -2730,7 +2730,7 @@ class DataModelGenericDataprovider
 			),
 			array(
 				'case'      => 'Validate returns false, the error stack contains a message',
-				'exception' => 'FOF30\Model\DataModel\Exception\BaseException',
+				'exception' => 'FOF40\Model\DataModel\Exception\BaseException',
 				'message'   => 'Error',
 				'result'    => ''
 			)

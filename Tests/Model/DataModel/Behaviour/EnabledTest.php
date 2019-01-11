@@ -11,26 +11,26 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel;
+namespace FOF40\Tests\DataModel;
 
-use FOF30\Model\DataModel\Behaviour\Enabled;
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Stubs\Model\DataModelStub;
+use FOF40\Model\DataModel\Behaviour\Enabled;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Stubs\Model\DataModelStub;
 
 require_once 'EnabledDataprovider.php';
 
 /**
- * @covers      FOF30\Model\DataModel\Behaviour\Enabled::<protected>
- * @covers      FOF30\Model\DataModel\Behaviour\Enabled::<private>
- * @package     FOF30\Tests\DataModel\Behaviour\Enabled
+ * @covers      FOF40\Model\DataModel\Behaviour\Enabled::<protected>
+ * @covers      FOF40\Model\DataModel\Behaviour\Enabled::<private>
+ * @package     FOF40\Tests\DataModel\Behaviour\Enabled
  */
 class EnabledTest extends DatabaseTest
 {
     /**
      * @group           Behaviour
      * @group           EnabledOnBeforeBuildQuery
-     * @covers          FOF30\Model\DataModel\Behaviour\Enabled::onBeforeBuildQuery
+     * @covers          FOF40\Model\DataModel\Behaviour\Enabled::onBeforeBuildQuery
      * @dataProvider    EnabledDataprovider::getTestOnBeforeBuildQuery
      */
     public function testOnBeforeBuildQuery($test, $check)
@@ -58,7 +58,7 @@ class EnabledTest extends DatabaseTest
     /**
      * @group           Behaviour
      * @group           EnabledOnAfterLoad
-     * @covers          FOF30\Model\DataModel\Behaviour\Enabled::onAfterLoad
+     * @covers          FOF40\Model\DataModel\Behaviour\Enabled::onAfterLoad
      * @dataProvider    EnabledDataprovider::getTestOnAfterLoad
      */
     public function testOnAfterLoad($test, $check)
@@ -71,7 +71,7 @@ class EnabledTest extends DatabaseTest
         $platform = static::$container->platform;
         $platform::$user = (object)array('id' => 99);
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('reset', 'getFieldValue'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();

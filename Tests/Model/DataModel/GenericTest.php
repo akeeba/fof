@@ -11,28 +11,28 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel;
+namespace FOF40\Tests\DataModel;
 
-use FOF30\Form\Form;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Helpers\TestContainer;
-use FOF30\Tests\Stubs\Model\DataModelStub;
-use FOF30\Tests\Helpers\ClosureHelper;
-use FOF30\Tests\Helpers\DatabaseTest;
+use FOF40\Form\Form;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\TestContainer;
+use FOF40\Tests\Stubs\Model\DataModelStub;
+use FOF40\Tests\Helpers\ClosureHelper;
+use FOF40\Tests\Helpers\DatabaseTest;
 
 require_once 'GenericDataprovider.php';
 
 /**
- * @covers      FOF30\Model\DataModel::<protected>
- * @covers      FOF30\Model\DataModel::<private>
- * @package     FOF30\Tests\DataModel
+ * @covers      FOF40\Model\DataModel::<protected>
+ * @covers      FOF40\Model\DataModel::<private>
+ * @package     FOF40\Tests\DataModel
  */
 class DataModelGenericTest extends DatabaseTest
 {
     /**
      * @group           DataModel
      * @group           DataModelGetTableFields
-     * @covers          FOF30\Model\DataModel::getTableFields
+     * @covers          FOF40\Model\DataModel::getTableFields
      * @dataProvider    DataModelGenericDataprovider::getTestGetTableFields
      */
     public function testGetTableFields($test, $check)
@@ -89,7 +89,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetDbo
-     * @covers          FOF30\Model\DataModel::getDbo
+     * @covers          FOF40\Model\DataModel::getDbo
      * @dataProvider    DataModelGenericDataprovider::getTestGetDbo
      */
     public function testGetDbo($test, $check)
@@ -133,7 +133,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelSetFieldValue
-     * @covers          FOF30\Model\DataModel::setFieldValue
+     * @covers          FOF40\Model\DataModel::setFieldValue
      * @dataProvider    DataModelGenericDataprovider::getTestSetFieldValue
      */
     public function testSetFieldValue($test, $check)
@@ -160,7 +160,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelReset
-     * @covers          FOF30\Model\DataModel::reset
+     * @covers          FOF40\Model\DataModel::reset
      * @dataProvider    DataModelGenericDataprovider::getTestReset
      */
     public function testReset($test, $check)
@@ -174,7 +174,7 @@ class DataModelGenericTest extends DatabaseTest
 
         $model = new DataModelStub(self::$container, $config);
 
-        $relation = $this->getMockBuilder('FOF30\\Model\\DataModel\\RelationManager')
+        $relation = $this->getMockBuilder('FOF40\\Model\\DataModel\\RelationManager')
             ->setMethods(array('resetRelations'))
             ->setConstructorArgs(array($model))
             ->getMock();
@@ -192,7 +192,7 @@ class DataModelGenericTest extends DatabaseTest
         $eager   = ReflectionHelper::getValue($model, 'eagerRelations');
         $filters = ReflectionHelper::getValue($model, 'relationFilters');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $return, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['data'], $data, sprintf($msg, 'Failed to reset the internal data'));
         $this->assertEquals($check['eager'], $eager, sprintf($msg, 'Eager relations are not correctly set'));
         $this->assertEmpty($filters, sprintf($msg, 'Relations filters should be empty'));
@@ -201,7 +201,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetFieldValue
-     * @covers          FOF30\Model\DataModel::getFieldValue
+     * @covers          FOF40\Model\DataModel::getFieldValue
      * @dataProvider    DataModelGenericDataprovider::getTestGetFieldValue
      */
     public function testGetFieldValue($test, $check)
@@ -230,7 +230,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelHasField
-     * @covers          FOF30\Model\DataModel::hasField
+     * @covers          FOF40\Model\DataModel::hasField
      * @dataProvider    DataModelGenericDataprovider::getTestHasField
      */
     public function testHasField($test, $check)
@@ -242,7 +242,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('getFieldAlias'))
             ->setConstructorArgs(array(self::$container, $config))
             ->getMock();
@@ -259,7 +259,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetFieldAlias
-     * @covers          FOF30\Model\DataModel::getFieldAlias
+     * @covers          FOF40\Model\DataModel::getFieldAlias
      * @dataProvider    DataModelGenericDataprovider::getTestGetFieldAlias
      */
     public function testGetFieldAlias($test, $check)
@@ -283,7 +283,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetData
-     * @covers          FOF30\Model\DataModel::getData
+     * @covers          FOF40\Model\DataModel::getData
      */
     public function testGetData()
     {
@@ -305,7 +305,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelChunk
-     * @covers          FOF30\Model\DataModel::chunk
+     * @covers          FOF40\Model\DataModel::chunk
      * @dataProvider    DataModelGenericDataprovider::getTestChunk
      */
     public function testChunk($test, $check)
@@ -321,7 +321,7 @@ class DataModelGenericTest extends DatabaseTest
             'transform' => function(){}
         ));
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('count', 'get'))
             ->setConstructorArgs(array(self::$container, $config))
             ->getMock();
@@ -331,13 +331,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->chunk($test['chunksize'], function(){});
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelCount
-     * @covers          FOF30\Model\DataModel::count
+     * @covers          FOF40\Model\DataModel::count
      */
     public function testCount()
     {
@@ -358,7 +358,7 @@ class DataModelGenericTest extends DatabaseTest
 
         $mockedQuery = $db->getQuery(true)->select('*')->from('#__foftest_bares');
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('buildQuery'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
@@ -366,7 +366,7 @@ class DataModelGenericTest extends DatabaseTest
         $model->method('buildQuery')->willReturn($mockedQuery);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -388,7 +388,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelBuildQuery
-     * @covers          FOF30\Model\DataModel::buildQuery
+     * @covers          FOF40\Model\DataModel::buildQuery
      * @dataProvider    DataModelGenericDataprovider::getTestBuildQuery
      */
     public function testBuildQuery($test, $check)
@@ -416,7 +416,7 @@ class DataModelGenericTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
@@ -444,7 +444,7 @@ class DataModelGenericTest extends DatabaseTest
         );
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -475,7 +475,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGet
-     * @covers          FOF30\Model\DataModel::get
+     * @covers          FOF40\Model\DataModel::get
      * @dataProvider    DataModelGenericDataprovider::getTestGet
      */
     public function testGet($test, $check)
@@ -487,7 +487,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('getState', 'getItemsArray', 'eagerLoad'))
             ->setConstructorArgs(array(self::$container, $config))
             ->getMock();
@@ -514,13 +514,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->get($test['override'], $test['limitstart'], $test['limit']);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\Collection', $result, sprintf($msg, 'Returned the wrong object'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\Collection', $result, sprintf($msg, 'Returned the wrong object'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelGetId
-     * @covers          FOF30\Model\DataModel::getId
+     * @covers          FOF40\Model\DataModel::getId
      */
     public function testGetId()
     {
@@ -540,7 +540,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetIdFieldName
-     * @covers          FOF30\Model\DataModel::getIdFieldName
+     * @covers          FOF40\Model\DataModel::getIdFieldName
      */
     public function testGetIdFieldName()
     {
@@ -558,7 +558,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetTableName
-     * @covers          FOF30\Model\DataModel::getTableName
+     * @covers          FOF40\Model\DataModel::getTableName
      */
     public function testGetTableName()
     {
@@ -576,7 +576,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelAddBehaviour
-     * @covers          FOF30\Model\DataModel::addBehaviour
+     * @covers          FOF40\Model\DataModel::addBehaviour
      * @dataProvider    DataModelGenericDataprovider::getTestAddBehaviour
      */
     public function testAddBehaviour($test, $check)
@@ -595,14 +595,14 @@ class DataModelGenericTest extends DatabaseTest
         $dispatcher = $model->getBehavioursDispatcher();
         $attached   = $dispatcher->hasObserverClass($check['class']);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return and instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return and instance of itself'));
         $this->assertEquals($check['attached'], $attached, sprintf($msg, 'Failed to properly attach the behaviour'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelGetBehavioursDispatcher
-     * @covers          FOF30\Model\DataModel::getBehavioursDispatcher
+     * @covers          FOF40\Model\DataModel::getBehavioursDispatcher
      */
     public function testGetBehavioursDispatcher()
     {
@@ -622,7 +622,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelOrderBy
-     * @covers          FOF30\Model\DataModel::orderBy
+     * @covers          FOF40\Model\DataModel::orderBy
      * @dataProvider    DataModelGenericDataprovider::getTestOrderBy
      */
     public function testOrderBy($test, $check)
@@ -634,7 +634,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('setState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -645,13 +645,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->orderBy($test['field'], $test['dir']);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelSkip
-     * @covers          FOF30\Model\DataModel::skip
+     * @covers          FOF40\Model\DataModel::skip
      * @dataProvider    DataModelGenericDataprovider::getTestSkip
      */
     public function testSkip($test, $check)
@@ -663,7 +663,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('setState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -671,13 +671,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->skip($test['limitstart']);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelTake
-     * @covers          FOF30\Model\DataModel::take
+     * @covers          FOF40\Model\DataModel::take
      * @dataProvider    DataModelGenericDataprovider::getTestTake
      */
     public function testTake($test, $check)
@@ -689,7 +689,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('setState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -697,13 +697,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->take($test['limit']);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelToArray
-     * @covers          FOF30\Model\DataModel::toArray
+     * @covers          FOF40\Model\DataModel::toArray
      */
     public function testToarray()
     {
@@ -728,7 +728,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelToJson
-     * @covers          FOF30\Model\DataModel::toJson
+     * @covers          FOF40\Model\DataModel::toJson
      * @dataProvider    DataModelGenericDataprovider::getTestToJson
      */
     public function testToJson($test)
@@ -765,7 +765,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelWhere
-     * @covers          FOF30\Model\DataModel::where
+     * @covers          FOF40\Model\DataModel::where
      * @dataProvider    DataModelGenericDataprovider::getTestWhere
      */
     public function testWhere($test, $check)
@@ -777,7 +777,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('getIdFieldName', 'setState', 'addBehaviour'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -786,7 +786,7 @@ class DataModelGenericTest extends DatabaseTest
         $model->method('getIdFieldName')->willReturn($test['mock']['id_field']);
         $model->expects($this->once())->method('setState')->with($this->equalTo($check['field']), $this->equalTo($check['options']));
 
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('hasObserverClass'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -797,17 +797,17 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->where($test['field'], $test['method'], $test['values']);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelWhere
-     * @covers          FOF30\Model\DataModel::where
+     * @covers          FOF40\Model\DataModel::where
      */
     public function testWhereException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\InvalidSearchMethod');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\InvalidSearchMethod');
 
         $config = array(
             'idFieldName' => 'foftest_bare_id',
@@ -821,7 +821,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelWhereRaw
-     * @covers          FOF30\Model\DataModel::whereRaw
+     * @covers          FOF40\Model\DataModel::whereRaw
      */
     public function testWhereRaw()
     {
@@ -836,13 +836,13 @@ class DataModelGenericTest extends DatabaseTest
         $where  = ReflectionHelper::getValue($model, 'whereClauses');
 
         $this->assertEquals(array('foo = bar'), $where, 'DataModel::whereRaw failed to save custom where clause');
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, 'DataModel::whereRaw should return an instance of itself');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, 'DataModel::whereRaw should return an instance of itself');
     }
 
     /**
      * @group           DataModel
      * @group           DataModelWith
-     * @covers          FOF30\Model\DataModel::with
+     * @covers          FOF40\Model\DataModel::with
      * @dataProvider    DataModelGenericDataprovider::getTestWith
      */
     public function testWith($test, $check)
@@ -868,14 +868,14 @@ class DataModelGenericTest extends DatabaseTest
 
         $eager = ReflectionHelper::getValue($model, 'eagerRelations');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['eager'], $eager, sprintf($msg, 'Failed to set the eagerLoad relationships'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelApplyAccessFiltering
-     * @covers          FOF30\Model\DataModel::applyAccessFiltering
+     * @covers          FOF40\Model\DataModel::applyAccessFiltering
      * @dataProvider    DataModelGenericDataprovider::getTestapplyAccessFiltering
      */
     public function testapplyAccessFiltering($test, $check)
@@ -892,7 +892,7 @@ class DataModelGenericTest extends DatabaseTest
             'tableName'   => $test['table']
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('setState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -900,13 +900,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $result = $model->applyAccessFiltering();
 
-        $this->assertInstanceOf('FOF30\Model\DataModel', $result, sprintf($msg, 'Should return an instance of iteself'));
+        $this->assertInstanceOf('FOF40\Model\DataModel', $result, sprintf($msg, 'Should return an instance of iteself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelGetContentType
-     * @covers          FOF30\Model\DataModel::getContentType
+     * @covers          FOF40\Model\DataModel::getContentType
      * @dataProvider    DataModelGenericDataprovider::getTestGetContentType
      */
     public function testGetContentType($test, $check)
@@ -924,7 +924,7 @@ class DataModelGenericTest extends DatabaseTest
 
         if($check['exception'])
         {
-            $this->setExpectedException('FOF30\Model\DataModel\Exception\NoContentType');
+            $this->setExpectedException('FOF40\Model\DataModel\Exception\NoContentType');
         }
 
         $result = $model->getContentType();
@@ -935,7 +935,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetItemsArray
-     * @covers          FOF30\Model\DataModel::getItemsArray
+     * @covers          FOF40\Model\DataModel::getItemsArray
      */
     public function testGetItemsArray()
     {
@@ -958,7 +958,7 @@ class DataModelGenericTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('buildQuery'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
@@ -974,7 +974,7 @@ class DataModelGenericTest extends DatabaseTest
         $item       = array_shift($result);
 
         $this->assertSame(1, $key, sprintf($msg, 'Should index the array by the record id'));
-        $this->assertInstanceOf('FOF30\Model\DataModel', $item, sprintf($msg, 'Should return an array of DataModels'));
+        $this->assertInstanceOf('FOF40\Model\DataModel', $item, sprintf($msg, 'Should return an array of DataModels'));
         $this->assertSame('1', $item->foftest_bare_id, sprintf($msg, 'Should bind the data to the object'));
         $this->assertEquals(1, $counter, sprintf($msg, 'Failed to invoke the onAfter event'));
     }
@@ -982,7 +982,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelAddKnownField
-     * @covers          FOF30\Model\DataModel::addKnownField
+     * @covers          FOF40\Model\DataModel::addKnownField
      * @dataProvider    DataModelGenericDataprovider::getTestAddKnownField
      */
     public function testAddKnownField($test, $check)
@@ -1001,7 +1001,7 @@ class DataModelGenericTest extends DatabaseTest
         $known = ReflectionHelper::getValue($model, 'knownFields');
         $data  = ReflectionHelper::getValue($model, 'recordData');
 
-        $this->assertInstanceOf('\FOF30\Model\DataModel', $result, sprintf($msg, 'Returned the wrong result'));
+        $this->assertInstanceOf('\FOF40\Model\DataModel', $result, sprintf($msg, 'Returned the wrong result'));
         $this->assertArrayHasKey($check['field'], $known, sprintf($msg, 'Failed to set the field into the internal array'));
         $this->assertEquals($known[$check['field']], $check['info'], sprintf($msg, 'Failed to set the field info'));
         $this->assertSame($data[$check['field']], $check['value'], sprintf($msg, 'Failed to set field default value'));
@@ -1010,7 +1010,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetRules
-     * @covers          FOF30\Model\DataModel::getRules
+     * @covers          FOF40\Model\DataModel::getRules
      */
     public function testGetRules()
     {
@@ -1029,7 +1029,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelIsAssetsTracked
-     * @covers          FOF30\Model\DataModel::isAssetsTracked
+     * @covers          FOF40\Model\DataModel::isAssetsTracked
      */
     public function testIsAssetsTracked()
     {
@@ -1048,7 +1048,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelSetAssetsTracked
-     * @covers          FOF30\Model\DataModel::setAssetsTracked
+     * @covers          FOF40\Model\DataModel::setAssetsTracked
      */
     public function testSetAssetsTracked()
     {
@@ -1068,7 +1068,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelHasTags
-     * @covers          FOF30\Model\DataModel::hasTags
+     * @covers          FOF40\Model\DataModel::hasTags
      */
     public function testHasTags()
     {
@@ -1087,7 +1087,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelSetHasTags
-     * @covers          FOF30\Model\DataModel::setHasTags
+     * @covers          FOF40\Model\DataModel::setHasTags
      */
     public function testSetHasTags()
     {
@@ -1107,7 +1107,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelSetAssetKey
-     * @covers          FOF30\Model\DataModel::setAssetKey
+     * @covers          FOF40\Model\DataModel::setAssetKey
      */
     public function testSetAssetKey()
     {
@@ -1127,7 +1127,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetAssetName
-     * @covers          FOF30\Model\DataModel::getAssetName
+     * @covers          FOF40\Model\DataModel::getAssetName
      * @dataProvider    DataModelGenericDataprovider::getTestGetAssetName
      */
     public function testGetAssetName($test, $check)
@@ -1150,7 +1150,7 @@ class DataModelGenericTest extends DatabaseTest
 
         if($check['exception'])
         {
-            $this->setExpectedException('FOF30\Model\DataModel\Exception\NoAssetKey');
+            $this->setExpectedException('FOF40\Model\DataModel\Exception\NoAssetKey');
         }
 
         $result = $model->getAssetName();
@@ -1161,7 +1161,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetAssetKey
-     * @covers          FOF30\Model\DataModel::getAssetKey
+     * @covers          FOF40\Model\DataModel::getAssetKey
      */
     public function testGetAssetKey()
     {
@@ -1180,7 +1180,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetFormName
-     * @covers          FOF30\Model\DataModel::getFormName
+     * @covers          FOF40\Model\DataModel::getFormName
      */
     public function testGetFormName()
     {
@@ -1199,7 +1199,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelSetFormName
-     * @covers          FOF30\Model\DataModel::setFormName
+     * @covers          FOF40\Model\DataModel::setFormName
      */
     public function testSetFormName()
     {
@@ -1219,7 +1219,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelGetForm
-     * @covers          FOF30\Model\DataModel::getForm
+     * @covers          FOF40\Model\DataModel::getForm
      * @dataProvider    DataModelGenericDataprovider::getTestGetForm
      */
     public function testGetForm($test, $check)
@@ -1245,7 +1245,7 @@ class DataModelGenericTest extends DatabaseTest
 
         $container = clone static::$container;
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('loadForm'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
@@ -1268,7 +1268,7 @@ class DataModelGenericTest extends DatabaseTest
 
         if($check['result'])
         {
-            $this->assertInstanceOf('FOF30\Form\Form', $result, sprintf($msg, 'Returned the wrong result'));
+            $this->assertInstanceOf('FOF40\Form\Form', $result, sprintf($msg, 'Returned the wrong result'));
         }
         else
         {
@@ -1283,7 +1283,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelValidateForm
-     * @covers          FOF30\Model\DataModel::validateForm
+     * @covers          FOF40\Model\DataModel::validateForm
      * @dataProvider    DataModelGenericDataprovider::getTestValidateForm
      */
     public function testValidateForm($test, $check)
@@ -1297,7 +1297,7 @@ class DataModelGenericTest extends DatabaseTest
 
         $model = new DataModelStub(static::$container, $config);
 
-        $form = $this->getMockBuilder('FOF30\Form\Form')
+        $form = $this->getMockBuilder('FOF40\Form\Form')
             ->setMethods(array('filter', 'validate', 'getErrors'))
             ->setConstructorArgs(array(static::$container, 'Foobar'))
             ->getMock();
@@ -1319,7 +1319,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelSetBehaviorParam
-     * @covers          FOF30\Model\DataModel::setBehaviorParam
+     * @covers          FOF40\Model\DataModel::setBehaviorParam
      */
     public function testSetBehaviorParam()
     {
@@ -1336,13 +1336,13 @@ class DataModelGenericTest extends DatabaseTest
 
         $this->assertArrayHasKey('foo', $behaviors);
         $this->assertEquals('bar', $behaviors['foo']);
-        $this->assertInstanceOf('FOF30\Model\DataModel', $result);
+        $this->assertInstanceOf('FOF40\Model\DataModel', $result);
     }
 
     /**
      * @group           DataModel
      * @group           DataModelGetBehaviorParam
-     * @covers          FOF30\Model\DataModel::getBehaviorParam
+     * @covers          FOF40\Model\DataModel::getBehaviorParam
      * @dataProvider    DataModelGenericDataprovider::getTestGetBehaviorParam
      */
     public function testGetBehaviorParam($test, $check)
@@ -1366,7 +1366,7 @@ class DataModelGenericTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelBlacklistFilters
-     * @covers          FOF30\Model\DataModel::blacklistFilters
+     * @covers          FOF40\Model\DataModel::blacklistFilters
      * @dataProvider    DataModelGenericDataprovider::getTestBlacklistFilters
      */
     public function testBlacklistFilters($test, $check)

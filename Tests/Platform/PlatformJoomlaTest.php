@@ -11,19 +11,19 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Platform;
+namespace FOF40\Tests\Platform;
 
 
-use FOF30\Platform\Joomla\Platform;
-use FOF30\Tests\Helpers\Application\MockLanguage;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\MockSession;
-use FOF30\Tests\Helpers\Platform\UserForAdminAuth;
-use FOF30\Tests\Helpers\ReflectionHelper;
+use FOF40\Platform\Joomla\Platform;
+use FOF40\Tests\Helpers\Application\MockLanguage;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\MockSession;
+use FOF40\Tests\Helpers\Platform\UserForAdminAuth;
+use FOF40\Tests\Helpers\ReflectionHelper;
 
 /**
- * @covers FOF30\Platform\Joomla\Platform::<protected>
- * @covers FOF30\Platform\Joomla\Platform::<private>
+ * @covers FOF40\Platform\Joomla\Platform::<protected>
+ * @covers FOF40\Platform\Joomla\Platform::<private>
  */
 class PlatformJoomlaTest extends FOFTestCase
 {
@@ -47,7 +47,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::checkExecution
+	 * @covers FOF40\Platform\Joomla\Platform::checkExecution
 	 */
 	public function testCheckExecution()
 	{
@@ -55,7 +55,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::raiseError
+	 * @covers FOF40\Platform\Joomla\Platform::raiseError
 	 */
 	public function testRaiseError()
 	{
@@ -65,10 +65,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::isCli
-	 * @covers FOF30\Platform\Joomla\Platform::isCliAdmin
+	 * @covers FOF40\Platform\Joomla\Platform::isCli
+	 * @covers FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestIsCli
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsCli
 	 */
 	public function testIsCli($mockApplicationType, $expected, $message)
 	{
@@ -80,10 +80,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::isBackend
-	 * @covers FOF30\Platform\Joomla\Platform::isCliAdmin
+	 * @covers FOF40\Platform\Joomla\Platform::isBackend
+	 * @covers FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestIsBackend
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsBackend
 	 */
 	public function testIsBackend($mockApplicationType, $expected, $message)
 	{
@@ -95,10 +95,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::isFrontend
-	 * @covers FOF30\Platform\Joomla\Platform::isCliAdmin
+	 * @covers FOF40\Platform\Joomla\Platform::isFrontend
+	 * @covers FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestIsFrontend
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsFrontend
 	 */
 	public function testIsFrontend($mockApplicationType, $expected, $message)
 	{
@@ -142,7 +142,7 @@ class PlatformJoomlaTest extends FOFTestCase
 		\JFactory::$application = $mockApplication;
 
 		// Reset Platform's internal cache
-		$reflector = new \ReflectionClass('FOF30\\Platform\\Joomla\\Platform');
+		$reflector = new \ReflectionClass('FOF40\\Platform\\Joomla\\Platform');
 		$propIsCli = $reflector->getProperty('isCLI');
 		$propIsCli->setAccessible(true);
 		$propIsCli->setValue(null);
@@ -152,7 +152,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getPlatformBaseDirs
+	 * @covers FOF40\Platform\Joomla\Platform::getPlatformBaseDirs
 	 */
 	public function testGetPlatformBaseDirs()
 	{
@@ -179,9 +179,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getComponentBaseDirs
+	 * @covers FOF40\Platform\Joomla\Platform::getComponentBaseDirs
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestComponentBaseDirs
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestComponentBaseDirs
 	 */
 	public function testGetComponentBaseDirs($area, $expectedMain, $expectedAlt)
 	{
@@ -209,7 +209,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getTemplate
+	 * @covers FOF40\Platform\Joomla\Platform::getTemplate
 	 */
 	public function testGetTemplate()
 	{
@@ -225,7 +225,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getUser
+	 * @covers FOF40\Platform\Joomla\Platform::getUser
 	 */
 	public function testGetUser()
 	{
@@ -246,7 +246,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getDocument
+	 * @covers FOF40\Platform\Joomla\Platform::getDocument
 	 */
 	public function testGetDocument()
 	{
@@ -260,7 +260,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 		$expected = \JFactory::getDocument();
 
-		$reflector = new \ReflectionClass('FOF30\\Platform\\Joomla\\Platform');
+		$reflector = new \ReflectionClass('FOF40\\Platform\\Joomla\\Platform');
 		$propIsCli = $reflector->getProperty('isCLI');
 		$propIsCli->setAccessible(true);
 		$propIsCli->setValue(true);
@@ -281,7 +281,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getLanguage
+	 * @covers FOF40\Platform\Joomla\Platform::getLanguage
 	 *
 	 */
 	public function testGetLanguage()
@@ -294,7 +294,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getDbo
+	 * @covers FOF40\Platform\Joomla\Platform::getDbo
 	 *
 	 */
 	public function testGetDbo()
@@ -307,9 +307,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getTemplateSuffixes
+	 * @covers FOF40\Platform\Joomla\Platform::getTemplateSuffixes
 	 *
-	 * @XXXdataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateSuffixes
+	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateSuffixes
 	 *
 	 */
 	public function testGetTemplateSuffixes()
@@ -332,9 +332,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getTemplateOverridePath
+	 * @covers FOF40\Platform\Joomla\Platform::getTemplateOverridePath
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateOverridePath
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateOverridePath
 	 *
 	 */
 	public function testGetTemplateOverridePath($applicationType, $component, $absolute, $expected, $message)
@@ -356,9 +356,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::loadTranslations
+	 * @covers FOF40\Platform\Joomla\Platform::loadTranslations
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestLoadTranslations
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoadTranslations
 	 *
 	 */
 	public function testLoadTranslations($appType, $regularPath, $otherPath, $message)
@@ -383,9 +383,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::authorizeAdmin
+	 * @covers FOF40\Platform\Joomla\Platform::authorizeAdmin
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestAuthorizeAdmin
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorizeAdmin
 	 *
 	 */
 	public function testAuthorizeAdmin($appType, $auths, $expected, $message)
@@ -402,9 +402,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::authorise
+	 * @covers FOF40\Platform\Joomla\Platform::authorise
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestAuthorise
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorise
 	 *
 	 */
 	public function testAuthorise($appType, $auths, $assetName, $action, $expected, $message)
@@ -421,9 +421,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::loginUser
+	 * @covers FOF40\Platform\Joomla\Platform::loginUser
 	 *
-	 * @XXXdataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestLoginUser
+	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoginUser
 	 *
 	 */
 	public function testLoginUser()
@@ -433,9 +433,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getDate
+	 * @covers FOF40\Platform\Joomla\Platform::getDate
 	 *
-	 * @dataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestDate
+	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestDate
 	 */
 	public function testGetDate($test)
 	{
@@ -443,11 +443,11 @@ class PlatformJoomlaTest extends FOFTestCase
 		$case  = $test['case'];
 		$class = $test['intended_class'];
 
-		$this->assertInstanceOf('FOF30\Date\Date', $date, "$case -- getDate must return a Date-compatible object");
+		$this->assertInstanceOf('FOF40\Date\Date', $date, "$case -- getDate must return a Date-compatible object");
 		$this->assertInstanceOf('DateTime', $date, "$case -- getDate must return a DateTime-compatible object");
 		$this->assertInstanceOf($class, $date, "$case -- getDate must return a $class object");
 
-		if ($class == 'FOF30\Date\DateDecorator')
+		if ($class == 'FOF40\Date\DateDecorator')
 		{
 			$oRef = new \ReflectionObject($date);
 			$pRef = new \ReflectionProperty($date, 'decorated');
@@ -459,9 +459,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::logoutUser
+	 * @covers FOF40\Platform\Joomla\Platform::logoutUser
 	 *
-	 * @XXXdataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestLogoutUser
+	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLogoutUser
 	 *
 	 */
 	public function testLogoutUser()
@@ -471,9 +471,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Platform\Joomla\Platform::getUserStateFromRequest
+	 * @covers FOF40\Platform\Joomla\Platform::getUserStateFromRequest
 	 *
-	 * @XXXdataProvider FOF30\Tests\Platform\PlatformJoomlaProvider::getTestGetUserStateFromRequest
+	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetUserStateFromRequest
 	 *
 	 */
 	public function testGetUserStateFromRequest()

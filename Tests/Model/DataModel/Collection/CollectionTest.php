@@ -11,12 +11,12 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel\Collection;
+namespace FOF40\Tests\DataModel\Collection;
 
-use FOF30\Model\DataModel\Collection;
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\TestContainer;
-use FOF30\Tests\Stubs\Model\DataModelStub;
+use FOF40\Model\DataModel\Collection;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\TestContainer;
+use FOF40\Tests\Stubs\Model\DataModelStub;
 
 require_once 'CollectionDataprovider.php';
 
@@ -25,7 +25,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionFind
-     * @covers          FOF30\Model\DataModel\Collection::find
+     * @covers          FOF40\Model\DataModel\Collection::find
      * @dataProvider    CollectionDataprovider::getTestFind
      */
     public function testFind($test, $check)
@@ -41,7 +41,7 @@ class CollectionTest extends DatabaseTest
 
         if($check['type'] == 'object')
         {
-            $this->assertInstanceOf('FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of DataModel'));
+            $this->assertInstanceOf('FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of DataModel'));
             $this->assertEquals($check['result'], $result->getId(), sprintf($msg, 'Failed to return the correct item'));
         }
         else
@@ -53,7 +53,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionRemoveById
-     * @covers          FOF30\Model\DataModel\Collection::removeById
+     * @covers          FOF40\Model\DataModel\Collection::removeById
      * @dataProvider    CollectionDataprovider::getTestRemoveById
      */
     public function testRemoveById($test, $check)
@@ -73,7 +73,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionAdd
-     * @covers          FOF30\Model\DataModel\Collection::add
+     * @covers          FOF40\Model\DataModel\Collection::add
      */
     public function testAdd()
     {
@@ -84,14 +84,14 @@ class CollectionTest extends DatabaseTest
         $result = $collection->add('foobar');
         $last   = $collection->pop();
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\Collection', $result, 'Collection::add Should return an instance of itself');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\Collection', $result, 'Collection::add Should return an instance of itself');
         $this->assertEquals('foobar', $last, 'Collection::add Failed to add an element');
     }
 
     /**
      * @group           DataModel
      * @group           CollectionContains
-     * @covers          FOF30\Model\DataModel\Collection::contains
+     * @covers          FOF40\Model\DataModel\Collection::contains
      * @dataProvider    CollectionDataprovider::getTestContains
      */
     public function testContains($test, $check)
@@ -109,7 +109,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionFetch
-     * @covers          FOF30\Model\DataModel\Collection::fetch
+     * @covers          FOF40\Model\DataModel\Collection::fetch
      */
     public function testFetch()
     {
@@ -125,7 +125,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionMax
-     * @covers          FOF30\Model\DataModel\Collection::max
+     * @covers          FOF40\Model\DataModel\Collection::max
      */
     public function testMax()
     {
@@ -147,7 +147,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionMin
-     * @covers          FOF30\Model\DataModel\Collection::min
+     * @covers          FOF40\Model\DataModel\Collection::min
      */
     public function testMin()
     {
@@ -169,7 +169,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionModelKeys
-     * @covers          FOF30\Model\DataModel\Collection::modelKeys
+     * @covers          FOF40\Model\DataModel\Collection::modelKeys
      */
     public function testModelKeys()
     {
@@ -185,7 +185,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionMerge
-     * @covers          FOF30\Model\DataModel\Collection::merge
+     * @covers          FOF40\Model\DataModel\Collection::merge
      */
     public function testMerge()
     {
@@ -194,7 +194,7 @@ class CollectionTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -204,14 +204,14 @@ class CollectionTest extends DatabaseTest
 
         $merge = $collection1->merge($collection2);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\Collection', $merge, 'Collection::merge Should return an instance of Collection');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\Collection', $merge, 'Collection::merge Should return an instance of Collection');
         $this->assertCount(3, $merge, 'Collection::merge Failed to merge two arrays');
     }
 
     /**
      * @group           DataModel
      * @group           CollectionDiff
-     * @covers          FOF30\Model\DataModel\Collection::diff
+     * @covers          FOF40\Model\DataModel\Collection::diff
      */
     public function testDiff()
     {
@@ -220,7 +220,7 @@ class CollectionTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -230,14 +230,14 @@ class CollectionTest extends DatabaseTest
 
         $merge = $collection1->diff($collection2);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\Collection', $merge, 'Collection::diff Should return an instance of Collection');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\Collection', $merge, 'Collection::diff Should return an instance of Collection');
         $this->assertCount(2, $merge, 'Collection::diff Failed to diff two arrays');
     }
 
     /**
      * @group           DataModel
      * @group           CollectionIntersect
-     * @covers          FOF30\Model\DataModel\Collection::intersect
+     * @covers          FOF40\Model\DataModel\Collection::intersect
      */
     public function testIntersect()
     {
@@ -246,7 +246,7 @@ class CollectionTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -256,14 +256,14 @@ class CollectionTest extends DatabaseTest
 
         $merge = $collection1->intersect($collection2);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\Collection', $merge, 'Collection::intersect Should return an instance of Collection');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\Collection', $merge, 'Collection::intersect Should return an instance of Collection');
         $this->assertCount(1, $merge, 'Collection::intersect Failed to intersect two arrays');
     }
 
     /**
      * @group           DataModel
      * @group           CollectionModelUnique
-     * @covers          FOF30\Model\DataModel\Collection::unique
+     * @covers          FOF40\Model\DataModel\Collection::unique
      */
     public function testUnique()
     {
@@ -274,7 +274,7 @@ class CollectionTest extends DatabaseTest
         $collection = new Collection($items);
         $newCollection = $collection->unique();
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel\\Collection', $newCollection, 'Collection::unique should return an instance of Collection');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel\\Collection', $newCollection, 'Collection::unique should return an instance of Collection');
         $this->assertCount(3, $newCollection);
         $this->assertEquals(array(1 => 1, 2 => 2, 3 => 3), $collection->modelKeys());
     }
@@ -282,7 +282,7 @@ class CollectionTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           CollectionModelToBase
-     * @covers          FOF30\Model\DataModel\Collection::toBase
+     * @covers          FOF40\Model\DataModel\Collection::toBase
      */
     public function testToBase()
     {
@@ -292,13 +292,13 @@ class CollectionTest extends DatabaseTest
 
         $base = $collection->toBase();
 
-        $this->assertEquals('FOF30\\Utils\\Collection', get_class($base), 'Collection::toBase Should return a BaseCollection object');
+        $this->assertEquals('FOF40\\Utils\\Collection', get_class($base), 'Collection::toBase Should return a BaseCollection object');
     }
 
     /**
      * @group           DataModel
      * @group           CollectionCall
-     * @covers          FOF30\Model\DataModel\Collection::__call
+     * @covers          FOF40\Model\DataModel\Collection::__call
      * @dataProvider    CollectionDataprovider::getTest__call
      */
     public function test__call($test, $check)
@@ -314,7 +314,7 @@ class CollectionTest extends DatabaseTest
 
         if($test['load'])
         {
-            $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+            $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -378,7 +378,7 @@ class CollectionTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();

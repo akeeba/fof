@@ -11,25 +11,25 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel;
+namespace FOF40\Tests\DataModel;
 
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Stubs\Model\DataModelStub;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Stubs\Model\DataModelStub;
 
 require_once 'PublishDataprovider.php';
 
 /**
- * @covers      FOF30\Model\DataModel::<protected>
- * @covers      FOF30\Model\DataModel::<private>
- * @package     FOF30\Tests\DataModel
+ * @covers      FOF40\Model\DataModel::<protected>
+ * @covers      FOF40\Model\DataModel::<private>
+ * @package     FOF40\Tests\DataModel
  */
 class DataModelPublishTest extends DatabaseTest
 {
     /**
      * @group           DataModel
      * @group           DataModelArchive
-     * @covers          FOF30\Model\DataModel::archive
+     * @covers          FOF40\Model\DataModel::archive
      * @dataProvider    PublishDataprovider::getTestArchive
      */
     public function testArchive($test, $check)
@@ -52,14 +52,14 @@ class DataModelPublishTest extends DatabaseTest
             $methods['onAfterArchive'] = $test['mock']['after'];
         }
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('save', 'getId'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
         $model->method('getId')->willReturn(1);
         $model->expects($check['save'] ? $this->once() : $this->never())->method('save');
 
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -87,13 +87,13 @@ class DataModelPublishTest extends DatabaseTest
             $this->assertEquals(2, $value, sprintf($msg, 'Should set the value of the enabled field to 2'));
         }
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an istance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an istance of itself'));
     }
 
     /**
      * @group           DataModel
      * @group           DataModelArchive
-     * @covers          FOF30\Model\DataModel::archive
+     * @covers          FOF40\Model\DataModel::archive
      */
     public function testArchiveException()
     {
@@ -102,7 +102,7 @@ class DataModelPublishTest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\RecordNotLoaded');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\RecordNotLoaded');
 
         $model = new DataModelStub(static::$container, $config);
         $model->archive();
@@ -111,7 +111,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelTrash
-     * @covers          FOF30\Model\DataModel::trash
+     * @covers          FOF40\Model\DataModel::trash
      * @dataProvider    PublishDataprovider::getTestTrash
      */
     public function testTrash($test, $check)
@@ -135,7 +135,7 @@ class DataModelPublishTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('save', 'getId', 'findOrFail'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
@@ -144,7 +144,7 @@ class DataModelPublishTest extends DatabaseTest
         $model->expects($check['find'] ? $this->once() : $this->never())->method('findOrFail')->willReturn(null);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -160,7 +160,7 @@ class DataModelPublishTest extends DatabaseTest
 
         $enabled = $model->getFieldValue('enabled');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['before'], $before, sprintf($msg, 'Failed to call the onBefore method'));
         $this->assertEquals($check['after'], $after, sprintf($msg, 'Failed to call the onAfter method'));
         $this->assertSame($check['enabled'], $enabled, sprintf($msg, 'Failed to set the enabled field'));
@@ -169,7 +169,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelTrash
-     * @covers          FOF30\Model\DataModel::trash
+     * @covers          FOF40\Model\DataModel::trash
      * @dataProvider    PublishDataprovider::getTestTrashException
      */
     public function testTrashException($test, $check)
@@ -188,7 +188,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelPublish
-     * @covers          FOF30\Model\DataModel::publish
+     * @covers          FOF40\Model\DataModel::publish
      * @dataProvider    PublishDataprovider::getTestPublish
      */
     public function testPublish($test, $check)
@@ -212,14 +212,14 @@ class DataModelPublishTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('save', 'getId'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
         $model->method('getId')->willReturn(1);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -235,7 +235,7 @@ class DataModelPublishTest extends DatabaseTest
 
         $enabled = $model->getFieldValue('enabled');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['before'], $before, sprintf($msg, 'Failed to call the onBefore method'));
         $this->assertEquals($check['after'], $after, sprintf($msg, 'Failed to call the onAfter method'));
         $this->assertEquals($check['enabled'], $enabled, sprintf($msg, 'Failed to set the enabled field'));
@@ -244,7 +244,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelPublish
-     * @covers          FOF30\Model\DataModel::publish
+     * @covers          FOF40\Model\DataModel::publish
      */
     public function testPublishException()
     {
@@ -253,7 +253,7 @@ class DataModelPublishTest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\RecordNotLoaded');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\RecordNotLoaded');
 
         $model = new DataModelStub(static::$container, $config);
         $model->publish();
@@ -262,7 +262,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelRestore
-     * @covers          FOF30\Model\DataModel::restore
+     * @covers          FOF40\Model\DataModel::restore
      * @dataProvider    PublishDataprovider::getTestrestore
      */
     public function testRestore($test, $check)
@@ -286,7 +286,7 @@ class DataModelPublishTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('save', 'getId', 'findOrFail'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
@@ -295,7 +295,7 @@ class DataModelPublishTest extends DatabaseTest
         $model->expects($check['find'] ? $this->once() : $this->never())->method('findOrFail');
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -311,7 +311,7 @@ class DataModelPublishTest extends DatabaseTest
 
         $enabled = $model->getFieldValue('enabled');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['before'], $before, sprintf($msg, 'Failed to call the onBefore method'));
         $this->assertEquals($check['after'], $after, sprintf($msg, 'Failed to call the onAfter method'));
         $this->assertSame($check['enabled'], $enabled, sprintf($msg, 'Failed to set the enabled field'));
@@ -320,7 +320,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelRestore
-     * @covers          FOF30\Model\DataModel::restore
+     * @covers          FOF40\Model\DataModel::restore
      */
     public function testRestoreException()
     {
@@ -329,7 +329,7 @@ class DataModelPublishTest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\RecordNotLoaded');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\RecordNotLoaded');
 
         $model = new DataModelStub(static::$container, $config);
         $model->restore();
@@ -338,7 +338,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelUnpublish
-     * @covers          FOF30\Model\DataModel::unpublish
+     * @covers          FOF40\Model\DataModel::unpublish
      * @dataProvider    PublishDataprovider::getTestUnpublish
      */
     public function testUnpublish($test, $check)
@@ -362,14 +362,14 @@ class DataModelPublishTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('save', 'getId'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
         $model->method('getId')->willReturn(1);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -385,7 +385,7 @@ class DataModelPublishTest extends DatabaseTest
 
         $enabled = $model->getFieldValue('enabled');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['before'], $before, sprintf($msg, 'Failed to call the onBefore method'));
         $this->assertEquals($check['after'], $after, sprintf($msg, 'Failed to call the onAfter method'));
         $this->assertSame($check['enabled'], $enabled, sprintf($msg, 'Failed to set the enabled field'));
@@ -394,7 +394,7 @@ class DataModelPublishTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelUnpublish
-     * @covers          FOF30\Model\DataModel::unpublish
+     * @covers          FOF40\Model\DataModel::unpublish
      */
     public function testUnpublishException()
     {
@@ -403,7 +403,7 @@ class DataModelPublishTest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\RecordNotLoaded');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\RecordNotLoaded');
 
         $model = new DataModelStub(static::$container, $config);
         $model->unpublish();

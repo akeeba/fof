@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\DataModel\Relation;
+namespace FOF40\Model\DataModel\Relation;
 
-use FOF30\Model\DataModel;
+use FOF40\Model\DataModel;
 
 defined('_JEXEC') or die;
 

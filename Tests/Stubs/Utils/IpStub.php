@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Stubs\Utils;
+namespace FOF40\Tests\Stubs\Utils;
 
-use FOF30\Utils\Ip;
+use FOF40\Utils\Ip;
 
 class IpStub extends Ip
 {

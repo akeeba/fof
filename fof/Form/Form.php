@@ -11,12 +11,12 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Form;
+namespace FOF40\Form;
 
-use FOF30\Container\Container;
-use FOF30\Form\Header\HeaderBase;
-use FOF30\Model\DataModel;
-use FOF30\View\DataView\DataViewInterface;
+use FOF40\Container\Container;
+use FOF40\Form\Header\HeaderBase;
+use FOF40\Model\DataModel;
+use FOF40\View\DataView\DataViewInterface;
 use JFactory;
 use JForm;
 use Joomla\Registry\Registry;
@@ -54,7 +54,7 @@ class Form extends JForm
 	/**
 	 * The Container this form belongs to
 	 *
-	 * @var \FOF30\Container\Container
+	 * @var \FOF40\Container\Container
 	 */
 	protected $container;
 
@@ -677,10 +677,10 @@ class Form extends JForm
 	 */
 	public function loadClass($entity, $type)
 	{
-		// Get the prefixes for namespaced classes (FOF3 way)
+		// Get the prefixes for namespaced classes (FOF4 way)
 		$namespacedPrefixes = array(
 			$this->container->getNamespacePrefix(),
-			'FOF30\\',
+			'FOF40\\',
 		);
 
 		// Get the prefixes for non-namespaced classes (FOF2 and Joomla! way)
@@ -772,7 +772,7 @@ class Form extends JForm
 	}
 
 	/**
-	 * WARNING: THIS IS IGNORED IN FOF3!
+	 * WARNING: THIS IS IGNORED IN FOF4!
 	 *
 	 * @param   string  $new  IGNORED!
 	 *
@@ -791,7 +791,7 @@ class Form extends JForm
 	}
 
 	/**
-	 * WARNING: THIS IS IGNORED IN FOF3!
+	 * WARNING: THIS IS IGNORED IN FOF4!
 	 *
 	 * @param   string  $new  IGNORED!
 	 *
@@ -810,7 +810,7 @@ class Form extends JForm
 	}
 
 	/**
-	 * WARNING: THIS IS IGNORED IN FOF3!
+	 * WARNING: THIS IS IGNORED IN FOF4!
 	 *
 	 * @param   string  $new  IGNORED!
 	 *
@@ -829,7 +829,7 @@ class Form extends JForm
 	}
 
 	/**
-	 * WARNING: THIS IS IGNORED IN FOF3!
+	 * WARNING: THIS IS IGNORED IN FOF4!
 	 *
 	 * @param   string  $new  IGNORED!
 	 *

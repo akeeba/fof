@@ -11,11 +11,11 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
 
-use FOF30\Event\Observer;
-use FOF30\Model\DataModel;
-use FOF30\Event\Observable;
+use FOF40\Event\Observer;
+use FOF40\Model\DataModel;
+use FOF40\Event\Observable;
 
 defined('_JEXEC') or die;
 

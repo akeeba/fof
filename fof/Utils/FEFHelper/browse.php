@@ -11,11 +11,11 @@
  * @license     GNU GPL version 2 or later
  */
 
-use FOF30\Model\DataModel;
-use FOF30\Utils\ArrayHelper;
-use FOF30\Utils\FEFHelper\BrowseView;
-use FOF30\View\DataView\DataViewInterface;
-use FOF30\View\DataView\Raw as DataViewRaw;
+use FOF40\Model\DataModel;
+use FOF40\Utils\ArrayHelper;
+use FOF40\Utils\FEFHelper\BrowseView;
+use FOF40\View\DataView\DataViewInterface;
+use FOF40\View\DataView\Raw as DataViewRaw;
 
 /**
  * Custom JHtml (HTMLHelper) class. Offers browse view controls compatible with Akeeba Frontend
@@ -355,7 +355,7 @@ abstract class FEFHelperBrowse
 	 */
 	public static function order($orderingField, $order, $class = 'input-sm', $icon = 'akion-android-more-vertical', $inactiveIcon = 'akion-android-more-vertical', DataViewInterface $view = null)
 	{
-		/** @var \FOF30\View\DataView\Html $view */
+		/** @var \FOF40\View\DataView\Html $view */
 		if (is_null($view))
 		{
 			$view = BrowseView::getViewFromBacktrace();

@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Form\Field;
+namespace FOF40\Form\Field;
 
-use FOF30\Model\DataModel;
+use FOF40\Model\DataModel;
 use JHtml;
 use JText;
 

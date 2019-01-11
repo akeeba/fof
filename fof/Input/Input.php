@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Input;
+namespace FOF40\Input;
 
 defined('_JEXEC') or die;
 

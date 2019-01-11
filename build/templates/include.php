@@ -7,7 +7,7 @@
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 
-if (!class_exists('FOF30\\Autoloader\\Autoloader'))
+if (!class_exists('FOF40\\Autoloader\\Autoloader'))
 {
 	// Register utility functions
 	require_once __DIR__ . '/Utils/helpers.php';
@@ -15,12 +15,12 @@ if (!class_exists('FOF30\\Autoloader\\Autoloader'))
 	require_once __DIR__ . '/Autoloader/Autoloader.php';
 }
 
-if (!defined('FOF30_INCLUDED'))
+if (!defined('FOF40_INCLUDED'))
 {
-	define('FOF30_INCLUDED', '##VERSION##');
+	define('FOF40_INCLUDED', '##VERSION##');
 
-	JFactory::getLanguage()->load('lib_fof30', JPATH_SITE, 'en-GB', true);
-	JFactory::getLanguage()->load('lib_fof30', JPATH_SITE, null, true);
+	JFactory::getLanguage()->load('lib_fof40', JPATH_SITE, 'en-GB', true);
+	JFactory::getLanguage()->load('lib_fof40', JPATH_SITE, null, true);
 
 	// Register a debug log
 	if (defined('JDEBUG') && JDEBUG && class_exists('JLog'))

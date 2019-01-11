@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-use FOF30\Utils\ArrayHelper;
+use FOF40\Utils\ArrayHelper;
 
 /**
  * Custom JHtml (HTMLHelper) class. Offers selects compatible with Akeeba Frontend Framework (FEF)

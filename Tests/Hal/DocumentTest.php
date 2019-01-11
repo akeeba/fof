@@ -11,13 +11,13 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Hal;
+namespace FOF40\Tests\Hal;
 
-use FOF30\Hal\Document;
-use FOF30\Hal\Link;
-use FOF30\Hal\Links;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\ReflectionHelper;
+use FOF40\Hal\Document;
+use FOF40\Hal\Link;
+use FOF40\Hal\Links;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\ReflectionHelper;
 
 class DocumentTest extends FOFTestCase
 {
@@ -25,7 +25,7 @@ class DocumentTest extends FOFTestCase
 	protected $document = null;
 
 	/**
-	 * @covers FOF30\Hal\Document::__construct
+	 * @covers FOF40\Hal\Document::__construct
 	 */
 	public function testConstruct()
 	{
@@ -68,7 +68,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF30\Hal\Document::addLink
+	 * @covers  FOF40\Hal\Document::addLink
 	 */
 	public function testAddLink()
 	{
@@ -96,7 +96,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF30\Hal\Document::addLink
+	 * @covers  FOF40\Hal\Document::addLink
 	 */
 	public function testAddLink_append()
 	{
@@ -132,7 +132,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers  FOF30\Hal\Document::addLink
+	 * @covers  FOF40\Hal\Document::addLink
 	 */
 	public function testAddLink_replace()
 	{
@@ -165,7 +165,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::addLinks
+	 * @covers FOF40\Hal\Document::addLinks
 	 */
 	public function testAddLinks()
 	{
@@ -211,7 +211,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::addData
+	 * @covers FOF40\Hal\Document::addData
 	 */
 	public function testAddData_append()
 	{
@@ -259,7 +259,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::addData
+	 * @covers FOF40\Hal\Document::addData
 	 */
 	public function testAddData_replace()
 	{
@@ -306,7 +306,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::addData
+	 * @covers FOF40\Hal\Document::addData
 	 */
 	public function testAddData_fromScratch()
 	{
@@ -355,7 +355,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::addEmbedded
+	 * @covers FOF40\Hal\Document::addEmbedded
 	 */
 	public function testAddEmbedded()
 	{
@@ -424,7 +424,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::getLinks
+	 * @covers FOF40\Hal\Document::getLinks
 	 */
 	public function testGetLinks()
 	{
@@ -507,7 +507,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::getEmbedded
+	 * @covers FOF40\Hal\Document::getEmbedded
 	 */
 	public function testGetEmbedded()
 	{
@@ -559,7 +559,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::getData
+	 * @covers FOF40\Hal\Document::getData
 	 */
 	public function testGetData()
 	{
@@ -585,7 +585,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::render
+	 * @covers FOF40\Hal\Document::render
 	 *
 	 * @expectedException \RuntimeException
 	 */
@@ -606,7 +606,7 @@ class DocumentTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Hal\Document::render
+	 * @covers FOF40\Hal\Document::render
 	 */
 	public function testRender_success()
 	{

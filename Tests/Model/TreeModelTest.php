@@ -11,25 +11,25 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\TreeModel;
+namespace FOF40\Tests\TreeModel;
 
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Stubs\Model\TreeModelStub;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Stubs\Model\TreeModelStub;
 
 require_once 'TreeModelDataprovider.php';
 
 /**
- * @covers      FOF30\Model\TreeModel::<protected>
- * @covers      FOF30\Model\TreeModel::<private>
- * @package     FOF30\Tests\TreeModel
+ * @covers      FOF40\Model\TreeModel::<protected>
+ * @covers      FOF40\Model\TreeModel::<private>
+ * @package     FOF40\Tests\TreeModel
  */
 class TreeModelTest extends DatabaseTest
 {
     /**
      * @group           TreeModel
      * @group           TreeModelCheck
-     * @covers          FOF30\Model\TreeModel::check
+     * @covers          FOF40\Model\TreeModel::check
      * @dataProvider    TreeModelDataprovider::getTestCheck
      */
     public function testCheck($test, $check)
@@ -40,7 +40,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => $test['table']
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('resetTreeCache'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -52,7 +52,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->check();
 
-        $this->assertInstanceOf('\\FOF30\Model\\TreeModel', $return, 'TreeModel::check should return an instance of itself - Case: '.$check['case']);
+        $this->assertInstanceOf('\\FOF40\Model\\TreeModel', $return, 'TreeModel::check should return an instance of itself - Case: '.$check['case']);
 
         foreach($check['fields'] as $field => $expected)
         {
@@ -70,7 +70,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModel
      * @group               TreeModelForceDelete
-     * @covers              FOF30\Model\TreeModel::forceDelete
+     * @covers              FOF40\Model\TreeModel::forceDelete
      * @dataProvider        TreeModelDataprovider::getTestForceDelete
      */
     public function testForceDelete($test, $check)
@@ -99,7 +99,7 @@ class TreeModelTest extends DatabaseTest
 
         if($check['return'])
         {
-            $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+            $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
         }
         else
         {
@@ -129,11 +129,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelReorder
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::reorder
+     * @covers              FOF40\Model\TreeModel::reorder
      */
     public function testReorder()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeUnsupportedMethod');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeUnsupportedMethod');
 
         $config = array(
             'autoChecks'  => false,
@@ -148,11 +148,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMove
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::move
+     * @covers              FOF40\Model\TreeModel::move
      */
     public function testMove()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeUnsupportedMethod');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeUnsupportedMethod');
 
         $config = array(
             'autoChecks'  => false,
@@ -167,7 +167,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelCreate
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::create
+     * @covers              FOF40\Model\TreeModel::create
      * @dataProvider        TreeModelDataprovider::getTestCreate
      */
     public function testCreate($test)
@@ -185,7 +185,7 @@ class TreeModelTest extends DatabaseTest
             $matcher = $this->once();
         }
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('insertAsChildOf', 'getParent'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -204,7 +204,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertAsRoot
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertAsRoot
+     * @covers              FOF40\Model\TreeModel::insertAsRoot
      */
     public function testInsertAsRoot()
     {
@@ -225,11 +225,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertAsRoot
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertAsRoot
+     * @covers              FOF40\Model\TreeModel::insertAsRoot
      */
     public function testInsertAsRootException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeMethodOnlyAllowedInRoot');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeMethodOnlyAllowedInRoot');
 
         $config = array(
             'autoChecks'  => false,
@@ -246,7 +246,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertAsFirstChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertAsFirstChildOf
+     * @covers              FOF40\Model\TreeModel::insertAsFirstChildOf
      * @dataProvider        TreeModelDataprovider::getTestInsertAsFirstChildOf
      */
     public function testInsertAsFirstChildOf($test, $check)
@@ -282,7 +282,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->insertAsFirstChildOf($parent);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertNotEquals($test['loadid'], $table->getId(), sprintf($msg, 'Should always create a new node'));
@@ -314,11 +314,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertAsFirstChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertAsFirstChildOf
+     * @covers              FOF40\Model\TreeModel::insertAsFirstChildOf
      */
     public function testInsertAsFirstChildOfException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtParent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtParent');
 
         $config = array(
             'autoChecks'  => false,
@@ -335,7 +335,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertAsLastChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertAsLastChildOf
+     * @covers              FOF40\Model\TreeModel::insertAsLastChildOf
      * @dataProvider        TreeModelDataprovider::getTestInsertAsLastChildOf
      */
     public function testInsertAsLastChildOf($test, $check)
@@ -371,7 +371,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->insertAsLastChildOf($parent);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertNotEquals($test['loadid'], $table->getId(), sprintf($msg, 'Should always create a new node'));
@@ -403,11 +403,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertAsLastChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertAsLastChildOf
+     * @covers              FOF40\Model\TreeModel::insertAsLastChildOf
      */
     public function testInsertAsLastChildOfException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtParent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtParent');
 
         $config = array(
             'autoChecks'  => false,
@@ -424,7 +424,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertLeftOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertLeftOf
+     * @covers              FOF40\Model\TreeModel::insertLeftOf
      * @dataProvider        TreeModelDataprovider::getTestInsertLeftOf
      */
     public function testInsertLeftOf($test, $check)
@@ -460,7 +460,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->insertLeftOf($sibling);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself for chaining'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself for chaining'));
 
         // Assertions on the objects
         $this->assertNotEquals($test['loadid'], $table->getId(), sprintf($msg, 'Should always create a new node'));
@@ -491,11 +491,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertLeftOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertLeftOf
+     * @covers              FOF40\Model\TreeModel::insertLeftOf
      */
     public function testInsertLeftOfException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtSibling');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtSibling');
 
         $config = array(
             'autoChecks'  => false,
@@ -512,7 +512,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertRightOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertRightOf
+     * @covers              FOF40\Model\TreeModel::insertRightOf
      * @dataProvider        TreeModelDataprovider::getTestInsertRightOf
      */
     public function testInsertRightOf($test, $check)
@@ -548,7 +548,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->insertRightOf($sibling);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertNotEquals($test['loadid'], $table->getId(), sprintf($msg, 'Should always create a new node'));
@@ -579,11 +579,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsertRightOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insertRightOf
+     * @covers              FOF40\Model\TreeModel::insertRightOf
      */
     public function testInsertRightOfException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtSibling');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtSibling');
 
         $config = array(
             'autoChecks'  => false,
@@ -600,7 +600,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveLeft
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveLeft
+     * @covers              FOF40\Model\TreeModel::moveLeft
      * @dataProvider        TreeModelDataprovider::getTestMoveLeft
      */
     public function testMoveLeft($test, $check)
@@ -615,7 +615,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('moveToLeftOf'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -639,11 +639,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveLeft
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveLeft
+     * @covers              FOF40\Model\TreeModel::moveLeft
      */
     public function testMoveLeftException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
 
         $config = array(
             'autoChecks'  => false,
@@ -659,7 +659,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveRight
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveRight
+     * @covers              FOF40\Model\TreeModel::moveRight
      * @dataProvider        TreeModelDataprovider::getTestMoveRight
      */
     public function testMoveRight($test, $check)
@@ -674,7 +674,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('moveToRightOf'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -698,11 +698,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveRight
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveRight
+     * @covers              FOF40\Model\TreeModel::moveRight
      */
     public function testMoveRightException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
 
         $config = array(
             'autoChecks'  => false,
@@ -718,7 +718,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveToLeftOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveToLeftOf
+     * @covers              FOF40\Model\TreeModel::moveToLeftOf
      * @dataProvider        TreeModelDataprovider::getTestMoveToLeftOf
      */
     public function testMoveToLeftOf($test, $check)
@@ -735,7 +735,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -764,7 +764,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->moveToLeftOf($sibling);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertEquals($check['table']['lft'], $table->lft, sprintf($msg, 'Failed to assign the correct lft value to the node'));
@@ -792,12 +792,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveToLeftOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveToLeftOf
+     * @covers              FOF40\Model\TreeModel::moveToLeftOf
      * @dataProvider        TreeModelDataprovider::getTestMoveToLeftOfException
      */
     public function testMoveToLeftOfException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -824,7 +824,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveToRightOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveToRightOf
+     * @covers              FOF40\Model\TreeModel::moveToRightOf
      * @dataProvider        TreeModelDataprovider::getTestMoveToRightOf
      */
     public function testMoveToRightOf($test, $check)
@@ -841,7 +841,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -869,7 +869,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->moveToRightOf($sibling);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertEquals($check['table']['lft'], $table->lft, sprintf($msg, 'Failed to assign the correct lft value to the node'));
@@ -897,12 +897,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMoveToRightOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::moveToRightOf
+     * @covers              FOF40\Model\TreeModel::moveToRightOf
      * @dataProvider        TreeModelDataprovider::getTestMoveToRightOfException
      */
     public function testMoveToRightOfException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -929,7 +929,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMakeFirstChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::makeFirstChildOf
+     * @covers              FOF40\Model\TreeModel::makeFirstChildOf
      * @dataProvider        TreeModelDataprovider::getTestMakeFirstChildOf
      */
     public function testMakeFirstChildOf($test, $check)
@@ -946,7 +946,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -957,7 +957,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->makeFirstChildOf($parent);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertEquals($check['table']['lft'], $table->lft, sprintf($msg, 'Failed to assign the correct lft value to the node'));
@@ -985,12 +985,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMakeFirstChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::makeFirstChildOf
+     * @covers              FOF40\Model\TreeModel::makeFirstChildOf
      * @dataProvider        TreeModelDataprovider::getTestMakeFirstChildOfException
      */
     public function testMakeFirstChildOfException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -1017,7 +1017,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMakeLastChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::makeLastChildOf
+     * @covers              FOF40\Model\TreeModel::makeLastChildOf
      * @dataProvider        TreeModelDataprovider::getTestMakeLastChildOf
      */
     public function testMakeLastChildOf($test, $check)
@@ -1034,7 +1034,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('getState'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -1045,7 +1045,7 @@ class TreeModelTest extends DatabaseTest
 
         $return = $table->makeLastChildOf($parent);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, sprintf($msg, 'Should return an instance of itself'));
 
         // Assertions on the objects
         $this->assertEquals($check['table']['lft'], $table->lft, sprintf($msg, 'Failed to assign the correct lft value to the node'));
@@ -1073,12 +1073,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMakeLastChildOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::makeLastChildOf
+     * @covers              FOF40\Model\TreeModel::makeLastChildOf
      * @dataProvider        TreeModelDataprovider::getTestMakeLastChildOfException
      */
     public function testMakeLastChildOfException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -1105,7 +1105,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelMakeRoot
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::makeRoot
+     * @covers              FOF40\Model\TreeModel::makeRoot
      * @dataProvider        TreeModelDataprovider::getTestMakeRoot
      */
     public function testMakeRoot($test, $check)
@@ -1119,7 +1119,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('moveToRightOf', 'isRoot', 'getRoot', 'equals'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -1137,13 +1137,13 @@ class TreeModelTest extends DatabaseTest
         $return = $table->makeRoot();
 
         $this->assertEquals($check['move'], $counter, sprintf($msg, 'Invoke the moveToRightOf method the wrong number of times'));
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $return, 'TreeModel::makeRoot should return an instance of itself');
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $return, 'TreeModel::makeRoot should return an instance of itself');
     }
 
     /**
      * @group               TreeModelGetLevel
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::getLevel
+     * @covers              FOF40\Model\TreeModel::getLevel
      * @dataProvider        TreeModelDataprovider::getTestGetLevel
      */
     public function testGetLevel($test, $check)
@@ -1172,11 +1172,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelGetLevel
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::getLevel
+     * @covers              FOF40\Model\TreeModel::getLevel
      */
     public function testGetLevelException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
 
         $config = array(
             'autoChecks'  => false,
@@ -1191,7 +1191,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelGetParent
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::getParent
+     * @covers              FOF40\Model\TreeModel::getParent
      * @dataProvider        TreeModelDataprovider::getTestGetParent
      */
     public function testGetParent($test, $check)
@@ -1222,14 +1222,14 @@ class TreeModelTest extends DatabaseTest
 
         $parent = $table->getParent();
 
-        $this->assertInstanceOf('\\FOF30\\Model\\TreeModel', $parent, sprintf($msg, 'Should return an instance of TreeModel'));
+        $this->assertInstanceOf('\\FOF40\\Model\\TreeModel', $parent, sprintf($msg, 'Should return an instance of TreeModel'));
         $this->assertEquals($check['parent'], $parent->foftest_nestedset_id, sprintf($msg, 'Returned the wrong parent id'));
     }
 
     /**
      * @group               TreeModelIsRoot
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isRoot
+     * @covers              FOF40\Model\TreeModel::isRoot
      * @dataProvider        TreeModelDataprovider::getTestIsRoot
      */
     public function testIsRoot($test, $check)
@@ -1242,7 +1242,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('getLevel'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -1265,7 +1265,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelIsLeaf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isLeaf
+     * @covers              FOF40\Model\TreeModel::isLeaf
      * @dataProvider        TreeModelDataprovider::getTestIsLeaf
      */
     public function testIsLeaf($test, $check)
@@ -1289,11 +1289,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelIsLeaf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isLeaf
+     * @covers              FOF40\Model\TreeModel::isLeaf
      */
     public function testIsLeafException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
 
         $config = array(
             'autoChecks'  => false,
@@ -1308,7 +1308,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelIsDescendantOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isDescendantOf
+     * @covers              FOF40\Model\TreeModel::isDescendantOf
      * @dataProvider        TreeModelDataprovider::getTestIsDescendantOf
      */
     public function testIsDescendantOf($test, $check)
@@ -1333,12 +1333,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelIsDescendantOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isDescendantOf
+     * @covers              FOF40\Model\TreeModel::isDescendantOf
      * @dataProvider        TreeModelDataprovider::getTestIsDescendantOfException
      */
     public function testIsDescendantOfException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -1365,7 +1365,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelIsSelfOrDescendantOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isSelfOrDescendantOf
+     * @covers              FOF40\Model\TreeModel::isSelfOrDescendantOf
      * @dataProvider        TreeModelDataprovider::getTestIsSelfOrDescendantOf
      */
     public function testIsSelfOrDescendantOf($test, $check)
@@ -1390,12 +1390,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelIsSelfOrDescendantOf
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::isSelfOrDescendantOf
+     * @covers              FOF40\Model\TreeModel::isSelfOrDescendantOf
      * @dataProvider        TreeModelDataprovider::getTestIsSelfOrDescendantOfException
      */
     public function testIsSelfOrDescendantOfException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -1422,7 +1422,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelEquals
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::equals
+     * @covers              FOF40\Model\TreeModel::equals
      * @dataProvider        TreeModelDataprovider::getTestEquals
      */
     public function testEquals($test, $check)
@@ -1459,12 +1459,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelEquals
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::equals
+     * @covers              FOF40\Model\TreeModel::equals
      * @dataProvider        TreeModelDataprovider::getTestEqualsException
      */
     public function testEqualsException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -1491,7 +1491,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInSameScope
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::inSameScope
+     * @covers              FOF40\Model\TreeModel::inSameScope
      * @dataProvider        TreeModelDataprovider::getTestInSameScope
      */
     public function testInSameScope($test, $check)
@@ -1502,7 +1502,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('isLeaf', 'isRoot', 'isChild'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -1511,7 +1511,7 @@ class TreeModelTest extends DatabaseTest
         $table->method('isRoot')->willReturn($test['mock']['table']['isRoot']);
         $table->method('isChild')->willReturn($test['mock']['table']['isChild']);
 
-        $other = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $other = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('isLeaf', 'isRoot', 'isChild'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -1528,7 +1528,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelScopeImmediateDescendants
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::scopeImmediateDescendants
+     * @covers              FOF40\Model\TreeModel::scopeImmediateDescendants
      * @dataProvider        TreeModelDataprovider::getTestScopeImmediateDescendants
      */
     public function testScopeImmediateDescendants($test, $check)
@@ -1558,11 +1558,11 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelScopeImmediateDescendants
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::scopeImmediateDescendants
+     * @covers              FOF40\Model\TreeModel::scopeImmediateDescendants
      */
     public function testScopeImmediateDescendantsException()
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\TreeInvalidLftRgtCurrent');
 
         $config = array(
             'autoChecks'  => false,
@@ -1578,7 +1578,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelGetRoot
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::getRoot
+     * @covers              FOF40\Model\TreeModel::getRoot
      * @dataProvider        TreeModelDataprovider::getTestRoot
      */
     public function testGetRoot($test, $check)
@@ -1638,12 +1638,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelGetRoot
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::getRoot
+     * @covers              FOF40\Model\TreeModel::getRoot
      * @dataProvider        TreeModelDataprovider::getTestRootException
      */
     public function testGetRootException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $counter   = 0;
         $config = array(
@@ -1652,7 +1652,7 @@ class TreeModelTest extends DatabaseTest
             'tableName'   => '#__foftest_nestedsets'
         );
 
-        $table = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\TreeModelStub')
+        $table = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\TreeModelStub')
             ->setMethods(array('firstOrFail', 'isRoot'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -1704,7 +1704,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelGetNestedList
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::getNestedList
+     * @covers              FOF40\Model\TreeModel::getNestedList
      * @dataProvider        TreeModelDataprovider::getTestGetNestedList
      */
     public function testGetNestedList($test, $check)
@@ -1725,7 +1725,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsideSubTree
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insideSubTree
+     * @covers              FOF40\Model\TreeModel::insideSubTree
      * @dataProvider        TreeModelDataprovider::getTestInsideSubTree
      */
     public function testInsideSubtree($test, $check)
@@ -1750,12 +1750,12 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelInsideSubTree
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::insideSubTree
+     * @covers              FOF40\Model\TreeModel::insideSubTree
      * @dataProvider        TreeModelDataprovider::getTestInsideSubTreeException
      */
     public function testInsideSubtreeException($test, $check)
     {
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\\'.$check['exception']);
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\\'.$check['exception']);
 
         $config = array(
             'autoChecks'  => false,
@@ -1782,7 +1782,7 @@ class TreeModelTest extends DatabaseTest
     /**
      * @group               TreeModelFindByPath
      * @group               TreeModel
-     * @covers              FOF30\Model\TreeModel::findByPath
+     * @covers              FOF40\Model\TreeModel::findByPath
      * @dataProvider        TreeModelDataprovider::getTestFindByPath
      */
     public function testFindByPath($test, $check)
@@ -1807,7 +1807,7 @@ class TreeModelTest extends DatabaseTest
         }
         else
         {
-            $this->assertInstanceOf('FOF30\Model\TreeModel', $result, sprintf($msg, 'Should return an instance of TreeModel'));
+            $this->assertInstanceOf('FOF40\Model\TreeModel', $result, sprintf($msg, 'Should return an instance of TreeModel'));
             $this->assertEquals($check['id'], $result->getId(), sprintf($msg, 'Returned the wrong node'));
         }*/
     }

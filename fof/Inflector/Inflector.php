@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Inflector;
+namespace FOF40\Inflector;
 
 defined('_JEXEC') or die;
 

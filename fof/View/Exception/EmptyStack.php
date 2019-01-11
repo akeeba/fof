@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\View\Exception;
+namespace FOF40\View\Exception;
 
 use Exception;
 
@@ -24,7 +24,7 @@ class EmptyStack extends \RuntimeException
 {
 	public function __construct($message = "", $code = 500, Exception $previous = null)
 	{
-		$message = \JText::_('LIB_FOF_VIEW_EMPTYSECTIONSTACK');
+		$message = \JText::_('LIB_FOF40_VIEW_EMPTYSECTIONSTACK');
 
 		parent::__construct($message, $code, $previous);
 	}

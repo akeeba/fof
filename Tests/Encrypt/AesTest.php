@@ -11,17 +11,17 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Encrypt;
+namespace FOF40\Tests\Encrypt;
 
 
-use FOF30\Encrypt\Aes;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Stubs\Encrypt\MockPhpfunc;
+use FOF40\Encrypt\Aes;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Stubs\Encrypt\MockPhpfunc;
 
 /**
- * @coversDefaultClass FOF30\Encrypt\Aes
+ * @coversDefaultClass FOF40\Encrypt\Aes
  *
- * @package            FOF30\Tests\Encrypt
+ * @package            FOF40\Tests\Encrypt
  */
 class AesTest extends FOFTestCase
 {
@@ -41,7 +41,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes::IsSupported
+	 * @covers FOF40\Encrypt\Aes::IsSupported
 	 *
 	 * @return  void
 	 */
@@ -126,7 +126,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes::IsSupported
+	 * @covers FOF40\Encrypt\Aes::IsSupported
 	 *
 	 * @return  void
 	 */
@@ -203,7 +203,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */
@@ -259,7 +259,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */
@@ -347,7 +347,7 @@ class AesTest extends FOFTestCase
 
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */
@@ -389,7 +389,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */
@@ -433,7 +433,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */
@@ -477,7 +477,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */
@@ -521,7 +521,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF30\Encrypt\Aes
+	 * @covers FOF40\Encrypt\Aes
 	 *
 	 * @return  void
 	 */

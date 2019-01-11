@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Controller\Mixin;
+namespace FOF40\Controller\Mixin;
 
-use FOF30\Controller\Controller;
+use FOF40\Controller\Controller;
 
 defined('_JEXEC') or die;
 

@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Less;
+namespace FOF40\Less;
 
-use \FOF30\Less\Parser\Parser;
+use \FOF40\Less\Parser\Parser;
 use Exception;
 use stdClass;
 
@@ -77,7 +77,7 @@ class Less
 	 * Set to the parser that generated the current line when compiling
 	 * so we know how to create error messages
 	 *
-	 * @var  FOF30\Less\Parser\Parser
+	 * @var  FOF40\Less\Parser\Parser
 	 */
 	protected $sourceParser = null;
 
@@ -3131,14 +3131,14 @@ class Less
 	protected function newFormatter()
 	{
 		/** FOF -- BEGIN CHANGE * */
-		$className = "\\FOF30\\Less\\Formatter\\Lessjs";
+		$className = "\\FOF40\\Less\\Formatter\\Lessjs";
 		/** FOF -- END CHANGE * */
 		if (!empty($this->formatterName))
 		{
 			if (!is_string($this->formatterName))
 				return $this->formatterName;
 			/** FOF -- BEGIN CHANGE * */
-			$className = "\\FOF30\\Less\\Formatter\\" . ucfirst($this->formatterName);
+			$className = "\\FOF40\\Less\\Formatter\\" . ucfirst($this->formatterName);
 			/** FOF -- END CHANGE * */
 		}
 

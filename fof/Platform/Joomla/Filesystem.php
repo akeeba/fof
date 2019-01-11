@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Platform\Joomla;
+namespace FOF40\Platform\Joomla;
 
-use FOF30\Container\Container;
-use FOF30\Platform\Base\Filesystem as BaseFilesystem;
+use FOF40\Container\Container;
+use FOF40\Platform\Base\Filesystem as BaseFilesystem;
 
 defined('_JEXEC') or die;
 
@@ -26,7 +26,7 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Public constructor
 	 *
-	 * @param \FOF30\Container\Container $c
+	 * @param \FOF40\Container\Container $c
 	 */
 	public function __construct(Container $c)
 	{

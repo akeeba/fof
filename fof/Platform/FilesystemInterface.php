@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Platform;
+namespace FOF40\Platform;
 
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 
 defined('_JEXEC') or die;
 
@@ -22,7 +22,7 @@ interface FilesystemInterface
 	/**
 	 * Public constructor.
 	 *
-	 * @param   \FOF30\Container\Container  $c  The component container
+	 * @param   \FOF40\Container\Container  $c  The component container
 	 */
 	public function __construct(Container $c);
 

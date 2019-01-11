@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Hal\Exception;
+namespace FOF40\Hal\Exception;
 
 use Exception;
 
@@ -23,7 +23,7 @@ class InvalidLinkFormat extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF_HAL_ERR_INVALIDLINK');
+			$message = \JText::_('LIB_FOF40_HAL_ERR_INVALIDLINK');
 		}
 
 		parent::__construct($message, $code, $previous);

@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Factory\Exception;
+namespace FOF40\Factory\Exception;
 
 use Exception;
 use RuntimeException;
@@ -22,7 +22,7 @@ class DispatcherNotFound extends RuntimeException
 {
 	public function __construct( $dispatcherClass, $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF_DISPATCHER_ERR_NOT_FOUND', $dispatcherClass);
+		$message = \JText::sprintf('LIB_FOF40_DISPATCHER_ERR_NOT_FOUND', $dispatcherClass);
 
 		parent::__construct( $message, $code, $previous );
 	}

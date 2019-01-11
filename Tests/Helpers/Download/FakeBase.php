@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Helpers\Download;
+namespace FOF40\Tests\Helpers\Download;
 
 abstract class FakeBase
 {

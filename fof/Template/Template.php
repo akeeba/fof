@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Template;
+namespace FOF40\Template;
 
-use FOF30\Container\Container;
-use FOF30\Less\Less;
+use FOF40\Container\Container;
+use FOF40\Less\Less;
 use JDocument;
 
 defined('_JEXEC') or die;

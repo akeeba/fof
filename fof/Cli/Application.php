@@ -143,7 +143,7 @@ if (function_exists('date_default_timezone_get') && function_exists('date_defaul
 // Load Joomla! system defines
 if (!isset($curdir))
 {
-	// I assume I'm located in libraries/fof30/Cli
+	// I assume I'm located in libraries/fof40/Cli
 	$curdir   = __DIR__ . '/../../../cli';
 	$realPath = @realpath($curdir);
 
@@ -206,7 +206,7 @@ JLoader::import('joomla.factory');
 // Load the Joomla! configuration file to grab database information
 JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
 
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 {
 	throw new RuntimeException('Cannot load FOF', 500);
 }

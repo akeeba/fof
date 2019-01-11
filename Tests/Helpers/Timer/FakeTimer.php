@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Helpers\Timer;
+namespace FOF40\Tests\Helpers\Timer;
 
 /**
  * Utility class to fake the microtime intrinsic function

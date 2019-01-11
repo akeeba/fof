@@ -11,8 +11,8 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Utils;
-use FOF30\Container\Container;
+namespace FOF40\Utils;
+use FOF40\Container\Container;
 
 /**
  * Dynamic user to user group assignment.

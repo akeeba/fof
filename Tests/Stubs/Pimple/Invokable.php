@@ -29,7 +29,7 @@
  * THE SOFTWARE.
  */
 
-namespace FOF30\Tests\Stubs\Pimple;
+namespace FOF40\Tests\Stubs\Pimple;
 
 class Invokable
 {

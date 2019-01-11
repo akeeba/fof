@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Encrypt;
+namespace FOF40\Encrypt;
 
 // Protect from unauthorized access
-use FOF30\Utils\Phpfunc;
+use FOF40\Utils\Phpfunc;
 
 defined('_JEXEC') or die();
 

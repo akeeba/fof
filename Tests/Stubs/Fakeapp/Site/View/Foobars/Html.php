@@ -13,7 +13,7 @@
 
 namespace Fakeapp\Site\View\Foobars;
 
-use FOF30\View\View;
+use FOF40\View\View;
 
 class Html extends View
 {

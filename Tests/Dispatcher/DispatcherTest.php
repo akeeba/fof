@@ -11,27 +11,27 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Dispatcher;
+namespace FOF40\Tests\Dispatcher;
 
-use FOF30\Dispatcher\Dispatcher;
-use FOF30\Input\Input;
-use FOF30\Tests\Helpers\ClosureHelper;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Helpers\TestContainer;
+use FOF40\Dispatcher\Dispatcher;
+use FOF40\Input\Input;
+use FOF40\Tests\Helpers\ClosureHelper;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\TestContainer;
 use Mockery\CountValidator\Exception;
 
 require_once 'DispatcherDataprovider.php';
 
 /**
- * @covers      FOF30\Dispatcher\Dispatcher::<protected>
- * @covers      FOF30\Dispatcher\Dispatcher::<private>
- * @package     FOF30\Tests\Dispatcher
+ * @covers      FOF40\Dispatcher\Dispatcher::<protected>
+ * @covers      FOF40\Dispatcher\Dispatcher::<private>
+ * @package     FOF40\Tests\Dispatcher
  */
 class DispatcherTest extends FOFTestCase
 {
     /**
-     * @covers          FOF30\Dispatcher\Dispatcher::__construct
+     * @covers          FOF40\Dispatcher\Dispatcher::__construct
      * @dataProvider    DispatcherDataprovider::getTest__construct
      */
     public function test__construct($test, $check)
@@ -63,7 +63,7 @@ class DispatcherTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\Dispatcher\Dispatcher::__get
+     * @covers          FOF40\Dispatcher\Dispatcher::__get
      * @dataProvider    DispatcherDataprovider::getTest__get
      */
     public function test__get($test, $check)
@@ -95,7 +95,7 @@ class DispatcherTest extends FOFTestCase
     }
 
     /**
-     * @covers          FOF30\Dispatcher\Dispatcher::dispatch
+     * @covers          FOF40\Dispatcher\Dispatcher::dispatch
      * @dataProvider    DispatcherDataprovider::getTestDispatch
      */
     public function testDispatch($test, $check)
@@ -124,7 +124,7 @@ class DispatcherTest extends FOFTestCase
 
         if($check['exception'])
         {
-            $this->setExpectedException('FOF30\Dispatcher\Exception\AccessForbidden');
+            $this->setExpectedException('FOF40\Dispatcher\Exception\AccessForbidden');
         }
 
         // Let's mock the after/before methods, so I can double check them
@@ -160,7 +160,7 @@ class DispatcherTest extends FOFTestCase
         $platform = $container->platform;
         $platform::$isCli = $test['mock']['isCli'];
 
-        $dispatcher = $this->getMockBuilder('FOF30\Tests\Stubs\Dispatcher\DispatcherStub')
+        $dispatcher = $this->getMockBuilder('FOF40\Tests\Stubs\Dispatcher\DispatcherStub')
             ->setMethods(array('transparentAuthenticationLogin', 'transparentAuthenticationLogout'))
             ->setConstructorArgs(array($container, array(), $methods))
             ->getMock();

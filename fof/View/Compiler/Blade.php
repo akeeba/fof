@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\View\Compiler;
+namespace FOF40\View\Compiler;
 
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 
 defined('_JEXEC') or die;
 
@@ -746,7 +746,7 @@ class Blade implements CompilerInterface
 			$expression = substr($expression, 1, -1);
 		}
 
-		return "<?php echo \\FOF30\\Layout\\LayoutHelper::render(\$this->container, $expression); ?>";
+		return "<?php echo \\FOF40\\Layout\\LayoutHelper::render(\$this->container, $expression); ?>";
 	}
 
 	/**
@@ -869,7 +869,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSortgrid($expression)
 	{
-		return "<?php echo FOF30\Utils\FEFHelper\BrowseView::sortGrid{$expression} ?>";
+		return "<?php echo FOF40\Utils\FEFHelper\BrowseView::sortGrid{$expression} ?>";
 	}
 
 	/**
@@ -882,7 +882,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileFieldtitle($expression)
 	{
-		return "<?php echo FOF30\Utils\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
+		return "<?php echo FOF40\Utils\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
 	}
 
 	/**
@@ -895,7 +895,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileModelfilter($expression)
 	{
-		return "<?php echo \FOF30\Utils\FEFHelper\BrowseView::modelFilter{$expression} ?>";
+		return "<?php echo \FOF40\Utils\FEFHelper\BrowseView::modelFilter{$expression} ?>";
 	}
 
 	/**
@@ -908,7 +908,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSelectfilter($expression)
 	{
-		return "<?php echo \FOF30\Utils\FEFHelper\BrowseView::selectFilter{$expression} ?>";
+		return "<?php echo \FOF40\Utils\FEFHelper\BrowseView::selectFilter{$expression} ?>";
 	}
 
 	/**
@@ -921,7 +921,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSearchfilter($expression)
 	{
-		return "<?php echo \FOF30\Utils\FEFHelper\BrowseView::searchFilter{$expression} ?>";
+		return "<?php echo \FOF40\Utils\FEFHelper\BrowseView::searchFilter{$expression} ?>";
 	}
 
 	/**

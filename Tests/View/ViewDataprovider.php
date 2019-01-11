@@ -33,8 +33,8 @@ class ViewDataprovider
                 ),
                 'baseurl' => 'www.example.com',
                 'engines' => array(
-                    '.blade.php' => 'FOF30\View\Engine\BladeEngine',
-                    '.php' => 'FOF30\View\Engine\PhpEngine'
+                    '.blade.php' => 'FOF40\View\Engine\BladeEngine',
+                    '.php' => 'FOF40\View\Engine\PhpEngine'
                 )
             )
         );
@@ -67,8 +67,8 @@ class ViewDataprovider
                 ),
                 'baseurl' => 'www.example.com',
                 'engines' => array(
-                    '.blade.php' => 'FOF30\View\Engine\BladeEngine',
-                    '.php' => 'FOF30\View\Engine\PhpEngine',
+                    '.blade.php' => 'FOF40\View\Engine\BladeEngine',
+                    '.php' => 'FOF40\View\Engine\PhpEngine',
                     'test' => 'testEngine'
                 )
             )
@@ -100,8 +100,8 @@ class ViewDataprovider
                 ),
                 'baseurl' => 'www.example.com',
                 'engines' => array(
-                    '.blade.php' => 'FOF30\View\Engine\BladeEngine',
-                    '.php' => 'FOF30\View\Engine\PhpEngine',
+                    '.blade.php' => 'FOF40\View\Engine\BladeEngine',
+                    '.php' => 'FOF40\View\Engine\PhpEngine',
                     'test' => 'testEngine',
                     'test2' => 'test2Engine'
                 )
@@ -144,8 +144,8 @@ class ViewDataprovider
                     'viewProperty' => array(),
                     'defaultModel' => 'foobars',
                     'instances' => array(
-                        'foobars' => new \FOF30\Tests\Stubs\Model\ModelStub(
-                            new \FOF30\Tests\Helpers\TestContainer(array(
+                        'foobars' => new \FOF40\Tests\Stubs\Model\ModelStub(
+                            new \FOF40\Tests\Helpers\TestContainer(array(
                                 'componentName' => 'com_fakeapp'
                             ))
                         )
@@ -167,8 +167,8 @@ class ViewDataprovider
                     'viewProperty' => array(),
                     'defaultModel' => 'foobars',
                     'instances' => array(
-                        'foobars' => new \FOF30\Tests\Stubs\Model\ModelStub(
-                            new \FOF30\Tests\Helpers\TestContainer(array(
+                        'foobars' => new \FOF40\Tests\Stubs\Model\ModelStub(
+                            new \FOF40\Tests\Helpers\TestContainer(array(
                                 'componentName' => 'com_fakeapp'
                             ))
                         )
@@ -190,8 +190,8 @@ class ViewDataprovider
                     'viewProperty' => array(),
                     'defaultModel' => 'foobars',
                     'instances' => array(
-                        'foobars' => new \FOF30\Tests\Stubs\Model\ModelStub(
-                            new \FOF30\Tests\Helpers\TestContainer(array(
+                        'foobars' => new \FOF40\Tests\Stubs\Model\ModelStub(
+                            new \FOF40\Tests\Helpers\TestContainer(array(
                                 'componentName' => 'com_fakeapp'
                             ))
                         )
@@ -213,8 +213,8 @@ class ViewDataprovider
                     'viewProperty' => array(),
                     'defaultModel' => 'dummy',
                     'instances' => array(
-                        'foobars' => new \FOF30\Tests\Stubs\Model\ModelStub(
-                            new \FOF30\Tests\Helpers\TestContainer(array(
+                        'foobars' => new \FOF40\Tests\Stubs\Model\ModelStub(
+                            new \FOF40\Tests\Helpers\TestContainer(array(
                                 'componentName' => 'com_fakeapp'
                             ))
                         )
@@ -236,8 +236,8 @@ class ViewDataprovider
                     'viewProperty' => array(),
                     'defaultModel' => 'dummy',
                     'instances' => array(
-                        'foobars' => new \FOF30\Tests\Stubs\Model\ModelStub(
-                            new \FOF30\Tests\Helpers\TestContainer(array(
+                        'foobars' => new \FOF40\Tests\Stubs\Model\ModelStub(
+                            new \FOF40\Tests\Helpers\TestContainer(array(
                                 'componentName' => 'com_fakeapp'
                             ))
                         )

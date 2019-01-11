@@ -11,25 +11,25 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Factory;
+namespace FOF40\Tests\Factory;
 
-use FOF30\Factory\SwitchFactory;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Helpers\TestContainer;
+use FOF40\Factory\SwitchFactory;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\TestContainer;
 
 require_once 'SwitchFactoryDataprovider.php';
 
 /**
- * @covers      FOF30\Factory\SwitchFactory::<protected>
- * @covers      FOF30\Factory\SwitchFactory::<private>
- * @package     FOF30\Tests\Factory
+ * @covers      FOF40\Factory\SwitchFactory::<protected>
+ * @covers      FOF40\Factory\SwitchFactory::<private>
+ * @package     FOF40\Tests\Factory
  */
 class SwitchFactoryTest extends FOFTestCase
 {
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::__construct
+     * @covers          FOF40\Factory\SwitchFactory::__construct
      */
     public function test__construct()
     {
@@ -40,7 +40,7 @@ class SwitchFactoryTest extends FOFTestCase
 
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::controller
+     * @covers          FOF40\Factory\SwitchFactory::controller
      * @dataProvider    SwitchFactoryDataprovider::getTestController
      */
     public function testController($test, $check)
@@ -59,7 +59,7 @@ class SwitchFactoryTest extends FOFTestCase
 
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::model
+     * @covers          FOF40\Factory\SwitchFactory::model
      * @dataProvider    SwitchFactoryDataprovider::getTestModel
      */
     public function testModel($test, $check)
@@ -78,7 +78,7 @@ class SwitchFactoryTest extends FOFTestCase
 
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::view
+     * @covers          FOF40\Factory\SwitchFactory::view
      * @dataProvider    SwitchFactoryDataprovider::getTestView
      */
     public function testView($test, $check)
@@ -98,7 +98,7 @@ class SwitchFactoryTest extends FOFTestCase
 
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::dispatcher
+     * @covers          FOF40\Factory\SwitchFactory::dispatcher
      * @dataProvider    SwitchFactoryDataprovider::getTestDispatcher
      */
     public function testDispatcher($test, $check)
@@ -121,7 +121,7 @@ class SwitchFactoryTest extends FOFTestCase
 
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::toolbar
+     * @covers          FOF40\Factory\SwitchFactory::toolbar
      * @dataProvider    SwitchFactoryDataprovider::getTestToolbar
      */
     public function testToolbar($test, $check)
@@ -144,7 +144,7 @@ class SwitchFactoryTest extends FOFTestCase
 
     /**
      * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::transparentAuthentication
+     * @covers          FOF40\Factory\SwitchFactory::transparentAuthentication
      * @dataProvider    SwitchFactoryDataprovider::getTestTransparentAuthentication
      */
     public function testTransparentAuthentication($test, $check)

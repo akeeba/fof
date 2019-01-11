@@ -11,12 +11,12 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Factory\Scaffolding\Layout;
+namespace FOF40\Factory\Scaffolding\Layout;
 
 /**
  * Erects a scaffolding XML for read views
  *
- * @package FOF30\Factory\Scaffolding
+ * @package FOF40\Factory\Scaffolding
  *
  * @deprecated 3.1  Support for XML forms will be removed in FOF 4
  */

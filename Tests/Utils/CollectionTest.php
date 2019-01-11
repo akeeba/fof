@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Utils;
+namespace FOF40\Tests\Utils;
 
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Utils\Collection;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Utils\Collection;
 
 class CollectionTest extends FOFTestCase
 {
@@ -56,7 +56,7 @@ class CollectionTest extends FOFTestCase
 
     public function testToArrayCallsToArrayOnEachItemInCollection()
     {
-        $item1 = $this->getMockBuilder('FOF30\\Registry\\Registry')
+        $item1 = $this->getMockBuilder('FOF40\\Registry\\Registry')
             ->setMethods(array('toArray'))
             ->getMock();
 		$item1
@@ -64,7 +64,7 @@ class CollectionTest extends FOFTestCase
 			->method('toArray')
 			->will($this->returnValue('foo.array'));
 
-		$item2 = $this->getMockBuilder('FOF30\\Registry\\Registry')
+		$item2 = $this->getMockBuilder('FOF40\\Registry\\Registry')
             ->setMethods(array('toArray'))
             ->getMock();
 
@@ -81,7 +81,7 @@ class CollectionTest extends FOFTestCase
 
     public function testToJsonEncodesTheToArrayResult()
 	{
-        $c = $this->getMockBuilder('FOF30\Utils\Collection')
+        $c = $this->getMockBuilder('FOF40\Utils\Collection')
             ->setMethods(array('toArray'))
             ->getMock();
 		$c->expects($this->once())->method('toArray')->will($this->returnValue('foo'));
@@ -92,7 +92,7 @@ class CollectionTest extends FOFTestCase
 
     public function testCastingToStringJsonEncodesTheToArrayResult()
 	{
-		$c = $this->getMockBuilder('FOF30\Utils\Collection')
+		$c = $this->getMockBuilder('FOF40\Utils\Collection')
             ->setMethods(array('toArray'))
             ->getMock();
 
@@ -306,8 +306,8 @@ class CollectionTest extends FOFTestCase
 
     public function testGetListValueWithAccessors()
 	{
-		$model    = new TestAccessorFOF30TestStub(array('some' => 'foo'));
-		$modelTwo = new TestAccessorFOF30TestStub(array('some' => 'bar'));
+		$model    = new TestAccessorFOF40TestStub(array('some' => 'foo'));
+		$modelTwo = new TestAccessorFOF40TestStub(array('some' => 'bar'));
 		$data     = new Collection(array($model, $modelTwo));
 
 		$this->assertEquals(array('foo', 'bar'), $data->lists('some'));
@@ -357,7 +357,7 @@ class CollectionTest extends FOFTestCase
 	}
 }
 
-class TestAccessorFOF30TestStub
+class TestAccessorFOF40TestStub
 {
 	protected $attributes = array();
 

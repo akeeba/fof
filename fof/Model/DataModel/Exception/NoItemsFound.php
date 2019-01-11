@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\DataModel\Exception;
+namespace FOF40\Model\DataModel\Exception;
 
 use Exception;
 
@@ -21,7 +21,7 @@ class NoItemsFound extends BaseException
 {
 	public function __construct( $className, $code = 404, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF_MODEL_ERR_NOITEMSFOUND', $className);
+		$message = \JText::sprintf('LIB_FOF40_MODEL_ERR_NOITEMSFOUND', $className);
 
 		parent::__construct( $message, $code, $previous );
 	}

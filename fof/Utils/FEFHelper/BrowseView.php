@@ -11,16 +11,16 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Utils\FEFHelper;
+namespace FOF40\Utils\FEFHelper;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use FOF30\Utils\ArrayHelper;
-use FOF30\Utils\SelectOptions;
-use FOF30\View\DataView\DataViewInterface;
-use FOF30\View\View;
+use FOF40\Container\Container;
+use FOF40\Model\DataModel;
+use FOF40\Utils\ArrayHelper;
+use FOF40\Utils\SelectOptions;
+use FOF40\View\DataView\DataViewInterface;
+use FOF40\View\View;
 use JHtml;
 use JText;
 

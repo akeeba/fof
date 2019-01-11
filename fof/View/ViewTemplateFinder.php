@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\View;
+namespace FOF40\View;
 
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 
 defined('_JEXEC') or die;
 

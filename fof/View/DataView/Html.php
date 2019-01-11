@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\View\DataView;
+namespace FOF40\View\DataView;
 
-use FOF30\Render\RenderInterface;
+use FOF40\Render\RenderInterface;
 
 defined('_JEXEC') or die;
 

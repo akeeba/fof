@@ -11,11 +11,11 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Encrypt\AesAdapter;
+namespace FOF40\Encrypt\AesAdapter;
 
 // Protect from unauthorized access
-use FOF30\Encrypt\Randval;
-use FOF30\Utils\Phpfunc;
+use FOF40\Encrypt\Randval;
+use FOF40\Utils\Phpfunc;
 
 defined('_JEXEC') or die();
 

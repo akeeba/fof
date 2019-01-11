@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Stubs\Model\DataModel\Filter;
+namespace FOF40\Tests\Stubs\Model\DataModel\Filter;
 
-use FOF30\Model\DataModel\Filter\AbstractFilter;
+use FOF40\Model\DataModel\Filter\AbstractFilter;
 
 class FilterStub extends AbstractFilter
 {

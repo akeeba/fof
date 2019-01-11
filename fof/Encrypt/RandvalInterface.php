@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Encrypt;
+namespace FOF40\Encrypt;
 
 // Protect from unauthorized access
 defined('_JEXEC') or die();

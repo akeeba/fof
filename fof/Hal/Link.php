@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Hal;
+namespace FOF40\Hal;
 
-use FOF30\Hal\Exception\InvalidLinkFormat;
+use FOF40\Hal\Exception\InvalidLinkFormat;
 
 defined('_JEXEC') or die;
 

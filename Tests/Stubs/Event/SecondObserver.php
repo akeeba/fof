@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Stubs\Event;
+namespace FOF40\Tests\Stubs\Event;
 
-use FOF30\Event\Observable;
+use FOF40\Event\Observable;
 
 class SecondObserver extends FirstObserver
 {

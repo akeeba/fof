@@ -189,7 +189,7 @@ class PublishDataprovider
             ),
             array(
                 'case'      => 'Table with no publish support',
-                'exception' => 'FOF30\\Model\\DataModel\\Exception\\SpecialColumnMissing'
+                'exception' => 'FOF40\\Model\\DataModel\\Exception\\SpecialColumnMissing'
             )
         );
 
@@ -201,7 +201,7 @@ class PublishDataprovider
             ),
             array(
                 'case'      => 'Table not loaded',
-                'exception' => 'FOF30\Model\DataModel\Exception\RecordNotLoaded'
+                'exception' => 'FOF40\Model\DataModel\Exception\RecordNotLoaded'
             )
         );
 

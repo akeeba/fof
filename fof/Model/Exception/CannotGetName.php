@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Model\Exception;
+namespace FOF40\Model\Exception;
 
 use Exception;
 
@@ -26,7 +26,7 @@ class CannotGetName extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF_MODEL_ERR_GET_NAME');
+			$message = \JText::_('LIB_FOF40_MODEL_ERR_GET_NAME');
 		}
 
 		parent::__construct( $message, $code, $previous );

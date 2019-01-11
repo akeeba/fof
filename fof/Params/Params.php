@@ -11,9 +11,9 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Params;
+namespace FOF40\Params;
 
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 
 defined('_JEXEC') or die;
 
@@ -36,7 +36,7 @@ class Params
 	/**
 	 * Public constructor for the params object
 	 *
-	 * @param  \FOF30\Container\Container $container  The container we belong to
+	 * @param  \FOF40\Container\Container $container  The container we belong to
 	 */
 	public function __construct(Container $container)
 	{

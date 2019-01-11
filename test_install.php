@@ -207,7 +207,7 @@ class FOFTestInstall extends JApplicationCli
 		$installResult = $tmpInstaller->install($installVersionPath);
 
 		// Dump the installed version's version.txt file
-		$path = JPATH_LIBRARIES . '/fof30/version.txt';
+		$path = JPATH_LIBRARIES . '/fof40/version.txt';
 		readfile($path);
 	}
 

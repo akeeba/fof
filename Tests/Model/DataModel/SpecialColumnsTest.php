@@ -11,28 +11,28 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataModel;
+namespace FOF40\Tests\DataModel;
 
-use FOF30\Tests\Helpers\ClosureHelper;
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Helpers\TestContainer;
-use FOF30\Tests\Stubs\Model\DataModelStub;
-use FOF30\Tests\Helpers\ObserverClosure;
+use FOF40\Tests\Helpers\ClosureHelper;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\TestContainer;
+use FOF40\Tests\Stubs\Model\DataModelStub;
+use FOF40\Tests\Helpers\ObserverClosure;
 
 require_once 'SpecialColumnsDataprovider.php';
 
 /**
- * @covers      FOF30\Model\DataModel::<protected>
- * @covers      FOF30\Model\DataModel::<private>
- * @package     FOF30\Tests\DataModel
+ * @covers      FOF40\Model\DataModel::<protected>
+ * @covers      FOF40\Model\DataModel::<private>
+ * @package     FOF40\Tests\DataModel
  */
 class DataModelSpecialColumnsTest extends DatabaseTest
 {
     /**
      * @group           DataModel
      * @group           DataModelReorder
-     * @covers          FOF30\Model\DataModel::reorder
+     * @covers          FOF40\Model\DataModel::reorder
      * @dataProvider    SpecialColumnsDataprovider::getTestReorder
      */
     public function testReorder($test, $check)
@@ -75,7 +75,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
         $model = new DataModelStub(static::$container, $config, $methods);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -96,7 +96,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             ->order($db->qn($model->getIdFieldName()).' ASC');
         $ordering = $db->setQuery($query)->loadColumn();
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals(1, $before, sprintf($msg, 'Failed to invoke the onBefore method'));
         $this->assertEquals(1, $after, sprintf($msg, 'Failed to invoke the onAfter method'));
         $this->assertEquals($check['order'], $ordering, sprintf($msg, 'Failed to save the correct order'));
@@ -105,11 +105,11 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelReorder
-     * @covers          FOF30\Model\DataModel::reorder
+     * @covers          FOF40\Model\DataModel::reorder
      */
     public function testReorderException()
     {
-        $this->setExpectedException('\\FOF30\\Model\\DataModel\\Exception\\SpecialColumnMissing');
+        $this->setExpectedException('\\FOF40\\Model\\DataModel\\Exception\\SpecialColumnMissing');
 
         $config = array(
             'idFieldName' => 'foftest_bare_id',
@@ -123,7 +123,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelMove
-     * @covers          FOF30\Model\DataModel::move
+     * @covers          FOF40\Model\DataModel::move
      * @dataProvider    SpecialColumnsDataprovider::getTestMove
      */
     public function testMove($test, $check)
@@ -194,7 +194,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             ->order($db->qn($model->getIdFieldName()).' ASC');
         $ordering = $db->setQuery($query)->loadColumn();
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals(1, $before, sprintf($msg, 'Failed to invoke the onBefore method'));
         $this->assertEquals(1, $beforeDisp, sprintf($msg, 'Failed to invoke the onBeforeMove event'));
         $this->assertEquals(1, $after, sprintf($msg, 'Failed to invoke the onAfter method'));
@@ -205,7 +205,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelMove
-     * @covers          FOF30\Model\DataModel::move
+     * @covers          FOF40\Model\DataModel::move
      * @dataProvider    SpecialColumnsDataprovider::getTestMoveException
      */
     public function testMoveException($test, $check)
@@ -224,7 +224,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelLock
-     * @covers          FOF30\Model\DataModel::lock
+     * @covers          FOF40\Model\DataModel::lock
      * @dataProvider    SpecialColumnsDataprovider::getTestLock
      */
     public function testLock($test, $check)
@@ -252,7 +252,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('save', 'getId'))
             ->setConstructorArgs(array($container, $config, $methods))
             ->getMock();
@@ -260,7 +260,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
         $model->method('getId')->willReturn(1);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -277,7 +277,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
         $locked_by = $model->getFieldValue('locked_by');
         $locked_on = $model->getFieldValue('locked_on');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['before'], $before, sprintf($msg, 'Failed to call the onBefore method'));
         $this->assertEquals($check['after'], $after, sprintf($msg, 'Failed to call the onAfter method'));
         $this->assertEquals($check['locked_by'], $locked_by, sprintf($msg, 'Failed to set the locking user'));
@@ -296,7 +296,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelLock
-     * @covers          FOF30\Model\DataModel::lock
+     * @covers          FOF40\Model\DataModel::lock
      */
     public function testLockException()
     {
@@ -314,7 +314,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelUnlock
-     * @covers          FOF30\Model\DataModel::unlock
+     * @covers          FOF40\Model\DataModel::unlock
      * @dataProvider    SpecialColumnsDataprovider::getTestUnlock
      */
     public function testUnlock($test, $check)
@@ -339,14 +339,14 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             }
         );
 
-        $model = $this->getMockBuilder('FOF30\Tests\Stubs\Model\DataModelStub')
+        $model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
             ->setMethods(array('save', 'getId'))
             ->setConstructorArgs(array(static::$container, $config, $methods))
             ->getMock();
         $model->method('getId')->willReturn(1);
 
         // Let's mock the dispatcher, too. So I can check if events are really triggered
-        $dispatcher = $this->getMockBuilder('\\FOF30\\Event\\Dispatcher')
+        $dispatcher = $this->getMockBuilder('\\FOF40\\Event\\Dispatcher')
             ->setMethods(array('trigger'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -369,7 +369,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
         $locked_by = $model->getFieldValue('locked_by');
         $locked_on = $model->getFieldValue('locked_on');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['before'], $before, sprintf($msg, 'Failed to call the onBefore method'));
         $this->assertEquals($check['after'], $after, sprintf($msg, 'Failed to call the onAfter method'));
         $this->assertEquals($check['locked_by'], $locked_by, sprintf($msg, 'Failed to set the locking user'));
@@ -388,7 +388,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelUnlock
-     * @covers          FOF30\Model\DataModel::unlock
+     * @covers          FOF40\Model\DataModel::unlock
      */
     public function testUnlockException()
     {
@@ -397,7 +397,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\RecordNotLoaded');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\RecordNotLoaded');
 
         $model = new DataModelStub(static::$container, $config);
         $model->unlock();
@@ -406,7 +406,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelTouch
-     * @covers          FOF30\Model\DataModel::touch
+     * @covers          FOF40\Model\DataModel::touch
      * @dataProvider    SpecialColumnsDataprovider::getTestTouch
      */
     public function testTouch($test, $check)
@@ -422,7 +422,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             'tableName'   => $test['table']
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('save', 'getId'))
             ->setConstructorArgs(array(static::$container, $config))
             ->getMock();
@@ -435,7 +435,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
         $modified_by = $model->getFieldValue('modified_by');
         $modified_on = $model->getFieldValue('modified_on');
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $result, sprintf($msg, 'Should return an instance of itself'));
         $this->assertEquals($check['modified_by'], $modified_by, sprintf($msg, 'Failed to set the modifying user'));
 
         // The time is calculated on the fly, so I can only check if it's null or not
@@ -452,7 +452,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelTouch
-     * @covers          FOF30\Model\DataModel::touch
+     * @covers          FOF40\Model\DataModel::touch
      */
     public function testTouchException()
     {
@@ -461,7 +461,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             'tableName'   => '#__foftest_bares'
         );
 
-        $this->setExpectedException('FOF30\Model\DataModel\Exception\RecordNotLoaded');
+        $this->setExpectedException('FOF40\Model\DataModel\Exception\RecordNotLoaded');
 
         $model = new DataModelStub(static::$container, $config);
         $model->touch();
@@ -470,7 +470,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelCheckIn
-     * @covers          FOF30\Model\DataModel::checkIn
+     * @covers          FOF40\Model\DataModel::checkIn
      * @dataProvider    SpecialColumnsDataprovider::getTestCheckIn
      */
     public function testCheckIn($test, $check)
@@ -494,7 +494,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
             'tableName'   => $test['table']
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('unlock', 'isAssetsTracked', 'getAssetKey'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -515,13 +515,13 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 
         $result = $model->checkIn($test['userid']);
 
-        $this->assertInstanceOf('FOF30\Model\DataModel', $result);
+        $this->assertInstanceOf('FOF40\Model\DataModel', $result);
     }
 
     /**
      * @group           DataModel
      * @group           DataModelIsLocked
-     * @covers          FOF30\Model\DataModel::isLocked
+     * @covers          FOF40\Model\DataModel::isLocked
      * @dataProvider    SpecialColumnsDataprovider::getTestIsLocked
      */
     public function testIsLocked($test, $check)

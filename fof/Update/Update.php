@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Update;
+namespace FOF40\Update;
 
-use FOF30\Container\Container;
-use FOF30\Model\Model;
+use FOF40\Container\Container;
+use FOF40\Model\Model;
 use JUpdater;
 
 defined('_JEXEC') or die;

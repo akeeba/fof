@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Controller\Exception;
+namespace FOF40\Controller\Exception;
 
 defined('_JEXEC') or die;
 

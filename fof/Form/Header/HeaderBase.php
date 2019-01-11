@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Form\Header;
+namespace FOF40\Form\Header;
 
-use FOF30\Form\Form;
-use FOF30\Form\HeaderInterface;
+use FOF40\Form\Form;
+use FOF40\Form\HeaderInterface;
 use SimpleXMLElement;
 
 defined('_JEXEC') or die;

@@ -11,28 +11,28 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\DataController;
+namespace FOF40\Tests\DataController;
 
-use FOF30\Factory\Exception\ModelNotFound;
-use FOF30\Input\Input;
-use FOF30\Tests\Helpers\ClosureHelper;
-use FOF30\Tests\Helpers\DatabaseTest;
-use FOF30\Tests\Helpers\ReflectionHelper;
-use FOF30\Tests\Helpers\TestContainer;
-use FOF30\Tests\Stubs\Controller\DataControllerStub;
-use FOF30\Tests\Stubs\Model\DataModelStub;
+use FOF40\Factory\Exception\ModelNotFound;
+use FOF40\Input\Input;
+use FOF40\Tests\Helpers\ClosureHelper;
+use FOF40\Tests\Helpers\DatabaseTest;
+use FOF40\Tests\Helpers\ReflectionHelper;
+use FOF40\Tests\Helpers\TestContainer;
+use FOF40\Tests\Stubs\Controller\DataControllerStub;
+use FOF40\Tests\Stubs\Model\DataModelStub;
 
 require_once 'DataControllerDataprovider.php';
 
 /**
- * @covers      FOF30\Controller\DataController::<protected>
- * @covers      FOF30\Controller\DataController::<private>
- * @package     FOF30\Tests\DataController
+ * @covers      FOF40\Controller\DataController::<protected>
+ * @covers      FOF40\Controller\DataController::<private>
+ * @package     FOF40\Tests\DataController
  */
 class DataControllertest extends DatabaseTest
 {
     /**
-     * @covers          FOF30\Controller\DataController::__construct
+     * @covers          FOF40\Controller\DataController::__construct
      * @dataProvider    DataControllerDataprovider::getTest__construct
      */
     public function test__construct($test, $check)
@@ -75,12 +75,12 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::execute
+     * @covers          FOF40\Controller\DataController::execute
      * @dataProvider    DataControllerDataprovider::getTestExecute
      */
     public function testExecute($test, $check)
     {
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('getCrudTask', 'read'))
             ->setConstructorArgs(array(self::$container))
             ->getMock();
@@ -97,7 +97,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::getView
+     * @covers          FOF40\Controller\DataController::getView
      * @dataProvider    DataControllerDataprovider::getTestGetView
      */
     public function testGetView($test, $check)
@@ -143,7 +143,7 @@ class DataControllertest extends DatabaseTest
     /**
      * @group           DataController
      * @group           DataControllerBrowse
-     * @covers          FOF30\Controller\DataController::browse
+     * @covers          FOF40\Controller\DataController::browse
      * @dataProvider    DataControllerDataprovider::getTestBrowse
      */
     public function testBrowse($test, $check)
@@ -158,7 +158,7 @@ class DataControllertest extends DatabaseTest
             'input' => $input
         ));
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('display', 'getModel'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -190,14 +190,14 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::read
+     * @covers          FOF40\Controller\DataController::read
      * @dataProvider    DataControllerDataprovider::getTestRead
      */
     public function testRead($test, $check)
     {
         $msg     = 'DataController::read %s - Case: '.$check['case'];
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('getId', 'getForm', 'setFormName'))
             ->setConstructorArgs(array())
             ->setMockClassName('')
@@ -212,7 +212,7 @@ class DataControllertest extends DatabaseTest
         $model->method('setFormName')->with($check['setForm']);
 
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('getModel', 'getIDsFromRequest', 'display'))
             ->setConstructorArgs(array(static::$container))
             ->getMock();
@@ -225,7 +225,7 @@ class DataControllertest extends DatabaseTest
 
         if($check['exception'])
         {
-            $this->setExpectedException('FOF30\Controller\Exception\ItemNotFound', 'COM_FAKEAPP_ERR_NESTEDSET_NOTFOUND');
+            $this->setExpectedException('FOF40\Controller\Exception\ItemNotFound', 'COM_FAKEAPP_ERR_NESTEDSET_NOTFOUND');
         }
 
         ReflectionHelper::setValue($controller, 'layout', $test['mock']['layout']);
@@ -241,7 +241,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::add
+     * @covers          FOF40\Controller\DataController::add
      * @dataProvider    DataControllerDataprovider::getTestAdd
      */
     public function testAdd($test, $check)
@@ -269,7 +269,7 @@ class DataControllertest extends DatabaseTest
 
         $container->session->set('dummycontrollers.savedata', $test['mock']['session'], 'com_fakeapp');
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('reset', 'bind', 'getForm', 'setFormName'))
             ->setConstructorArgs(array())
             ->setMockClassName('')
@@ -280,7 +280,7 @@ class DataControllertest extends DatabaseTest
         $model->method('setFormName')->with($this->equalTo($check['formName']));
         $model->method('getForm')->willReturn($test['mock']['getForm']);
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('getModel', 'display'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -304,7 +304,7 @@ class DataControllertest extends DatabaseTest
 
     /**
      * @group           DataControllerEdit
-     * @covers          FOF30\Controller\DataController::edit
+     * @covers          FOF40\Controller\DataController::edit
      * @dataProvider    DataControllerDataprovider::getTestEdit
      */
     public function testEdit($test, $check)
@@ -335,7 +335,7 @@ class DataControllertest extends DatabaseTest
 
         $container->session->set('dummycontrollers.savedata', $test['mock']['session'], 'com_fakeapp');
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('getId', 'lock', 'bind', 'setFormName', 'getForm', 'isLocked'))
             ->setConstructorArgs(array())
             ->setMockClassName('')
@@ -359,7 +359,7 @@ class DataControllertest extends DatabaseTest
         $model->method('setFormName')->with($this->equalTo($check['formName']));
         $model->method('getForm')->willReturn($test['mock']['getForm']);
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('getModel', 'getIDsFromRequest', 'setRedirect', 'display'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -385,7 +385,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::apply
+     * @covers          FOF40\Controller\DataController::apply
      * @dataProvider    DataControllerDataprovider::getTestApply
      */
     public function testApply($test, $check)
@@ -398,7 +398,7 @@ class DataControllertest extends DatabaseTest
             )),
         ));
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'applySave', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -411,7 +411,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::copy
+     * @covers          FOF40\Controller\DataController::copy
      * @dataProvider    DataControllerDataprovider::getTestCopy
      */
     public function testCopy($test, $check)
@@ -423,7 +423,7 @@ class DataControllertest extends DatabaseTest
             ))
         ));
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('find', 'copy'))
             ->setConstructorArgs(array($container))
             ->setMockClassName('')
@@ -460,7 +460,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -474,7 +474,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::save
+     * @covers          FOF40\Controller\DataController::save
      * @dataProvider    DataControllerDataprovider::getTestSave
      */
     public function testSave($test, $check)
@@ -486,7 +486,7 @@ class DataControllertest extends DatabaseTest
             ))
         ));
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'applySave', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -500,7 +500,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::savenew
+     * @covers          FOF40\Controller\DataController::savenew
      * @dataProvider    DataControllerDataprovider::getTestSavenew
      */
     public function testSavenew($test, $check)
@@ -512,7 +512,7 @@ class DataControllertest extends DatabaseTest
             ))
         ));
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'applySave', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -526,7 +526,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::cancel
+     * @covers          FOF40\Controller\DataController::cancel
      * @dataProvider    DataControllerDataprovider::getTestCancel
      */
     public function testCancel($test, $check)
@@ -545,7 +545,7 @@ class DataControllertest extends DatabaseTest
             ))
         ));
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('unlock', 'getId'))
             ->setConstructorArgs(array($container))
             ->setMockClassName('')
@@ -554,7 +554,7 @@ class DataControllertest extends DatabaseTest
 
         $model->method('getId')->willReturn($test['mock']['getId']);
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -569,7 +569,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::publish
+     * @covers          FOF40\Controller\DataController::publish
      * @dataProvider    DataControllerDataprovider::getTestPublish
      */
     public function testPublish($test, $check)
@@ -586,7 +586,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('publish'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -606,7 +606,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -620,7 +620,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::unpublish
+     * @covers          FOF40\Controller\DataController::unpublish
      * @dataProvider    DataControllerDataprovider::getTestUnpublish
      */
     public function testUnpublish($test, $check)
@@ -637,7 +637,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('unpublish'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -657,7 +657,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -671,7 +671,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::archive
+     * @covers          FOF40\Controller\DataController::archive
      * @dataProvider    DataControllerDataprovider::getTestArchive
      */
     public function testArchive($test, $check)
@@ -688,7 +688,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('archive'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -708,7 +708,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -722,7 +722,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::trash
+     * @covers          FOF40\Controller\DataController::trash
      * @dataProvider    DataControllerDataprovider::getTestTrash
      */
     public function testTrash($test, $check)
@@ -739,7 +739,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('trash'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -759,7 +759,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -773,7 +773,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::checkin
+     * @covers          FOF40\Controller\DataController::checkin
      * @dataProvider    DataControllerDataprovider::getTestCheckin
      */
     public function testCheckin($test, $check)
@@ -790,7 +790,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('checkin'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -810,7 +810,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -827,7 +827,7 @@ class DataControllertest extends DatabaseTest
      * The best way to test with method is to run it and check vs the database
      *
      * @group           DataControllerSaveOrder
-     * @covers          FOF30\Controller\DataController::saveorder
+     * @covers          FOF40\Controller\DataController::saveorder
      * @dataProvider    DataControllerDataprovider::getTestsaveorder
      */
     public function testSaveorder($test, $check)
@@ -850,7 +850,7 @@ class DataControllertest extends DatabaseTest
 
         $model      = new DataModelStub($container, $config);
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -874,7 +874,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::orderdown
+     * @covers          FOF40\Controller\DataController::orderdown
      * @dataProvider    DataControllerDataprovider::getTestOrderdown
      */
     public function testOrderdown($test, $check)
@@ -891,7 +891,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('move', 'getId'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -912,7 +912,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -926,7 +926,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::orderup
+     * @covers          FOF40\Controller\DataController::orderup
      * @dataProvider    DataControllerDataprovider::getTestOrderup
      */
     public function testOrderup($test, $check)
@@ -943,7 +943,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('move', 'getId'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -964,7 +964,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -980,7 +980,7 @@ class DataControllertest extends DatabaseTest
     /**
      * @group           DataController
      * @group           DataControllerRemove
-     * @covers          FOF30\Controller\DataController::remove
+     * @covers          FOF40\Controller\DataController::remove
      * @dataProvider    DataControllerDataprovider::getTestRemove
      */
     public function testRemove($test, $check)
@@ -997,7 +997,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('find', 'delete'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -1032,7 +1032,7 @@ class DataControllertest extends DatabaseTest
             }
         );
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('csrfProtection', 'getModel', 'getIDsFromRequest', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -1046,7 +1046,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::getModel
+     * @covers          FOF40\Controller\DataController::getModel
      * @dataProvider    DataControllerDataprovider::getTestGetModel
      */
     public function testGetModel($test, $check)
@@ -1066,16 +1066,16 @@ class DataControllertest extends DatabaseTest
 
         if($check['exception'])
         {
-            $this->setExpectedException('FOF30\Controller\Exception\NotADataModel');
+            $this->setExpectedException('FOF40\Controller\Exception\NotADataModel');
         }
 
         $model = $controller->getModel($test['name'], $config);
 
-        $this->assertInstanceOf('\\FOF30\\Model\\DataModel', $model, 'DataController::getModel should return a DataModel');
+        $this->assertInstanceOf('\\FOF40\\Model\\DataModel', $model, 'DataController::getModel should return a DataModel');
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::getIDsFromRequest
+     * @covers          FOF40\Controller\DataController::getIDsFromRequest
      * @dataProvider    DataControllerDataprovider::getTestGetIDsFromRequest
      */
     public function testGetIDsFromRequest($test, $check)
@@ -1096,7 +1096,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('find'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -1111,7 +1111,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::loadHistory
+     * @covers          FOF40\Controller\DataController::loadHistory
      * @dataProvider    DataControllerDataprovider::getTestLoadHistory
      */
     public function testLoadHistory($test, $check)
@@ -1131,7 +1131,7 @@ class DataControllertest extends DatabaseTest
             'tableName'   => '#__foftest_foobars'
         );
 
-        $model = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Model\\DataModelStub')
+        $model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
             ->setMethods(array('loadhistory', 'store', 'lock', 'unlock', 'getState'))
             ->setConstructorArgs(array($container, $config))
             ->getMock();
@@ -1143,7 +1143,7 @@ class DataControllertest extends DatabaseTest
         })
             ->with($this->equalTo($check['version_id']), $this->equalTo($check['alias']));
 
-        $controller = $this->getMockBuilder('\\FOF30\\Tests\\Stubs\\Controller\\DataControllerStub')
+        $controller = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Controller\\DataControllerStub')
             ->setMethods(array('getModel', 'checkACL', 'setRedirect'))
             ->setConstructorArgs(array($container))
             ->getMock();
@@ -1163,7 +1163,7 @@ class DataControllertest extends DatabaseTest
     }
 
     /**
-     * @covers          FOF30\Controller\DataController::getItemidURLSuffix
+     * @covers          FOF40\Controller\DataController::getItemidURLSuffix
      * @dataProvider    DataControllerDataprovider::getTestGetItemidURLSuffix
      */
     public function testGetItemidURLSuffix($test, $check)

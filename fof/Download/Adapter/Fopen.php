@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Download\Adapter;
+namespace FOF40\Download\Adapter;
 
-use FOF30\Download\DownloadInterface;
-use FOF30\Download\Exception\DownloadError;
+use FOF40\Download\DownloadInterface;
+use FOF40\Download\Exception\DownloadError;
 use JText;
 
 defined('_JEXEC') or die;
@@ -124,7 +124,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 
 		if (!isset($http_response_header) && empty($http_response_header_test))
 		{
-			$error = JText::_('LIB_FOF_DOWNLOAD_ERR_FOPEN_ERROR');
+			$error = JText::_('LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR');
 			throw new DownloadError($error, 404);
 		}
 		else
@@ -151,14 +151,14 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 
 			if ($http_code >= 299)
 			{
-				$error = JText::sprintf('LIB_FOF_DOWNLOAD_ERR_HTTPERROR', $http_code);
+				$error = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_HTTPERROR', $http_code);
 				throw new DownloadError($error, $http_code);
 			}
 		}
 
 		if ($result === false)
 		{
-			$error = JText::sprintf('LIB_FOF_DOWNLOAD_ERR_FOPEN_ERROR');
+			$error = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR');
 			throw new DownloadError($error, 1);
 		}
 		else

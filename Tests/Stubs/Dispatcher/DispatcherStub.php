@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Stubs\Dispatcher;
+namespace FOF40\Tests\Stubs\Dispatcher;
 
-use FOF30\Container\Container;
-use FOF30\Dispatcher\Dispatcher;
+use FOF40\Container\Container;
+use FOF40\Dispatcher\Dispatcher;
 
 class DispatcherStub extends Dispatcher
 {

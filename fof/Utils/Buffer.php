@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Utils;
+namespace FOF40\Utils;
 
 defined('_JEXEC') or die;
 
@@ -314,5 +314,5 @@ class Buffer
 
 if (Buffer::canRegisterWrapper())
 {
-	stream_wrapper_register('fof', 'FOF30\\Utils\\Buffer');
+	stream_wrapper_register('fof', 'FOF40\\Utils\\Buffer');
 }

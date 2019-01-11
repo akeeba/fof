@@ -11,10 +11,10 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Platform\Base;
+namespace FOF40\Platform\Base;
 
-use FOF30\Container\Container;
-use FOF30\Platform\FilesystemInterface;
+use FOF40\Container\Container;
+use FOF40\Platform\FilesystemInterface;
 
 defined('_JEXEC') or die;
 
@@ -26,7 +26,7 @@ abstract class Filesystem implements FilesystemInterface
 	/**
 	 * Public constructor.
 	 *
-	 * @param   \FOF30\Container\Container  $c  The component container
+	 * @param   \FOF40\Container\Container  $c  The component container
 	 */
 	public function __construct(Container $c)
 	{

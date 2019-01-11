@@ -16,8 +16,8 @@ software which does not support your PHP and/or Joomla! versions is to deliver o
 is nonsensical, it is 100% architecturally wrong BUT it is also the only way we can apply pre-installation checks which
 fail gracefully instead of causing your site to crash and burn.
 -->
-<extension type="file" version="3.3" method="upgrade">
-    <name>file_fof30</name>
+<extension type="file" version="3.6" method="upgrade">
+    <name>file_fof40</name>
 	<description>
 		<![CDATA[
 		Framework-on-Framework (FOF) 3.x - The rapid application development framework for Joomla!.<br/>
@@ -35,7 +35,7 @@ fail gracefully instead of causing your site to crash and burn.
 	<packagerurl>https://www.AkeebaBackup.com/download.html</packagerurl>
 
 	<fileset>
-		<files folder="fof" target="libraries/fof30">
+		<files folder="fof" target="libraries/fof40">
 			<folder>Autoloader</folder>
 			<folder>Configuration</folder>
 			<folder>Container</folder>
@@ -71,10 +71,10 @@ fail gracefully instead of causing your site to crash and burn.
 			<file>version.txt</file>
 		</files>
 		<files folder="fof/language/en-GB" target="language/en-GB">
-			<file>en-GB.lib_fof30.ini</file>
+			<file>en-GB.lib_fof40.ini</file>
 		</files>
 		<files folder="fof/language/en-GB" target="administrator/language/en-GB">
-			<file>en-GB.lib_fof30.ini</file>
+			<file>en-GB.lib_fof40.ini</file>
 		</files>
 	</fileset>
 
@@ -82,6 +82,6 @@ fail gracefully instead of causing your site to crash and burn.
 	<scriptfile>script.fof.php</scriptfile>
 
     <updateservers>
-        <server type="extension" priority="1" name="FOF 3.x">http://cdn.akeebabackup.com/updates/fof3_file.xml</server>
+        <server type="extension" priority="1" name="FOF 3.x">http://cdn.akeebabackup.com/updates/fof4_file.xml</server>
     </updateservers>
 </extension>

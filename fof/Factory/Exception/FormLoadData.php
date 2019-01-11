@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Factory\Exception;
+namespace FOF40\Factory\Exception;
 
 use Exception;
 use RuntimeException;
@@ -24,7 +24,7 @@ class FormLoadData extends FormLoadGeneric
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF_FORM_ERR_COULD_NOT_LOAD_FROM_DATA');
+			$message = \JText::_('LIB_FOF40_FORM_ERR_COULD_NOT_LOAD_FROM_DATA');
 		}
 
 		parent::__construct( $message, $code, $previous );

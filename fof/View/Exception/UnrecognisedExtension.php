@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\View\Exception;
+namespace FOF40\View\Exception;
 
 use Exception;
 
@@ -24,7 +24,7 @@ class UnrecognisedExtension extends \InvalidArgumentException
 {
 	public function __construct($path, $code = 500, Exception $previous = null)
 	{
-		$message = \JText::sprintf('LIB_FOF_VIEW_UNRECOGNISEDEXTENSION', $path);
+		$message = \JText::sprintf('LIB_FOF40_VIEW_UNRECOGNISEDEXTENSION', $path);
 
 		parent::__construct($message, $code, $previous);
 	}

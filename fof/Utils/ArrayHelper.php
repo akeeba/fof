@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Utils;
+namespace FOF40\Utils;
 
 /**
  * ArrayHelper is an array utility class for doing all sorts of odds and ends with arrays.

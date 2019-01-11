@@ -11,11 +11,11 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Form\Field;
+namespace FOF40\Form\Field;
 
-use FOF30\Form\FieldInterface;
-use FOF30\Form\Form;
-use FOF30\Utils\StringHelper;
+use FOF40\Form\FieldInterface;
+use FOF40\Form\Form;
+use FOF40\Utils\StringHelper;
 use JText;
 
 defined('_JEXEC') or die;

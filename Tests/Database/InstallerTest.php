@@ -11,16 +11,16 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Tests\Database;
+namespace FOF40\Tests\Database;
 
 
-use FOF30\Database\Installer;
-use FOF30\Tests\Helpers\FOFTestCase;
-use FOF30\Tests\Helpers\ReflectionHelper;
+use FOF40\Database\Installer;
+use FOF40\Tests\Helpers\FOFTestCase;
+use FOF40\Tests\Helpers\ReflectionHelper;
 
 /**
- * @covers  FOF30\Database\Installer::<protected>
- * @covers  FOF30\Database\Installer::<private>
+ * @covers  FOF40\Database\Installer::<protected>
+ * @covers  FOF40\Database\Installer::<private>
  */
 class InstallerTest extends FOFTestCase
 {
@@ -44,11 +44,11 @@ class InstallerTest extends FOFTestCase
 
 	/**
      * @group   Installer
-	 * @covers  FOF30\Database\Installer::__construct
-	 * @covers  FOF30\Database\Installer::updateSchema
-	 * @covers  FOF30\Database\Installer::findSchemaXml
-	 * @covers  FOF30\Database\Installer::openAndVerify
-	 * @covers  FOF30\Database\Installer::conditionMet
+	 * @covers  FOF40\Database\Installer::__construct
+	 * @covers  FOF40\Database\Installer::updateSchema
+	 * @covers  FOF40\Database\Installer::findSchemaXml
+	 * @covers  FOF40\Database\Installer::openAndVerify
+	 * @covers  FOF40\Database\Installer::conditionMet
 	 *
 	 * @throws \Exception
 	 */
@@ -71,11 +71,11 @@ class InstallerTest extends FOFTestCase
 
 	/**
      * @group   Installer
-	 * @covers  FOF30\Database\Installer::__construct
-	 * @covers  FOF30\Database\Installer::updateSchema
-	 * @covers  FOF30\Database\Installer::findSchemaXml
-	 * @covers  FOF30\Database\Installer::openAndVerify
-	 * @covers  FOF30\Database\Installer::conditionMet
+	 * @covers  FOF40\Database\Installer::__construct
+	 * @covers  FOF40\Database\Installer::updateSchema
+	 * @covers  FOF40\Database\Installer::findSchemaXml
+	 * @covers  FOF40\Database\Installer::openAndVerify
+	 * @covers  FOF40\Database\Installer::conditionMet
 	 *
 	 * @throws \Exception
 	 */
@@ -141,11 +141,11 @@ class InstallerTest extends FOFTestCase
 
 	/**
      * @group   Installer
-	 * @covers  FOF30\Database\Installer::__construct
-	 * @covers  FOF30\Database\Installer::updateSchema
-	 * @covers  FOF30\Database\Installer::findSchemaXml
-	 * @covers  FOF30\Database\Installer::openAndVerify
-	 * @covers  FOF30\Database\Installer::conditionMet
+	 * @covers  FOF40\Database\Installer::__construct
+	 * @covers  FOF40\Database\Installer::updateSchema
+	 * @covers  FOF40\Database\Installer::findSchemaXml
+	 * @covers  FOF40\Database\Installer::openAndVerify
+	 * @covers  FOF40\Database\Installer::conditionMet
 	 *
 	 * @throws \Exception
 	 */
@@ -166,11 +166,11 @@ class InstallerTest extends FOFTestCase
 
 	/**
      * @group   Installer
-	 * @covers  FOF30\Database\Installer::__construct
-	 * @covers  FOF30\Database\Installer::updateSchema
-	 * @covers  FOF30\Database\Installer::findSchemaXml
-	 * @covers  FOF30\Database\Installer::openAndVerify
-	 * @covers  FOF30\Database\Installer::conditionMet
+	 * @covers  FOF40\Database\Installer::__construct
+	 * @covers  FOF40\Database\Installer::updateSchema
+	 * @covers  FOF40\Database\Installer::findSchemaXml
+	 * @covers  FOF40\Database\Installer::openAndVerify
+	 * @covers  FOF40\Database\Installer::conditionMet
 	 *
 	 * @throws \Exception
 	 */
@@ -186,11 +186,11 @@ class InstallerTest extends FOFTestCase
 
 	/**
      * @group   Installer
-	 * @covers  FOF30\Database\Installer::__construct
-	 * @covers  FOF30\Database\Installer::updateSchema
-	 * @covers  FOF30\Database\Installer::findSchemaXml
-	 * @covers  FOF30\Database\Installer::openAndVerify
-	 * @covers  FOF30\Database\Installer::conditionMet
+	 * @covers  FOF40\Database\Installer::__construct
+	 * @covers  FOF40\Database\Installer::updateSchema
+	 * @covers  FOF40\Database\Installer::findSchemaXml
+	 * @covers  FOF40\Database\Installer::openAndVerify
+	 * @covers  FOF40\Database\Installer::conditionMet
 	 *
 	 * @throws \Exception
 	 */
@@ -208,7 +208,7 @@ class InstallerTest extends FOFTestCase
 
 	/**
      * @group   Installer
-	 * @covers  FOF30\Database\Installer::removeSchema
+	 * @covers  FOF40\Database\Installer::removeSchema
 	 */
 	public function testRemoveSchema()
 	{

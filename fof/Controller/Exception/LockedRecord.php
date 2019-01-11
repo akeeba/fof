@@ -11,7 +11,7 @@
  * @license     GNU GPL version 2 or later
  */
 
-namespace FOF30\Controller\Exception;
+namespace FOF40\Controller\Exception;
 
 use Exception;
 
@@ -26,7 +26,7 @@ class LockedRecord extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF_CONTROLLER_ERR_LOCKED');
+			$message = \JText::_('LIB_FOF40_CONTROLLER_ERR_LOCKED');
 		}
 
 		parent::__construct($message, $code, $previous);
