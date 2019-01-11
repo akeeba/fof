@@ -342,27 +342,27 @@ class TransparentAuthentication
 				case self::Auth_HTTPBasicAuth_TOTP:
 					if (empty($this->totpKey))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (empty($this->basicAuthUsername))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (!isset($_SERVER['PHP_AUTH_USER']))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (!isset($_SERVER['PHP_AUTH_PW']))
 					{
-						continue;
+						continue 2;
 					}
 
 					if ($_SERVER['PHP_AUTH_USER'] != $this->basicAuthUsername)
 					{
-						continue;
+						continue 2;
 					}
 
 					$encryptedData = $_SERVER['PHP_AUTH_PW'];
@@ -374,14 +374,14 @@ class TransparentAuthentication
 				case self::Auth_QueryString_TOTP:
 					if (empty($this->queryParam))
 					{
-						continue;
+						continue 2;
 					}
 
 					$encryptedData = $input->get($this->queryParam, '', 'raw');
 
 					if (empty($encryptedData))
 					{
-						continue;
+						continue 2;
 					}
 
 					$return = $this->decryptWithTOTP($encryptedData);
@@ -396,12 +396,12 @@ class TransparentAuthentication
 				case self::Auth_HTTPBasicAuth_Plaintext:
 					if (!isset($_SERVER['PHP_AUTH_USER']))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (!isset($_SERVER['PHP_AUTH_PW']))
 					{
-						continue;
+						continue 2;
 					}
 
 					return array(
@@ -414,26 +414,26 @@ class TransparentAuthentication
 				case self::Auth_QueryString_Plaintext:
 					if (empty($this->queryParam))
 					{
-						continue;
+						continue 2;
 					}
 
 					$jsonEncoded = $input->get($this->queryParam, '', 'raw');
 
 					if (empty($jsonEncoded))
 					{
-						continue;
+						continue 2;
 					}
 
 					$authInfo = json_decode($jsonEncoded, true);
 
 					if (!is_array($authInfo))
 					{
-						continue;
+						continue 2;
 					}
 
 					if (!array_key_exists('username', $authInfo) || !array_key_exists('password', $authInfo))
 					{
-						continue;
+						continue 2;
 					}
 
 					return $authInfo;
