@@ -9,6 +9,8 @@
     [x] Remove form support from View
     [x] Remove form support from Factory
 
+[x] Remove LESS integration
+
 Allow Blade to include common templates from FOF itself (<fofRoot>/blade)
 
 Import common Blade templates into <fofRoot>/blade
@@ -24,8 +26,6 @@ Transparent authentication: must use tokens (link it to work to be done in J4?)
 Is HAL still relevant?
 
 Input: provide custom implementation for CLI and files
-
-Remove LESS integration
 
 Replace deprecated Joomla! class names with namespaced ones (requires bump in minimum supported Joomla! version)
 
