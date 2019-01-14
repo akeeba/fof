@@ -10,9 +10,6 @@
 namespace FOF40\Render;
 
 use FOF40\Container\Container;
-use FOF40\Form\Form;
-use JHtml;
-use JText;
 
 defined('_JEXEC') or die;
 

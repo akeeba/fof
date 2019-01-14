@@ -1,0 +1,34 @@
+! Keep a Markdown file with FOF 3 to FOF 4 upgrade notices
+    Removed the Form package
+    Removed View\DataView\Form class
+
+[x] Remove XML forms support
+    [x] Remove Form package
+    [x] Remove form support from Controller
+    [x] Remove form support from Model
+    [x] Remove form support from View
+    [x] Remove form support from Factory
+
+Allow Blade to include common templates from FOF itself (<fofRoot>/blade)
+
+Import common Blade templates into <fofRoot>/blade
+
+Blade constructs for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- render them through the renderer engine (or have the engine register a custom Blade compiler class, we may have to allow multiple compiler classes if we don't already do that)
+
+Rewrite scaffolding (Layout) to produce Blade templates
+
+Encrypt: mark MCrypt deprecated, cause it to throw a deprecated warning (set OpenSSL as the preferred implementation)
+
+Transparent authentication: must use tokens (link it to work to be done in J4?)
+
+Is HAL still relevant?
+
+Input: provide custom implementation for CLI and files
+
+Remove LESS integration
+
+Replace deprecated Joomla! class names with namespaced ones (requires bump in minimum supported Joomla! version)
+
+Remove AkeebaStrapper renderer
+
+Maybe refactor Utils\FEFHelper?

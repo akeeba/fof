@@ -14,18 +14,14 @@ use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Dispatcher;
 use FOF40\Factory\Exception\ControllerNotFound;
 use FOF40\Factory\Exception\DispatcherNotFound;
-use FOF40\Factory\Exception\FormLoadData;
-use FOF40\Factory\Exception\FormLoadFile;
 use FOF40\Factory\Exception\FormNotFound;
 use FOF40\Factory\Exception\ModelNotFound;
 use FOF40\Factory\Exception\ToolbarNotFound;
 use FOF40\Factory\Exception\TransparentAuthenticationNotFound;
 use FOF40\Factory\Exception\ViewNotFound;
 use FOF40\Factory\Scaffolding\Controller\Builder as ControllerBuilder;
-use FOF40\Factory\Scaffolding\Layout\Builder as LayoutBuilder;
 use FOF40\Factory\Scaffolding\Model\Builder as ModelBuilder;
 use FOF40\Factory\Scaffolding\View\Builder as ViewBuilder;
-use FOF40\Form\Form;
 use FOF40\Model\Model;
 use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
@@ -302,73 +298,6 @@ class BasicFactory implements FactoryInterface
 			// Not found. Return the default TA
 			return new TransparentAuthentication($this->container, $config);
 		}
-	}
-
-	/**
-	 * Creates a new Form object
-	 *
-	 * @param   string  $name      The name of the form.
-	 * @param   string  $source    The form source filename without path and .xml extension e.g. "form.default" OR raw XML data
-	 * @param   string  $viewName  The name of the view you're getting the form for.
-	 * @param   array   $options   Options to the Form object
-	 * @param   bool    $replace   Should form fields be replaced if a field already exists with the same group/name?
-	 * @param   bool    $xpath     An optional xpath to search for the fields.
-	 *
-	 * @return  Form|null  The loaded form or null if the form filename doesn't exist
-	 *
-	 * @throws  \RuntimeException If the form exists but cannot be loaded
-	 *
-	 * @deprecated 3.1  Support for XML forms will be removed in FOF 4
-	 */
-    public function form($name, $source, $viewName, array $options = array(), $replace = true, $xpath = false)
-	{
-        $formClass = $this->container->getNamespacePrefix($this->getSection()) . 'Form\\Form';
-
-        try
-        {
-            $form = $this->createForm($formClass, $name, $options);
-        }
-        catch (FormNotFound $e)
-        {
-            // Not found. Return the default Toolbar
-            $form = new Form($this->container, $name, $options);
-        }
-
-		// If $source looks like raw XML data, parse it directly
-		if (strpos($source, '<form') !== false)
-		{
-			if ($form->load($source, $replace, $xpath) === false)
-			{
-				throw new FormLoadData;
-			}
-
-			return $form;
-		}
-
-		$formFileName = $this->getFormFilename($source, $viewName);
-
-		if (empty($formFileName))
-		{
-			if ($this->scaffolding)
-			{
-				$scaffolding = new LayoutBuilder($this->container);
-				$xml = $scaffolding->make($source, $viewName);
-
-				if (!is_null($xml))
-				{
-					return $this->form($name, $xml, $viewName, $options, $replace, $xpath);
-				}
-			}
-
-			return null;
-		}
-
-		if ($form->loadFile($formFileName, $replace, $xpath) === false)
-		{
-			throw new FormLoadFile($source);
-		}
-
-		return $form;
 	}
 
 	/**
@@ -658,123 +587,6 @@ class BasicFactory implements FactoryInterface
 		}
 
 		return new $authClass($this->container, $config);
-	}
-
-	/**
-	 * Tries to find the absolute file path for an abstract form filename. For example, it may convert form.default to
-	 * /home/myuser/mysite/components/com_foobar/View/tmpl/form.default.xml.
-	 *
-	 * @param   string  $source    The abstract form filename
-	 * @param   string  $viewName  The name of the view we're getting the path for
-	 *
-	 * @return  string|bool  The fill path to the form XML file or boolean false if it's not found
-	 */
-	protected function getFormFilename($source, $viewName = null)
-	{
-		if (empty($source))
-		{
-			return false;
-		}
-
-		$componentName = $this->container->componentName;
-
-		if (empty($viewName))
-		{
-			$viewName = $this->container->dispatcher->getController()->getView()->getName();
-		}
-
-		$viewNameAlt = $this->container->inflector->singularize($viewName);
-
-		if ($viewNameAlt == $viewName)
-		{
-			$viewNameAlt = $this->container->inflector->pluralize($viewName);
-		}
-
-		$componentPaths = $this->container->platform->getComponentBaseDirs($componentName);
-
-		$file_root      = $componentPaths['main'];
-		$alt_file_root  = $componentPaths['alt'];
-		$template_root  = $this->container->platform->getTemplateOverridePath($componentName);
-
-		// Basic paths we need to always search
-		$paths = array(
-			// Template override
-			$template_root . '/' . $viewName,
-			$template_root . '/' . $viewNameAlt,
-            // Forms inside the specialized folder for easier template overrides
-            $file_root . '/ViewTemplates/' . $viewName,
-            $file_root . '/ViewTemplates/' . $viewNameAlt,
-			// This side of the component
-			$file_root . '/View/' . $viewName . '/tmpl',
-			$file_root . '/View/' . $viewNameAlt . '/tmpl',
-		);
-
-		// The other side of the component
-		if ($this->formLookupInOtherSide)
-		{
-            // Forms inside the specialized folder for easier template overrides
-            $paths[] = $alt_file_root . '/ViewTemplates/' . $viewName;
-            $paths[] = $alt_file_root . '/ViewTemplates/' . $viewNameAlt;
-
-			$paths[] = $alt_file_root . '/View/' . $viewName . '/tmpl';
-			$paths[] = $alt_file_root . '/View/' . $viewNameAlt . '/tmpl';
-		}
-
-		// Legacy paths, this side of the component
-		$paths[] = $file_root . '/views/' . $viewName . '/tmpl';
-		$paths[] = $file_root . '/views/' . $viewNameAlt . '/tmpl';
-		$paths[] = $file_root . '/Model/forms';
-		$paths[] = $file_root . '/models/forms';
-
-		// Legacy paths, the other side of the component
-		if ($this->formLookupInOtherSide)
-		{
-			$paths[] = $file_root . '/views/' . $viewName . '/tmpl';
-			$paths[] = $file_root . '/views/' . $viewNameAlt . '/tmpl';
-			$paths[] = $file_root . '/Model/forms';
-			$paths[] = $file_root . '/models/forms';
-		}
-
-		$paths = array_unique($paths);
-
-		// Set up the suffixes to look into
-		$suffixes = array();
-		$temp_suffixes = $this->container->platform->getTemplateSuffixes();
-
-		if (!empty($temp_suffixes))
-		{
-			foreach ($temp_suffixes as $suffix)
-			{
-				$suffixes[] = $suffix . '.xml';
-			}
-		}
-
-		$suffixes[] = '.xml';
-
-		// Look for all suffixes in all paths
-		$result     = false;
-		$filesystem = $this->container->filesystem;
-
-		foreach ($paths as $path)
-		{
-			foreach ($suffixes as $suffix)
-			{
-				$filename = $path . '/' . $source . $suffix;
-
-				if ($filesystem->fileExists($filename))
-				{
-					$result = $filename;
-					break;
-				}
-			}
-
-			if ($result)
-			{
-				break;
-			}
-		}
-
-		return $result;
 	}
 
     /**

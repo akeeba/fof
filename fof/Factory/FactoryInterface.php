@@ -12,7 +12,6 @@ namespace FOF40\Factory;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Dispatcher;
-use FOF40\Form\Form;
 use FOF40\Model\Model;
 use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
@@ -89,24 +88,6 @@ interface FactoryInterface
 	 * @return  TransparentAuthentication
 	 */
 	function transparentAuthentication(array $config = array());
-
-	/**
-	 * Creates a new Form object
-	 *
-	 * @param   string  $name      The name of the form.
-	 * @param   string  $source    The form source filename without path and .xml extension e.g. "form.default" OR raw XML data
-	 * @param   string  $viewName  The name of the view you're getting the form for.
-	 * @param   array   $options   Options to the Form object
-	 * @param   bool    $replace   Should form fields be replaced if a field already exists with the same group/name?
-	 * @param   bool    $xpath     An optional xpath to search for the fields.
-	 *
-	 * @return  Form|null  The loaded form or null if the form filename doesn't exist
-	 *
-	 * @throws  \RuntimeException If the form exists but cannot be loaded
-	 *
-	 * @deprecated 3.1  Support for XML forms will be removed in FOF 4
-	 */
-	function form($name, $source, $viewName, array $options = array(), $replace = true, $xpath = false);
 
 	/**
 	 * Creates a view template finder object for a specific View

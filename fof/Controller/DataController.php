@@ -42,13 +42,6 @@ class DataController extends Controller
     protected $cacheParams = false;
 
 	/**
-	 * Do we have a valid XML form?
-	 *
-	 * @var  bool
-	 */
-	protected $hasForm = false;
-
-	/**
 	 * An associative array for required ACL privileges per task. For example:
 	 * array(
 	 *   'edit' => 'core.edit',
@@ -377,11 +370,6 @@ class DataController extends Controller
 
 			$viewType = $this->input->getCmd('format', 'html');
 
-			if (($viewType == 'html') && $this->hasForm)
-			{
-				$viewType = 'form';
-			}
-
 			// Get the model's class name
 			$this->viewInstances[$viewName] = $this->container->factory->view($viewName, $viewType, $config);
 		}
@@ -406,29 +394,6 @@ class DataController extends Controller
 		}
 
 		$this->getModel()->savestate($saveState);
-
-		// Apply the Form name
-		$formName = 'form.default';
-
-		if (!empty($this->layout))
-		{
-			$formName = 'form.' . $this->layout;
-		}
-
-		$this->getModel()->setFormName($formName);
-
-		// Do we have a _valid_ form?
-		$form = $this->getModel()->getForm();
-
-		if ($form !== false)
-		{
-			$this->hasForm = true;
-
-			if (empty($this->layout))
-			{
-				$this->layout = 'default';
-			}
-		}
 
 		// Display the view
 		$this->display(in_array('browse', $this->cacheableTasks), $this->cacheParams);
@@ -470,18 +435,6 @@ class DataController extends Controller
 			$this->layout = 'item';
 		}
 
-		// Apply the Form name
-		$formName = 'form.' . $this->layout;
-		$this->getModel()->setFormName($formName);
-
-		// Do we have a _valid_ form?
-		$form = $this->getModel()->getForm($model);
-
-		if ($form !== false)
-		{
-			$this->hasForm = true;
-		}
-
 		// Display the view
 		$this->display(in_array('read', $this->cacheableTasks), $this->cacheParams);
 	}
@@ -520,24 +473,6 @@ class DataController extends Controller
 		if (!empty($itemData))
 		{
 			$model->bind($itemData);
-		}
-
-		// Apply the Form name
-		$formName = 'form.form';
-
-		if (!empty($this->layout))
-		{
-			$formName = 'form.' . $this->layout;
-		}
-
-		$this->getModel()->setFormName($formName);
-
-		// Do we have a _valid_ form?
-		$form = $this->getModel()->getForm($model);
-
-		if ($form !== false)
-		{
-			$this->hasForm = true;
 		}
 
 		// Display the view
@@ -604,18 +539,6 @@ class DataController extends Controller
 		if (!empty($itemData))
 		{
 			$model->bind($itemData);
-		}
-
-		// Apply the Form name
-		$formName = 'form.' . $this->layout;
-		$this->getModel()->setFormName($formName);
-
-		// Do we have a _valid_ form?
-		$form = $this->getModel()->getForm($model);
-
-		if ($form !== false)
-		{
-			$this->hasForm = true;
 		}
 
 		// Display the view
@@ -1448,10 +1371,6 @@ class DataController extends Controller
 		{
 			$this->layout = 'form';
 		}
-
-		// Apply the Form name
-		$formName = 'form.' . $this->layout;
-		$this->getModel()->setFormName($formName);
 
 		// Save the data
 		$status = true;

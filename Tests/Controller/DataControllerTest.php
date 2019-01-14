@@ -126,7 +126,6 @@ class DataControllertest extends DatabaseTest
 		ReflectionHelper::setValue($controller, 'viewName', $test['mock']['viewName']);
 		ReflectionHelper::setValue($controller, 'view', $test['mock']['view']);
 		ReflectionHelper::setValue($controller, 'viewInstances', $test['mock']['instances']);
-		ReflectionHelper::setValue($controller, 'hasForm', $test['mock']['hasForm']);
 
 		$result = $controller->getView($test['name'], $test['config']);
 
@@ -165,9 +164,6 @@ class DataControllertest extends DatabaseTest
 			'savestate'   => function ($self, $state) use (&$checker) {
 				$checker['savestate'] = $state;
 			},
-			'setFormName' => function ($self, $formName) use (&$checker) {
-				$checker['setFormName'] = $formName;
-			},
 			'getForm'     => function () use ($test) {
 				return $test['mock']['getForm'];
 			},
@@ -178,11 +174,7 @@ class DataControllertest extends DatabaseTest
 
 		$controller->browse();
 
-		$hasForm = ReflectionHelper::getValue($controller, 'hasForm');
-
 		$this->assertEquals($check['savestate'], $checker['savestate'], sprintf($msg, 'Failed to correctly set the savestate'));
-		$this->assertEquals($check['formName'], $checker['setFormName'], sprintf($msg, 'Failed to correctly set the form name'));
-		$this->assertEquals($check['hasForm'], $hasForm, sprintf($msg, 'Failed to set hasForm'));
 	}
 
 	/**
@@ -230,10 +222,8 @@ class DataControllertest extends DatabaseTest
 		$controller->read();
 
 		$layout  = ReflectionHelper::getValue($controller, 'layout');
-		$hasForm = ReflectionHelper::getValue($controller, 'hasForm');
 
 		$this->assertEquals($check['layout'], $layout, sprintf($msg, 'Failed to set the layout'));
-		$this->assertEquals($check['hasForm'], $hasForm, sprintf($msg, 'Failed to set the hasForm flag'));
 	}
 
 	/**
@@ -291,11 +281,9 @@ class DataControllertest extends DatabaseTest
 		$controller->add();
 
 		$layout      = ReflectionHelper::getValue($controller, 'layout');
-		$hasForm     = ReflectionHelper::getValue($controller, 'hasForm');
 		$sessionData = $container->session->get('dummycontrollers.savedata', null, 'com_fakeapp');
 
 		$this->assertEquals($check['layout'], $layout, sprintf($msg, 'Failed to set the layout'));
-		$this->assertEquals($check['hasForm'], $hasForm, sprintf($msg, 'Failed to set the hasForm flag'));
 		$this->assertNull($sessionData, sprintf($msg, 'Failed to wipe session data'));
 	}
 
@@ -374,11 +362,9 @@ class DataControllertest extends DatabaseTest
 		$controller->edit();
 
 		$layout      = ReflectionHelper::getValue($controller, 'layout');
-		$hasForm     = ReflectionHelper::getValue($controller, 'hasForm');
 		$sessionData = $container->session->get('dummycontrollers.savedata', null, 'com_fakeapp');
 
 		$this->assertEquals($check['layout'], $layout, sprintf($msg, 'Failed to set the layout'));
-		$this->assertEquals($check['hasForm'], $hasForm, sprintf($msg, 'Failed to set the hasForm flag'));
 		$this->assertNull($sessionData, sprintf($msg, 'Failed to wipe session data'));
 	}
 

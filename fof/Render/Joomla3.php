@@ -10,9 +10,6 @@
 namespace FOF40\Render;
 
 use FOF40\Container\Container;
-use FOF40\Form\Form;
-use JHtml;
-use JText;
 
 defined('_JEXEC') or die;
 
@@ -164,51 +161,6 @@ class Joomla3 extends AkeebaStrapper
 	}
 
 	/**
-	 * Renders a label for a fieldset.
-	 *
-	 * @param   object  $field  The field of the label to render
-	 * @param   Form   	&$form  The form to render
-	 * @param 	string  $title  The title of the label
-	 *
-	 * @return 	string  The rendered label
-	 *
-	 * @deprecated 3.1  Support for XML forms will be removed in FOF 4
-	 */
-	public function renderFieldsetLabel($field, Form &$form, $title)
-	{
-		$html = '';
-
-		$labelClass	 = $field->labelClass ? $field->labelClass : $field->labelclass; // Joomla! 2.5/3.x use different case for the same name
-		$required	 = $field->required;
-
-		$tooltip = $form->getFieldAttribute($field->fieldname, 'tooltip', '', $field->group);
-
-		if (!empty($tooltip))
-		{
-			JHtml::_('bootstrap.tooltip');
-
-			$tooltipText = '<strong>' . JText::_($title) . '</strong><br />' . JText::_($tooltip);
-
-			$html .= "\t\t\t\t" . '<label class="control-label hasTooltip ' . $labelClass . '" for="' . $field->id . '" title="' . $tooltipText . '" rel="tooltip">';
-		}
-		else
-		{
-			$html .= "\t\t\t\t" . '<label class="control-label ' . $labelClass . '" for="' . $field->id . '">';
-		}
-
-		$html .= JText::_($title);
-
-		if ($required)
-		{
-			$html .= ' *';
-		}
-
-		$html .= "</label>\n";
-
-		return $html;
-	}
-
-	/**
 	 * Opens a page wrapper. The component output will be inside this wrapper.
 	 *
 	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
@@ -229,5 +181,4 @@ class Joomla3 extends AkeebaStrapper
 	{
 		echo "</div>\n";
 	}
-
 }

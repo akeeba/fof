@@ -122,7 +122,6 @@ class DataControllerDataprovider
 					'instances' => [],
 					'format'    => null,
 					'getView'   => 'mocked',
-					'hasForm'   => false,
 				],
 			],
 			[
@@ -143,32 +142,8 @@ class DataControllerDataprovider
 					'view'      => null,
 					'viewName'  => null,
 					'instances' => [],
-					'format'    => null,
-					'getView'   => 'mocked',
-					'hasForm'   => true,
-				],
-			],
-			[
-				'case'     => 'The controller has a form',
-				'result'   => 'mocked',
-				'viewName' => 'foobar',
-				'type'     => 'form',
-				'config'   => [],
-			],
-		];
-
-		$data[] = [
-			[
-				'name'            => 'foobar',
-				'config'          => [],
-				'constructConfig' => [],
-				'mock'            => [
-					'view'      => null,
-					'viewName'  => null,
-					'instances' => [],
 					'format'    => 'html',
 					'getView'   => 'mocked',
-					'hasForm'   => false,
 				],
 			],
 			[
@@ -191,7 +166,6 @@ class DataControllerDataprovider
 					'instances' => [],
 					'format'    => null,
 					'getView'   => 'mocked',
-					'hasForm'   => false,
 				],
 			],
 			[
@@ -214,7 +188,6 @@ class DataControllerDataprovider
 					'instances' => [],
 					'format'    => null,
 					'getView'   => 'mocked',
-					'hasForm'   => false,
 				],
 			],
 			[
@@ -365,8 +338,6 @@ class DataControllerDataprovider
 				'case'      => "Don't want any state saving",
 				'display'   => true,
 				'savestate' => 0,
-				'formName'  => 'form.default',
-				'hasForm'   => false,
 			],
 		];
 
@@ -385,8 +356,6 @@ class DataControllerDataprovider
 				'case'      => "State saved, with layout and form, task not in the cache",
 				'display'   => false,
 				'savestate' => true,
-				'formName'  => 'form.foobar',
-				'hasForm'   => true,
 			],
 		];
 
@@ -403,8 +372,6 @@ class DataControllerDataprovider
 				'case'      => "Variable not set, by default I save the stater",
 				'display'   => true,
 				'savestate' => true,
-				'formName'  => 'form.default',
-				'hasForm'   => false,
 			],
 		];
 
@@ -429,7 +396,6 @@ class DataControllerDataprovider
 				'display'      => true,
 				'exception'    => false,
 				'layout'       => 'item',
-				'hasForm'      => false,
 				'setForm'      => 'form.item',
 			],
 		];
@@ -450,7 +416,6 @@ class DataControllerDataprovider
 				'display'      => false,
 				'exception'    => false,
 				'layout'       => 'item',
-				'hasForm'      => false,
 				'setForm'      => 'form.item',
 			],
 		];
@@ -471,7 +436,6 @@ class DataControllerDataprovider
 				'display'      => true,
 				'exception'    => false,
 				'layout'       => 'custom',
-				'hasForm'      => true,
 				'setForm'      => 'form.custom',
 			],
 		];
@@ -492,7 +456,6 @@ class DataControllerDataprovider
 				'display'      => true,
 				'exception'    => false,
 				'layout'       => 'item',
-				'hasForm'      => false,
 				'setForm'      => 'form.item',
 			],
 		];
@@ -513,7 +476,6 @@ class DataControllerDataprovider
 				'display'      => true,
 				'exception'    => true,
 				'layout'       => 'item',
-				'hasForm'      => false,
 				'setForm'      => 'form.item',
 			],
 		];
@@ -534,7 +496,6 @@ class DataControllerDataprovider
 				'display'      => true,
 				'exception'    => true,
 				'layout'       => 'item',
-				'hasForm'      => false,
 				'setForm'      => 'form.item',
 			],
 		];
@@ -559,7 +520,6 @@ class DataControllerDataprovider
 				'bind'     => '',
 				'formName' => 'form.form',
 				'layout'   => 'form',
-				'hasForm'  => false,
 			],
 		];
 
@@ -578,7 +538,6 @@ class DataControllerDataprovider
 				'bind'     => ['foo' => 'bar'],
 				'formName' => 'form.test',
 				'layout'   => 'test',
-				'hasForm'  => true,
 			],
 		];
 
@@ -609,7 +568,6 @@ class DataControllerDataprovider
 				'display'    => false,
 				'layout'     => 'form',
 				'formName'   => 'form.form',
-				'hasForm'    => false,
 			],
 		];
 
@@ -635,7 +593,6 @@ class DataControllerDataprovider
 				'display'    => true,
 				'layout'     => 'form',
 				'formName'   => 'form.form',
-				'hasForm'    => false,
 			],
 		];
 
@@ -661,7 +618,6 @@ class DataControllerDataprovider
 				'display'    => false,
 				'layout'     => 'custom',
 				'formName'   => 'form.custom',
-				'hasForm'    => false,
 			],
 		];
 
@@ -687,7 +643,6 @@ class DataControllerDataprovider
 				'display'    => false,
 				'layout'     => 'custom',
 				'formName'   => 'form.custom',
-				'hasForm'    => true,
 			],
 		];
 
@@ -713,7 +668,6 @@ class DataControllerDataprovider
 				'display'    => false,
 				'layout'     => '',
 				'formName'   => '',
-				'hasForm'    => false,
 			],
 		];
 
@@ -739,7 +693,6 @@ class DataControllerDataprovider
 				'display'    => false,
 				'layout'     => '',
 				'formName'   => '',
-				'hasForm'    => false,
 			],
 		];
 
