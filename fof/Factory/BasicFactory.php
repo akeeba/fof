@@ -40,9 +40,6 @@ class BasicFactory implements FactoryInterface
 	/** @var  Container  The container we belong to */
 	protected $container = null;
 
-	/** @var  bool  Should I look for form files on the other side of the component? */
-	protected $formLookupInOtherSide = false;
-
 	/** @var  bool  Should I enable view scaffolding, i.e. automatic browse, read and add/edit XML form generation when there's no other view template? */
 	protected $scaffolding = false;
 
