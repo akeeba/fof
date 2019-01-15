@@ -1,6 +1,9 @@
 ! Keep a Markdown file with FOF 3 to FOF 4 upgrade notices
     Removed the Form package
     Removed View\DataView\Form class
+    Removed the LESS package, @less() Blade template and View::addLess() method
+    FOF is looking in <libroot>/ViewTemplates (default: libraries/fof40/ViewTemplates) for fallback view templates. Document the default view templates in there.
+    You can override default FOF templates in <templateFolder>/<TEMPLATE_NAME>/html/lib_fof40.
 
 [x] Remove XML forms support
     [x] Remove Form package
@@ -11,9 +14,13 @@
 
 [x] Remove LESS integration
 
-Allow Blade to include common templates from FOF itself (<fofRoot>/blade)
+[x] Allow Blade to include common templates from FOF itself (<fofRoot>/ViewTemplates)
 
-Import common Blade templates into <fofRoot>/blade
+[x] View template suffixes for the Joomla version and renderer being used e.g. default.j39.fef.blade.php, default.j3.php, default.strapper.php. Parsed from most to least specific.
+
+Import common Blade templates into <fofRoot>/ViewTemplates
+
+Test ViewFinder
 
 Blade constructs for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- render them through the renderer engine (or have the engine register a custom Blade compiler class, we may have to allow multiple compiler classes if we don't already do that)
 

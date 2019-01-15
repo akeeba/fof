@@ -86,14 +86,17 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Returns the information about this renderer
 	 *
-	 * @return object
+	 * @return  \stdClass
 	 */
 	public function getInformation()
 	{
-		return (object) array(
+		$classParts = explode('\\', __CLASS__);
+
+		return (object) [
 			'enabled'  => $this->enabled,
-			'priority' => $this->priority
-		);
+			'priority' => $this->priority,
+			'name'     => strtolower(array_pop($classParts)),
+		];
 	}
 
 	/**

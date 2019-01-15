@@ -58,7 +58,7 @@ abstract class CompilingEngine extends AbstractEngine implements EngineInterface
 			}
 
 			/**
-			 * No precompiled templates and tokenized missing, i.e. I can't compile anything. Instead of throwing a
+			 * No precompiled templates and tokenizer missing, i.e. I can't compile anything. Instead of throwing a
 			 * fatal error I will throw a catchable runtime error explaining the error condition and how to solve it.
 			 * If your extension does not trap the exception it will bubble up to Joomla's error handler which will
 			 * display this message.

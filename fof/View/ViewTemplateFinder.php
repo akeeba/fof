@@ -128,6 +128,7 @@ class ViewTemplateFinder
 	 * @param   array  $parameters  See above
 	 *
 	 * @return  array
+	 * @throws  \Exception
 	 */
 	public function getViewTemplateUris(array $parameters)
 	{
@@ -298,6 +299,10 @@ class ViewTemplateFinder
 			$paths = array_merge($paths, $extraPaths);
 		}
 
+		// Add fallback FOF templates (<libdir>/ViewTemplates/<viewName>/<templateName>) and their template overrides
+		$paths[] = $this->container->platform->getTemplateOverridePath('lib_fof40') . '/' . $parts['view'];
+		$paths[] = realpath(__DIR__ . '/..') . '/ViewTemplates/' . $parts['view'];
+
 		// Remove duplicate paths
 		$paths = array_unique($paths);
 
@@ -308,17 +313,31 @@ class ViewTemplateFinder
 			array_unshift($paths, str_replace($parts['template'], $layoutTemplate, $apath));
 		}
 
+		// Get the Joomla! version template suffixes
+		$jVersionSuffixes = array_merge($this->container->platform->getTemplateSuffixes(), ['']);
+		// Get the renderer name suffixes
+		$rendererNameSuffixes = [
+			'.' . $this->container->renderer->getInformation()->name,
+			''
+		];
+
 		$filesystem = $this->container->filesystem;
 
 		foreach ($this->extensions as $extension)
 		{
-			$filenameToFind = $parts['template'] . $extension;
-
-			$fileName = $filesystem->pathFind($paths, $filenameToFind);
-
-			if ($fileName)
+			foreach ($jVersionSuffixes as $JVersionSuffix)
 			{
-				return $fileName;
+				foreach ($rendererNameSuffixes as $rendererNameSuffix)
+				{
+					$filenameToFind = $parts['template'] . $JVersionSuffix . $rendererNameSuffix . $extension;
+
+					$fileName = $filesystem->pathFind($paths, $filenameToFind);
+
+					if ($fileName)
+					{
+						return $fileName;
+					}
+				}
 			}
 		}
 
