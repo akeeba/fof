@@ -5,6 +5,27 @@
     FOF is looking in <libroot>/ViewTemplates (default: libraries/fof40/ViewTemplates) for fallback view templates. Document the default view templates in there.
     You can override default FOF templates in <templateFolder>/<TEMPLATE_NAME>/html/lib_fof40.
 
+    Automatic suffixes on PHP and Blade view templates depending on the
+    Joomla! version and renderer being used, parsed from most to least
+    specific. For example:
+
+    * default.j39.fef.php
+    * default.j39.php
+    * default.j3.fef.php
+    * default.j3.php
+    * default.fef.php
+    * default.php
+
+    This does not override the path priority which remains: template
+    overrides, specified side of the application, opposite side of the
+    application.
+
+    If a less specific view template is found in a higher priority path it
+    will be used instead. The idea being that a template override is always
+    most specific as it's done for a specific site which runs a specific
+    Joomla! version and for a specific component whose renderer you already
+    know.
+
 [x] Remove XML forms support
     [x] Remove Form package
     [x] Remove form support from Controller
@@ -22,20 +43,39 @@ Import common Blade templates into <fofRoot>/ViewTemplates
 
 Test ViewFinder
 
-Blade constructs for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- render them through the renderer engine (or have the engine register a custom Blade compiler class, we may have to allow multiple compiler classes if we don't already do that)
-
-Rewrite scaffolding (Layout) to produce Blade templates
-
-Encrypt: mark MCrypt deprecated, cause it to throw a deprecated warning (set OpenSSL as the preferred implementation)
-
-Transparent authentication: must use tokens (link it to work to be done in J4?)
-
-Is HAL still relevant?
-
-Input: provide custom implementation for CLI and files
-
-Replace deprecated Joomla! class names with namespaced ones (requires bump in minimum supported Joomla! version)
+Dependency tracking in installation
+    Remove dependency from FOF 3, add dependency to FOF 4 on install/upgrade
+    Remove dependency from FOF 3 and FOF 4 on uninstall
 
 Remove AkeebaStrapper renderer
 
-Maybe refactor Utils\FEFHelper?
+Each renderer should add FEF extensions for the following elements:
+
+    * `@sortgrid`
+    * `@filedtitle`
+    * `@modelfilter`
+    * `@selectfilter`
+    * `@searchfilter`
+
+The default implementation can go through JHtml, I guess?
+
+
+MAYBE Blade templates for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- defined by each Renderer
+
+
+Rewrite scaffolding (Layout) to produce Blade templates
+
+
+Encrypt: mark MCrypt deprecated, cause it to throw a deprecated warning (set OpenSSL as the preferred implementation)
+
+
+Transparent authentication: must use tokens (link it to work to be done in J4?)
+
+
+Is HAL still relevant?
+
+
+Input: provide custom implementation for CLI and files
+
+
+Replace deprecated Joomla! class names with namespaced ones (requires bump in minimum supported Joomla! version)
