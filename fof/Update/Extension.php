@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Update;
+namespace  FOF40\Update;
 
 use FOF40\Container\Container;
 use FOF40\Download\Download;

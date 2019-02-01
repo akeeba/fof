@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Template;
+namespace  FOF40\Template;
 
 use FOF40\Container\Container;
 use JDocument;

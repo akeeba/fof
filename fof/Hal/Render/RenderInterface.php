@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Hal\Render;
+namespace  FOF40\Hal\Render;
 
 defined('_JEXEC') or die;
 

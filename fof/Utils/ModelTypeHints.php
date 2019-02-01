@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Utils;
+namespace  FOF40\Utils;
 
 
 use FOF40\Model\DataModel;

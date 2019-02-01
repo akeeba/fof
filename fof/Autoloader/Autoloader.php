@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Autoloader;
+namespace  FOF40\Autoloader;
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 

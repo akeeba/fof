@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Factory\Magic;
+namespace  FOF40\Factory\Magic;
 
 use FOF40\Model\DataModel;
 use FOF40\Factory\Exception\ModelNotFound;

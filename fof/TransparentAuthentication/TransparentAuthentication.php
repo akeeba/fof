@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\TransparentAuthentication;
+namespace  FOF40\TransparentAuthentication;
 
 use FOF40\Container\Container;
 use FOF40\Encrypt\Aes;

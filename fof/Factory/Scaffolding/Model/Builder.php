@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Factory\Scaffolding\Model;
+namespace  FOF40\Factory\Scaffolding\Model;
 
 use FOF40\Container\Container;
 use FOF40\Factory\Magic\ModelFactory;

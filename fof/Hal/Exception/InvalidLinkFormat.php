@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Hal\Exception;
+namespace  FOF40\Hal\Exception;
 
 use Exception;
 

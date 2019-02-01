@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Utils\FEFHelper;
+namespace  FOF40\Utils\FEFHelper;
 
 defined('_JEXEC') or die;
 

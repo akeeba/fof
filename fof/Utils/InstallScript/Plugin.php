@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Utils\InstallScript;
+namespace  FOF40\Utils\InstallScript;
 
 use Exception;
 use FOF40\Database\Installer;

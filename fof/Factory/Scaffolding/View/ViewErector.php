@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Factory\Scaffolding\View;
+namespace  FOF40\Factory\Scaffolding\View;
 
 use FOF40\View\DataView\Html;
 

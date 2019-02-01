@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Hal;
+namespace  FOF40\Hal;
 
 use FOF40\Hal\Exception\InvalidLinkFormat;
 

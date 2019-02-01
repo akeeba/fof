@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Render;
+namespace  FOF40\Render;
 
 use FOF40\Container\Container;
 

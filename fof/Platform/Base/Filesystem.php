@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Platform\Base;
+namespace  FOF40\Platform\Base;
 
 use FOF40\Container\Container;
 use FOF40\Platform\FilesystemInterface;

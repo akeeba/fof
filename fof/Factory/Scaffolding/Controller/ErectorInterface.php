@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Factory\Scaffolding\Controller;
+namespace  FOF40\Factory\Scaffolding\Controller;
 
 use FOF40\Controller\DataController;
 

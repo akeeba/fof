@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Model\Mixin;
+namespace  FOF40\Model\Mixin;
 
 use FOF40\Date\Date;
 use FOF40\Model\DataModel;

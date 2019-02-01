@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Factory;
+namespace  FOF40\Factory;
 
 use FOF40\Controller\Controller;
 use FOF40\Factory\Exception\ControllerNotFound;

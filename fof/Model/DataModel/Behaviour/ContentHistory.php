@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Model\DataModel\Behaviour;
+namespace  FOF40\Model\DataModel\Behaviour;
 
 use FOF40\Container\Container;
 use FOF40\Event\Observer;

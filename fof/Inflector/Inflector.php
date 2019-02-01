@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Inflector;
+namespace  FOF40\Inflector;
 
 defined('_JEXEC') or die;
 

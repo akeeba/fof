@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Download\Adapter;
+namespace  FOF40\Download\Adapter;
 
 use FOF40\Download\DownloadInterface;
 use FOF40\Download\Exception\DownloadError;

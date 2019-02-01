@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\View\Compiler;
+namespace  FOF40\View\Compiler;
 
 defined('_JEXEC') or die;
 

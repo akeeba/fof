@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Configuration;
+namespace  FOF40\Configuration;
 
 use FOF40\Container\Container;
 

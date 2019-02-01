@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\View\Exception;
+namespace  FOF40\View\Exception;
 
 use Exception;
 

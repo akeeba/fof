@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Model\DataModel\Exception;
+namespace  FOF40\Model\DataModel\Exception;
 
 defined('_JEXEC') or die;
 

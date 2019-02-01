@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Layout;
+namespace  FOF40\Layout;
 
 use FOF40\Container\Container;
 use JLayoutFile;

@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Model\DataModel\Relation;
+namespace  FOF40\Model\DataModel\Relation;
 
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Collection;

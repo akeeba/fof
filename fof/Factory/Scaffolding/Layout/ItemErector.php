@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Factory\Scaffolding\Layout;
+namespace  FOF40\Factory\Scaffolding\Layout;
 
 /**
  * Erects a scaffolding XML for read views

@@ -5,9 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
-namespace FOF40\Encrypt;
+namespace  FOF40\Encrypt;
 
 // Protect from unauthorized access
 use FOF40\Utils\Phpfunc;
