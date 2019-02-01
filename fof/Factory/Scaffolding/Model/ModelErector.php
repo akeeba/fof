@@ -10,6 +10,8 @@ namespace  FOF40\Factory\Scaffolding\Model;
 use FOF40\Model\DataModel;
 use FOF40\Utils\ModelTypeHints;
 
+defined('_JEXEC') or die;
+
 /**
  * @package FOF40\Factory\Scaffolding
  *

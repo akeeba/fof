@@ -9,6 +9,8 @@ namespace  FOF40\Factory\Scaffolding\Model;
 
 use FOF40\Model\DataModel;
 
+defined('_JEXEC') or die;
+
 /**
  * Interface ErectorInterface
  * @package FOF40\Factory\Scaffolding\Model

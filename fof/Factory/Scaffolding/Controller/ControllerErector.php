@@ -9,6 +9,8 @@ namespace  FOF40\Factory\Scaffolding\Controller;
 
 use FOF40\Controller\DataController;
 
+defined('_JEXEC') or die;
+
 /**
  * @package FOF40\Factory\Scaffolding
  *

@@ -10,6 +10,8 @@ namespace  FOF40\Factory\Scaffolding\Layout;
 use FOF40\Container\Container;
 use SimpleXMLElement;
 
+defined('_JEXEC') or die;
+
 /**
  * Scaffolding Builder
  *

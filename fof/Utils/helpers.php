@@ -5,8 +5,6 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
 /**
  * This is a modified copy of Laravel 4's "helpers.php"
  *

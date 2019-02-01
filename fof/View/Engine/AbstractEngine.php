@@ -9,6 +9,8 @@ namespace  FOF40\View\Engine;
 
 use FOF40\View\View;
 
+defined('_JEXEC') or die;
+
 abstract class AbstractEngine implements EngineInterface
 {
 	/** @var   View  The view we belong to */

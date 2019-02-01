@@ -9,6 +9,8 @@ namespace  FOF40\Factory\Scaffolding\View;
 
 use FOF40\View\DataView\Html;
 
+defined('_JEXEC') or die;
+
 /**
  * Interface ErectorInterface
  * @package FOF40\Factory\Scaffolding\View

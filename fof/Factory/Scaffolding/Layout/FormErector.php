@@ -9,6 +9,8 @@ namespace  FOF40\Factory\Scaffolding\Layout;
 
 use FOF40\Model\DataModel;
 
+defined('_JEXEC') or die;
+
 /**
  * Erects a scaffolding XML for edit views
  *

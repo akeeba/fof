@@ -5,9 +5,9 @@
  * @license     GNU GPL version 3 or later
  */
 
-
-
 use FOF40\Utils\ArrayHelper;
+
+defined('_JEXEC') or die;
 
 /**
  * Custom JHtml (HTMLHelper) class. Offers selects compatible with Akeeba Frontend Framework (FEF)

@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-
+defined('_JEXEC') or die;
 
 /**
  * Custom JHtml (HTMLHelper) class. Offers edit (form) view controls compatible with Akeeba Frontend

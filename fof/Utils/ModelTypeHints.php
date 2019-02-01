@@ -7,8 +7,9 @@
 
 namespace  FOF40\Utils;
 
-
 use FOF40\Model\DataModel;
+
+defined('_JEXEC') or die;
 
 /**
  * Generate phpDoc type hints for the magic fields of your DataModels
