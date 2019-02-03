@@ -185,3 +185,11 @@ Finally, keep in mind that the default renderer is automatically detected using 
 classes. If FEF is installed on your site, FOF will automatically prefer the FEF renderer instead of the Joomla! 
 renderer. This many NOT be what you want. Always set up the desired renderer in your `fof.xml` file to prevent nasty
 surprises.
+
+## Dependency tracking
+
+If you are using the `InstallScript` class for your installation scripts you don't need to do anything. Everything is
+taken care of you automatically.
+
+If you were tracking dependencies manually please remember the remove the FOF 3 dependency from your extension on
+upgrade _and_ uninstallation. Also remember to change the dependency from FOF 3 to FOF 3.

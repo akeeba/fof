@@ -43,13 +43,11 @@
 
 [x] Remove AkeebaStrapper renderer
 
-Maybe: add Joomla 3 common Blade templates?
-
-Test ViewTemplateFinder
-
-Dependency tracking in installation
+[x] Dependency tracking in installation
     Remove dependency from FOF 3, add dependency to FOF 4 on install/upgrade
     Remove dependency from FOF 3 and FOF 4 on uninstall
+
+Test ViewTemplateFinder
 
 Each renderer should add FEF extensions for the following elements:
 
@@ -62,13 +60,19 @@ Each renderer should add FEF extensions for the following elements:
 The default implementation can go through JHtml, I guess?
 
 
-MAYBE Blade templates for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- defined by each Renderer
+MAYBE Blade keywords for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- defined by each Renderer
+
+
+Maybe: add Joomla 3 common Blade templates?
 
 
 Rewrite scaffolding (Layout) to produce Blade templates
 
 
 Encrypt: remove mcrypt support, it's been obsolete forever
+
+
+Encrypt: can I add Sodium support to replace the defunct mcrypt support?
 
 
 Transparent authentication: must use tokens (link it to work to be done in J4?)

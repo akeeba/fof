@@ -220,6 +220,11 @@ class Component extends BaseInstaller
 		// Add ourselves to the list of extensions depending on FOF40
 		$this->addDependency('fof40', $this->componentName);
 
+		if ($this->hasDependency('fof30', $this->componentName))
+		{
+			$this->removeDependency('fof30', $this->componentName);
+		}
+
 		// Install or update database
 		$dbInstaller = new Installer(JFactory::getDbo(),
 			($this->schemaXmlPathRelative ? JPATH_ADMINISTRATOR . '/components/' . $this->componentName : '') . '/' .
@@ -331,6 +336,11 @@ class Component extends BaseInstaller
 
 		// Remove ourselves from the list of extensions depending on FOF40
 		$this->removeDependency('fof40', $this->componentName);
+
+		if ($this->hasDependency('fof30', $this->componentName))
+		{
+			$this->removeDependency('fof30', $this->componentName);
+		}
 
 		// Show the post-uninstallation page
 		$this->renderPostUninstallation($parent);
