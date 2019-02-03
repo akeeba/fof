@@ -29,7 +29,7 @@ defined('_JEXEC') or die;
  *
  * @package FOF40\Render
  */
-class FEF extends Joomla3
+class FEF extends Joomla
 {
 	public function __construct(Container $container)
 	{
@@ -42,7 +42,7 @@ class FEF extends Joomla3
 			include_once $helperFile;
 		}
 
-		$this->priority	 = 50;
+		$this->priority	 = 20;
 		$this->enabled	 = class_exists('AkeebaFEFHelper');
 	}
 
@@ -86,6 +86,9 @@ class FEF extends Joomla3
 	 */
 	protected function openPageWrapper($classes)
 	{
+		$classes[] = 'akeeba-renderer-fef';
+
+		// Check for FEF Dark Mode
 		$useDarkMode = $this->getOption('fef_dark', false);
 
 		if ($useDarkMode && !in_array('akeeba-renderer-fef--dark', $classes))
@@ -93,14 +96,11 @@ class FEF extends Joomla3
 			$classes[] = 'akeeba-renderer-fef--dark';
 		}
 
-		/**
-		 * Remove wrapper classes. By default these are classes for the Joomla 3 sidebar which is not used in FEF
-		 * components anymore.
-		 */
+		// Remove wrapper classes which are no longer used with FEF
 		$removeClasses = $this->getOption('remove_wrapper_classes', [
 			'j-toggle-main',
 			'j-toggle-transition',
-			'row-fluid',
+			'row-fluid'
 		]);
 
 		if (!is_array($removeClasses))
@@ -108,48 +108,13 @@ class FEF extends Joomla3
 			$removeClasses = explode(',', $removeClasses);
 		}
 
-		$removeClasses = array_map('trim', $removeClasses);
+		// Always remove the 'akeeba_renderer_joomla' wrapper class.
+		$removeClasses[] = 'akeeba_renderer_joomla';
 
-		foreach ($removeClasses as $class)
-		{
-			$x = array_search($class, $classes);
+		$this->setOption('remove_wrapper_classes', implode(',', $removeClasses));
 
-			if ($x !== false)
-			{
-				unset($classes[$x]);
-			}
-		}
-
-		// Add the following classes to the wrapper div
-		$addClasses = $this->getOption('add_wrapper_classes', '');
-
-		if (!is_array($addClasses))
-		{
-			$addClasses = explode(',', $addClasses);
-		}
-
-		$addClasses = array_map('trim', $addClasses);
-
-		$customClasses = implode(array_unique(array_merge($classes, $addClasses)), ' ');
-
-		echo <<< HTML
-<div class="akeeba-renderer-fef $customClasses">
-
-HTML;
-	}
-
-	/**
-	 * Close the FEF styling wrapper element.
-	 *
-	 * @return  void
-	 */
-	protected function closePageWrapper()
-	{
-		echo <<< HTML
-</div>
-
-HTML;
-
+		// Call the parent method
+		parent::openPageWrapper($classes);
 	}
 
 	/**

@@ -135,4 +135,60 @@ abstract class RenderBase implements RenderInterface
 	{
 		throw new \LogicException(sprintf('Renderer class %s must implement the %s method', get_class($this), __METHOD__));
 	}
+
+	/**
+	 * Opens a wrapper DIV. Our component's output will be inside this wrapper.
+	 *
+	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
+	 *
+	 * @return  void
+	 */
+	protected function openPageWrapper($classes)
+	{
+		$removeClasses = $this->getOption('remove_wrapper_classes', []);
+
+		if (!is_array($removeClasses))
+		{
+			$removeClasses = explode(',', $removeClasses);
+		}
+
+		$removeClasses = array_map('trim', $removeClasses);
+
+		foreach ($removeClasses as $class)
+		{
+			$x = array_search($class, $classes);
+
+			if ($x !== false)
+			{
+				unset($classes[$x]);
+			}
+		}
+
+		// Add the following classes to the wrapper div
+		$addClasses = $this->getOption('add_wrapper_classes', '');
+
+		if (!is_array($addClasses))
+		{
+			$addClasses = explode(',', $addClasses);
+		}
+
+		$addClasses = array_map('trim', $addClasses);
+
+		$customClasses = implode(array_unique(array_merge($classes, $addClasses)), ' ');
+
+		echo <<< HTML
+<div class="$customClasses">
+
+HTML;
+	}
+
+	/**
+	 * Outputs HTML which closes the page wrappers opened with openPageWrapper.
+	 *
+	 * @return  void
+	 */
+	protected function closePageWrapper()
+	{
+		echo "</div>\n";
+	}
 }

@@ -153,3 +153,35 @@ other side of your component (only if you're using a magic Factory), common Blad
 
 Unlike regular view templates, FOF will only look for `.blade.php` overrides for core Blade view templates. This is on
 purpose. You are meant to `@include` them in your own Blade templates and override their sections as you see fit.
+
+## Renderer changes
+
+The following changes have taken places in FOF's renderers:
+
+* **AkeebaStrapper** has been removed. This was a transitional renderer which backported Bootstrap 2 styling in Joomla!
+  2.5. Joomla! 2.5 is no longer supported and Akeeba Strapper (the library with the custom, namespaced Boostrap 2
+  distribution) is obsolete. Therefore this renderer has no reason of existence.
+* **Joomla** has been added. This is the new default renderer (if the FEF renderer is unavailable) and works in all 
+  Joomla! versions supported by FOF (3.x and 4.x).
+* **Joomla3** no longer outputs the wrapper DIV id `akeeba-renderjoomla`. Instead, it outputs the wrapper DIV class
+  `akeeba-renderer-joomla` and `akeeba-renderer-joomla3`. Moreover, it will only enable itself on Joomla! 3.x; it will
+  be disabled on Joomla! 4.x.
+* **Joomla4** has been added. This is currently a tentative renderer since Joomla! 4 has not reached a beta stage and
+  its template is still under development. It outputs the wrapper DIV class `akeeba-renderer-joomla` and 
+  `akeeba-renderer-joomla4`. Moreover, it will only enable itself on Joomla! 4.x; it will be disabled on Joomla! 3.x.
+* **FEF** no longer outputs the wrapper DIV id `akeeba-renderer-fef`. Instead, it only outputs the wrapper DIV class
+  `akeeba-renderer-fef`. It extends the `Joomla` renderer but it will NOT output the `akeeba-renderer-joomla` wrapper
+  DIV class; this class is forcibly added to the `remove_wrapper_classes` renderer option.
+
+All renderers support the `remove_wrapper_classes` and `add_wrapper_classes` renderer options. These options now allow
+you to also _remove_ the wrapper classes (e.g. `akeeba-renderer-joomla` and `akeeba-renderer-fef`) if you so wish. Just
+remember that removing the wrapper class from the FEF renderer will result in unstyled content unless you wrap the
+output yourself in a DIV with the class `akeeba-renderer-fef`.
+
+If you wrote a custom renderer extending the now defunct `AkeebaStrapper` renderer please extend the `Joomla` renderer
+OR the `RenderBase` class instead.
+
+Finally, keep in mind that the default renderer is automatically detected using the information provided by FOF's Render
+classes. If FEF is installed on your site, FOF will automatically prefer the FEF renderer instead of the Joomla! 
+renderer. This many NOT be what you want. Always set up the desired renderer in your `fof.xml` file to prevent nasty
+surprises.

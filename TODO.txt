@@ -41,7 +41,7 @@
 
 [x] Import common Blade templates into <fofRoot>/ViewTemplates
 
-Remove AkeebaStrapper renderer
+[x] Remove AkeebaStrapper renderer
 
 Maybe: add Joomla 3 common Blade templates?
 
