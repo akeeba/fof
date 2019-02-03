@@ -1,36 +1,29 @@
-.buildpath
-.settings/
-.project
-.DS_STORE
+### phpStorm project files
 .idea/
 
-/build/bin
-/build/buildlang
-/build/phingext
-/build/tools
-
-# We can't include composer.lock since the testing framework dependencies vary by PHP version we are testing against
+### We can't include composer.lock since the testing framework dependencies vary by PHP version we are testing against
 composer.lock
 
-/cli/fof.phar
-
-/documentation/*.xml~
-
+### Automatically generated files
+# Library loader
 /fof/include.php
 /fof/file_fof40.xml
 /fof/version.txt
-/fof.phar
-
-/release/*.zip
-
-/Tests/environments/
-/Tests/coverage
-/Tests/config.php
-/Tests/debug.txt
-
-/vendor/*
-
-Tests/coverage
-
 # Internal language symlinks
 /fof/language/en-GB
+
+### Release packages
+/release/*.zip
+
+### Excluded files and folders under Tests
+# Temporary Joomla! installations, used by Travis CI
+/Tests/environments/**
+# Test coverage output files
+/Tests/coverage
+# Tests configuration
+/Tests/config.php
+# Log file, used when running tests under Travis CI
+/Tests/debug.txt
+
+### Composer dependencies
+/vendor/*
