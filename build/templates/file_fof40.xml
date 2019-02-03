@@ -65,6 +65,7 @@ fail gracefully instead of causing your site to crash and burn.
 			<folder>Update</folder>
 			<folder>Utils</folder>
 			<folder>View</folder>
+			<folder>ViewTemplates</folder>
 
 			<file>LICENSE.txt</file>
 			<file>include.php</file>

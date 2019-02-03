@@ -133,7 +133,7 @@ class FEF extends Joomla3
 		$customClasses = implode(array_unique(array_merge($classes, $addClasses)), ' ');
 
 		echo <<< HTML
-<div id="akeeba-renderer-fef" class="akeeba-renderer-fef $customClasses">
+<div class="akeeba-renderer-fef $customClasses">
 
 HTML;
 	}

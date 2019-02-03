@@ -39,15 +39,17 @@
 
 [x] View template suffixes for the Joomla version and renderer being used e.g. default.j39.fef.blade.php, default.j3.php, default.strapper.php. Parsed from most to least specific.
 
-Import common Blade templates into <fofRoot>/ViewTemplates
+[x] Import common Blade templates into <fofRoot>/ViewTemplates
+
+Remove AkeebaStrapper renderer
+
+Maybe: add Joomla 3 common Blade templates?
 
 Test ViewTemplateFinder
 
 Dependency tracking in installation
     Remove dependency from FOF 3, add dependency to FOF 4 on install/upgrade
     Remove dependency from FOF 3 and FOF 4 on uninstall
-
-Remove AkeebaStrapper renderer
 
 Each renderer should add FEF extensions for the following elements:
 
