@@ -53,6 +53,7 @@ TravisLogger::log(4, 'Autoloader included');
 // Don't report strict errors. This is needed because sometimes a test complains about arguments passed as reference
 ini_set('zend.ze1_compatibility_mode', '0');
 error_reporting(E_ALL & ~E_STRICT);
+//error_reporting(E_ERROR | E_DEPRECATED);
 ini_set('display_errors', 1);
 
 // Fix magic quotes on PHP 5.3
@@ -65,6 +66,7 @@ if (version_compare(PHP_VERSION, '5.4.0', 'lt'))
 @date_default_timezone_set('UTC');
 
 $jversion_test = getenv('JVERSION_TEST') ? getenv('JVERSION_TEST') : 'staging';
+$isTravis = getenv('TRAVIS');
 
 TravisLogger::log(4, 'Including environment info. Joomla version: ' . $jversion_test);
 
@@ -81,7 +83,7 @@ $siteroot = $environments[$jversion_test];
 
 TravisLogger::log(4, 'Siteroot for this tests: ' . $siteroot);
 
-if (!$siteroot)
+if (!$siteroot && $isTravis)
 {
 	echo('Empty siteroot, we can not continue');
 	TravisLogger::log(4, 'Empty siteroot, we can not continue');
@@ -89,7 +91,7 @@ if (!$siteroot)
 }
 
 //Am I in Travis CI?
-if (getenv('TRAVIS'))
+if ($isTravis)
 {
 	TravisLogger::log(4, 'Including special Travis configuration file');
 	require_once __DIR__ . '/config_travis.php';
@@ -111,9 +113,13 @@ else
 
 	require_once __DIR__ . '/config.php';
 
-	if (isset($fofTestConfig['site_root']))
+	$siteroot = $fofTestConfig['site_root'];
+
+	if (!$siteroot || !is_dir($siteroot))
 	{
-		$siteroot = $fofTestConfig['site_root'];
+		echo('The site_root is empty or does not point to an existing folder. We can not continue');
+
+		exit(1);
 	}
 }
 

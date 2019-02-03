@@ -90,7 +90,7 @@ class MockSession
 		// Mock selected methods.
 		$test->assignMockReturns(
 			$mockObject, [
-				'getId' => self::getOption('getId'),
+				'getId' => self::getOption('getId', '0123456789abcdef0123456789abcdef'),
 			]
 		);
 
