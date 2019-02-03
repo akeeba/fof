@@ -109,9 +109,9 @@ to the browser.
 With that in mind we completely removed LESS support from FOF 4. You are advised to compile and minify your CSS before
 releasing your extension.
 
-## Automatic template suffixes based on Joomla! version and renderer used
+## Automatic template suffixes based on Joomla! version _and_ renderer used
 
-A goal of FOF 4 is the easier implementation of component which work across substiantially different Joomla! versions
+A goal of FOF 4 is the easier implementation of component which work across substantially different Joomla! versions
 (e.g. Joomla! 3 and Joomla! 4). The biggest challenge with that is that the HTML you need to output in each case is
 probably radically different. For this reason we add automatic suffixes to view templates based on the Joomla! version
 and FOF renderer used.
@@ -139,3 +139,17 @@ In simple terms, if your client has created a template override for `default.php
 most specific as it's done for a specific site which runs a specific Joomla! version and for a specific component whose
 renderer you already know.
 
+## Common Blade templates
+
+The library has a ViewTemplates folder of its own. This is where a selection of core Blade templates can be found, i.e.
+in `libraries/fof40/ViewTemplates`. These are meant to make your life easier by not having to specify the markup for the
+whole page of common tasks such as browse and edit. The core Blade view templates can be overridden in 
+`<template Folder>/html/lib_fof40`.
+
+The common Blade templates are implemented as a last resort fallback in FOF's ViewTemplateFinder. This means that FOF
+will look for view template files in the following order: template overrides for your component, your component, the 
+other side of your component (only if you're using a magic Factory), common Blade view template's overrides in 
+`<template Folder>/html/lib_fof40` and finally FOF itself (`libraries/fof40/ViewTemplates`).
+
+Unlike regular view templates, FOF will only look for `.blade.php` overrides for core Blade view templates. This is on
+purpose. You are meant to `@include` them in your own Blade templates and override their sections as you see fit.

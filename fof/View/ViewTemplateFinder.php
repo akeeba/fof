@@ -297,10 +297,6 @@ class ViewTemplateFinder
 			$paths = array_merge($paths, $extraPaths);
 		}
 
-		// Add fallback FOF templates (<libdir>/ViewTemplates/<viewName>/<templateName>) and their template overrides
-		$paths[] = $this->container->platform->getTemplateOverridePath('lib_fof40') . '/' . $parts['view'];
-		$paths[] = realpath(__DIR__ . '/..') . '/ViewTemplates/' . $parts['view'];
-
 		// Remove duplicate paths
 		$paths = array_unique($paths);
 
@@ -321,6 +317,7 @@ class ViewTemplateFinder
 
 		$filesystem = $this->container->filesystem;
 
+		// Try to find a view template in the component specified (or its view override)
 		foreach ($this->extensions as $extension)
 		{
 			foreach ($jVersionSuffixes as $JVersionSuffix)
@@ -339,6 +336,30 @@ class ViewTemplateFinder
 			}
 		}
 
+		/**
+		 * If no view template was found for the component fall back to FOF's core Blade templates -- located in
+		 * <libdir>/ViewTemplates/<viewName>/<templateName> -- and their template overrides.
+		 */
+		$paths = [];
+		$paths[] = $this->container->platform->getTemplateOverridePath('lib_fof40') . '/' . $parts['view'];
+		$paths[] = realpath(__DIR__ . '/..') . '/ViewTemplates/' . $parts['view'];
+
+		foreach ($jVersionSuffixes as $JVersionSuffix)
+		{
+			foreach ($rendererNameSuffixes as $rendererNameSuffix)
+			{
+				$filenameToFind = $parts['template'] . $JVersionSuffix . $rendererNameSuffix . '.blade.php';
+
+				$fileName = $filesystem->pathFind($paths, $filenameToFind);
+
+				if ($fileName)
+				{
+					return $fileName;
+				}
+			}
+		}
+
+		// Nothing found, throw an error
 		throw new \RuntimeException(\JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $uri), 500);
 	}
 
