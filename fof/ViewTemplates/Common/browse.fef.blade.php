@@ -9,7 +9,7 @@
  * Template for Browse views using the FEF renderer
  *
  * Use this by extending it (I'm using -at- instead of the actual at-sign)
- * -at-extends('admin:com_example/Common/browse')
+ * -at-extends('any:lib_fof40/Common/browse')
  *
  * Override the following sections in your Blade template:
  *

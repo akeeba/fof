@@ -55,16 +55,27 @@ A lot of the work done on FOF 3.4 and 4.0 revolves around using Akeeba Frontend 
 use it and we do not have public documentation for it. If you do choose to use it please make sure that you are
 installing it the same way as FOF 4 (see above).
 
-FOF 4 ships with a ViewTemplates folder which contains common view templates, optimized for use with FEF. These are used
-as wrappers in browse and edit views and implement picking and displaying users (the latter two being necessary after
-the removal of XML forms, see below). These can be included by using `any:lib_fof40/common/templateName` and can be
-overriden in two ways:
+## Common Blade view templates
 
-* Globally, in the `templates/YOUR_TEMPLATE/html/lib_fof40/common` folder
-* Per component, in the `View/common/tmpl`, `views/common/tmpl` or `ViewTemplates/common` folder per standard FOF
+FOF 4 ships with a ViewTemplates folder which contains common view templates. They use per-renderer extensions (see
+below) to provide the same view template for different frontend framework requirements. These are used as wrappers in 
+browse and edit views and implement picking and displaying users (the latter two being necessary after the removal of 
+XML forms, see below). These can be included by using `any:lib_fof40/Common/templateName` and can be overriden in two 
+ways:
+
+* Globally, in the `templates/YOUR_TEMPLATE/html/lib_fof40/Common` folder
+* Per component, in the `View/Common/tmpl`, `views/Common/tmpl` or `ViewTemplates/Common` folder per standard FOF
   convention.
 
 If you are not using FEF you can simply skip these common FEF View Templates.
+
+The common Blade templates are implemented as a last resort fallback in FOF's ViewTemplateFinder. This means that FOF
+will look for view template files in the following order: template overrides for your component, your component, the 
+other side of your component (only if you're using a magic Factory), common Blade view template's overrides in 
+`<template Folder>/html/lib_fof40/Common` and finally FOF itself (`libraries/fof40/ViewTemplates/Common`).
+
+Unlike regular view templates, FOF will only look for `.blade.php` overrides for common Blade view templates. This is on
+purpose. You are meant to `@include` them in your own Blade templates and override their sections as you see fit.
 
 ## Removal of XML forms
 
@@ -139,21 +150,6 @@ In simple terms, if your client has created a template override for `default.php
 most specific as it's done for a specific site which runs a specific Joomla! version and for a specific component whose
 renderer you already know.
 
-## Common Blade templates
-
-The library has a ViewTemplates folder of its own. This is where a selection of core Blade templates can be found, i.e.
-in `libraries/fof40/ViewTemplates`. These are meant to make your life easier by not having to specify the markup for the
-whole page of common tasks such as browse and edit. The core Blade view templates can be overridden in 
-`<template Folder>/html/lib_fof40`.
-
-The common Blade templates are implemented as a last resort fallback in FOF's ViewTemplateFinder. This means that FOF
-will look for view template files in the following order: template overrides for your component, your component, the 
-other side of your component (only if you're using a magic Factory), common Blade view template's overrides in 
-`<template Folder>/html/lib_fof40` and finally FOF itself (`libraries/fof40/ViewTemplates`).
-
-Unlike regular view templates, FOF will only look for `.blade.php` overrides for core Blade view templates. This is on
-purpose. You are meant to `@include` them in your own Blade templates and override their sections as you see fit.
-
 ## Renderer changes
 
 The following changes have taken places in FOF's renderers:
@@ -185,11 +181,3 @@ Finally, keep in mind that the default renderer is automatically detected using 
 classes. If FEF is installed on your site, FOF will automatically prefer the FEF renderer instead of the Joomla! 
 renderer. This many NOT be what you want. Always set up the desired renderer in your `fof.xml` file to prevent nasty
 surprises.
-
-## Dependency tracking
-
-If you are using the `InstallScript` class for your installation scripts you don't need to do anything. Everything is
-taken care of you automatically.
-
-If you were tracking dependencies manually please remember the remove the FOF 3 dependency from your extension on
-upgrade _and_ uninstallation. Also remember to change the dependency from FOF 3 to FOF 3.
