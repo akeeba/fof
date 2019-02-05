@@ -88,7 +88,7 @@ abstract class RenderBase implements RenderInterface
 	 */
 	public function getInformation()
 	{
-		$classParts = explode('\\', __CLASS__);
+		$classParts = explode('\\', get_class($this));
 
 		return (object) [
 			'enabled'  => $this->enabled,

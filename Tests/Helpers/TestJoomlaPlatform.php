@@ -52,24 +52,31 @@ class TestJoomlaPlatform extends PlatformJoomla
 	/** @var  \Closure Supply a closure to mock the config object */
 	public static $config;
 
+	/** @var  \Closure Supply a closure to mock the result of getComponentBaseDirs($component) */
+	public static $getComponentBaseDirs;
+
+	/** @var  \Closure Supply a closure to mock the result of getTemplateOverridePath($component, $absolute) */
+	public static $getTemplateOverridePath;
+
 	/**
 	 * Resets all the mock variables to their default value
 	 */
 	public function reset()
 	{
-		static::$isCli            = false;
-		static::$isAdmin          = false;
-		static::$template         = null;
-		static::$templateSuffixes = null;
-		static::$baseDirs         = null;
-		static::$user             = null;
-		static::$uriBase          = null;
-		static::$uriRoot          = null;
-		static::$authorise        = null;
-		static::$runPlugins       = null;
-		static::$config           = null;
-
+		static::$isCli                   = false;
+		static::$isAdmin                 = false;
+		static::$template                = null;
+		static::$templateSuffixes        = null;
+		static::$baseDirs                = null;
+		static::$user                    = null;
+		static::$uriBase                 = null;
+		static::$uriRoot                 = null;
+		static::$authorise               = null;
+		static::$runPlugins              = null;
+		static::$config                  = null;
 		static::$getUserStateFromRequest = null;
+		static::$getComponentBaseDirs    = null;
+		static::$getTemplateOverridePath = null;
 	}
 
 	public function getUser($id = null)
@@ -207,5 +214,25 @@ class TestJoomlaPlatform extends PlatformJoomla
 		}
 
 		return parent::getConfig();
+	}
+
+	public function getComponentBaseDirs($component)
+	{
+		if (is_callable(static::$getComponentBaseDirs))
+		{
+			return call_user_func(static::$getComponentBaseDirs, $component);
+		}
+
+		return parent::getComponentBaseDirs($component);
+	}
+
+	public function getTemplateOverridePath($component, $absolute = true)
+	{
+		if (is_callable(static::$getTemplateOverridePath))
+		{
+			return call_user_func(static::$getTemplateOverridePath, $component, $absolute);
+		}
+
+		return parent::getTemplateOverridePath($component, $absolute);
 	}
 }

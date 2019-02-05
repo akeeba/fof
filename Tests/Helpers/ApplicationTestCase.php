@@ -22,11 +22,18 @@ abstract class ApplicationTestCase extends \PHPUnit_Framework_TestCase
 
 	public static function setUpBeforeClass()
 	{
-		self::rebuildContainer();
+		static::rebuildContainer();
 	}
 
 	public static function tearDownAfterClass()
 	{
+		$platform = static::$container->platform;
+
+		if ($platform instanceof TestJoomlaPlatform)
+		{
+			$platform->reset();
+		}
+
 		static::$container = null;
 	}
 

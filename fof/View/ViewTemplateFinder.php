@@ -367,6 +367,8 @@ class ViewTemplateFinder
 	 * Get the list of view template extensions
 	 *
 	 * @return  array
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function getExtensions()
 	{
@@ -379,6 +381,8 @@ class ViewTemplateFinder
 	 * @param   array  $extensions
 	 *
 	 * @return  void
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function setExtensions(array $extensions)
 	{
@@ -442,6 +446,8 @@ class ViewTemplateFinder
 	 * Returns the default layout name
 	 *
 	 * @return  string
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function getDefaultLayout()
 	{
@@ -464,6 +470,8 @@ class ViewTemplateFinder
 	 * Returns the default subtemplate name
 	 *
 	 * @return  string
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function getDefaultTpl()
 	{
@@ -474,6 +482,8 @@ class ViewTemplateFinder
 	 * Sets the default subtemplate name
 	 *
 	 * @param  string  $defaultTpl
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function setDefaultTpl($defaultTpl)
 	{
@@ -486,6 +496,8 @@ class ViewTemplateFinder
 	 * specified in getViewTemplateUris.
 	 *
 	 * @return  boolean
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function isStrictView()
 	{
@@ -500,6 +512,8 @@ class ViewTemplateFinder
 	 * @param   boolean  $strictView
 	 *
 	 * @return  void
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function setStrictView($strictView)
 	{
@@ -511,6 +525,8 @@ class ViewTemplateFinder
 	 * subtemplate defined in getViewTemplateUris. If it's true we will only look for the subtemplate specified.
 	 *
 	 * @return boolean
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function isStrictTpl()
 	{
@@ -524,6 +540,8 @@ class ViewTemplateFinder
 	 * @param   boolean  $strictTpl
 	 *
 	 * @return  void
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function setStrictTpl($strictTpl)
 	{
@@ -536,6 +554,8 @@ class ViewTemplateFinder
 	 * template.
 	 *
 	 * @return  boolean
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function isStrictLayout()
 	{
@@ -550,6 +570,8 @@ class ViewTemplateFinder
 	 * @param   boolean  $strictLayout
 	 *
 	 * @return  void
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function setStrictLayout($strictLayout)
 	{
@@ -564,6 +586,8 @@ class ViewTemplateFinder
 	 * any      First look in the current application side, then look on the other side of the application
 	 *
 	 * @return  string
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function getSidePrefix()
 	{
