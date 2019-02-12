@@ -16,6 +16,7 @@ use FOF40\Platform\Base\Platform as BasePlatform;
 use JApplicationCms;
 use JApplicationWeb;
 use JCache;
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\Registry\Registry;
 use JUri;
 
@@ -1161,7 +1162,7 @@ class Platform extends BasePlatform
 
 			$user = $this->getUser();
 
-			return \JApplicationHelper::getHash($user->id . $token);
+			return ApplicationHelper::getHash($user->id . $token);
 		}
 
 		// Web application, go through the regular Joomla! API.

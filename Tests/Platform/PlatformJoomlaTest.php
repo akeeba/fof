@@ -15,6 +15,7 @@ use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\MockSession;
 use FOF40\Tests\Helpers\Platform\UserForAdminAuth;
 use FOF40\Tests\Helpers\ReflectionHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 
 /**
  * @covers FOF40\Platform\Joomla\Platform::<protected>
@@ -126,7 +127,7 @@ class PlatformJoomlaTest extends FOFTestCase
 				break;
 
 			case 'admin':
-				$mockApplication = new \JApplicationAdministrator(null, $config);
+				$mockApplication = new AdministratorApplication(null, $config);
 				break;
 
 			case 'exception':

@@ -17,6 +17,7 @@ use FOF40\Model\DataModel\Exception\TreeMethodOnlyAllowedInRoot;
 use FOF40\Model\DataModel\Exception\TreeRootNotFound;
 use FOF40\Model\DataModel\Exception\TreeUnexpectedPrimaryKey;
 use FOF40\Model\DataModel\Exception\TreeUnsupportedMethod;
+use Joomla\CMS\Application\ApplicationHelper;
 
 defined('_JEXEC') or die;
 
@@ -72,7 +73,7 @@ class TreeModel extends DataModel
 		// Create a slug if there is a title and an empty slug
 		if ($this->hasField('title') && $this->hasField('slug') && !$this->slug)
 		{
-			$this->slug = \JApplicationHelper::stringURLSafe($this->title);
+			$this->slug = ApplicationHelper::stringURLSafe($this->title);
 		}
 
 		// Create the SHA-1 hash of the slug for faster searching (make sure the hash column is CHAR(64) to take

@@ -25,6 +25,7 @@ use FOF40\Model\DataModel\Exception\SpecialColumnMissing;
 use FOF40\Model\DataModel\Relation\Exception\RelationNotFound;
 use FOF40\Model\DataModel\RelationManager;
 use FOF40\Utils\ArrayHelper;
+use Joomla\CMS\Application\ApplicationHelper;
 
 defined('_JEXEC') or die;
 
@@ -1411,7 +1412,7 @@ class DataModel extends Model implements \JTableInterface
 
 		if ($this->hasField('title') && $this->hasField('slug') && !$this->$slugField)
 		{
-			$this->$slugField = \JApplicationHelper::stringURLSafe($this->$titleField);
+			$this->$slugField = ApplicationHelper::stringURLSafe($this->$titleField);
 		}
 
 		// Special handling of the ordering field
