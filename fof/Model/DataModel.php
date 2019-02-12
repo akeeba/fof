@@ -36,6 +36,7 @@ use Joomla\CMS\Table\ContentType;
 use Joomla\CMS\Table\CoreContent;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
+use Joomla\CMS\UCM\UCMContent;
 
 defined('_JEXEC') or die;
 
@@ -4044,7 +4045,7 @@ class DataModel extends Model implements TableInterface
 		$alias = $this->getContentType();
 		$ucmContentTable = new CoreContent(Factory::getDbo());
 
-		$ucm = new \JUcmContent($this, $alias);
+		$ucm = new UCMContent($this, $alias);
 		$ucmData = $data ? $ucm->mapData($data) : $ucm->ucmData;
 
 		$primaryId = $ucm->getPrimaryKey($ucmData['common']['core_type_id'], $ucmData['common']['core_content_item_id']);
