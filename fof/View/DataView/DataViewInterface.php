@@ -8,6 +8,7 @@
 namespace  FOF40\View\DataView;
 
 use FOF40\Container\Container;
+use Joomla\CMS\Pagination\Pagination;
 
 defined('_JEXEC') or die;
 
@@ -39,7 +40,7 @@ interface DataViewInterface
 	/**
 	 * Returns a reference to the pagination object of this view
 	 *
-	 * @return \JPagination
+	 * @return Pagination
 	 */
 	public function getPagination();
 

@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use FOF40\View\DataView\DataViewInterface;
 use JHtml;
+use Joomla\CMS\Pagination\Pagination;
 
 /**
  * Interim FEF helper which was used in FOF 3.2. This is deprecated. Please use the FEFHelper.browse JHtml helper
@@ -35,14 +36,14 @@ abstract class Html
 	/**
 	 * Creates the required HTML code for backend pagination and sorting
 	 *
-	 * @param	\JPagination	$pagination	Pagination object
-	 * @param 	array			$sortFields	Fields allowed to be sorted
-	 * @param 	string			$order		Ordering field
-	 * @param 	string			$order_Dir	Ordering direction (ASC, DESC)
+	 * @param	Pagination	$pagination	 Pagination object
+	 * @param 	array		$sortFields	 Fields allowed to be sorted
+	 * @param 	string		$order		 Ordering field
+	 * @param 	string		$order_Dir	 Ordering direction (ASC, DESC)
 	 *
 	 * @return string
 	 */
-	public static function selectOrderingBackend($pagination, $sortFields, $order, $order_Dir)
+	public static function selectOrderingBackend(Pagination $pagination, array $sortFields, $order, $order_Dir)
 	{
 		if (is_null($sortFields))
 		{

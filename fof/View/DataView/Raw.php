@@ -12,6 +12,7 @@ use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Collection;
 use FOF40\View\View;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -24,7 +25,7 @@ class Raw extends View implements DataViewInterface
 	/** @var   \stdClass  Data lists */
 	protected $lists = null;
 
-	/** @var \JPagination The pagination object */
+	/** @var Pagination The pagination object */
 	protected $pagination = null;
 
 	/** @var Registry Page parameters object, for front-end views */
@@ -181,7 +182,7 @@ class Raw extends View implements DataViewInterface
 	/**
 	 * Returns a reference to the pagination object of this view
 	 *
-	 * @return \JPagination
+	 * @return Pagination
 	 */
 	public function getPagination()
 	{
@@ -280,7 +281,7 @@ class Raw extends View implements DataViewInterface
 		}
 
 		// Pagination
-		$this->pagination = new \JPagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
+		$this->pagination = new Pagination($this->itemCount, $this->lists->limitStart, $this->lists->limit);
 
 		// Pass page params on frontend only
 		if ($this->container->platform->isFrontend())

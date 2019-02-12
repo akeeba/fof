@@ -10,6 +10,7 @@ namespace  FOF40\View\DataView;
 use FOF40\Hal\Document;
 use FOF40\Hal\Link;
 use FOF40\Model\DataModel;
+use Joomla\CMS\Pagination\Pagination;
 
 defined('_JEXEC') or die;
 
@@ -389,7 +390,7 @@ class Json extends Raw implements DataViewInterface
                 $this->limit = $model->getState('limit', 0);
             }
 
-			$pagination = new \JPagination($this->total, $this->limitStart, $this->limit);
+			$pagination = new Pagination($this->total, $this->limitStart, $this->limit);
 
 			if ($pagination->pagesTotal > 1)
 			{

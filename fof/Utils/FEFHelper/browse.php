@@ -11,6 +11,7 @@ use FOF40\Utils\FEFHelper\BrowseView;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\DataView\Raw as DataViewRaw;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\Pagination;
 
 defined('_JEXEC') or die;
 
@@ -636,7 +637,7 @@ JS;
 	 *
 	 * @param   DataViewRaw $view       The view you're rendering against. If not provided we will guess it using MAGIC.
 	 * @param   array       $sortFields Array of field name => description for the ordering fields in the dropdown. If not provided we will use all the fields available in the model.
-	 * @param   JPagination $pagination The Joomla pagination object. If not provided we fetch it from the view.
+	 * @param   Pagination $pagination The Joomla pagination object. If not provided we fetch it from the view.
 	 * @param   string      $sortBy     Order by field name. If not provided we fetch it from the view.
 	 * @param   string      $order_Dir  Order direction. If not provided we fetch it from the view.
 	 *
@@ -644,7 +645,7 @@ JS;
 	 *
 	 * @since   3.3.0
 	 */
-	public static function orderheader(DataViewRaw $view = null, array $sortFields = [], JPagination $pagination = null, $sortBy = null, $order_Dir = null)
+	public static function orderheader(DataViewRaw $view = null, array $sortFields = [], Pagination $pagination = null, $sortBy = null, $order_Dir = null)
 	{
 		if (is_null($view))
 		{
