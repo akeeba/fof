@@ -12,6 +12,7 @@ use FOF40\Database\Installer;
 use JFactory;
 use JLoader;
 use Joomla\CMS\Installer\Adapter\PluginAdapter;
+use Joomla\CMS\Log\Log;
 
 defined('_JEXEC') or die;
 
@@ -194,7 +195,7 @@ class Plugin extends BaseInstaller
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{
-		\JLog::add("Joomla! extension update workaround for $this->pluginFolder plugin $this->pluginName", \JLog::INFO, 'fof4_extension_installation');
+		Log::add("Joomla! extension update workaround for $this->pluginFolder plugin $this->pluginName", Log::INFO, 'fof4_extension_installation');
 
 		$temporarySource = $parent->getParent()->getPath('source');
 
@@ -209,7 +210,7 @@ class Plugin extends BaseInstaller
 
 		foreach ($copyMap as $source => $target)
 		{
-			\JLog::add(__CLASS__ . ":: Conditional copy $source to $target", \JLog::DEBUG, 'fof4_extension_installation');
+			Log::add(__CLASS__ . ":: Conditional copy $source to $target", Log::DEBUG, 'fof4_extension_installation');
 
 			$ignored = array();
 

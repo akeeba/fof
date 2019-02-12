@@ -16,6 +16,7 @@ use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die;
@@ -960,9 +961,9 @@ class Controller
 		{
 			$view = $this->input->getCmd('view');
 			$task = $this->input->getCmd('task');
-			\JLog::add(
+			Log::add(
 				"FOF: You are using a legacy session token in (view, task)=($view, $task). Support for legacy tokens will go away. Use form tokens instead.",
-				\JLog::WARNING,
+				Log::WARNING,
 				'deprecated'
 			);
 		}
@@ -977,9 +978,9 @@ class Controller
 			{
 				$view = $this->input->getCmd('view');
 				$task = $this->input->getCmd('task');
-				\JLog::add(
+				Log::add(
 					"FOF: You are using the insecure _token form variable in (view, task)=($view, $task). Support for it will go away. Submit a variable with the token as the name and a value of 1 instead.",
-					\JLog::WARNING,
+					Log::WARNING,
 					'deprecated'
 				);
 

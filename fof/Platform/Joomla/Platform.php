@@ -22,6 +22,7 @@ use Joomla\CMS\Authentication\Authentication;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Language;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Version as JoomlaVersion;
@@ -866,7 +867,7 @@ class Platform extends BasePlatform
 	 */
 	public function logAddLogger($file)
 	{
-		\JLog::addLogger(array('text_file' => $file), \JLog::ALL, array('fof'));
+		Log::addLogger(array('text_file' => $file), Log::ALL, array('fof'));
 	}
 
 	/**
@@ -881,7 +882,7 @@ class Platform extends BasePlatform
 	 */
 	public function logDeprecated($message)
 	{
-		\JLog::add($message, \JLog::WARNING, 'deprecated');
+		Log::add($message, Log::WARNING, 'deprecated');
 	}
 
 	/**
@@ -895,7 +896,7 @@ class Platform extends BasePlatform
 	 */
 	public function logDebug($message)
 	{
-		\JLog::add($message, \JLog::DEBUG, 'fof');
+		Log::add($message, Log::DEBUG, 'fof');
 	}
 
 	public function logUserAction($title, $logText, $extension)

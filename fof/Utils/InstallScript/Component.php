@@ -16,6 +16,7 @@ use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Menu;
 use Joomla\CMS\Table\Table;
 
@@ -381,7 +382,7 @@ class Component extends BaseInstaller
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{
-		\JLog::add("Joomla! extension update workaround for component $this->componentName", \JLog::INFO, 'fof4_extension_installation');
+		Log::add("Joomla! extension update workaround for component $this->componentName", Log::INFO, 'fof4_extension_installation');
 
 		$temporarySource = $parent->getParent()->getPath('source');
 
@@ -406,7 +407,7 @@ class Component extends BaseInstaller
 		{
 			$source = $temporarySource . '/' . $partialSource;
 
-			\JLog::add(__CLASS__ . ":: Conditional copy $source to $target", \JLog::DEBUG, 'fof4_extension_installation');
+			Log::add(__CLASS__ . ":: Conditional copy $source to $target", Log::DEBUG, 'fof4_extension_installation');
 
 			$this->recursiveConditionalCopy($source, $target);
 		}

@@ -7,6 +7,8 @@
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 
+use Joomla\CMS\Log\Log;
+
 if (!class_exists('FOF40\\Autoloader\\Autoloader'))
 {
 	// Register utility functions
@@ -23,9 +25,9 @@ if (!defined('FOF40_INCLUDED'))
 	JFactory::getLanguage()->load('lib_fof40', JPATH_SITE, null, true);
 
 	// Register a debug log
-	if (defined('JDEBUG') && JDEBUG && class_exists('JLog'))
+	if (defined('JDEBUG') && JDEBUG && class_exists('\Joomla\CMS\Log\Log'))
 	{
-		\JLog::addLogger(array('text_file' => 'fof.log.php'), \JLog::ALL, array('fof'));
+		Log::addLogger(array('text_file' => 'fof.log.php'), Log::ALL, array('fof'));
 	}
 
 	// Register the JHtml helpers path for the Akeeba Frontend Framework

@@ -12,8 +12,7 @@ use Exception;
 use JFactory;
 use JFile;
 use JFolder;
-use JLoader;
-use JLog;
+use Joomla\CMS\Log\Log;
 
 defined('_JEXEC') or die;
 
@@ -162,16 +161,16 @@ class BaseInstaller
 	protected function log($message, $error = false, $category = 'jerror')
 	{
 		// Just in case...
-		if (!class_exists('JLog', true))
+		if (!class_exists('\Joomla\CMS\Log\Log', true))
 		{
 			return;
 		}
 
-		$priority = $error ? JLog::ERROR : JLog::WARNING;
+		$priority = $error ? Log::ERROR : Log::WARNING;
 
 		try
 		{
-			JLog::add($message, $priority, $category);
+			Log::add($message, $priority, $category);
 		}
 		catch (Exception $e)
 		{

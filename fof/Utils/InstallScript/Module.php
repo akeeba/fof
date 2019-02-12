@@ -11,6 +11,7 @@ use Exception;
 use FOF40\Database\Installer as DatabaseInstaller;
 use JFactory;
 use Joomla\CMS\Installer\Adapter\ModuleAdapter;
+use Joomla\CMS\Log\Log;
 
 defined('_JEXEC') or die;
 
@@ -184,7 +185,7 @@ class Module extends BaseInstaller
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{
-		\JLog::add("Joomla! extension update workaround for $this->moduleClient module $this->moduleName", \JLog::INFO, 'fof4_extension_installation');
+		Log::add("Joomla! extension update workaround for $this->moduleClient module $this->moduleName", Log::INFO, 'fof4_extension_installation');
 
 		$temporarySource = $parent->getParent()->getPath('source');
 		$rootFolder      = ($this->moduleClient == 'site') ? JPATH_SITE : JPATH_ADMINISTRATOR;
@@ -200,7 +201,7 @@ class Module extends BaseInstaller
 
 		foreach ($copyMap as $source => $target)
 		{
-			\JLog::add(__CLASS__ . ":: Conditional copy $source to $target", \JLog::DEBUG, 'fof4_extension_installation');
+			\Joomla\CMS\Log\Log::add(__CLASS__ . ":: Conditional copy $source to $target", Log::DEBUG, 'fof4_extension_installation');
 
 			$ignored = array();
 

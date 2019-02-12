@@ -10,6 +10,7 @@ use Joomla\CMS\Date\Date as JoomlaDate;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Extension;
 
 defined('_JEXEC') or die();
@@ -80,7 +81,7 @@ class file_fof40InstallerScript
 			{
 				$msg = "<p>You need PHP $this->minimumPHPVersion or later to install this package but you are currently using PHP  $version</p>";
 
-				JLog::add($msg, JLog::WARNING, 'jerror');
+				Log::add($msg, Log::WARNING, 'jerror');
 
 				return false;
 			}
@@ -92,7 +93,7 @@ class file_fof40InstallerScript
 			$jVersion = JVERSION;
 			$msg      = "<p>You need Joomla! $this->minimumJoomlaVersion or later to install this package but you only have $jVersion installed.</p>";
 
-			JLog::add($msg, JLog::WARNING, 'jerror');
+			Log::add($msg, Log::WARNING, 'jerror');
 
 			return false;
 		}
@@ -103,7 +104,7 @@ class file_fof40InstallerScript
 			$jVersion = JVERSION;
 			$msg      = "<p>You need Joomla! $this->maximumJoomlaVersion or earlier to install this package but you have $jVersion installed</p>";
 
-			JLog::add($msg, JLog::WARNING, 'jerror');
+			Log::add($msg, Log::WARNING, 'jerror');
 
 			return false;
 		}
@@ -118,7 +119,7 @@ class file_fof40InstallerScript
 				$msg = "<p>Your site has a newer version of FOF 3 than the one bundled with this package. Please note that <strong>you can safely ignore the “Custom install routine failure” message</strong> below. It is not a real error; it is an expected message which is always printed by Joomla! in this case and which cannot be suppressed.</p>";
 			}
 
-			JLog::add($msg, JLog::WARNING, 'jerror');
+			Log::add($msg, Log::WARNING, 'jerror');
 
 			return false;
 		}
@@ -216,7 +217,7 @@ class file_fof40InstallerScript
 		{
 			$msg = "<p>You have $dependencyCount extension(s) depending on this version of FOF. The package cannot be uninstalled unless these extensions are uninstalled first.</p>";
 
-			JLog::add($msg, JLog::WARNING, 'jerror');
+			Log::add($msg, Log::WARNING, 'jerror');
 
 			throw new RuntimeException($msg, 500);
 		}
@@ -523,16 +524,16 @@ class file_fof40InstallerScript
 	protected function log($message, $error = false, $category = 'jerror')
 	{
 		// Just in case...
-		if (!class_exists('JLog', true))
+		if (!class_exists('Log', true))
 		{
 			return;
 		}
 
-		$priority = $error ? JLog::ERROR : JLog::WARNING;
+		$priority = $error ? Log::ERROR : Log::WARNING;
 
 		try
 		{
-			JLog::add($message, $priority, $category);
+			Log::add($message, $priority, $category);
 		}
 		catch (Exception $e)
 		{

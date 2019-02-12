@@ -4,6 +4,7 @@
 // ====================================================================================================================
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
+use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
 
 $sitePath           = '/var/www/test3/cli';
@@ -145,18 +146,18 @@ class FOFTestInstall extends CliApplication
 		// Set the current directory.
 		$this->set('cwd', getcwd());
 
-		JLog::addLogger([
+		Log::addLogger([
 			'logger'   => 'callback',
 			'callback' => function (\Joomla\CMS\Log\LogEntry $entry) {
 				switch ($entry->priority)
 				{
-					case JLog::ERROR:
+					case Log::ERROR:
 						$priority = 'ERROR';
 						break;
-					case JLog::WARNING:
+					case Log::WARNING:
 						$priority = 'WARNING';
 						break;
-					case JLog::NOTICE:
+					case Log::NOTICE:
 						$priority = 'NOTICE';
 						break;
 					default:
@@ -170,7 +171,7 @@ class FOFTestInstall extends CliApplication
 				@ob_start();
 				echo $burp;
 			},
-		], JLog::ALL, ['jerror']);
+		], Log::ALL, ['jerror']);
 	}
 
 
