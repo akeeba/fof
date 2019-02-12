@@ -13,6 +13,7 @@ use FOF40\Model\DataModel;
 use Joomla\CMS\Document\Document as JoomlaDocument;
 use Joomla\CMS\Document\JsonDocument;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die;
 
@@ -371,7 +372,7 @@ class Json extends Raw implements DataViewInterface
 		// Create a self link
 		$uri = (string) (\JUri::getInstance());
 		$uri = $this->_removeURIBase($uri);
-		$uri = \JRoute::_($uri);
+		$uri = Route::_($uri);
 		$document->addLink('self', new Link($uri));
 
 		// Create relative links in a record list context
@@ -403,7 +404,7 @@ class Json extends Raw implements DataViewInterface
 				// The "first" link
 				$uri = clone $protoUri;
 				$uri->setVar('limitstart', 0);
-				$uri = \JRoute::_($uri);
+				$uri = Route::_($uri);
 
 				$document->addLink('first', new Link($uri));
 
@@ -414,7 +415,7 @@ class Json extends Raw implements DataViewInterface
 					$limitstart = ($prevPage - 1) * $pagination->limit;
 					$uri = clone $protoUri;
 					$uri->setVar('limitstart', $limitstart);
-					$uri = \JRoute::_($uri);
+					$uri = Route::_($uri);
 
 					$document->addLink('prev', new Link($uri));
 				}
@@ -426,7 +427,7 @@ class Json extends Raw implements DataViewInterface
 					$limitstart = ($nextPage - 1) * $pagination->limit;
 					$uri = clone $protoUri;
 					$uri->setVar('limitstart', $limitstart);
-					$uri = \JRoute::_($uri);
+					$uri = Route::_($uri);
 
 					$document->addLink('next', new Link($uri));
 				}
@@ -436,7 +437,7 @@ class Json extends Raw implements DataViewInterface
 				$limitstart = ($lastPage - 1) * $pagination->limit;
 				$uri = clone $protoUri;
 				$uri->setVar('limitstart', $limitstart);
-				$uri = \JRoute::_($uri);
+				$uri = Route::_($uri);
 
 				$document->addLink('last', new Link($uri));
 			}

@@ -11,6 +11,7 @@ use FOF40\Container\Container;
 use FOF40\Hal\Document;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die;
 
@@ -666,6 +667,6 @@ class Template
 			$result = $route;
 		}
 
-		return \JRoute::_($result);
+		return Route::_($result);
 	}
 }

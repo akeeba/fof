@@ -16,6 +16,7 @@ use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die;
 
@@ -43,7 +44,7 @@ class Controller
 	protected $doTask;
 
 	/**
-	 * Bit mask to enable routing through JRoute on redirects. The value can be:
+	 * Bit mask to enable routing through Route on redirects. The value can be:
 	 *
 	 * 0 = never
 	 * 1 = frontend only
@@ -848,7 +849,7 @@ class Controller
 	 */
 	public function setRedirect($url, $msg = null, $type = null)
 	{
-		// If we're parsing a non-SEF URL decide whether to use JRoute or not
+		// If we're parsing a non-SEF URL decide whether to use Route or not
 		if (strpos($url, 'index.php') === 0)
 		{
 			$isAdmin = $this->container->platform->isBackend();
@@ -866,7 +867,7 @@ class Controller
 
 			if ($auto)
 			{
-				$url = \JRoute::_($url, false);
+				$url = Route::_($url, false);
 			}
 		}
 
