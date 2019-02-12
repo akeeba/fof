@@ -26,6 +26,13 @@ use FOF40\Model\DataModel\Relation\Exception\RelationNotFound;
 use FOF40\Model\DataModel\RelationManager;
 use FOF40\Utils\ArrayHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Table\ContentHistory;
+use Joomla\CMS\Table\ContentType;
+use Joomla\CMS\Table\CoreContent;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\TableInterface;
 
 defined('_JEXEC') or die;
 
@@ -57,7 +64,7 @@ defined('_JEXEC') or die;
  *
  * Type hinting -- end
  */
-class DataModel extends Model implements \JTableInterface
+class DataModel extends Model implements TableInterface
 {
 	/** @var   array  A list of tables in the database */
 	protected static $tableCache = array();
@@ -702,7 +709,7 @@ class DataModel extends Model implements \JTableInterface
 	}
 
 	/**
-	 * Get the columns from database table. For JTableInterface compatibility.
+	 * Get the columns from database table. For TableInterface compatibility.
 	 *
 	 * @return  mixed  An array of the field names, or false if an error occurs.
 	 */
@@ -859,7 +866,7 @@ class DataModel extends Model implements \JTableInterface
 	}
 
 	/**
-	 * Alias of getIdFieldName. Used for JTableInterface compatibility.
+	 * Alias of getIdFieldName. Used for TableInterface compatibility.
 	 *
 	 * @return  string  The name of the primary key for the table.
      *
@@ -1255,7 +1262,7 @@ class DataModel extends Model implements \JTableInterface
 	}
 
 	/**
-	 * Alias of save. For JTableInterface compatibility.
+	 * Alias of save. For TableInterface compatibility.
 	 *
 	 * @param   boolean  $updateNulls  Blatantly ignored.
 	 *
@@ -2373,7 +2380,7 @@ class DataModel extends Model implements \JTableInterface
 	}
 
 	/**
-	 * Method to load a row from the database by primary key. Used for JTableInterface compatibility.
+	 * Method to load a row from the database by primary key. Used for TableInterface compatibility.
 	 *
 	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
 	 *                           set the instance property value is used.
@@ -3616,14 +3623,14 @@ class DataModel extends Model implements \JTableInterface
 	 * Loads the asset table related to this table.
 	 * This will help tests, too, since we can mock this function.
 	 *
-	 * @return bool|\JTableAsset     False on failure, otherwise JTableAsset
+	 * @return bool|Asset     False on failure, otherwise Asset
 	 */
 	protected function getAsset()
 	{
 		$name     = $this->getAssetName();
 
-		// Do NOT touch JTable here -- we are loading the core asset table which is a JTable, not a F0FTable
-		$asset    = \JTable::getInstance('Asset');
+		// Do NOT touch Table here -- we are loading the core asset table which is a Joomla Table, not a FOF model
+		$asset    = new Asset(Factory::getDbo());
 
 		if (!$asset->loadByName($name))
 		{
@@ -3691,17 +3698,14 @@ class DataModel extends Model implements \JTableInterface
 	 * asset does not exist it will be created.
 	 *
 	 * @param   DataModel  $model  A model object for the asset parent.
-	 * @param   integer   $id     Id to look up
+	 * @param   integer   $id      Id to look up
 	 *
 	 * @return  integer
 	 */
 	public function getAssetParentId($model = null, $id = null)
 	{
-		if ($model) {}; // Prevent phpStorm's inspections from freaking out
-		if ($id) {}; // Prevent phpStorm's inspections from freaking out
-
 		// For simple cases, parent to the asset root.
-		$assets = \JTable::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
+		$assets = new Asset($this->getDbo());
 		$rootId = $assets->getRootId();
 
 		if (!empty($rootId))
@@ -3747,7 +3751,7 @@ class DataModel extends Model implements \JTableInterface
 		}
 
 		// Get an instance of the row to checkout.
-		$historyTable = \JTable::getInstance('Contenthistory');
+		$historyTable = new ContentHistory(Factory::getDbo());
 
 		if (!$historyTable->load($version_id))
 		{
@@ -3756,7 +3760,8 @@ class DataModel extends Model implements \JTableInterface
 
 		$rowArray = ArrayHelper::fromObject(json_decode($historyTable->version_data));
 
-		$typeId = \JTable::getInstance('Contenttype')->getTypeId($alias);
+		$contentTypeTable = new ContentType(Factory::getDbo());
+		$typeId = $contentTypeTable->getTypeId($alias);
 
 		if ($historyTable->ucm_type_id != $typeId)
 		{
@@ -3808,7 +3813,7 @@ class DataModel extends Model implements \JTableInterface
 	 *
 	 * @return   string  The content type alias
 	 *
-	 * @throws   \Exception  If you have not set the contentType configuration variable
+	 * @throws   NoContentType  If you have not set the contentType configuration variable
 	 */
 	public function getContentType()
 	{
@@ -3830,7 +3835,7 @@ class DataModel extends Model implements \JTableInterface
 	 */
 	public function checkContentType($alias = null)
 	{
-		$contentType = new \JTableContenttype($this->getDbo());
+		$contentType = new ContentType($this->getDbo());
 
 		if (!$alias)
 		{
@@ -3857,23 +3862,23 @@ class DataModel extends Model implements \JTableInterface
 			$contentType->type_title = $name;
 			$contentType->type_alias = $alias;
 			$contentType->table = json_encode(
-				array(
-					'special' => array(
+				[
+					'special' => [
 						'dbtable' => $this->getTableName(),
 						'key'     => $this->getKeyName(),
 						'type'    => $name,
 						'prefix'  => $this->container->getNamespacePrefix() . '\\Model\\',
 						'class'   => $this->getName(),
-						'config'  => 'array()'
-					),
-					'common' => array(
+						'config'  => [],
+					],
+					'common'  => [
 						'dbtable' => '#__ucm_content',
-						'key' => 'ucm_id',
-						'type' => 'CoreContent',
-						'prefix' => 'JTable',
-						'config' => 'array()'
-					)
-				)
+						'key'     => 'ucm_id',
+						'type'    => 'CoreContent',
+						'prefix'  => 'JTable',
+						'config'  => [],
+					],
+				]
 			);
 
 			$contentType->field_mappings = json_encode(
@@ -4034,7 +4039,7 @@ class DataModel extends Model implements \JTableInterface
 		// Process the tags
 		$data  = $this->getData();
 		$alias = $this->getContentType();
-		$ucmContentTable = \JTable::getInstance('Corecontent');
+		$ucmContentTable = new CoreContent(Factory::getDbo());
 
 		$ucm = new \JUcmContent($this, $alias);
 		$ucmData = $data ? $ucm->mapData($data) : $ucm->ucmData;

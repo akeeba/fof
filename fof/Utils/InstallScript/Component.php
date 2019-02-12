@@ -14,6 +14,9 @@ use JFile;
 use JFolder;
 use JInstaller;
 use JLoader;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Menu;
+use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die;
 
@@ -746,8 +749,8 @@ class Component extends BaseInstaller
 	private function _createAdminMenus($parent)
 	{
 		$db = $parent->getParent()->getDbo();
-		/** @var \JTableMenu $table */
-		$table  = \JTable::getInstance('menu');
+		/** @var Menu $table */
+		$table  = new Menu(Factory::getDbo());
 		$option = $parent->get('element');
 
 		// If a component exists with this option in the table then we don't need to add menus
@@ -1043,7 +1046,7 @@ class Component extends BaseInstaller
 				$data['link'] = 'index.php?option=' . $option . $qstring;
 			}
 
-			$table = \JTable::getInstance('menu');
+			$table = new Menu(Factory::getDbo());
 
 			try
 			{
@@ -1109,8 +1112,7 @@ class Component extends BaseInstaller
 	 */
 	private function _rebuildMenu()
 	{
-		/** @var \JTableMenu $table */
-		$table = \JTable::getInstance('menu');
+		$table = new Menu(Factory::getDbo());
 		$db    = $table->getDbo();
 
 		// We need to rebuild the menu based on its root item. By default this is the menu item with ID=1. However, some

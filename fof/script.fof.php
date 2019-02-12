@@ -6,6 +6,8 @@
  */
 
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Extension;
 
 defined('_JEXEC') or die();
 
@@ -656,8 +658,8 @@ class file_fof40InstallerScript
 
 	protected function removeExtension($id)
 	{
-		/** @var Joomla\CMS\Table\Extension $extension */
-		$extension = JTable::getInstance('Extension');
+		/** @var Extension $extension */
+		$extension = new Extension(Factory::getDbo());
 		$extension->load($id);
 
 		$keyName = $extension->getKeyName();

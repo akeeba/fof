@@ -10,6 +10,9 @@ namespace  FOF40\Model\DataModel\Behaviour;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die;
 
@@ -46,7 +49,7 @@ class Assets extends Observer
 		$name     = $model->getAssetName();
 		$title    = $model->getAssetTitle();
 
-		$asset = \JTable::getInstance('Asset');
+		$asset = new Asset(Factory::getDbo());
 		$asset->loadByName($name);
 
 		// Re-inject the asset id.
@@ -55,7 +58,7 @@ class Assets extends Observer
 		// Check for an error.
 		$error = $asset->getError();
 
-		// Since we are using JTable, there is no way to mock it and test for failures :(
+		// Since we are using \Joomla\CMS\Table\Table, there is no way to mock it and test for failures :(
 		// @codeCoverageIgnoreStart
 		if ($error)
 		{
@@ -80,7 +83,7 @@ class Assets extends Observer
 			$asset->rules = (string) $model->getRules();
 		}
 
-		// Since we are using JTable, there is no way to mock it and test for failures :(
+		// Since we are using \Joomla\CMS\Table\Table, there is no way to mock it and test for failures :(
 		// @codeCoverageIgnoreStart
 		if (!$asset->check() || !$asset->store())
 		{
@@ -161,12 +164,12 @@ class Assets extends Observer
 		// If I have an invalid assetName I have to stop
 		$name = $model->getAssetName();
 
-		// Do NOT touch JTable here -- we are loading the core asset table which is a JTable, not a FOF Table
-		$asset =\ JTable::getInstance('Asset');
+		// Do NOT touch \Joomla\CMS\Table\Table here -- we are loading the core asset table which is a \Joomla\CMS\Table\Table, not a FOF Table
+		$asset = new Asset(Factory::getDbo());
 
 		if ($asset->loadByName($name))
 		{
-			// Since we are using JTable, there is no way to mock it and test for failures :(
+			// Since we are using \Joomla\CMS\Table\Table, there is no way to mock it and test for failures :(
 			// @codeCoverageIgnoreStart
 			if (!$asset->delete())
 			{
