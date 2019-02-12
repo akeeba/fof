@@ -9,6 +9,7 @@ namespace  FOF40\Template;
 
 use FOF40\Container\Container;
 use JDocument;
+use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -504,7 +505,7 @@ class Template
 
 		$contents = '';
 
-		foreach (\JModuleHelper::getModules($position) as $mod)
+		foreach (ModuleHelper::getModules($position) as $mod)
 		{
 			$contents .= $renderer->render($mod, $params);
 		}
@@ -545,7 +546,7 @@ class Template
 
 		$params = array('style' => $style);
 
-		$mod = \JModuleHelper::getModule($moduleName);
+		$mod = ModuleHelper::getModule($moduleName);
 
 		if (empty($mod))
 		{
