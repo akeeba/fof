@@ -15,7 +15,7 @@ class MockLanguage
 	public static $loadedLanguages = [];
 
 	/**
-	 * Creates and instance of the mock JLanguage object.
+	 * Creates and instance of the mock Language object.
 	 *
 	 * @param   FOFTestCase $test A test object.
 	 *
@@ -29,7 +29,7 @@ class MockLanguage
 		$methods = static::getMethods();
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('\JLanguage')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Language\Language')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')
@@ -69,7 +69,7 @@ class MockLanguage
 	}
 
 	/**
-	 * Callback for the mock JLanguage::_ method.
+	 * Callback for the mock Language::_ method.
 	 *
 	 * @param   string  $string               The string to translate
 	 * @param   boolean $jsSafe               Make the result javascript safe

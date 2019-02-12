@@ -136,7 +136,7 @@ class Builder
 	}
 
 	/**
-	 * Load the strings array in Joomla!'s JLanguage object
+	 * Load the strings array in Joomla!'s Language object
 	 */
 	protected function applyStrings()
 	{

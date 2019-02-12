@@ -18,6 +18,8 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\WebApplication;
+use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
 use JUri;
@@ -117,13 +119,13 @@ class Platform extends BasePlatform
 		{
 			try
 			{
-				if (is_null(\JFactory::$application))
+				if (is_null(JoomlaFactory::$application))
 				{
 					static::$isCLI = true;
 				}
 				else
 				{
-					$app = \JFactory::getApplication();
+					$app = JoomlaFactory::getApplication();
 					static::$isCLI = $app instanceof \Exception || $app instanceof CliApplication;
 				}
 			}
@@ -138,7 +140,7 @@ class Platform extends BasePlatform
 			}
 			else
 			{
-				static::$isAdmin = !\JFactory::$application ? false : \JFactory::getApplication()->isAdmin();
+				static::$isAdmin = !JoomlaFactory::$application ? false : JoomlaFactory::getApplication()->isAdmin();
 			}
 		}
 
@@ -159,8 +161,8 @@ class Platform extends BasePlatform
 			'public' => JPATH_SITE,
 			'media'  => JPATH_SITE . '/media',
 			'admin'  => JPATH_ADMINISTRATOR,
-			'tmp'    => \JFactory::getConfig()->get('tmp_path'),
-			'log'    => \JFactory::getConfig()->get('log_path')
+			'tmp'    => JoomlaFactory::getConfig()->get('tmp_path'),
+			'log'    => JoomlaFactory::getConfig()->get('log_path')
 		);
 	}
 
@@ -204,7 +206,7 @@ class Platform extends BasePlatform
 	 */
 	public function getTemplate($params = false)
 	{
-		return \JFactory::getApplication()->getTemplate($params);
+		return JoomlaFactory::getApplication()->getTemplate($params);
 	}
 
 	/**
@@ -353,7 +355,7 @@ class Platform extends BasePlatform
 			return new \JUser();
 		}
 
-		return \JFactory::getUser($id);
+		return JoomlaFactory::getUser($id);
 	}
 
 	/**
@@ -371,7 +373,7 @@ class Platform extends BasePlatform
 		{
 			try
 			{
-				$document = \JFactory::getDocument();
+				$document = JoomlaFactory::getDocument();
 			}
 			catch (\Exception $exc)
 			{
@@ -401,7 +403,7 @@ class Platform extends BasePlatform
 				$time = time();
 			}
 
-			$coreObject = \JFactory::getDate($time, $tzOffest);
+			$coreObject = JoomlaFactory::getDate($time, $tzOffest);
 
 			return new DateDecorator($coreObject);
 		}
@@ -412,13 +414,13 @@ class Platform extends BasePlatform
 	}
 
 	/**
-	 * Return the \JLanguage instance of the CMS/application
+	 * Return the Language instance of the CMS/application
 	 *
-	 * @return \JLanguage
+	 * @return Language
 	 */
 	public function getLanguage()
 	{
-		return \JFactory::getLanguage();
+		return JoomlaFactory::getLanguage();
 	}
 
 	/**
@@ -428,7 +430,7 @@ class Platform extends BasePlatform
 	 */
 	public function getDbo()
 	{
-		return \JFactory::getDbo();
+		return JoomlaFactory::getDbo();
 	}
 
 	/**
@@ -463,7 +465,7 @@ class Platform extends BasePlatform
 			return $ret;
 		}
 
-		$app = \JFactory::getApplication();
+		$app = JoomlaFactory::getApplication();
 
 		if (method_exists($app, 'getUserState'))
 		{
@@ -539,7 +541,7 @@ class Platform extends BasePlatform
 				return \JEventDispatcher::getInstance()->trigger($event, $data);
 			}
 
-			return \JFactory::getApplication()->triggerEvent($event, $data);
+			return JoomlaFactory::getApplication()->triggerEvent($event, $data);
 		}
 		else
 		{
@@ -564,7 +566,7 @@ class Platform extends BasePlatform
 			return true;
 		}
 
-		$ret = \JFactory::getUser()->authorise($action, $assetname);
+		$ret = JoomlaFactory::getUser()->authorise($action, $assetname);
 
 		// Work around Joomla returning null instead of false in some cases.
 		return $ret ? true : false;
@@ -687,7 +689,7 @@ class Platform extends BasePlatform
 		if (is_null($this->_cache) || $force)
 		{
 			// Try to get data from Joomla!'s cache
-			$cache = \JFactory::getCache('fof', '');
+			$cache = JoomlaFactory::getCache('fof', '');
 			$this->_cache = $cache->get('cache', 'fof');
 
 			$isRegistry = is_object($this->_cache);
@@ -717,7 +719,7 @@ class Platform extends BasePlatform
 		// Get the Registry object of our cached data
 		$registry = $this->getCacheObject();
 
-		$cache = \JFactory::getCache('fof', '');
+		$cache = JoomlaFactory::getCache('fof', '');
 
 		return $cache->store($registry, 'cache', 'fof');
 	}
@@ -734,7 +736,7 @@ class Platform extends BasePlatform
 	public function clearCache()
 	{
 		$false = false;
-		$cache = \JFactory::getCache('fof', '');
+		$cache = JoomlaFactory::getCache('fof', '');
 		$cache->store($false, 'cache', 'fof');
 	}
 
@@ -747,7 +749,7 @@ class Platform extends BasePlatform
 	 */
 	public function getConfig()
 	{
-		return \JFactory::getConfig();
+		return JoomlaFactory::getConfig();
 	}
 
 	/**
@@ -769,7 +771,7 @@ class Platform extends BasePlatform
 		// if we're in Joomla 2.5.18+ or 3.2.1+
 		if ($response->status != \JAuthentication::STATUS_SUCCESS && method_exists('JUserHelper', 'verifyPassword'))
 		{
-			$db = \JFactory::getDbo();
+			$db = JoomlaFactory::getDbo();
 			$query = $db->getQuery(true)
 				->select('id, password')
 				->from('#__users')
@@ -787,7 +789,7 @@ class Platform extends BasePlatform
 					$response->email = $user->email;
 					$response->fullname = $user->name;
 
-					if (\JFactory::getApplication()->isAdmin())
+					if (JoomlaFactory::getApplication()->isAdmin())
 					{
 						$response->language = $user->getParam('admin_language');
 					}
@@ -828,7 +830,7 @@ class Platform extends BasePlatform
 	 */
 	public function logoutUser()
 	{
-		$app = \JFactory::getApplication();
+		$app = JoomlaFactory::getApplication();
 		$user = $this->getUser();
 		$options = array('remember' => false);
 		$parameters = array(
@@ -984,7 +986,7 @@ class Platform extends BasePlatform
 	 */
 	public function setHeader($name, $value, $replace = false)
 	{
-		\JFactory::getApplication()->setHeader($name, $value, $replace);
+		JoomlaFactory::getApplication()->setHeader($name, $value, $replace);
 	}
 
 	/**
@@ -996,7 +998,7 @@ class Platform extends BasePlatform
 	 */
 	public function sendHeaders()
 	{
-		\JFactory::getApplication()->sendHeaders();
+		JoomlaFactory::getApplication()->sendHeaders();
 	}
 
 	/**
@@ -1011,7 +1013,7 @@ class Platform extends BasePlatform
 		// Necessary workaround for broken System - Page Cache plugin in Joomla! 3.7.0
 		$this->bugfixJoomlaCachePlugin();
 
-		\JFactory::getApplication()->close($code);
+		JoomlaFactory::getApplication()->close($code);
 	}
 
 	/**
@@ -1031,7 +1033,7 @@ class Platform extends BasePlatform
 		// Necessary workaround for broken System - Page Cache plugin in Joomla! 3.7.0
 		$this->bugfixJoomlaCachePlugin();
 
-		$app = \JFactory::getApplication();
+		$app = JoomlaFactory::getApplication();
 
 		if (class_exists('\Joomla\CMS\Application\CMSApplication') && class_exists('\Joomla\CMS\Application\WebApplication')
 			&& ($app instanceof CMSApplication)

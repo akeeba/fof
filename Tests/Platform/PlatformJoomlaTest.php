@@ -287,8 +287,8 @@ class PlatformJoomlaTest extends FOFTestCase
 		$expected = \JFactory::getLanguage();
 		$actual   = $this->platform->getLanguage();
 
-		$this->assertInstanceOf('\JLanguage', $actual, "getLanguage() must return a JLanguage object");
-		$this->assertEquals($expected, $actual, "getLanguage() must return the language object from JFactory");
+		$this->assertInstanceOf('\Joomla\CMS\Language\Language	', $actual, "getLanguage() must return a Language object");
+		$this->assertEquals($expected, $actual, "getLanguage() must return the language object from Factory");
 	}
 
 	/**

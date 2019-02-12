@@ -10,6 +10,7 @@ namespace  FOF40\Utils;
 use JCache;
 use JFactory;
 use JHtml;
+use Joomla\CMS\Language\LanguageHelper;
 use JText;
 
 defined('_JEXEC') or die;
@@ -280,7 +281,7 @@ class SelectOptions
 		}
 
 		// Make sure the languages are sorted base on locale instead of random sorting
-		$options = \JLanguageHelper::createLanguageList(null, constant('JPATH_' . strtoupper($client)), true, true);
+		$options = LanguageHelper::createLanguageList(null, constant('JPATH_' . strtoupper($client)), true, true);
 
 		if (count($options) > 1)
 		{

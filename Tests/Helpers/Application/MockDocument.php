@@ -13,7 +13,7 @@ use FOF40\Tests\Helpers\FOFTestCase;
 class MockDocument
 {
 	/**
-	 * Creates and instance of the mock JLanguage object.
+	 * Creates and instance of the mock Language object.
 	 *
 	 * @param   FOFTestCase $test A test object.
 	 *

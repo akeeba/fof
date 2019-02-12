@@ -11,6 +11,7 @@ use Exception;
 use FOF40\Container\Container;
 use FOF40\Date\Date;
 use FOF40\Input\Input;
+use Joomla\CMS\Language\Language;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -236,9 +237,9 @@ interface PlatformInterface
 	public function getDate($time = 'now', $tzOffest = null, $locale = true);
 
 	/**
-	 * Return the \JLanguage instance of the CMS/application
+	 * Return the Language instance of the CMS/application
 	 *
-	 * @return \JLanguage
+	 * @return Language
 	 */
 	public function getLanguage();
 
