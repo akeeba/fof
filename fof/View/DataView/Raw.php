@@ -26,7 +26,7 @@ class Raw extends View implements DataViewInterface
 	/** @var \JPagination The pagination object */
 	protected $pagination = null;
 
-	/** @var \JRegistry|Registry Page parameters object, for front-end views */
+	/** @var Registry Page parameters object, for front-end views */
 	protected $pageParams = null;
 
 	/** @var Collection The records loaded (browse views) */
@@ -220,7 +220,7 @@ class Raw extends View implements DataViewInterface
 	/**
 	 * Get the Joomla! page parameters
 	 *
-	 * @return \JRegistry|Registry
+	 * @return Registry
 	 */
 	public function getPageParams()
 	{

@@ -67,7 +67,7 @@ class Language extends Observer
             $this->lang_filter_plugin = \JPluginHelper::getPlugin('system', 'languagefilter');
         }
 
-		$lang_filter_params = class_exists('JRegistry') ? new \JRegistry($this->lang_filter_plugin->params) : new Registry($this->lang_filter_plugin->params);
+		$lang_filter_params = new Registry($this->lang_filter_plugin->params);
 
 		$languages = array('*');
 
@@ -140,7 +140,7 @@ class Language extends Observer
             $this->lang_filter_plugin = \JPluginHelper::getPlugin('system', 'languagefilter');
         }
 
-		$lang_filter_params = class_exists('JRegistry') ? new \JRegistry($this->lang_filter_plugin->params) : new Registry($this->lang_filter_plugin->params);
+		$lang_filter_params = new Registry($this->lang_filter_plugin->params);
 
 		$languages = array('*');
 

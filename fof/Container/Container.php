@@ -784,19 +784,11 @@ END;
 
 			$db->setQuery($query);
 
-			$json = $db->loadResult();
-
-			if (class_exists('JRegistry'))
-			{
-				$params = new \JRegistry($json);
-			}
-			else
-			{
-				$params = new Registry($json);
-			}
+			$json   = $db->loadResult();
+			$params = new Registry($json);
 
 			$version = $params->get('version', $version);
-			$date = $params->get('creationDate', $date);
+			$date    = $params->get('creationDate', $date);
 		}
 		catch (\Exception $e)
 		{

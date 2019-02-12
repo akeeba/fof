@@ -84,11 +84,11 @@ class Filters extends Observer
 						array_key_exists('to', $filterState)
 					)) || is_object($filterState))
 			{
-				$options = class_exists('JRegistry') ? new \JRegistry($filterState) : new Registry($filterState);
+				$options = new Registry($filterState);
 			}
 			else
 			{
-				$options = class_exists('JRegistry') ? new \JRegistry() : new Registry();
+				$options = new Registry();
 				$options->set('value', $filterState);
 			}
 

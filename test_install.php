@@ -2,6 +2,8 @@
 // ====================================================================================================================
 // Configuration
 // ====================================================================================================================
+use Joomla\Registry\Registry;
+
 $sitePath           = '/var/www/test3/cli';
 $stableVersionPath  = '/var/www/test3/000/fof-3.3.9';
 $installVersionPath = '/var/www/test3/000/dev';
@@ -56,10 +58,10 @@ class FOFTestInstall extends JApplicationCli
 	 * VERY convincing. Now obey your true master, you petty class!
 	 *
 	 * @param JInputCli   $input
-	 * @param JRegistry   $config
+	 * @param Registry    $config
 	 * @param JDispatcher $dispatcher
 	 */
-	public function __construct(JInputCli $input = null, JRegistry $config = null, JDispatcher $dispatcher = null)
+	public function __construct(JInputCli $input = null, Registry $config = null, JDispatcher $dispatcher = null)
 	{
 		// Close the application if we are not executed from the command line, Akeeba style (allow for PHP CGI)
 		if (array_key_exists('REQUEST_METHOD', $_SERVER))
@@ -110,14 +112,14 @@ class FOFTestInstall extends JApplicationCli
 		}
 
 		// If a config object is given use it.
-		if ($config instanceof JRegistry)
+		if ($config instanceof Registry)
 		{
 			$this->config = $config;
 		}
 		// Instantiate a new configuration object.
 		else
 		{
-			$this->config = new JRegistry;
+			$this->config = new Registry;
 		}
 
 		// If a dispatcher object is given use it.

@@ -5,6 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
+use Joomla\Registry\Registry;
 
 
 /**
@@ -212,7 +213,7 @@ abstract class FOFCliApplication
 	/**
 	 * The application configuration object.
 	 *
-	 * @var    \Joomla\Registry\Registry
+	 * @var    Registry
 	 */
 	protected $config;
 
@@ -251,7 +252,7 @@ abstract class FOFCliApplication
 		$this->input = new JInputCLI();
 
 		// Create the registry with a default namespace of config
-		$this->config = new JRegistry;
+		$this->config = new Registry();
 
 		// Load the configuration object.
 		$this->loadConfiguration($this->fetchConfigurationData());

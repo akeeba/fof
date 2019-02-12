@@ -27,7 +27,7 @@ abstract class RenderBase implements RenderInterface
 	/** @var   int  The priority of this renderer in case we have multiple available ones */
 	protected $priority = 0;
 
-	/** @var   \JRegistry|Registry  A registry object holding renderer options */
+	/** @var   Registry  A registry object holding renderer options */
 	protected $optionsRegistry = null;
 
 	/**
@@ -37,7 +37,7 @@ abstract class RenderBase implements RenderInterface
 	{
 		$this->container = $container;
 
-		$this->optionsRegistry = class_exists('JRegistry') ? new \JRegistry() : new Registry();
+		$this->optionsRegistry = new Registry();
 	}
 
 	/**

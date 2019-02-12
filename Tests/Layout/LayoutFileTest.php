@@ -13,6 +13,7 @@ use FOF40\Layout\LayoutFile;
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestJoomlaPlatform;
+use Joomla\Registry\Registry;
 
 /**
  * @covers  FOF40\Layout\LayoutFile::<protected>
@@ -93,8 +94,8 @@ class LayoutFileTest extends FOFTestCase
 
 		unset($reflector);
 
-		// Set up a fake options JRegistry object
-		$fakeOptions = new \JRegistry([
+		// Set up a fake options Registry object
+		$fakeOptions = new Registry([
 			'option' => 'com_foobar',
 			'client' => 0,
 		]);

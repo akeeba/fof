@@ -31,7 +31,7 @@ class PageParametersToState extends Observer
 		// Get the page parameters
 		/** @var \JApplicationSite $app */
 		$app    = \JFactory::getApplication();
-		/** @var \JRegistry|Registry $params */
+		/** @var Registry $params */
 		$params = $app->getParams();
 
 		// Extract the page parameter keys

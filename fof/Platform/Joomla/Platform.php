@@ -55,7 +55,7 @@ class Platform extends BasePlatform
 	/**
 	 * The table and table field cache object, used to speed up database access
 	 *
-	 * @var  \JRegistry|Registry|null
+	 * @var  Registry|null
 	 */
 	private $_cache = null;
 
@@ -676,7 +676,7 @@ class Platform extends BasePlatform
 	 *
 	 * @param   boolean $force Should I forcibly reload the registry?
 	 *
-	 * @return  \JRegistry|Registry
+	 * @return  Registry
 	 */
 	private function &getCacheObject($force = false)
 	{
@@ -691,13 +691,13 @@ class Platform extends BasePlatform
 
 			if ($isRegistry)
 			{
-				$isRegistry = class_exists('JRegistry') ? ($this->_cache instanceof \JRegistry) : ($this->_cache instanceof Registry);
+				$isRegistry = $this->_cache instanceof Registry;
 			}
 
 			if (!$isRegistry)
 			{
 				// Create a new Registry object
-				$this->_cache = class_exists('JRegistry') ? new \JRegistry() : new Registry();
+				$this->_cache = new Registry();
 			}
 		}
 
@@ -738,7 +738,7 @@ class Platform extends BasePlatform
 	/**
 	 * Returns an object that holds the configuration of the current site.
 	 *
-	 * @return  \JRegistry|Registry
+	 * @return  Registry
 	 *
 	 * @codeCoverageIgnore
 	 */

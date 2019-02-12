@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\Registry\Registry;
 
 require_once 'PageParametersToStateDataprovider.php';
 
@@ -81,7 +82,7 @@ class PageParametersToStateTest extends DatabaseTest
 
 		$fakeApp = new ClosureHelper([
 			'getParams' => function () use ($test) {
-				return new \JRegistry($test['params']);
+				return new Registry($test['params']);
 			},
 		]);
 
