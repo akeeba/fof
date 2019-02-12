@@ -7,6 +7,7 @@
 
 namespace  FOF40\Model\DataModel\Behaviour;
 
+use ContenthistoryHelper;
 use FOF40\Container\Container;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
@@ -21,7 +22,7 @@ defined('_JEXEC') or die;
  */
 class ContentHistory extends Observer
 {
-    /** @var  \JHelperContenthistory */
+    /** @var  ContentHistoryHelper */
     protected $historyHelper;
 
 	/**
@@ -41,7 +42,7 @@ class ContentHistory extends Observer
 		{
             if(!$this->historyHelper)
             {
-                $this->historyHelper = new \JHelperContenthistory($model->getContentType());
+                $this->historyHelper = new ContentHistoryHelper($model->getContentType());
             }
 
 			$this->historyHelper->store($model);
@@ -66,7 +67,7 @@ class ContentHistory extends Observer
 		{
             if(!$this->historyHelper)
             {
-                $this->historyHelper = new \JHelperContenthistory($model->getContentType());
+                $this->historyHelper = new ContentHistoryHelper($model->getContentType());
             }
 
 			$this->historyHelper->deleteHistory($model);

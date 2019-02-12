@@ -10,6 +10,7 @@ namespace  FOF40\Model\DataModel\Behaviour;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use FOF40\Event\Observable;
+use Joomla\CMS\Helper\TagsHelper;
 
 defined('_JEXEC') or die;
 
@@ -20,14 +21,14 @@ defined('_JEXEC') or die;
  */
 class Tags extends Observer
 {
-    /** @var \JHelperTags  */
+    /** @var TagsHelper  */
     protected $tagsHelper;
 
 	public function __construct(Observable &$subject)
 	{
 		parent::__construct($subject);
 
-		$this->tagsHelper = new \JHelperTags();
+		$this->tagsHelper = new TagsHelper();
 	}
 
 	/**

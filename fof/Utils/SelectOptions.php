@@ -10,6 +10,7 @@ namespace  FOF40\Utils;
 use JCache;
 use JFactory;
 use JHtml;
+use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 
@@ -146,7 +147,7 @@ class SelectOptions
 	 */
 	private static function usergroups(array $params = [])
 	{
-		$options = array_values(\JHelperUsergroups::getInstance()->getAll());
+		$options = array_values(UserGroupsHelper::getInstance()->getAll());
 
 		for ($i = 0, $n = count($options); $i < $n; $i++)
 		{
