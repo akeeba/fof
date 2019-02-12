@@ -13,12 +13,12 @@ use FOF40\Date\Date;
 use FOF40\Date\DateDecorator;
 use FOF40\Input\Input;
 use FOF40\Platform\Base\Platform as BasePlatform;
-use JCache;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Authentication\Authentication;
+use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Language;
@@ -1215,6 +1215,6 @@ class Platform extends BasePlatform
 		);
 
 		$cache_key = Uri::getInstance()->toString();
-		JCache::getInstance('page', $options)->cache->remove($cache_key, 'page');
+		Cache::getInstance('page', $options)->cache->remove($cache_key, 'page');
 	}
 }

@@ -7,9 +7,9 @@
 
 namespace  FOF40\Utils;
 
-use JCache;
 use JFactory;
 use JHtml;
+use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
@@ -176,7 +176,7 @@ class SelectOptions
 		$options = array();
 
 		// Convert to name => name array.
-		foreach (JCache::getStores() as $store)
+		foreach (Cache::getStores() as $store)
 		{
 			$options[] = JHtml::_('select.option', $store, Text::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
 		}

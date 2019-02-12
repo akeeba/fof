@@ -14,6 +14,8 @@ use FOF40\Model\DataModel;
 use FOF40\Model\Model;
 use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Cache\Cache;
+use Joomla\CMS\Cache\Controller\ViewController;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -479,9 +481,9 @@ class Controller
 
 		if ($this->container->platform->isFrontend() && $cachable && ($viewType != 'feed') && ($conf->get('caching') >= 1))
 		{
-			// Get a JCache object
+			// Get a Cache object
 			$option = $this->input->get('option', 'com_foobar', 'cmd');
-			/** @var \JCacheControllerView $cache */
+			/** @var ViewController $cache */
 			$cache = \JFactory::getCache($option, 'view');
 
 			// Set up a cache ID based on component, view, task and user group assignment
@@ -540,7 +542,7 @@ class Controller
 			}
 
 			// Create the cache ID after setting the registered URL params, as they are used to generate the ID
-			$cacheId = md5(serialize(array(\JCache::makeId(), $view->getName(), $this->doTask, $groups, $importantParameters)));
+			$cacheId = md5(serialize(array(Cache::makeId(), $view->getName(), $this->doTask, $groups, $importantParameters)));
 
 			// Get the cached view or cache the current view
 			$cache->get($view, 'display', $cacheId);

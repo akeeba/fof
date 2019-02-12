@@ -7,6 +7,8 @@
 
 namespace  FOF40\Utils;
 
+use Joomla\CMS\Cache\Cache;
+
 defined('_JEXEC') or die;
 
 /**
@@ -73,7 +75,7 @@ class CacheCleaner
 						'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache')
 					);
 
-					$cache = \JCache::getInstance('callback', $options);
+					$cache = Cache::getInstance('callback', $options);
 					$cache->clean();
 				}
 				catch (\Exception $e)
