@@ -18,6 +18,7 @@ use FOF40\Tests\Helpers\ReflectionHelper;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Version as JoomlaVersion;
 
 /**
  * @covers FOF40\Platform\Joomla\Platform::<protected>
@@ -312,7 +313,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	 */
 	public function testGetTemplateSuffixes()
 	{
-		$jversion = new \JVersion;
+		$jversion = new JoomlaVersion;
 
 		if (substr($jversion->RELEASE, 0, 2) != '3.')
 		{

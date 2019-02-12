@@ -22,6 +22,7 @@ use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Version as JoomlaVersion;
 use Joomla\Registry\Registry;
 use JUri;
 
@@ -218,7 +219,7 @@ class Platform extends BasePlatform
 	 */
 	public function getTemplateSuffixes()
 	{
-		$jversion = new \JVersion;
+		$jversion = new JoomlaVersion;
 		$versionParts = explode('.', $jversion->getShortVersion());
 		$majorVersion = array_shift($versionParts);
 		$suffixes = array(

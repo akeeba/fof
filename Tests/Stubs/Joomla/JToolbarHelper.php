@@ -5,13 +5,14 @@
  * @license     GNU GPL version 3 or later
  */
 
+namespace Joomla\CMS\Toolbar;
 
 /**
  * Our fake class for testing the toolbar
  *
- * Class JToolbarHelper
+ * Class \Joomla\CMS\Toolbar\Toolbar
  */
-class JToolbarHelper
+class ToolbarHelper
 {
 	public static $methodCounter = [];
 

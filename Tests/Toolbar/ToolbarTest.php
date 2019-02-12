@@ -16,6 +16,7 @@ use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use FOF40\Tests\Stubs\Toolbar\ToolbarStub;
 use FOF40\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 require_once 'ToolbarDataprovider.php';
 require_once JPATH_TESTS . '/Stubs/Joomla/JToolbarHelper.php';
@@ -135,7 +136,7 @@ class ToolbarTest extends FOFTestCase
 	{
 		$msg = 'Toolbar::onCpanelsBrowse %s - Case: ' . $check['case'];
 
-		\JToolbarHelper::resetMethods();
+		ToolbarHelper::resetMethods();
 
 		$platform           = static::$container->platform;
 		$platform::$isAdmin = $test['mock']['isAdmin'];
@@ -152,9 +153,9 @@ class ToolbarTest extends FOFTestCase
 
 		$toolbar->onCpanelsBrowse();
 
-		$methods = \JToolbarHelper::$methodCounter;
+		$methods = ToolbarHelper::$methodCounter;
 
-		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke JToolbar methods'));
+		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke ToolbarHelper methods'));
 	}
 
 	/**
@@ -167,7 +168,7 @@ class ToolbarTest extends FOFTestCase
 	{
 		$msg = 'Toolbar::onBrowse %s - Case: ' . $check['case'];
 
-		\JToolbarHelper::resetMethods();
+		ToolbarHelper::resetMethods();
 
 		$TestContainer = static::$container;
 		$options       = [];
@@ -216,9 +217,9 @@ class ToolbarTest extends FOFTestCase
 
 		$toolbar->onBrowse();
 
-		$methods = \JToolbarHelper::$methodCounter;
+		$methods = ToolbarHelper::$methodCounter;
 
-		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke JToolbar methods'));
+		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke ToolbarHelper methods'));
 	}
 
 	/**
@@ -230,7 +231,7 @@ class ToolbarTest extends FOFTestCase
 	{
 		$msg = 'Toolbar::onRead %s - Case: ' . $check['case'];
 
-		\JToolbarHelper::resetMethods();
+		ToolbarHelper::resetMethods();
 
 		$platform           = static::$container->platform;
 		$platform::$isAdmin = $test['mock']['isAdmin'];
@@ -248,9 +249,9 @@ class ToolbarTest extends FOFTestCase
 
 		$toolbar->onRead();
 
-		$methods = \JToolbarHelper::$methodCounter;
+		$methods = ToolbarHelper::$methodCounter;
 
-		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke JToolbar methods'));
+		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke ToolbarHelper methods'));
 	}
 
 	/**
@@ -262,7 +263,7 @@ class ToolbarTest extends FOFTestCase
 	{
 		$msg = 'Toolbar::onAdd %s - Case: ' . $check['case'];
 
-		\JToolbarHelper::resetMethods();
+		ToolbarHelper::resetMethods();
 
 		$platform           = static::$container->platform;
 		$platform::$isAdmin = $test['mock']['isAdmin'];
@@ -279,9 +280,9 @@ class ToolbarTest extends FOFTestCase
 
 		$toolbar->onAdd();
 
-		$methods = \JToolbarHelper::$methodCounter;
+		$methods = ToolbarHelper::$methodCounter;
 
-		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke JToolbar methods'));
+		$this->assertEquals($check['methods'], $methods, sprintf($msg, 'Failed to invoke ToolbarHelper methods'));
 	}
 
 	/**

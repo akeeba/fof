@@ -16,7 +16,7 @@ use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
-use JToolBarHelper;
+use \Joomla\CMS\Toolbar\ToolbarHelper as JoomlaToolbarHelper;
 
 defined('_JEXEC') or die;
 
@@ -90,11 +90,11 @@ class Toolbar
 			$this->renderFrontendSubmenu = $config['renderFrontendSubmenu'];
 		}
 
-		// If not in the administrative area, load the JToolbarHelper
+		// If not in the administrative area, load the JoomlaToolbarHelper
 		if (!$platform->isBackend())
 		{
 			// Needed for tests, so we can inject our "special" helper class
-			if (!class_exists('\\JToolbarHelper'))
+			if (!class_exists('\Joomla\CMS\Toolbar\Toolbar'))
 			{
 				$platformDirs = $platform->getPlatformBaseDirs();
 				$path = $platformDirs['root'] . '/administrator/includes/toolbar.php';
@@ -259,14 +259,14 @@ class Toolbar
 
 		$option = $this->container->componentName;
 
-		JToolBarHelper::title(Text::_(strtoupper($option)), str_replace('com_', '', $option));
+		JoomlaToolbarHelper::title(Text::_(strtoupper($option)), str_replace('com_', '', $option));
 
 		if (!$this->isDataView())
 		{
 			return;
 		}
 
-		JToolBarHelper::preferences($option);
+		JoomlaToolbarHelper::preferences($option);
 	}
 
 	/**
@@ -293,7 +293,7 @@ class Toolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $view);
-		JToolBarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), str_replace('com_', '', $option));
+		JoomlaToolbarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), str_replace('com_', '', $option));
 
 		if (!$this->isDataView())
 		{
@@ -303,17 +303,17 @@ class Toolbar
 		// Add toolbar buttons
 		if ($this->perms->create)
 		{
-			JToolBarHelper::addNew();
+			JoomlaToolbarHelper::addNew();
 		}
 
 		if ($this->perms->edit)
 		{
-			JToolBarHelper::editList();
+			JoomlaToolbarHelper::editList();
 		}
 
 		if ($this->perms->create || $this->perms->edit)
 		{
-			JToolBarHelper::divider();
+			JoomlaToolbarHelper::divider();
 		}
 
 		// Published buttons are only added if there is a enabled field in the table
@@ -323,9 +323,9 @@ class Toolbar
 
 			if ($model->hasField('enabled') && $this->perms->editstate)
 			{
-				JToolBarHelper::publishList();
-				JToolBarHelper::unpublishList();
-				JToolBarHelper::divider();
+				JoomlaToolbarHelper::publishList();
+				JoomlaToolbarHelper::unpublishList();
+				JoomlaToolbarHelper::divider();
 			}
 		}
 		catch (\Exception $e)
@@ -336,7 +336,7 @@ class Toolbar
 		if ($this->perms->delete)
 		{
 			$msg = Text::_($option . '_CONFIRM_DELETE');
-			JToolBarHelper::deleteList(strtoupper($msg));
+			JoomlaToolbarHelper::deleteList(strtoupper($msg));
 		}
 
 		// A Check-In button is only added if there is a locked_on field in the table
@@ -346,7 +346,7 @@ class Toolbar
 
 			if ($model->hasField('locked_on') && $this->perms->edit)
 			{
-				JToolBarHelper::checkin();
+				JoomlaToolbarHelper::checkin();
 			}
 
 		}
@@ -380,7 +380,7 @@ class Toolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $view . '_READ');
-		JToolBarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), $componentName);
+		JoomlaToolbarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), $componentName);
 
 		if (!$this->isDataView())
 		{
@@ -388,7 +388,7 @@ class Toolbar
 		}
 
 		// Set toolbar icons
-		JToolBarHelper::back();
+		JoomlaToolbarHelper::back();
 	}
 
 	/**
@@ -410,7 +410,7 @@ class Toolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $this->container->inflector->pluralize($view)) . '_EDIT';
-		JToolBarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), $componentName);
+		JoomlaToolbarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), $componentName);
 
 		if (!$this->isDataView())
 		{
@@ -422,17 +422,17 @@ class Toolbar
 		{
 			// Show the apply button only if I can edit the record, otherwise I'll return to the edit form and get a
 			// 403 error since I can't do that
-			JToolBarHelper::apply();
+			JoomlaToolbarHelper::apply();
 		}
 
-		JToolBarHelper::save();
+		JoomlaToolbarHelper::save();
 
 		if ($this->perms->create)
 		{
-			JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			JoomlaToolbarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 		}
 
-		JToolBarHelper::cancel();
+		JoomlaToolbarHelper::cancel();
 	}
 
 	/**
@@ -861,11 +861,11 @@ class Toolbar
 					$value = Text::_($value);
 				}
 
-				JToolbarHelper::title($value, $icon);
+				JoomlaToolbarHelper::title($value, $icon);
 				break;
 
 			case 'divider':
-				JToolbarHelper::divider();
+				JoomlaToolbarHelper::divider();
 				break;
 
 			case 'custom':
@@ -876,7 +876,7 @@ class Toolbar
 				$listSelect = isset($attributes['list_select']) ?
 					StringHelper::toBool($attributes['list_select']) : true;
 
-				JToolbarHelper::custom($task, $icon, $iconOver, $alt, $listSelect);
+				JoomlaToolbarHelper::custom($task, $icon, $iconOver, $alt, $listSelect);
 				break;
 
 			case 'preview':
@@ -884,7 +884,7 @@ class Toolbar
 				$update_editors = isset($attributes['update_editors']) ?
 					StringHelper::toBool($attributes['update_editors']) : false;
 
-				JToolbarHelper::preview($url, $update_editors);
+				JoomlaToolbarHelper::preview($url, $update_editors);
 				break;
 
 			case 'help':
@@ -898,28 +898,28 @@ class Toolbar
 				$override = isset($attributes['override']) ? $attributes['override'] : null;
 				$component = isset($attributes['component']) ? $attributes['component'] : null;
 
-				JToolbarHelper::help($ref, $com, $override, $component);
+				JoomlaToolbarHelper::help($ref, $com, $override, $component);
 				break;
 
 			case 'back':
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_BACK';
 				$href = isset($attributes['href']) ? $attributes['href'] : 'javascript:history.back();';
 
-				JToolbarHelper::back($alt, $href);
+				JoomlaToolbarHelper::back($alt, $href);
 				break;
 
 			case 'media_manager':
 				$directory = isset($attributes['directory']) ? $attributes['directory'] : '';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UPLOAD';
 
-				JToolbarHelper::media_manager($directory, $alt);
+				JoomlaToolbarHelper::media_manager($directory, $alt);
 				break;
 
 			case 'assign':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'assign';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_ASSIGN';
 
-				JToolbarHelper::assign($task, $alt);
+				JoomlaToolbarHelper::assign($task, $alt);
 				break;
 
 			case 'addNew':
@@ -933,7 +933,7 @@ class Toolbar
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : false;
 
-					JToolbarHelper::addNew($task, $alt, $check);
+					JoomlaToolbarHelper::addNew($task, $alt, $check);
 				}
 
 				break;
@@ -948,7 +948,7 @@ class Toolbar
 					$icon = isset($attributes['icon']) ? $attributes['icon'] : 'copy.png';
 					$iconOver = isset($attributes['iconOver']) ? $attributes['iconOver'] : 'copy_f2.png';
 
-					JToolBarHelper::custom($task, $icon, $iconOver, $alt, false);
+					JoomlaToolbarHelper::custom($task, $icon, $iconOver, $alt, false);
 				}
 
 				break;
@@ -963,7 +963,7 @@ class Toolbar
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : false;
 
-					JToolbarHelper::publish($task, $alt, $check);
+					JoomlaToolbarHelper::publish($task, $alt, $check);
 				}
 
 				break;
@@ -976,7 +976,7 @@ class Toolbar
 					$task = isset($attributes['task']) ? $attributes['task'] : 'publish';
 					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
 
-					JToolbarHelper::publishList($task, $alt);
+					JoomlaToolbarHelper::publishList($task, $alt);
 				}
 
 				break;
@@ -991,7 +991,7 @@ class Toolbar
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : false;
 
-					JToolbarHelper::unpublish($task, $alt, $check);
+					JoomlaToolbarHelper::unpublish($task, $alt, $check);
 				}
 
 				break;
@@ -1004,7 +1004,7 @@ class Toolbar
 					$task = isset($attributes['task']) ? $attributes['task'] : 'unpublish';
 					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
 
-					JToolbarHelper::unpublishList($task, $alt);
+					JoomlaToolbarHelper::unpublishList($task, $alt);
 				}
 
 				break;
@@ -1017,7 +1017,7 @@ class Toolbar
 					$task = isset($attributes['task']) ? $attributes['task'] : 'archive';
 					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_ARCHIVE';
 
-					JToolbarHelper::archiveList($task, $alt);
+					JoomlaToolbarHelper::archiveList($task, $alt);
 				}
 
 				break;
@@ -1030,7 +1030,7 @@ class Toolbar
 					$task = isset($attributes['task']) ? $attributes['task'] : 'unarchive';
 					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNARCHIVE';
 
-					JToolbarHelper::unarchiveList($task, $alt);
+					JoomlaToolbarHelper::unarchiveList($task, $alt);
 				}
 
 				break;
@@ -1044,7 +1044,7 @@ class Toolbar
 					$task = isset($attributes['task']) ? $attributes['task'] : 'edit';
 					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT';
 
-					JToolbarHelper::editList($task, $alt);
+					JoomlaToolbarHelper::editList($task, $alt);
 				}
 
 				break;
@@ -1053,14 +1053,14 @@ class Toolbar
 				$task = isset($attributes['task']) ? $attributes['task'] : 'edit_source';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT_HTML';
 
-				JToolbarHelper::editHtml($task, $alt);
+				JoomlaToolbarHelper::editHtml($task, $alt);
 				break;
 
 			case 'editCss':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'edit_css';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT_CSS';
 
-				JToolbarHelper::editCss($task, $alt);
+				JoomlaToolbarHelper::editCss($task, $alt);
 				break;
 
 			case 'deleteList':
@@ -1073,7 +1073,7 @@ class Toolbar
 					$task = isset($attributes['task']) ? $attributes['task'] : 'remove';
 					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_DELETE';
 
-					JToolbarHelper::deleteList($msg, $task, $alt);
+					JoomlaToolbarHelper::deleteList($msg, $task, $alt);
 				}
 
 				break;
@@ -1088,7 +1088,7 @@ class Toolbar
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : true;
 
-					JToolbarHelper::trash($task, $alt, $check);
+					JoomlaToolbarHelper::trash($task, $alt, $check);
 				}
 
 				break;
@@ -1097,14 +1097,14 @@ class Toolbar
 				$task = isset($attributes['task']) ? $attributes['task'] : 'apply';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_APPLY';
 
-				JToolbarHelper::apply($task, $alt);
+				JoomlaToolbarHelper::apply($task, $alt);
 				break;
 
 			case 'save':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'save';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE';
 
-				JToolbarHelper::save($task, $alt);
+				JoomlaToolbarHelper::save($task, $alt);
 				break;
 
 			case 'savenew':
@@ -1113,20 +1113,20 @@ class Toolbar
 				$icon = isset($attributes['icon']) ? $attributes['icon'] : 'save-new.png';
 				$iconOver = isset($attributes['iconOver']) ? $attributes['iconOver'] : 'save-new_f2.png';
 
-				JToolBarHelper::custom($task, $icon, $iconOver, $alt, false);
+				JoomlaToolbarHelper::custom($task, $icon, $iconOver, $alt, false);
 				break;
 
 			case 'save2new':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'save2new';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AND_NEW';
 
-				JToolbarHelper::save2new($task, $alt);
+				JoomlaToolbarHelper::save2new($task, $alt);
 				break;
 
 			case 'save2copy':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'save2copy';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AS_COPY';
-				JToolbarHelper::save2copy($task, $alt);
+				JoomlaToolbarHelper::save2copy($task, $alt);
 				break;
 
 			case 'checkin':
@@ -1135,14 +1135,14 @@ class Toolbar
 				$check = isset($attributes['check']) ?
 					StringHelper::toBool($attributes['check']) : true;
 
-				JToolbarHelper::checkin($task, $alt, $check);
+				JoomlaToolbarHelper::checkin($task, $alt, $check);
 				break;
 
 			case 'cancel':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'cancel';
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_CANCEL';
 
-				JToolbarHelper::cancel($task, $alt);
+				JoomlaToolbarHelper::cancel($task, $alt);
 				break;
 
 			case 'preferences':
@@ -1157,7 +1157,7 @@ class Toolbar
 				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JToolbar_Options';
 				$path = isset($attributes['path']) ? $attributes['path'] : '';
 
-				JToolbarHelper::preferences($component, $height, $width, $alt, $path);
+				JoomlaToolbarHelper::preferences($component, $height, $width, $alt, $path);
 				break;
 
 			default:

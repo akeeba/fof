@@ -8,6 +8,7 @@
 namespace  FOF40\Render;
 
 use FOF40\Container\Container;
+use Joomla\CMS\Toolbar\Toolbar as JoomlaToolbar;
 
 defined('_JEXEC') or die;
 
@@ -348,7 +349,7 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Render the linkbar
 	 *
-	 * @param   Toolbar  $toolbar  A toolbar object
+	 * @param   JoomlaToolbar $toolbar A toolbar object
 	 *
 	 * @return  void
 	 */
@@ -410,7 +411,7 @@ class Joomla extends RenderBase implements RenderInterface
 			return;
 		}
 
-		$bar	 = \JToolBar::getInstance('toolbar');
+		$bar	 = JoomlaToolbar::getInstance('toolbar');
 		$items	 = $bar->getItems();
 
 		$substitutions = array(
