@@ -18,6 +18,7 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\WebApplication;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Registry\Registry;
 use JUri;
 
@@ -910,7 +911,7 @@ class Platform extends BasePlatform
 		// Include required Joomla Model
 		if (!$joomlaModelAdded)
 		{
-			\JModelLegacy::addIncludePath(JPATH_ROOT . '/administrator/components/com_actionlogs/models', 'ActionlogsModel');
+			BaseDatabaseModel::addIncludePath(JPATH_ROOT . '/administrator/components/com_actionlogs/models', 'ActionlogsModel');
 			$joomlaModelAdded = true;
 		}
 
@@ -931,7 +932,7 @@ class Platform extends BasePlatform
 		/** @var \ActionlogsModelActionlog $model **/
 		try
 		{
-			$model = \JModelLegacy::getInstance('Actionlog', 'ActionlogsModel');
+			$model = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
 			$model->addLog(array($message), $logText, $extension, $user->id);
 		}
 		catch (\Exception $e)
