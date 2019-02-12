@@ -18,6 +18,7 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\WebApplication;
+use Joomla\CMS\Authentication\Authentication;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -766,7 +767,7 @@ class Platform extends BasePlatform
 	public function loginUser($authInfo)
 	{
 		$options = array('remember' => false);
-		$authenticate = \JAuthentication::getInstance();
+		$authenticate = Authentication::getInstance();
 		$response = $authenticate->authenticate($authInfo, $options);
 
 		// User failed to authenticate: maybe he enabled two factor authentication?
