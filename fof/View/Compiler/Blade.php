@@ -984,7 +984,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileEditor($expression)
 	{
-		return '<?php echo JEditor::getInstance($this->container->platform->getConfig()->get(\'editor\', \'tinymce\'))'.
+		return '<?php echo \\Joomla\\CMS\\Editor\\Editor::getInstance($this->container->platform->getConfig()->get(\'editor\', \'tinymce\'))'.
 		       '->display' . $expression . '; ?>';
 	}
 

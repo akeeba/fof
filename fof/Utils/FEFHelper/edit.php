@@ -5,6 +5,8 @@
  * @license     GNU GPL version 3 or later
  */
 
+use Joomla\CMS\Editor\Editor;
+
 defined('_JEXEC') or die;
 
 /**
@@ -48,7 +50,7 @@ abstract class FEFHelperEdit
 			$params['id'] = $fieldName;
 		}
 
-		$editor = JEditor::getInstance($editorType);
+		$editor = Editor::getInstance($editorType);
 
 		return $editor->display($fieldName, $value, $params['width'], $params['height'],
 			$params['columns'],  $params['rows'], $params['buttons'], $params['id'],
