@@ -71,7 +71,7 @@ class DynamicGroups
 		/**
 		 * Now we can get a Reflection object into Joomla's Access helper class and manipulate its groupsByUser cache.
 		 */
-		$className = class_exists('Joomla\\CMS\\Access\\Access') ? 'Joomla\\CMS\\Access\\Access' : 'JAccess';
+		$className = 'Joomla\\CMS\\Access\\Access';
 
 		try
 		{
@@ -80,7 +80,7 @@ class DynamicGroups
 		catch (\ReflectionException $e)
 		{
 			// This should never happen!
-			$container->platform->logDebug('Cannot locate the Joomla\\CMS\\Access\\Access or JAccess class. Is your Joomla installation broken or too old / too new?');
+			$container->platform->logDebug('Cannot locate the Joomla\\CMS\\Access\\Access class. Is your Joomla installation broken or too old / too new?');
 
 			return;
 		}
@@ -92,7 +92,7 @@ class DynamicGroups
 		/**
 		 * Next up, we need to manipulate the keys of the cache which contain user to user group assignments.
 		 *
-		 * $rawGroupsByUser (JAccess::$groupsByUser) stored the group ownership as userID:recursive e.g. 0:1 for the
+		 * $rawGroupsByUser (Access::$groupsByUser) stored the group ownership as userID:recursive e.g. 0:1 for the
 		 * default user, recursive. We need to deal with four keys: 0:1, 0:0, myID:1 and myID:0
 		 */
 		$user = $container->platform->getUser();

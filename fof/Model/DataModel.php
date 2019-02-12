@@ -25,6 +25,7 @@ use FOF40\Model\DataModel\Exception\SpecialColumnMissing;
 use FOF40\Model\DataModel\Relation\Exception\RelationNotFound;
 use FOF40\Model\DataModel\RelationManager;
 use FOF40\Utils\ArrayHelper;
+use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Asset;
@@ -135,7 +136,7 @@ class DataModel extends Model implements TableInterface
 	/** @var bool Does the resource support joomla tags? */
 	protected $_has_tags = false;
 
-	/** @var  \JAccessRules  The rules associated with this record. */
+	/** @var  Rules  The rules associated with this record. */
 	protected $_rules;
 
 	/** @var  string  The UCM content type (typically: com_something.viewname, e.g. com_foobar.items) */
@@ -3549,26 +3550,26 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Method to set rules for the record.
 	 *
-	 * @param   mixed  $input  A JAccessRules object, JSON string, or array.
+	 * @param   mixed  $input  A Rules object, JSON string, or array.
 	 *
 	 * @return  void
 	 */
 	public function setRules($input)
 	{
-		if ($input instanceof \JAccessRules)
+		if ($input instanceof Rules)
 		{
 			$this->_rules = $input;
 		}
 		else
 		{
-			$this->_rules = new \JAccessRules($input);
+			$this->_rules = new Rules($input);
 		}
 	}
 
 	/**
 	 * Method to get the rules for the record.
 	 *
-	 * @return  \JAccessRules object
+	 * @return  Rules object
 	 */
 	public function getRules()
 	{

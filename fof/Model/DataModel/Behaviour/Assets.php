@@ -10,6 +10,7 @@ namespace  FOF40\Model\DataModel\Behaviour;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
+use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Table\Table;
@@ -78,7 +79,7 @@ class Assets extends Observer
 		$asset->name      = $name;
 		$asset->title     = $title;
 
-		if ($model->getRules() instanceof \JAccessRules)
+		if ($model->getRules() instanceof Rules)
 		{
 			$asset->rules = (string) $model->getRules();
 		}
