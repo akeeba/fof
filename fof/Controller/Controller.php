@@ -527,7 +527,7 @@ class Controller
 
 				foreach ($urlparams as $key => $value)
 				{
-					// Add your safe url parameters with variable type as value {@see JFilterInput::clean()}.
+					// Add your safe url parameters with variable type as value {@see InputFilter::clean()}.
 					$registeredurlparams->$key = $value;
 
 					// Add the URL-important parameters into the array

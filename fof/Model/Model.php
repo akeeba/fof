@@ -11,6 +11,7 @@ use FOF40\Container\Container;
 use FOF40\Input\Input;
 use FOF40\Model\Exception\CannotGetName;
 use FOF40\Utils\StringHelper;
+use Joomla\CMS\Filter\InputFilter;
 
 defined('_JEXEC') or die;
 
@@ -216,7 +217,7 @@ class Model
 		}
 		else
 		{
-			$filter = new \JFilterInput();
+			$filter = new InputFilter();
 
 			return $filter->clean($value, $filter_type);
 		}

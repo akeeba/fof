@@ -5,6 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\Registry\Registry;
 
 
@@ -234,7 +235,7 @@ abstract class FOFCliApplication
 	/**
 	 * Filter object to use.
 	 *
-	 * @var    JFilterInput
+	 * @var    InputFilter
 	 */
 	protected $filter = null;
 
@@ -264,8 +265,8 @@ abstract class FOFCliApplication
 		// Set the current directory.
 		$this->config->set('cwd', getcwd());
 
-		// Create a new JFilterInput
-		$this->filter = JFilterInput::getInstance();
+		// Create a new InputFilter
+		$this->filter = InputFilter::getInstance();
 
 		// Parse the POSIX options
 		$this->parseOptions();

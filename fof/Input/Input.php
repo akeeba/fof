@@ -7,6 +7,8 @@
 
 namespace  FOF40\Input;
 
+use Joomla\CMS\Filter\InputFilter;
+
 defined('_JEXEC') or die;
 
 class Input extends \JInput
@@ -205,7 +207,7 @@ class Input extends \JInput
 		elseif ($mask & 4)
 		{
 			// If the allow HTML flag is set, apply a safe HTML filter to the variable
-			$safeHtmlFilter = \JFilterInput::getInstance(null, null, 1, 1);
+			$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
 			$var = $safeHtmlFilter->clean($var, $type);
 		}
 		else
