@@ -83,7 +83,7 @@ class Language extends Observer
 		}
 		else
 		{
-            // We have to use JInput since the language fragment is not set in the $_REQUEST, thus we won't have it in our model
+            // We have to use JoomlaInput since the language fragment is not set in the $_REQUEST, thus we won't have it in our model
             // TODO Double check the previous assumption
 			$languages[] = JoomlaFactory::getApplication()->input->getCmd('language', '*');
 		}

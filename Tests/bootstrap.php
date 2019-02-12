@@ -10,6 +10,7 @@
 use FOF40\Tests\Helpers\TravisLogger;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Session\Session;
+use Joomla\Input\Cli as JoomlaInputCli;
 
 define('_JEXEC', 1);
 define('JDEBUG', 0);
@@ -173,7 +174,7 @@ $config->set('session_handler', 'none');
 require_once 'Stubs/Session/FakeSession.php';
 $sessionHandler = new JSessionHandlerFake();
 $session        = Session::getInstance('none', [], $sessionHandler);
-$input          = new JInputCli();
+$input          = new JoomlaInputCli();
 $dispatcher     = new JEventDispatcher();
 $session->initialise($input, $dispatcher);
 JoomlaFactory::$session = $session;

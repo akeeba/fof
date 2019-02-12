@@ -8,10 +8,11 @@
 namespace  FOF40\Input;
 
 use Joomla\CMS\Filter\InputFilter;
+use Joomla\Input\Input as JoomlaInput;
 
 defined('_JEXEC') or die;
 
-class Input extends \JInput
+class Input extends JoomlaInput
 {
 	/**
 	 * Public constructor. Overridden to allow specifying the global input array
@@ -50,7 +51,6 @@ class Input extends \JInput
 					break;
 				default:
 					$source = $_REQUEST;
-					$hash = 'REQUEST';
 					break;
 			}
 		}
@@ -58,7 +58,7 @@ class Input extends \JInput
 		{
 			$source = $source->getData();
 		}
-		elseif (is_object($source) && ($source instanceof \JInput))
+		elseif (is_object($source) && ($source instanceof JoomlaInput))
 		{
 			$serialised = $source->serialize();
 			list ($xOptions, $xData, $xInput) = unserialize($serialised);
@@ -93,16 +93,7 @@ class Input extends \JInput
 		if (empty($source))
 		{
 			$source = $_REQUEST;
-			$hash = 'REQUEST';
 		}
-
-		// Magic quotes GPC handling (something JInput simply can't handle at all)
-		// @codeCoverageIgnoreStart
-		if (($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('\\JRequest', true))
-		{
-			$source = \JRequest::get('REQUEST', 2);
-		}
-		// @codeCoverageIgnoreEnd
 
 		parent::__construct($source, $options);
 	}

@@ -7,6 +7,8 @@
 
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Input\Input as JoomlaInput;
+use Joomla\Input\Cli as JoomlaInputCli;
 use Joomla\Registry\Registry;
 
 
@@ -208,7 +210,7 @@ abstract class FOFCliApplication
 	/**
 	 * The application input object.
 	 *
-	 * @var    JInput
+	 * @var    JoomlaInput
 	 */
 	public $input;
 
@@ -251,7 +253,7 @@ abstract class FOFCliApplication
 		$this->detectAndWorkAroundCGIMode();
 
 		// Create the input object, used for retrieving options
-		$this->input = new JInputCLI();
+		$this->input = new JoomlaInputCli();
 
 		// Create the registry with a default namespace of config
 		$this->config = new Registry();
@@ -542,7 +544,7 @@ abstract class FOFCliApplication
 	 * Parses POSIX command line options and sets the self::$cliOptions associative array. Each array item contains
 	 * a single dimensional array of values. Arguments without a dash are silently ignored.
 	 *
-	 * This works much better than JInputCli since it allows you to use all POSIX-valid ways of defining CLI parameters.
+	 * This works much better than JoomlaInputCli since it allows you to use all POSIX-valid ways of defining CLI parameters.
 	 *
 	 * @return  void
 	 */
@@ -637,7 +639,7 @@ abstract class FOFCliApplication
 	}
 
 	/**
-	 * Returns the value of a command line option. This does NOT use JInputCLI. You MUST run parseOptions before.
+	 * Returns the value of a command line option. This does NOT use JoomlaInputCli. You MUST run parseOptions before.
 	 *
 	 * @param   string $key     The full name of the option, e.g. "foobar"
 	 * @param   mixed  $default The default value to return
@@ -671,7 +673,7 @@ abstract class FOFCliApplication
 	}
 
 	/**
-	 * Filter a variable using JInputFilter
+	 * Filter a variable using InputFilter
 	 *
 	 * @param   mixed  $var  The variable to filter
 	 * @param   string $type The filter type, default 'cmd'
@@ -696,7 +698,7 @@ abstract class FOFCliApplication
 			$cgiMode = true;
 		}
 
-		// Create a JInput object
+		// Create a JoomlaInput object
 		if ($cgiMode)
 		{
 			$query = "";

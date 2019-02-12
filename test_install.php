@@ -6,6 +6,8 @@ use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
+use Joomla\Input\Cli as JoomlaInputCli;
+use Joomla\Input\Input as JoomlaInput;
 use Joomla\Registry\Registry;
 
 $sitePath           = '/var/www/test3/cli';
@@ -61,11 +63,11 @@ class FOFTestInstall extends CliApplication
 	 * CliApplication didn't want to run on PHP CGI. I have my way of becoming
 	 * VERY convincing. Now obey your true master, you petty class!
 	 *
-	 * @param JInputCli   $input
-	 * @param Registry    $config
-	 * @param JDispatcher $dispatcher
+	 * @param JoomlaInputCli $input
+	 * @param Registry       $config
+	 * @param JDispatcher    $dispatcher
 	 */
-	public function __construct(JInputCli $input = null, Registry $config = null, JDispatcher $dispatcher = null)
+	public function __construct(JoomlaInput $input = null, Registry $config = null, JDispatcher $dispatcher = null)
 	{
 		// Close the application if we are not executed from the command line, Akeeba style (allow for PHP CGI)
 		if (array_key_exists('REQUEST_METHOD', $_SERVER))
@@ -81,14 +83,14 @@ class FOFTestInstall extends CliApplication
 		}
 
 		// If a input object is given use it.
-		if ($input instanceof JInput)
+		if ($input instanceof JoomlaInput)
 		{
 			$this->input = $input;
 		}
 		// Create the input based on the application logic.
 		else
 		{
-			if (class_exists('JInput'))
+			if (class_exists('\Joomla\Input\Input'))
 			{
 				if ($cgiMode)
 				{
@@ -111,7 +113,7 @@ class FOFTestInstall extends CliApplication
 					$_SERVER['argv'] = $argv;
 				}
 
-				$this->input = new JInputCLI();
+				$this->input = new JoomlaInputCli();
 			}
 		}
 

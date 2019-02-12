@@ -9,6 +9,7 @@
 namespace FOF40\Tests\Input;
 
 use FOF40\Input\Input as FOFInput;
+use Joomla\Input\Input as JoomlaInput;
 
 abstract class InputProvider
 {
@@ -63,7 +64,7 @@ abstract class InputProvider
 		return [
 			[$sampleInputData, [], $sampleInputData, 'Initialising with an array'],
 			[(object) $sampleInputData, [], $sampleInputData, 'Initialising with an array'],
-			[new \JInput($sampleInputData), [], $sampleInputData, 'Initialising with a JInput object'],
+			[new JoomlaInput($sampleInputData), [], $sampleInputData, 'Initialising with a JInput object'],
 			[new FOFInput($sampleInputData), [], $sampleInputData, 'Initialising with a FOF Input object'],
 			['get', ['get' => $sampleInputData], $sampleInputData, 'Initialising with $_GET'],
 			['post', ['post' => $sampleInputData], $sampleInputData, 'Initialising with $_POST'],

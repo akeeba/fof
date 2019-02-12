@@ -11,6 +11,7 @@ use FOF40\Autoloader\Autoloader;
 use FOF40\Encrypt\EncryptService;
 use FOF40\Factory\FactoryInterface;
 use FOF40\Inflector\Inflector;
+use FOF40\Input\Input as FOFInput;
 use FOF40\Params\Params;
 use FOF40\Platform\Joomla\Filesystem as JoomlaFilesystem;
 use FOF40\Render\RenderInterface;
@@ -18,6 +19,7 @@ use FOF40\Template\Template;
 use FOF40\TransparentAuthentication\TransparentAuthentication as TransparentAuth;
 use FOF40\View\Compiler\Blade;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\Input\Input as JoomlaInput;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -62,8 +64,8 @@ defined('_JEXEC') or die;
  * @property-read  \FOF40\Factory\FactoryInterface     $factory            The MVC object factory
  * @property-read  \FOF40\Platform\FilesystemInterface $filesystem         The filesystem abstraction layer object
  * @property-read  \FOF40\Inflector\Inflector          $inflector          The English word inflector (pluralise / singularise words etc)
- * @property-read  \FOF40\Params\Params          	   $params             The component's params
- * @property-read  \FOF40\Input\Input                  $input              The input object
+ * @property-read  \FOF40\Params\Params                $params             The component's params
+ * @property-read  FOFInput                            $input              The input object
  * @property-read  \FOF40\Platform\PlatformInterface   $platform           The platform abstraction layer object
  * @property-read  \FOF40\Render\RenderInterface       $renderer           The view renderer
  * @property-read  \Joomla\CMS\Session\Session         $session            Joomla! session storage
@@ -624,8 +626,8 @@ END;
 		// Input Access service
 		if (isset($this['input']) &&
 		    (!(is_object($this['input'])) ||
-		     !($this['input'] instanceof \FOF40\Input\Input) ||
-		     !($this['input'] instanceof \JInput))
+		     !($this['input'] instanceof FOFInput) ||
+		     !($this['input'] instanceof JoomlaInput))
 		) {
 			if (empty($this['input']))
 			{
@@ -638,7 +640,7 @@ END;
 
 			$this['input'] = function (Container $c)
 			{
-				$input = new \FOF40\Input\Input($c['rawInputData']);
+				$input = new FOFInput($c['rawInputData']);
 				unset($c['rawInputData']);
 				return $input;
 			};
@@ -648,7 +650,7 @@ END;
 		{
 			$this['input'] = function ()
 			{
-				return new \FOF40\Input\Input();
+				return new FOFInput();
 			};
 		}
 
