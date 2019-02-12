@@ -11,6 +11,7 @@ use Exception;
 use FOF40\Container\Container;
 use FOF40\Date\Date;
 use FOF40\Input\Input;
+use Joomla\CMS\Document\Document;
 use Joomla\CMS\Language\Language;
 use Joomla\Registry\Registry;
 
@@ -215,13 +216,13 @@ interface PlatformInterface
 	public function getUser($id = null);
 
 	/**
-	 * Returns the \JDocument object which handles this component's response. You
+	 * Returns the Document object which handles this component's response. You
 	 * may also return null and FOF will a. try to figure out the output type by
 	 * examining the "format" input parameter (or fall back to "html") and b.
 	 * FOF will not attempt to load CSS and Javascript files (as it doesn't make
-	 * sense if there's no \JDocument to handle them).
+	 * sense if there's no Document to handle them).
 	 *
-	 * @return  \JDocument
+	 * @return  Document
 	 */
 	public function getDocument();
 

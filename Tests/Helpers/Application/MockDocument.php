@@ -31,7 +31,7 @@ class MockDocument
 		];
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('\JDocument')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Document\Document')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')

@@ -10,6 +10,8 @@ namespace  FOF40\View\DataView;
 use FOF40\Hal\Document;
 use FOF40\Hal\Link;
 use FOF40\Model\DataModel;
+use Joomla\CMS\Document\Document as JoomlaDocument;
+use Joomla\CMS\Document\JsonDocument;
 use Joomla\CMS\Pagination\Pagination;
 
 defined('_JEXEC') or die;
@@ -104,8 +106,8 @@ class Json extends Raw implements DataViewInterface
 
 		$document = $this->container->platform->getDocument();
 
-		/** @var \JDocumentJSON $document */
-		if ($document instanceof \JDocument)
+		/** @var JsonDocument $document */
+		if ($document instanceof JoomlaDocument)
 		{
 			if ($this->useHypermedia)
 			{
@@ -248,8 +250,8 @@ class Json extends Raw implements DataViewInterface
 
 		$document = $this->container->platform->getDocument();
 
-		/** @var \JDocumentJSON $document */
-		if ($document instanceof \JDocument)
+		/** @var JsonDocument $document */
+		if ($document instanceof JoomlaDocument)
 		{
 			if ($this->useHypermedia)
 			{

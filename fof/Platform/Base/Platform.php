@@ -11,6 +11,7 @@ use Exception;
 use FOF40\Container\Container;
 use FOF40\Input\Input;
 use FOF40\Platform\PlatformInterface;
+use Joomla\CMS\Document\Document;
 
 defined('_JEXEC') or die;
 
@@ -129,7 +130,7 @@ abstract class Platform implements PlatformInterface
 	 *
 	 * @see F0FPlatformInterface::getUser()
 	 *
-	 * @return  \JDocument
+	 * @return  Document
 	 */
 	public function getUser($id = null)
 	{
@@ -137,11 +138,11 @@ abstract class Platform implements PlatformInterface
 	}
 
 	/**
-	 * Returns the JDocument object which handles this component's response.
+	 * Returns the Document object which handles this component's response.
 	 *
 	 * @see F0FPlatformInterface::getDocument()
 	 *
-	 * @return  \JDocument
+	 * @return  Document
 	 */
 	public function getDocument()
 	{

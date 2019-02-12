@@ -274,7 +274,7 @@ class PlatformJoomlaTest extends FOFTestCase
 		$propIsCli->setValue(false);
 		$actual = $this->platform->getDocument();
 
-		$this->assertInstanceOf('\JDocument', $actual, "getDocument() must return a JDocument object");
+		$this->assertInstanceOf('\Joomla\CMS\Document\Document', $actual, "getDocument() must return a JDocument object");
 		$this->assertEquals($expected, $actual, "getDocument() must return the document from JFactory");
 	}
 

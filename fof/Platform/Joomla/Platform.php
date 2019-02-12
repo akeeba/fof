@@ -19,6 +19,7 @@ use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Authentication\Authentication;
+use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -362,11 +363,11 @@ class Platform extends BasePlatform
 	}
 
 	/**
-	 * Returns the JDocument object which handles this component's response.
+	 * Returns the Document object which handles this component's response.
 	 *
 	 * @see PlatformInterface::getDocument()
 	 *
-	 * @return  \JDocument
+	 * @return  Document
 	 */
 	public function getDocument()
 	{

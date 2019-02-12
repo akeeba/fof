@@ -10,9 +10,9 @@ namespace FOF40\Tests\Template;
 
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\TestJoomlaPlatform;
-use JDocument;
 use JFactory;
 use JFolder;
+use Joomla\CMS\Document\Document;
 use ReflectionProperty;
 
 /**
@@ -28,9 +28,9 @@ class TemplateTest extends FOFTestCase
 	{
 		parent::setUp();
 
-		// Force a JDocumentHTML instance
+		// Force a HtmlDocument instance
 		$this->saveFactoryState();
-		JFactory::$document = JDocument::getInstance('html');
+		JFactory::$document = Document::getInstance('html');
 
 		// Fake the server variables to get JURI working right
 		global $_SERVER;

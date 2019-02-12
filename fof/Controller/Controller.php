@@ -14,6 +14,7 @@ use FOF40\Model\DataModel;
 use FOF40\Model\Model;
 use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Document\Document;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -446,7 +447,7 @@ class Controller
 	{
 		$document = $this->container->platform->getDocument();
 
-		if ($document instanceof \JDocument)
+		if ($document instanceof Document)
 		{
 			$viewType = $document->getType();
 		}

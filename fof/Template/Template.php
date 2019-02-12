@@ -8,7 +8,7 @@
 namespace  FOF40\Template;
 
 use FOF40\Container\Container;
-use JDocument;
+use FOF40\Hal\Document;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 
@@ -474,7 +474,7 @@ class Template
 	 * Returns the contents of a module position
 	 *
 	 * @param   string  $position  The position name, e.g. "position-1"
-	 * @param   int     $style     Rendering style, see JDocumentRendererModule::render
+	 * @param   int     $style     Rendering style, see ModuleRenderer::render
 	 *
 	 * @return  string  The contents of the module position
 	 */
@@ -482,7 +482,7 @@ class Template
 	{
 		$document = $this->container->platform->getDocument();
 
-		if (!($document instanceof JDocument))
+		if (!($document instanceof Document))
 		{
 			return '';
 		}
@@ -517,7 +517,7 @@ class Template
 	 * Render a module by name
 	 *
 	 * @param   string  $moduleName  The name of the module (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
-	 * @param   int     $style       The rendering style, see JDocumentRendererModule::render
+	 * @param   int     $style       The rendering style, see ModuleRenderer::render
 	 *
 	 * @return string  The rendered module
 	 */
@@ -525,7 +525,7 @@ class Template
 	{
 		$document = $this->container->platform->getDocument();
 
-		if (!($document instanceof JDocument))
+		if (!($document instanceof Document))
 		{
 			return '';
 		}
