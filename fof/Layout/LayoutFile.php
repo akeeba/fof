@@ -8,7 +8,7 @@
 namespace  FOF40\Layout;
 
 use FOF40\Container\Container;
-use JLayoutFile;
+use Joomla\CMS\Layout\FileLayout;
 
 defined('_JEXEC') or die;
 
@@ -24,7 +24,7 @@ defined('_JEXEC') or die;
  *
  * @package  FrameworkOnFramework
  */
-class LayoutFile extends JLayoutFile
+class LayoutFile extends FileLayout
 {
 	/** @var  Container  The component container */
 	public $container = null;

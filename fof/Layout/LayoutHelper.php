@@ -15,7 +15,7 @@ class LayoutHelper
 {
 	/**
 	 * A default base path that will be used if none is provided when calling the render method.
-	 * Note that JLayoutFile itself will defaults to JPATH_ROOT . '/layouts' if no basePath is supplied at all
+	 * Note that FileLayout itself will default to JPATH_ROOT . '/layouts' if no basePath is supplied at all
 	 *
 	 * @var    string
 	 */
