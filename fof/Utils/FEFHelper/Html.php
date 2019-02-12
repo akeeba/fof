@@ -10,7 +10,7 @@ namespace  FOF40\Utils\FEFHelper;
 defined('_JEXEC') or die;
 
 use FOF40\View\DataView\DataViewInterface;
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Pagination\Pagination;
 
 /**
@@ -30,7 +30,7 @@ abstract class Html
 	 */
 	public static function jsOrderingBackend($order)
 	{
-		return JHtml::_('FEFHelper.browse.orderjs', $order, true);
+		return HTMLHelper::_('FEFHelper.browse.orderjs', $order, true);
 	}
 
 	/**
@@ -62,7 +62,7 @@ abstract class Html
 
 		return
 			'<div class="akeeba-filter-bar akeeba-filter-bar--right">' .
-			JHtml::_('FEFHelper.browse.orderheader', null, $sortFields, $pagination, $order, $order_Dir) .
+			HTMLHelper::_('FEFHelper.browse.orderheader', null, $sortFields, $pagination, $order, $order_Dir) .
 			'</div>';
 	}
 
@@ -80,6 +80,6 @@ abstract class Html
 	 */
 	public static function dragDropReordering(DataViewInterface $view, $orderingField, $order, $class = 'input-sm', $icon = 'akion-drag', $inactiveIcon = 'akion-android-more-vertical')
 	{
-		return JHtml::_('FEFHelper.browse.order', $orderingField, $order, $class, $icon, $inactiveIcon, $view);
+		return HTMLHelper::_('FEFHelper.browse.order', $orderingField, $order, $class, $icon, $inactiveIcon, $view);
 	}
 }

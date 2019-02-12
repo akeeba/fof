@@ -875,7 +875,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileJhtml($expression)
 	{
-		return "<?php echo \\JHtml::_{$expression}; ?>";
+		return "<?php echo \\Joomla\\CMS\\HTML\\HTMLHelper::_{$expression}; ?>";
 	}
 
 	/**

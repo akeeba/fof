@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  * Custom JHtml (HTMLHelper) class. Offers edit (form) view controls compatible with Akeeba Frontend
  * Framework (FEF).
  *
- * Call these methods as JHtml::_('FEFHelper.edit.methodName', $parameter1, $parameter2, ...)
+ * Call these methods as HTMLHelper::_('FEFHelper.edit.methodName', $parameter1, $parameter2, ...)
  */
 abstract class FEFHelperEdit
 {

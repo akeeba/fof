@@ -10,6 +10,7 @@ namespace  FOF40\Template;
 use FOF40\Container\Container;
 use FOF40\Hal\Document;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -238,7 +239,7 @@ class Template
 	 */
 	public function sefSort($text, $field, $list)
 	{
-		$sort = \JHTML::_('grid.sort', Text::_(strtoupper($text)) . '&nbsp;', $field, $list->order_Dir, $list->order);
+		$sort = HTMLHelper::_('grid.sort', Text::_(strtoupper($text)) . '&nbsp;', $field, $list->order_Dir, $list->order);
 
 		return str_replace('href="#"', 'href="javascript:void(0);"', $sort);
 	}

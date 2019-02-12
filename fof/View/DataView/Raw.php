@@ -13,6 +13,7 @@ use FOF40\Model\DataModel\Collection;
 use FOF40\View\View;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\Registry\Registry;
 
@@ -151,7 +152,7 @@ class Raw extends View implements DataViewInterface
 		if ($saveOrder)
 		{
 			$saveOrderingUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->getName() . '&task=saveorder&format=json';
-			\JHtml::_('sortablelist.sortable', 'itemsList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+			HTMLHelper::_('sortablelist.sortable', 'itemsList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 		}
 
 		return array(

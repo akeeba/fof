@@ -7,17 +7,17 @@
 
 namespace  FOF40\Utils;
 
-use JHtml;
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Helper\UserGroupsHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
 /**
- * Returns arrays of JHtml select options for Joomla-specific information such as access levels.
+ * Returns arrays of HTMLHelper select options for Joomla-specific information such as access levels.
  */
 class SelectOptions
 {
@@ -125,7 +125,7 @@ class SelectOptions
 
 		if (isset($params['allLevels']) && $params['allLevels'])
 		{
-			array_unshift($options, JHtml::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 		}
 
 		return $options;
@@ -158,7 +158,7 @@ class SelectOptions
 		// If all usergroups is allowed, push it into the array.
 		if (isset($params['allGroups']) && $params['allGroups'])
 		{
-			array_unshift($options, JHtml::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
+			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
 		}
 
 		return $options;
@@ -178,7 +178,7 @@ class SelectOptions
 		// Convert to name => name array.
 		foreach (Cache::getStores() as $store)
 		{
-			$options[] = JHtml::_('select.option', $store, Text::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
+			$options[] = HTMLHelper::_('select.option', $store, Text::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
 		}
 
 		return $options;
@@ -299,7 +299,7 @@ class SelectOptions
 
 		if (!empty($none))
 		{
-			array_unshift($options, JHtml::_('select.option', '*', Text::_($none)));
+			array_unshift($options, HTMLHelper::_('select.option', '*', Text::_($none)));
 		}
 
 		return $options;
@@ -335,32 +335,32 @@ class SelectOptions
 
 		if (!empty($config['none']))
 		{
-			$options[] = JHtml::_('select.option', '', Text::_($config['none']));
+			$options[] = HTMLHelper::_('select.option', '', Text::_($config['none']));
 		}
 
 		if ($config['published'])
 		{
-			$options[] = JHtml::_('select.option', '1', Text::_('JPUBLISHED'));
+			$options[] = HTMLHelper::_('select.option', '1', Text::_('JPUBLISHED'));
 		}
 
 		if ($config['unpublished'])
 		{
-			$options[] = JHtml::_('select.option', '0', Text::_('JUNPUBLISHED'));
+			$options[] = HTMLHelper::_('select.option', '0', Text::_('JUNPUBLISHED'));
 		}
 
 		if ($config['archived'])
 		{
-			$options[] = JHtml::_('select.option', '2', Text::_('JARCHIVED'));
+			$options[] = HTMLHelper::_('select.option', '2', Text::_('JARCHIVED'));
 		}
 
 		if ($config['trash'])
 		{
-			$options[] = JHtml::_('select.option', '-2', Text::_('JTRASHED'));
+			$options[] = HTMLHelper::_('select.option', '-2', Text::_('JTRASHED'));
 		}
 
 		if ($config['all'])
 		{
-			$options[] = JHtml::_('select.option', '*', Text::_('JALL'));
+			$options[] = HTMLHelper::_('select.option', '*', Text::_('JALL'));
 		}
 
 		return $options;
@@ -386,11 +386,11 @@ class SelectOptions
 
 		if (!empty($config['none']))
 		{
-			$options[] = JHtml::_('select.option', '', Text::_($config['none']));
+			$options[] = HTMLHelper::_('select.option', '', Text::_($config['none']));
 		}
 
-		$options[] = JHtml::_('select.option', '1', Text::_('JYES'));
-		$options[] = JHtml::_('select.option', '0', Text::_('JNO'));
+		$options[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
+		$options[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
 
 		return $options;
 	}

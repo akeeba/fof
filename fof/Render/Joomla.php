@@ -8,7 +8,9 @@
 namespace  FOF40\Render;
 
 use FOF40\Container\Container;
+use JHtmlSidebar;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\Toolbar as JoomlaToolbar;
 
 defined('_JEXEC') or die;
@@ -64,8 +66,8 @@ class Joomla extends RenderBase implements RenderInterface
 			return;
 		}
 
-		\JHtml::_('behavior.core');
-		\JHtml::_('jquery.framework', true);
+		HTMLHelper::_('behavior.core');
+		HTMLHelper::_('jquery.framework', true);
 
 		// Wrap output in various classes
 		$versionParts = explode('.', JVERSION);

@@ -6,6 +6,7 @@
  */
 
 use FOF40\Utils\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -13,7 +14,7 @@ defined('_JEXEC') or die;
 /**
  * Custom JHtml (HTMLHelper) class. Offers selects compatible with Akeeba Frontend Framework (FEF)
  *
- * Call these methods as JHtml::_('FEFHelper.select.methodName', $parameter1, $parameter2, ...)
+ * Call these methods as HTMLHelper::_('FEFHelper.select.methodName', $parameter1, $parameter2, ...)
  */
 abstract class FEFHelperSelect
 {
@@ -55,9 +56,9 @@ abstract class FEFHelperSelect
 	 */
 	public static function booleanlist($name, $attribs = array(), $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
 	{
-		$arr = array(JHtml::_('FEFHelper.select.option', '0', Text::_($no)), JHtml::_('FEFHelper.select.option', '1', Text::_($yes)));
+		$arr = array(HTMLHelper::_('FEFHelper.select.option', '0', Text::_($no)), HTMLHelper::_('FEFHelper.select.option', '1', Text::_($yes)));
 
-		return JHtml::_('FEFHelper.select.radiolist', $arr, $name, $attribs, 'value', 'text', (int) $selected, $id);
+		return HTMLHelper::_('FEFHelper.select.radiolist', $arr, $name, $attribs, 'value', 'text', (int) $selected, $id);
 	}
 
 	/**
@@ -68,8 +69,8 @@ abstract class FEFHelperSelect
 	 * @param   mixed    $attribs    Additional HTML attributes for the `<select>` tag. This
 	 *                               can be an array of attributes, or an array of options. Treated as options
 	 *                               if it is the last argument passed. Valid options are:
-	 *                               Format options, see {@see JHtml::$formatOptions}.
-	 *                               Selection options, see {@see JHtmlSelect::options()}.
+	 *                               Format options, see {@see HTMLHelper::$formatOptions}.
+	 *                               Selection options, see {@see HTMLHelper::options()}.
 	 *                               list.attr, string|array: Additional attributes for the select
 	 *                               element.
 	 *                               id, string: Value to use as the select element id attribute.
@@ -91,7 +92,7 @@ abstract class FEFHelperSelect
 	                                   $translate = false)
 	{
 		// Set default options
-		$options = array_merge(JHtml::$formatOptions, array('format.depth' => 0, 'id' => false));
+		$options = array_merge(HTMLHelper::$formatOptions, array('format.depth' => 0, 'id' => false));
 
 		if (is_array($attribs) && func_num_args() === 3)
 		{
@@ -144,8 +145,8 @@ abstract class FEFHelperSelect
 	 * @param   array   $data     An array of groups, each of which is an array of options.
 	 * @param   string  $name     The value of the HTML name attribute
 	 * @param   array   $options  Options, an array of key/value pairs. Valid options are:
-	 *                            Format options, {@see JHtml::$formatOptions}.
-	 *                            Selection options. See {@see JHtmlSelect::options()}.
+	 *                            Format options, {@see HTMLHelper::$formatOptions}.
+	 *                            Selection options. See {@see HTMLHelper::options()}.
 	 *                            group.id: The property in each group to use as the group id
 	 *                            attribute. Defaults to none.
 	 *                            group.label: The property in each group to use as the group
@@ -172,7 +173,7 @@ abstract class FEFHelperSelect
 	{
 		// Set default options and overwrite with anything passed in
 		$options = array_merge(
-			JHtml::$formatOptions,
+			HTMLHelper::$formatOptions,
 			array('format.depth' => 0, 'group.items' => 'items', 'group.label' => 'text', 'group.label.toHtml' => true, 'id' => false),
 			$options
 		);
@@ -297,7 +298,7 @@ abstract class FEFHelperSelect
 	public static function integerlist($start, $end, $inc, $name, $attribs = null, $selected = null, $format = '')
 	{
 		// Set default options
-		$options = array_merge(JHtml::$formatOptions, array('format.depth' => 0, 'option.format' => '', 'id' => null));
+		$options = array_merge(HTMLHelper::$formatOptions, array('format.depth' => 0, 'option.format' => '', 'id' => null));
 
 		if (is_array($attribs) && func_num_args() === 5)
 		{
@@ -329,7 +330,7 @@ abstract class FEFHelperSelect
 		// Tell genericlist() to use array keys
 		$options['option.key'] = null;
 
-		return JHtml::_('FEFHelper.select.genericlist', $data, $name, $options);
+		return HTMLHelper::_('FEFHelper.select.genericlist', $data, $name, $options);
 	}
 
 	/**
@@ -429,7 +430,7 @@ abstract class FEFHelperSelect
 	 * @param   mixed    $optKey     If a string, this is the name of the object variable for
 	 *                               the option value. If null, the index of the array of objects is used. If
 	 *                               an array, this is a set of options, as key/value pairs. Valid options are:
-	 *                               -Format options, {@see JHtml::$formatOptions}.
+	 *                               -Format options, {@see HTMLHelper::$formatOptions}.
 	 *                               -groups: Boolean. If set, looks for keys with the value
 	 *                                "&lt;optgroup>" and synthesizes groups from them. Deprecated. Defaults
 	 *                                true for backwards compatibility.
@@ -465,7 +466,7 @@ abstract class FEFHelperSelect
 	public static function options($arr, $optKey = 'value', $optText = 'text', $selected = null, $translate = false)
 	{
 		$options = array_merge(
-			JHtml::$formatOptions,
+			HTMLHelper::$formatOptions,
 			static::$optionDefaults['option'],
 			array('format.depth' => 0, 'groups' => true, 'list.select' => null, 'list.translate' => false)
 		);

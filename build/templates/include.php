@@ -8,6 +8,7 @@
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\Log;
 
 if (!class_exists('FOF40\\Autoloader\\Autoloader'))
@@ -32,5 +33,5 @@ if (!defined('FOF40_INCLUDED'))
 	}
 
 	// Register the JHtml helpers path for the Akeeba Frontend Framework
-	JHtml::addIncludePath(__DIR__ . '/Utils/FEFHelper');
+	HTMLHelper::addIncludePath(__DIR__ . '/Utils/FEFHelper');
 }

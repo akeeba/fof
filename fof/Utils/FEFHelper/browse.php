@@ -11,6 +11,7 @@ use FOF40\Utils\FEFHelper\BrowseView;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\DataView\Raw as DataViewRaw;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 
@@ -20,7 +21,7 @@ defined('_JEXEC') or die;
  * Custom JHtml (HTMLHelper) class. Offers browse view controls compatible with Akeeba Frontend
  * Framework (FEF).
  *
- * Call these methods as JHtml::_('FEFHelper.browse.methodName', $parameter1, $parameter2, ...)
+ * Call these methods as HTMLHelper::_('FEFHelper.browse.methodName', $parameter1, $parameter2, ...)
  */
 abstract class FEFHelperBrowse
 {
@@ -64,7 +65,7 @@ abstract class FEFHelperBrowse
 		{
 			$title = $enabled ? $active_title : $inactive_title;
 			$title = $translate ? Text::_($title) : $title;
-			$title = JHtml::_('tooltipText', $title, '', 0);
+			$title = HTMLHelper::_('tooltipText', $title, '', 0);
 		}
 
 		if ($enabled)
@@ -220,12 +221,12 @@ abstract class FEFHelperBrowse
 
 			if ($publish_up)
 			{
-				$tips[] = Text::sprintf('JLIB_HTML_PUBLISHED_START', JHtml::_('date', $publish_up, Text::_('DATE_FORMAT_LC5'), 'UTC'));
+				$tips[] = Text::sprintf('JLIB_HTML_PUBLISHED_START', HTMLHelper::_('date', $publish_up, Text::_('DATE_FORMAT_LC5'), 'UTC'));
 			}
 
 			if ($publish_down)
 			{
-				$tips[] = Text::sprintf('JLIB_HTML_PUBLISHED_FINISHED', JHtml::_('date', $publish_down, Text::_('DATE_FORMAT_LC5'), 'UTC'));
+				$tips[] = Text::sprintf('JLIB_HTML_PUBLISHED_FINISHED', HTMLHelper::_('date', $publish_down, Text::_('DATE_FORMAT_LC5'), 'UTC'));
 			}
 
 			$tip = empty($tips) ? false : implode('<br />', $tips);
@@ -320,7 +321,7 @@ abstract class FEFHelperBrowse
 	 */
 	public static function checkedout($i, $editorName, $time, $prefix = '', $enabled = false, $checkbox = 'cb')
 	{
-		JHtml::_('bootstrap.tooltip');
+		HTMLHelper::_('bootstrap.tooltip');
 
 		if (is_array($prefix))
 		{
@@ -330,9 +331,9 @@ abstract class FEFHelperBrowse
 			$prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
 		}
 
-		$text           = $editorName . '<br />' . JHtml::_('date', $time, Text::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
-		$active_title   = JHtml::_('tooltipText', Text::_('JLIB_HTML_CHECKIN'), $text, 0);
-		$inactive_title = JHtml::_('tooltipText', Text::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
+		$text           = $editorName . '<br />' . HTMLHelper::_('date', $time, Text::_('DATE_FORMAT_LC')) . '<br />' . HTMLHelper::_('date', $time, 'H:i');
+		$active_title   = HTMLHelper::_('tooltipText', Text::_('JLIB_HTML_CHECKIN'), $text, 0);
+		$inactive_title = HTMLHelper::_('tooltipText', Text::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
 
 		return static::action(
 			$i, 'checkin', $prefix, html_entity_decode($active_title, ENT_QUOTES, 'UTF-8'),
@@ -503,8 +504,8 @@ HTML;
 	 */
 	public static function sort($title, $order, $direction = 'asc', $selected = '', $task = null, $new_direction = 'asc', $tip = '', $form = null)
 	{
-		JHtml::_('behavior.core');
-		JHtml::_('bootstrap.popover');
+		HTMLHelper::_('behavior.core');
+		HTMLHelper::_('bootstrap.popover');
 
 		$direction = strtolower($direction);
 		$icon      = ['akion-android-arrow-dropup', 'akion-android-arrow-dropdown'];
@@ -560,10 +561,10 @@ HTML;
 	 */
 	public static function checkall($name = 'checkall-toggle', $tip = 'JGLOBAL_CHECK_ALL', $action = 'Joomla.checkAll(this)')
 	{
-		JHtml::_('behavior.core');
-		JHtml::_('bootstrap.tooltip');
+		HTMLHelper::_('behavior.core');
+		HTMLHelper::_('bootstrap.tooltip');
 
-		return '<input type="checkbox" name="' . $name . '" value="" class="hasTooltip" title="' . JHtml::_('tooltipText', $tip)
+		return '<input type="checkbox" name="' . $name . '" value="" class="hasTooltip" title="' . HTMLHelper::_('tooltipText', $tip)
 			. '" onclick="' . $action . '" />';
 	}
 
@@ -687,7 +688,7 @@ JS;
 		$sortByLabel   = Text::_('JGLOBAL_SORT_BY');
 
 		// Order direction dropdown
-		$directionSelect = JHtml::_('FEFHelper.select.genericlist', [
+		$directionSelect = HTMLHelper::_('FEFHelper.select.genericlist', [
 			''     => $orderingDescr,
 			'asc'  => Text::_('JGLOBAL_ORDER_ASCENDING'),
 			'desc' => Text::_('JGLOBAL_ORDER_DESCENDING'),
@@ -702,7 +703,7 @@ JS;
 
 		// Sort by field dropdown
 
-		$sortTable = JHtml::_('FEFHelper.select.genericlist', array_merge([
+		$sortTable = HTMLHelper::_('FEFHelper.select.genericlist', array_merge([
 			'' => Text::_('JGLOBAL_SORT_BY'),
 		], $sortFields), 'sortTable', [
 			'id'          => 'sortTable',

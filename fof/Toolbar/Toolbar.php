@@ -14,6 +14,7 @@ use FOF40\Toolbar\Exception\UnknownButtonType;
 use FOF40\Utils\StringHelper;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use \Joomla\CMS\Toolbar\ToolbarHelper as JoomlaToolbarHelper;
@@ -111,8 +112,8 @@ class Toolbar
 				if (!$platform->isCli())
 				{
 					// Load the core Javascript
-					\JHtml::_('behavior.core');
-					\JHtml::_('jquery.framework', true);
+					HTMLHelper::_('behavior.core');
+					HTMLHelper::_('jquery.framework', true);
 				}
 			}
 		}

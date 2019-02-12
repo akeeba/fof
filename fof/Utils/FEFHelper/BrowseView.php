@@ -15,7 +15,7 @@ use FOF40\Utils\ArrayHelper;
 use FOF40\Utils\SelectOptions;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -109,7 +109,7 @@ abstract class BrowseView
 			$langKey = self::fieldLabelKey($field);
 		}
 
-		return JHtml::_('FEFHelper.browse.sort', $langKey, $field, $view->getLists()->order_Dir, $view->getLists()->order, $view->getTask());
+		return HTMLHelper::_('FEFHelper.browse.sort', $langKey, $field, $view->getLists()->order_Dir, $view->getLists()->order, $view->getTask());
 	}
 
 	/**
@@ -189,7 +189,7 @@ abstract class BrowseView
 	 * Create a browse view filter with dropdown values
 	 *
 	 * @param string $localField  Field name
-	 * @param array  $options     The JHtml options list to use
+	 * @param array  $options     The HTMLHelper options list to use
 	 * @param string $placeholder Placeholder for no selection
 	 * @param array  $params      Generic select display parameters
 	 *
@@ -255,7 +255,7 @@ abstract class BrowseView
 	 * @param string $currentValue The currently selected value
 	 * @param array  $params       Passed to optionsFromModel and genericSelect
 	 * @param array  $modelState   Optional state variables to pass to the model
-	 * @param array  $options      Any JHtml select options you want to add in front of the model's returned values
+	 * @param array  $options      Any HTMLHelper select options you want to add in front of the model's returned values
 	 *
 	 * @see   self::getOptionsFromModel
 	 * @see   self::getOptionsFromSource
@@ -284,7 +284,7 @@ abstract class BrowseView
 	 * @param string $modelName  The name of the model, e.g. "items" or "com_foobar.items"
 	 * @param array  $params     Passed to getOptionsFromModel
 	 * @param array  $modelState Optional state variables to pass to the model
-	 * @param array  $options    Any JHtml select options you want to add in front of the model's returned values
+	 * @param array  $options    Any HTMLHelper select options you want to add in front of the model's returned values
 	 *
 	 * @see   self::getOptionsFromModel
 	 * @see   self::getOptionsFromSource
@@ -312,10 +312,10 @@ abstract class BrowseView
 	}
 
 	/**
-	 * Gets the active option's label given an array of JHtml options
+	 * Gets the active option's label given an array of HTMLHelper options
 	 *
 	 * @param   mixed   $selected       The currently selected value
-	 * @param   array   $data           The JHtml options to parse
+	 * @param   array   $data           The HTMLHelper options to parse
 	 * @param   string  $optKey         Key name, default: value
 	 * @param   string  $optText        Value name, default: text
 	 * @param   bool    $selectFirst    Should I automatically select the first option? Default: true
@@ -457,7 +457,7 @@ abstract class BrowseView
 
 		if (!empty($params['list.none']))
 		{
-			array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_($params['list.none'])));
+			array_unshift($options, HTMLHelper::_('FEFHelper.select.option', '', Text::_($params['list.none'])));
 		}
 
 		$html = [];
@@ -465,7 +465,7 @@ abstract class BrowseView
 		// Create a read-only list (no name) with hidden input(s) to store the value(s).
 		if ($params['readonly'])
 		{
-			$html[] = JHtml::_('FEFHelper.select.genericlist', $options, $name, $params);
+			$html[] = HTMLHelper::_('FEFHelper.select.genericlist', $options, $name, $params);
 
 			// E.g. form field type tag sends $this->value as array
 			if ($params['multiple'] && is_array($currentValue))
@@ -488,7 +488,7 @@ abstract class BrowseView
 		else
 			// Create a regular list.
 		{
-			$html[] = JHtml::_('FEFHelper.select.genericlist', $options, $name, $params);
+			$html[] = HTMLHelper::_('FEFHelper.select.genericlist', $options, $name, $params);
 		}
 
 		return implode($html);
@@ -544,7 +544,7 @@ abstract class BrowseView
 	}
 
 	/**
-	 * Get JHtml options from an alternate source, e.g. a helper. This is useful for adding arbitrary options
+	 * Get HTMLHelper options from an alternate source, e.g. a helper. This is useful for adding arbitrary options
 	 * which are either dynamic or you do not want to inline to your view, e.g. reusable options across
 	 * different views.
 	 *
@@ -555,7 +555,7 @@ abstract class BrowseView
 	 * source_key           Use * if you're returning a key/value array. Otherwise the array key for the key (ID) value.
 	 * source_value         Use * if you're returning a key/value array. Otherwise the array key for the displayed value.
 	 * source_translate     Should I pass the value field through Text? Default: true
-	 * source_format        Set to "optionsobject" if you're returning an array of JHtml options. Ignored otherwise.
+	 * source_format        Set to "optionsobject" if you're returning an array of HTMLHelper options. Ignored otherwise.
 	 *
 	 * @param  array $attribs
 	 *
@@ -626,7 +626,7 @@ abstract class BrowseView
 								$value = Text::_($value);
 							}
 
-							$options[] = JHtml::_('FEFHelper.select.option', $key, $value, 'value', 'text');
+							$options[] = HTMLHelper::_('FEFHelper.select.option', $key, $value, 'value', 'text');
 						}
 					}
 				}
@@ -639,7 +639,7 @@ abstract class BrowseView
 	}
 
 	/**
-	 * Get JHtml options from the values returned by a model.
+	 * Get HTMLHelper options from the values returned by a model.
 	 *
 	 * The params can be:
 	 * key_field        The model field used for the OPTION's key. Default: the model's ID field.
@@ -654,7 +654,7 @@ abstract class BrowseView
 	 * @param string $modelName  The name of the model, e.g. "items" or "com_foobar.items"
 	 * @param array  $params     Parameters which define which options to get from the model
 	 * @param array  $modelState Optional state variables to pass to the model
-	 * @param array  $options    Any JHtml select options you want to add in front of the model's returned values
+	 * @param array  $options    Any HTMLHelper select options you want to add in front of the model's returned values
 	 *
 	 * @return mixed
 	 *
@@ -730,11 +730,11 @@ abstract class BrowseView
 
 		if (!empty($params['none']))
 		{
-			$options[] = JHtml::_('FEFHelper.select.option', null, Text::_($params['none']));
+			$options[] = HTMLHelper::_('FEFHelper.select.option', null, Text::_($params['none']));
 
 			if ($params['none_as_zero'])
 			{
-				$options[] = JHtml::_('FEFHelper.select.option', 0, Text::_($params['none']));
+				$options[] = HTMLHelper::_('FEFHelper.select.option', 0, Text::_($params['none']));
 			}
 		}
 
@@ -770,7 +770,7 @@ abstract class BrowseView
 					$value = Text::_($value);
 				}
 
-				$options[] = JHtml::_('FEFHelper.select.option', $item->{$params['key_field']}, $value);
+				$options[] = HTMLHelper::_('FEFHelper.select.option', $item->{$params['key_field']}, $value);
 			}
 		}
 
