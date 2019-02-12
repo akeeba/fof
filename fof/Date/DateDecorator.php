@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
 
 /**
  * This decorator will get any DateTime descendant and turn it into a FOF40\Date\Date compatible class. If the methods
- * specific to Date/JDate are available they will be used. Otherwise a new Date object will be spun from the information
+ * specific to Date are available they will be used. Otherwise a new Date object will be spun from the information
  * in the decorated DateTime object and the results of a call to its method will be returned.
  */
 class DateDecorator extends Date
@@ -66,7 +66,7 @@ class DateDecorator extends Date
 			return call_user_func_array(array($this->decorated, $name), $arguments);
 		}
 
-		throw new \InvalidArgumentException("JDate object does not have a $name method");
+		throw new \InvalidArgumentException("Date object does not have a $name method");
 	}
 
 	public function sub($interval)

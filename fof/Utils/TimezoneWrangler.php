@@ -215,7 +215,7 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and JDate), an integer (UNIX timestamp) or a date string. If no
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
 	 * timezone is specified in a date string we assume it's GMT.
 	 *
 	 * @param   JUser  $user  Applicable user for timezone calculation. Null = current user.
@@ -238,7 +238,7 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and JDate), an integer (UNIX timestamp) or a date string. If no
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
 	 * timezone is specified in a date string we assume it's the user's applicable timezone.
 	 *
 	 * @param   JUser  $user
@@ -264,7 +264,7 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and JDate), an integer (UNIX timestamp) or a date string. If no
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
 	 * timezone is specified in a date string we assume it's GMT.
 	 *
 	 * $translate requires you to have loaded the relevant translation file (e.g. en-GB.ini). CMSApplication does that
@@ -293,7 +293,7 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and JDate), an integer (UNIX timestamp) or a date string. If no
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
 	 * timezone is specified in a date string we assume it's the user's applicable timezone.
 	 *
 	 * $translate requires you to have loaded the relevant translation file (e.g. en-GB.ini). CMSApplication does that

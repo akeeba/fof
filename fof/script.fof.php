@@ -6,6 +6,7 @@
  */
 
 
+use Joomla\CMS\Date\Date as JoomlaDate;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -253,14 +254,14 @@ class file_fof40InstallerScript
 			$info                    = explode("\n", $rawData);
 			$fofVersion['installed'] = array(
 				'version' => trim($info[0]),
-				'date'    => new JDate(trim($info[1])),
+				'date'    => new JoomlaDate(trim($info[1])),
 			);
 		}
 		else
 		{
 			$fofVersion['installed'] = array(
 				'version' => '0.0',
-				'date'    => new JDate('2011-01-01'),
+				'date'    => new JoomlaDate('2011-01-01'),
 			);
 		}
 
@@ -269,7 +270,7 @@ class file_fof40InstallerScript
 		$info                  = explode("\n", $rawData);
 		$fofVersion['package'] = array(
 			'version' => trim($info[0]),
-			'date'    => new JDate(trim($info[1])),
+			'date'    => new JoomlaDate(trim($info[1])),
 		);
 
 		$haveToInstallFOF = $fofVersion['package']['date']->toUNIX() >= $fofVersion['installed']['date']->toUNIX();

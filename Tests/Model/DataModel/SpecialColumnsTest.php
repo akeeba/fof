@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\ObserverClosure;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Date\Date as JoomlaDate;
 
 require_once 'SpecialColumnsDataprovider.php';
 
@@ -358,7 +359,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 
 		if ($model->hasField('locked_on'))
 		{
-			$now = new \JDate();
+			$now = new JoomlaDate();
 			$model->setFieldValue('locked_on', $now->toSql());
 		}
 
