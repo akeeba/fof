@@ -9,7 +9,9 @@
 namespace FOF40\Tests\Helpers\Platform;
 
 
-class UserForAdminAuth extends \JUser
+use Joomla\CMS\User\User;
+
+class UserForAdminAuth extends User
 {
 	public $allowedAuths = []; // e.g. core.admin#com_foobar
 

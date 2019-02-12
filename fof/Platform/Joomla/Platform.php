@@ -27,6 +27,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\User\User;
+use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version as JoomlaVersion;
 use Joomla\Registry\Registry;
 
@@ -343,7 +345,7 @@ class Platform extends BasePlatform
 	 *
 	 * @see PlatformInterface::getUser()
 	 *
-	 * @return  \JUser  The JUser object for the specified user
+	 * @return  User  The User object for the specified user
 	 */
 	public function getUser($id = null)
 	{
@@ -355,10 +357,10 @@ class Platform extends BasePlatform
 		{
 			if ($id)
 			{
-				return \JUser::getInstance($id);
+				return User::getInstance($id);
 			}
 
-			return new \JUser();
+			return new User();
 		}
 
 		return JoomlaFactory::getUser($id);
@@ -777,7 +779,7 @@ class Platform extends BasePlatform
 		// Let's try again "manually", skipping the check vs two factor auth
 		// Due the big mess with encryption algorithms and libraries, we are doing this extra check only
 		// if we're in Joomla 2.5.18+ or 3.2.1+
-		if ($response->status != \JAuthentication::STATUS_SUCCESS && method_exists('JUserHelper', 'verifyPassword'))
+		if ($response->status != \JAuthentication::STATUS_SUCCESS && method_exists('\Joomla\CMS\User\UserHelper', 'verifyPassword'))
 		{
 			$db = JoomlaFactory::getDbo();
 			$query = $db->getQuery(true)
@@ -788,12 +790,12 @@ class Platform extends BasePlatform
 
 			if ($result)
 			{
-				$match = \JUserHelper::verifyPassword($authInfo['password'], $result->password, $result->id);
+				$match = UserHelper::verifyPassword($authInfo['password'], $result->password, $result->id);
 
 				if ($match === true)
 				{
 					// Bring this in line with the rest of the system
-					$user = \JUser::getInstance($result->id);
+					$user = User::getInstance($result->id);
 					$response->email = $user->email;
 					$response->fullname = $user->name;
 
@@ -819,7 +821,7 @@ class Platform extends BasePlatform
 
 			unset($results); // Just to make phpStorm happy
 
-			$userid = \JUserHelper::getUserId($response->username);
+			$userid = UserHelper::getUserId($response->username);
 			$user = $this->getUser($userid);
 
 			$session = $this->container->session;
@@ -1163,7 +1165,7 @@ class Platform extends BasePlatform
 			// Create a token
 			if (is_null($token) || $forceNew)
 			{
-				$token = \JUserHelper::genRandomPassword(32);
+				$token = UserHelper::genRandomPassword(32);
 				$this->setSessionVar('session.token', $token);
 			}
 

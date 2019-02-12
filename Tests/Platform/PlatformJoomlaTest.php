@@ -240,7 +240,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 		$user = \JFactory::$session->get('user');
 
-		$this->assertInstanceOf('\JUser', $actual, "getUser() must return a JUser object");
+		$this->assertInstanceOf('\Joomla\CMS\User\User', $actual, "getUser() must return a \Joomla\CMS\User\User object");
 		$this->assertEquals($user, $actual, "getUser() must return the requested user object");
 	}
 

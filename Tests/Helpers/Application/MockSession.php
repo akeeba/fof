@@ -9,6 +9,7 @@
 namespace FOF40\Tests\Helpers\Application;
 
 use FOF40\Tests\Helpers\FOFTestCase;
+use Joomla\CMS\User\User;
 
 class MockSession
 {
@@ -118,10 +119,10 @@ class MockSession
 		switch ($key)
 		{
 			case 'user':
-				// Attempt to load JUser.
-				class_exists('JUser');
+				// Attempt to load User.
+				class_exists('\Joomla\CMS\User\User');
 
-				$user = new \JUser;
+				$user = new User;
 
 				$user->id       = (int) self::getOption('get.user.id', 0);
 				$user->name     = self::getOption('get.user.name');

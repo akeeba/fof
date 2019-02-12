@@ -13,6 +13,7 @@ use FOF40\Date\Date;
 use FOF40\Input\Input;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Language\Language;
+use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -211,7 +212,7 @@ interface PlatformInterface
 	 * @param   integer  $id  The user ID to load. Skip or use null to retrieve
 	 *                        the object for the currently logged in user.
 	 *
-	 * @return  \JUser  The \JUser object for the specified user
+	 * @return  User  The User object for the specified user
 	 */
 	public function getUser($id = null);
 

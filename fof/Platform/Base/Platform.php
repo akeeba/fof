@@ -124,7 +124,7 @@ abstract class Platform implements PlatformInterface
 	}
 
 	/**
-	 * Returns the JUser object for the current user
+	 * Returns the \Joomla\CMS\User\User object for the current user
 	 *
 	 * @param   integer  $id  The ID of the user to fetch
 	 *
