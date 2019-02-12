@@ -25,6 +25,7 @@ use Joomla\CMS\Language\Language;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Version as JoomlaVersion;
 use Joomla\Registry\Registry;
@@ -1179,7 +1180,7 @@ class Platform extends BasePlatform
 		// Web application, go through the regular Joomla! API.
 		if ($formToken)
 		{
-			return \JSession::getFormToken($forceNew);
+			return Session::getFormToken($forceNew);
 		}
 
 		return $this->container->session->getToken($forceNew);

@@ -12,6 +12,7 @@ namespace FOF40\Tests\Helpers;
 use FOF40\Tests\Helpers\Application\MockApplicationCms;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Session\Session;
 
 class FOFTestCase extends ApplicationTestCase
 {
@@ -213,18 +214,18 @@ class FOFTestCase extends ApplicationTestCase
 	/**
 	 * Gets a mock session object.
 	 *
-	 * @param   array $options An array of key-value options for the JSession mock.
+	 * @param   array $options An array of key-value options for the Session mock.
 	 *                         getId : the value to be returned by the mock getId method
 	 *                         get.user.id : the value to assign to the user object id returned by get('user')
 	 *                         get.user.name : the value to assign to the user object name returned by get('user')
 	 *                         get.user.username : the value to assign to the user object username returned by get('user')
 	 *
-	 * @return  \JSession
+	 * @return  Session
 	 */
 	public function getMockSession($options = [])
 	{
 		// Attempt to load the real class first.
-		class_exists('JSession');
+		class_exists('\Joomla\CMS\Session\Session');
 
 		return MockSession::create($this, $options);
 	}

@@ -8,6 +8,7 @@
 
 // Required to load FOF and Joomla!
 use FOF40\Tests\Helpers\TravisLogger;
+use Joomla\CMS\Session\Session;
 
 define('_JEXEC', 1);
 define('JDEBUG', 0);
@@ -167,10 +168,10 @@ $config->set('log_path', JPATH_ROOT . '/logs');
 // Despite its name, this is the session STORAGE, NOT the session HANDLER. Because that somehow makes sense. NOT.
 $config->set('session_handler', 'none');
 
-// We need to set up the JSession object
+// We need to set up the Session object
 require_once 'Stubs/Session/FakeSession.php';
 $sessionHandler = new JSessionHandlerFake();
-$session        = JSession::getInstance('none', [], $sessionHandler);
+$session        = Session::getInstance('none', [], $sessionHandler);
 $input          = new JInputCli();
 $dispatcher     = new JEventDispatcher();
 $session->initialise($input, $dispatcher);

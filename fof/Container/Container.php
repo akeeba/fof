@@ -65,7 +65,7 @@ defined('_JEXEC') or die;
  * @property-read  \FOF40\Input\Input                  $input              The input object
  * @property-read  \FOF40\Platform\PlatformInterface   $platform           The platform abstraction layer object
  * @property-read  \FOF40\Render\RenderInterface       $renderer           The view renderer
- * @property-read  \JSession                           $session            Joomla! session storage
+ * @property-read  \Joomla\CMS\Session\Session         $session            Joomla! session storage
  * @property-read  \FOF40\Template\Template            $template           The template helper
  * @property-read  TransparentAuth                     $transparentAuth    Transparent authentication handler
  * @property-read  \FOF40\Toolbar\Toolbar              $toolbar            The component's toolbar

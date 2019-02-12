@@ -42,7 +42,7 @@ class MockSession
 	}
 
 	/**
-	 * Creates an instance of the mock JSession object.
+	 * Creates an instance of the mock \Joomla\CMS\Session\Session object.
 	 *
 	 * @param   object $test      A test object.
 	 * @param   array  $options   An array of optional configuration values.
@@ -87,7 +87,7 @@ class MockSession
 		];
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('JSession')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Session\Session')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')
