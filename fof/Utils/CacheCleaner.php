@@ -8,6 +8,7 @@
 namespace  FOF40\Utils;
 
 use Joomla\CMS\Cache\Cache;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 defined('_JEXEC') or die;
 
@@ -62,7 +63,7 @@ class CacheCleaner
 	 */
 	public static function clearCacheGroups(array $clearGroups, array $cacheClients = array(0, 1))
 	{
-		$conf = \JFactory::getConfig();
+		$conf = JoomlaFactory::getConfig();
 
 		foreach ($clearGroups as $group)
 		{

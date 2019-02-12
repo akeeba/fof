@@ -10,6 +10,7 @@ namespace FOF40\Tests\DataModel\Filter\Boolean;
 
 use FOF40\Model\DataModel\Filter\Boolean;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'BooleanDataprovider.php';
 
@@ -29,7 +30,7 @@ class BooleanTest extends DatabaseTest
 	public function testIsEmpty($test, $check)
 	{
 		$msg    = 'Boolean::isEmpty %s - Case: ' . $check['case'];
-		$filter = new Boolean(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'tinyint(1)']);
+		$filter = new Boolean(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'tinyint(1)']);
 
 		$result = $filter->isEmpty($test['value']);
 

@@ -10,6 +10,7 @@ use FOF40\Utils\ArrayHelper;
 use FOF40\Utils\FEFHelper\BrowseView;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\DataView\Raw as DataViewRaw;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 
@@ -206,13 +207,13 @@ abstract class FEFHelperBrowse
 		// Special state for dates
 		if ($publish_up || $publish_down)
 		{
-			$nullDate = JFactory::getDbo()->getNullDate();
-			$nowDate  = JFactory::getDate()->toUnix();
+			$nullDate = JoomlaFactory::getDbo()->getNullDate();
+			$nowDate  = JoomlaFactory::getDate()->toUnix();
 
-			$tz = JFactory::getUser()->getTimezone();
+			$tz = JoomlaFactory::getUser()->getTimezone();
 
-			$publish_up   = ($publish_up != $nullDate) ? JFactory::getDate($publish_up, 'UTC')->setTimeZone($tz) : false;
-			$publish_down = ($publish_down != $nullDate) ? JFactory::getDate($publish_down, 'UTC')->setTimeZone($tz) : false;
+			$publish_up   = ($publish_up != $nullDate) ? JoomlaFactory::getDate($publish_up, 'UTC')->setTimeZone($tz) : false;
+			$publish_down = ($publish_down != $nullDate) ? JoomlaFactory::getDate($publish_down, 'UTC')->setTimeZone($tz) : false;
 
 			// Create tip text, only we have publish up or down settings
 			$tips = [];
@@ -623,7 +624,7 @@ JS;
 
 		try
 		{
-			JFactory::getApplication()->getDocument()->addScriptDeclaration($js);
+			JoomlaFactory::getApplication()->getDocument()->addScriptDeclaration($js);
 		}
 		catch (Exception $e)
 		{

@@ -8,6 +8,7 @@
 
 // Required to load FOF and Joomla!
 use FOF40\Tests\Helpers\TravisLogger;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Session\Session;
 
 define('_JEXEC', 1);
@@ -153,7 +154,7 @@ require_once JPATH_LIBRARIES . '/cms.php';
 
 // Since there is no configuration file inside Joomla cloned repo, we have to read the installation one...
 TravisLogger::log(4, 'Including configuration.php-dist from Joomla environment');
-$config = JFactory::getConfig(JPATH_SITE . '/installation/configuration.php-dist');
+$config = JoomlaFactory::getConfig(JPATH_SITE . '/installation/configuration.php-dist');
 
 TravisLogger::log(4, 'Changing values for the JConfig object');
 // ... and then hijack some details
@@ -175,10 +176,10 @@ $session        = Session::getInstance('none', [], $sessionHandler);
 $input          = new JInputCli();
 $dispatcher     = new JEventDispatcher();
 $session->initialise($input, $dispatcher);
-JFactory::$session = $session;
+JoomlaFactory::$session = $session;
 
 // Do I have a Joomla database schema ready? If not, let's import the installation SQL file
-$db = JFactory::getDbo();
+$db = JoomlaFactory::getDbo();
 
 try
 {
@@ -218,7 +219,7 @@ catch (Exception $e)
 TravisLogger::log(4, 'Create test specific tables');
 
 // Let's use our class to create the schema
-$importer = new \FOF40\Database\Installer(JFactory::getDbo(), JPATH_TESTS . '/Stubs/schema');
+$importer = new \FOF40\Database\Installer(JoomlaFactory::getDbo(), JPATH_TESTS . '/Stubs/schema');
 $importer->updateSchema();
 unset($importer);
 

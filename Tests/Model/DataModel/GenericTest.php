@@ -13,6 +13,7 @@ use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'GenericDataprovider.php';
 
@@ -94,7 +95,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$msg       = 'DataModel::setFieldValue %s - Case: ' . $check['case'];
 		$dbcounter = 0;
-		$selfDb    = \JFactory::getDbo();
+		$selfDb    = JoomlaFactory::getDbo();
 
 		$config = [
 			'idFieldName' => 'foftest_foobar_id',
@@ -338,7 +339,7 @@ class DataModelGenericTest extends DatabaseTest
 	 */
 	public function testCount()
 	{
-		$db    = \JFactory::getDbo();
+		$db    = JoomlaFactory::getDbo();
 		$after = 0;
 
 		$config = [
@@ -944,7 +945,7 @@ class DataModelGenericTest extends DatabaseTest
 			'tableName'   => '#__foftest_bares',
 		];
 
-		$query = \JFactory::getDbo()->getQuery(true)
+		$query = JoomlaFactory::getDbo()->getQuery(true)
 			->select('*')
 			->from('#__foftest_bares')
 			->where('foftest_bare_id = 1');

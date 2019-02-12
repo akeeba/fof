@@ -7,9 +7,9 @@
 
 namespace  FOF40\Utils;
 
-use JFactory;
 use JHtml;
 use Joomla\CMS\Cache\Cache;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
@@ -111,7 +111,7 @@ class SelectOptions
 	 */
 	private static function access(array $params = [])
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('a.id', 'value') . ', ' . $db->quoteName('a.title', 'text'))
 			->from($db->quoteName('#__viewlevels', 'a'))
@@ -198,7 +198,7 @@ class SelectOptions
 	 */
 	private static function components(array $params)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		// Check for client_ids override
 		$client_ids = isset($params['client_ids']) ? $params['client_ids'] : [0, 1];
@@ -230,7 +230,7 @@ class SelectOptions
 		// Convert to array of objects, so we can use sortObjects()
 		// Also translate component names with Text::_()
 		$aComponents = [];
-		$user        = JFactory::getUser();
+		$user        = JoomlaFactory::getUser();
 
 		foreach ($components as $component)
 		{
@@ -272,7 +272,7 @@ class SelectOptions
 	 */
 	private static function languages($params)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$client = isset($params['client']) ? $params['client'] : 'site';
 
@@ -427,7 +427,7 @@ class SelectOptions
 			}
 		}
 
-		$lang   = JFactory::getLanguage();
+		$lang   = JoomlaFactory::getLanguage();
 		$source = JPATH_ADMINISTRATOR . '/components/' . $item->element;
 		$lang->load("$item->element.sys", JPATH_ADMINISTRATOR, null, false, false)
 		|| $lang->load("$item->element.sys", $source, null, false, false)

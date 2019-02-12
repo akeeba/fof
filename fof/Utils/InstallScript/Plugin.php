@@ -9,8 +9,7 @@ namespace  FOF40\Utils\InstallScript;
 
 use Exception;
 use FOF40\Database\Installer;
-use JFactory;
-use JLoader;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Installer\Adapter\PluginAdapter;
 use Joomla\CMS\Log\Log;
 
@@ -138,7 +137,7 @@ class Plugin extends BaseInstaller
 
 		if (@is_dir($schemaPath))
 		{
-			$dbInstaller = new Installer(JFactory::getDbo(), $schemaPath);
+			$dbInstaller = new Installer(JoomlaFactory::getDbo(), $schemaPath);
 			$dbInstaller->updateSchema();
 		}
 
@@ -165,7 +164,7 @@ class Plugin extends BaseInstaller
 		// Uninstall database
 		if (@is_dir($schemaPath))
 		{
-			$dbInstaller = new Installer(JFactory::getDbo(), $schemaPath);
+			$dbInstaller = new Installer(JoomlaFactory::getDbo(), $schemaPath);
 			$dbInstaller->removeSchema();
 		}
 

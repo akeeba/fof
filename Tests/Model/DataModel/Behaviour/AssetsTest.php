@@ -11,6 +11,7 @@ namespace FOF40\Tests\DataModel;
 use FOF40\Model\DataModel\Behaviour\Assets;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'AssetsDataprovider.php';
 
@@ -30,7 +31,7 @@ class AssetsTest extends DatabaseTest
 	public function testOnAfterSave($test, $check)
 	{
 		$msg = 'Assets::onAfterBuildQuery %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'idFieldName' => $test['tableid'],
@@ -146,7 +147,7 @@ class AssetsTest extends DatabaseTest
 	public function testOnBeforeDelete($test, $check)
 	{
 		$msg = 'Assets::onBeforeDelete %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'idFieldName' => $test['tableid'],

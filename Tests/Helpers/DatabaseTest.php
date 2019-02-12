@@ -9,11 +9,12 @@
 namespace FOF40\Tests\Helpers;
 
 use FOF40\Container\Container;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 abstract class DatabaseTest extends \PHPUnit_Extensions_Database_TestCase
 {
 	/**
-	 * @var            array    The JFactory pointers saved before the execution of the test
+	 * @var            array    The Factory pointers saved before the execution of the test
 	 */
 	protected $savedFactoryState = [];
 
@@ -83,7 +84,7 @@ abstract class DatabaseTest extends \PHPUnit_Extensions_Database_TestCase
 
 		if (!$connection)
 		{
-			$config = \JFactory::getConfig();
+			$config = JoomlaFactory::getConfig();
 
 			// P.A. Test database prefix is fixed with jos_ so we can setup common tables
 			$options = [
@@ -178,15 +179,15 @@ abstract class DatabaseTest extends \PHPUnit_Extensions_Database_TestCase
 	protected function saveFactoryState()
 	{
 		// We have to clone the objects, otherwise it's useless to save them
-		$this->savedFactoryState['application'] = is_object(\JFactory::$application) ? clone \JFactory::$application : \JFactory::$application;
-		$this->savedFactoryState['config']      = is_object(\JFactory::$config) ? clone \JFactory::$config : \JFactory::$config;
-		$this->savedFactoryState['dates']       = \JFactory::$dates;
-		$this->savedFactoryState['session']     = is_object(\JFactory::$session) ? clone \JFactory::$session : \JFactory::$session;
-		$this->savedFactoryState['language']    = is_object(\JFactory::$language) ? clone \JFactory::$language : \JFactory::$language;
-		$this->savedFactoryState['document']    = is_object(\JFactory::$document) ? clone \JFactory::$document : \JFactory::$document;
-		$this->savedFactoryState['acl']         = is_object(\JFactory::$acl) ? clone \JFactory::$acl : \JFactory::$acl;
-		$this->savedFactoryState['database']    = is_object(\JFactory::$database) ? clone \JFactory::$database : \JFactory::$database;
-		$this->savedFactoryState['mailer']      = is_object(\JFactory::$mailer) ? clone \JFactory::$mailer : \JFactory::$mailer;
+		$this->savedFactoryState['application'] = is_object(JoomlaFactory::$application) ? clone JoomlaFactory::$application : JoomlaFactory::$application;
+		$this->savedFactoryState['config']      = is_object(JoomlaFactory::$config) ? clone JoomlaFactory::$config : JoomlaFactory::$config;
+		$this->savedFactoryState['dates']       = JoomlaFactory::$dates;
+		$this->savedFactoryState['session']     = is_object(JoomlaFactory::$session) ? clone JoomlaFactory::$session : JoomlaFactory::$session;
+		$this->savedFactoryState['language']    = is_object(JoomlaFactory::$language) ? clone JoomlaFactory::$language : JoomlaFactory::$language;
+		$this->savedFactoryState['document']    = is_object(JoomlaFactory::$document) ? clone JoomlaFactory::$document : JoomlaFactory::$document;
+		$this->savedFactoryState['acl']         = is_object(JoomlaFactory::$acl) ? clone JoomlaFactory::$acl : JoomlaFactory::$acl;
+		$this->savedFactoryState['database']    = is_object(JoomlaFactory::$database) ? clone JoomlaFactory::$database : JoomlaFactory::$database;
+		$this->savedFactoryState['mailer']      = is_object(JoomlaFactory::$mailer) ? clone JoomlaFactory::$mailer : JoomlaFactory::$mailer;
 	}
 
 	/**
@@ -196,15 +197,15 @@ abstract class DatabaseTest extends \PHPUnit_Extensions_Database_TestCase
 	 */
 	protected function restoreFactoryState()
 	{
-		\JFactory::$application = $this->savedFactoryState['application'];
-		\JFactory::$config      = $this->savedFactoryState['config'];
-		\JFactory::$dates       = $this->savedFactoryState['dates'];
-		\JFactory::$session     = $this->savedFactoryState['session'];
-		\JFactory::$language    = $this->savedFactoryState['language'];
-		\JFactory::$document    = $this->savedFactoryState['document'];
-		\JFactory::$acl         = $this->savedFactoryState['acl'];
-		\JFactory::$database    = $this->savedFactoryState['database'];
-		\JFactory::$mailer      = $this->savedFactoryState['mailer'];
+		JoomlaFactory::$application = $this->savedFactoryState['application'];
+		JoomlaFactory::$config      = $this->savedFactoryState['config'];
+		JoomlaFactory::$dates       = $this->savedFactoryState['dates'];
+		JoomlaFactory::$session     = $this->savedFactoryState['session'];
+		JoomlaFactory::$language    = $this->savedFactoryState['language'];
+		JoomlaFactory::$document    = $this->savedFactoryState['document'];
+		JoomlaFactory::$acl         = $this->savedFactoryState['acl'];
+		JoomlaFactory::$database    = $this->savedFactoryState['database'];
+		JoomlaFactory::$mailer      = $this->savedFactoryState['mailer'];
 	}
 
 	/**

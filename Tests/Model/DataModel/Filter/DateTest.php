@@ -10,6 +10,7 @@ namespace FOF40\Tests\DataModel\Date;
 
 use FOF40\Model\DataModel\Filter\Date;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'DateDataprovider.php';
 
@@ -25,7 +26,7 @@ class DateTest extends DatabaseTest
 	 */
 	public function testGetDefaultSearchMethod()
 	{
-		$filter = new Date(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
+		$filter = new Date(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
 
 		$this->assertEquals('exact', $filter->getDefaultSearchMethod());
 	}
@@ -39,7 +40,7 @@ class DateTest extends DatabaseTest
 	public function testBetween($test, $check)
 	{
 		$msg    = 'Date::between %s - Case: ' . $check['case'];
-		$filter = new Date(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
+		$filter = new Date(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
 
 		$result = $filter->between($test['from'], $test['to'], $test['include']);
 
@@ -55,7 +56,7 @@ class DateTest extends DatabaseTest
 	public function testOutside($test, $check)
 	{
 		$msg    = 'Date::outside %s - Case: ' . $check['case'];
-		$filter = new Date(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
+		$filter = new Date(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
 
 		$result = $filter->outside($test['from'], $test['to'], $test['include']);
 
@@ -71,7 +72,7 @@ class DateTest extends DatabaseTest
 	public function testInterval($test, $check)
 	{
 		$msg    = 'Date::interval %s - Case: ' . $check['case'];
-		$filter = new Date(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
+		$filter = new Date(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'datetime']);
 
 		$result = $filter->interval($test['value'], $test['interval'], $test['include']);
 

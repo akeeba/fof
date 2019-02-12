@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\Application\AppWithLanguageFilter;
 use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'LanguageDataprovider.php';
 
@@ -70,7 +71,7 @@ class LanguageTest extends DatabaseTest
 
 		$model->expects($this->exactly($check['blacklist']))->method('blacklistFilters');
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$behavior   = new Language($dispatcher);
 
@@ -101,7 +102,7 @@ class LanguageTest extends DatabaseTest
 
 		$fakeApp->input = new Input($test['input']);
 
-		\JFactory::$application = $fakeApp;
+		JoomlaFactory::$application = $fakeApp;
 
 		$behavior->onBeforeBuildQuery($model, $query);
 
@@ -170,7 +171,7 @@ class LanguageTest extends DatabaseTest
 
 		$fakeApp->input = new Input($test['input']);
 
-		\JFactory::$application = $fakeApp;
+		JoomlaFactory::$application = $fakeApp;
 
 		$behavior->onAfterLoad($model, $keys);
 	}

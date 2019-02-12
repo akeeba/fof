@@ -15,6 +15,7 @@ use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Date\Date as JoomlaDate;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'SpecialColumnsDataprovider.php';
 
@@ -39,7 +40,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 
 		$before = 0;
 		$after  = 0;
-		$db     = \JFactory::getDbo();
+		$db     = JoomlaFactory::getDbo();
 		$msg    = 'DataModel::reorder %s - Case: ' . $check['case'];
 
 		$config = [
@@ -132,7 +133,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 		$beforeDisp = 0;
 		$after      = 0;
 		$afterDisp  = 0;
-		$db         = \JFactory::getDbo();
+		$db         = JoomlaFactory::getDbo();
 		$msg        = 'DataModel::move %s - Case: ' . $check['case'];
 
 		$config = [
@@ -320,7 +321,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	{
 		$before = 0;
 		$after  = 0;
-		$db     = \JFactory::getDbo();
+		$db     = JoomlaFactory::getDbo();
 		$msg    = 'DataModel::unlock %s - Case: ' . $check['case'];
 
 		$config = [
@@ -477,7 +478,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 		$container = new TestContainer([
 			'platform' => new ClosureHelper([
 				'getDbo'    => function () {
-					return \JFactory::getDbo();
+					return JoomlaFactory::getDbo();
 				},
 				'getUser'   => function () {
 					return (object) ['id' => 99];

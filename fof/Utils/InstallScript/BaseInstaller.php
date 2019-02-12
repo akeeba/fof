@@ -9,9 +9,9 @@ namespace  FOF40\Utils\InstallScript;
 
 use DirectoryIterator;
 use Exception;
-use JFactory;
 use JFile;
 use JFolder;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Log\Log;
 
 defined('_JEXEC') or die;
@@ -271,7 +271,7 @@ class BaseInstaller
 	 */
 	protected function getDependencies($package)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->select($db->qn('value'))
@@ -304,7 +304,7 @@ class BaseInstaller
 	 */
 	protected function setDependencies($package, array $dependencies)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->delete('#__akeeba_common')
@@ -596,7 +596,7 @@ class BaseInstaller
 		// Check if the definition exists
 		$tableName = '#__postinstall_messages';
 
-		$db          = JFactory::getDbo();
+		$db          = JoomlaFactory::getDbo();
 		$query       = $db->getQuery(true)
 			->select('*')
 			->from($db->qn($tableName))
@@ -664,7 +664,7 @@ class BaseInstaller
 		}
 
 		// Get the extension ID for our component
-		$db    = JFactory::getDbo();
+		$db    = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('extension_id')
 			->from('#__extensions')
@@ -715,7 +715,7 @@ class BaseInstaller
 		}
 
 		// Get the extension ID for our component
-		$db    = JFactory::getDbo();
+		$db    = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('extension_id')
 			->from('#__extensions')

@@ -14,6 +14,7 @@ use FOF40\Model\DataModel\Collection;
 use FOF40\Model\DataModel\Relation\BelongsToMany;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'BelongsToManyDataprovider.php';
 
@@ -144,7 +145,7 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 		$relation->saveAll();
 
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		// First of all double check if the part was updated
 		$query = $db->getQuery(true)
@@ -194,7 +195,7 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 		$relation->saveAll();
 
-		$db             = \JFactory::getDbo();
+		$db             = JoomlaFactory::getDbo();
 		$query          = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__fakeapp_parts_groups'))
@@ -236,7 +237,7 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 		$relation->saveAll();
 
-		$db             = \JFactory::getDbo();
+		$db             = JoomlaFactory::getDbo();
 		$query          = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__fakeapp_parts_groups'))
@@ -267,7 +268,7 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 		$model->push();
 
-		$db             = \JFactory::getDbo();
+		$db             = JoomlaFactory::getDbo();
 		$query          = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__fakeapp_parts_groups'))
@@ -296,7 +297,7 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 		$model->push();
 
-		$db             = \JFactory::getDbo();
+		$db             = JoomlaFactory::getDbo();
 		$query          = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__fakeapp_parts_groups'))
@@ -322,7 +323,7 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 		$model->push();
 
-		$db             = \JFactory::getDbo();
+		$db             = JoomlaFactory::getDbo();
 		$query          = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__fakeapp_parts_groups'))

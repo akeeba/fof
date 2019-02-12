@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\ObserverClosure;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'CrudDataprovider.php';
 
@@ -34,7 +35,7 @@ class DataModelCrudTest extends DatabaseTest
 	{
 		//\PHPUnit_Framework_Error_Warning::$enabled = false;
 
-		$db          = \JFactory::getDbo();
+		$db          = JoomlaFactory::getDbo();
 		$msg         = 'DataModel::save %s - Case: ' . $check['case'];
 		$events      = [
 			'onBeforeSave'   => 0, 'onAfterSave' => 0, 'onBeforeCreate' => 0, 'onAfterCreate' => 0,
@@ -515,7 +516,7 @@ class DataModelCrudTest extends DatabaseTest
 		$this->assertEquals(1, $after, sprintf($msg, 'Failed to call the onAfter method'));
 
 		// Now let's check if the record was really deleted
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->select('COUNT(*)')

@@ -11,6 +11,7 @@ namespace FOF40\Tests\TreeModel;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Stubs\Model\TreeModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'TreeModelDataprovider.php';
 
@@ -78,7 +79,7 @@ class TreeModelTest extends DatabaseTest
 			'tableName'   => '#__foftest_nestedsets',
 		];
 
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$table = new TreeModelStub(static::$container, $config, [
 			'onBeforeDelete' => $test['mock']['before'],
@@ -250,7 +251,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $parent */
 
 		$msg = 'TreeModel::insertAsFirstChildOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -339,7 +340,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $parent */
 
 		$msg = 'TreeModel::insertAsLastChildOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -428,7 +429,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $sibling */
 
 		$msg = 'TreeModel::insertLeftOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -516,7 +517,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $sibling */
 
 		$msg = 'TreeModel::insertRightOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -722,7 +723,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $sibling */
 
 		$msg = 'TreeModel::moveToLeftOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -828,7 +829,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $sibling */
 
 		$msg = 'TreeModel::moveToRightOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -933,7 +934,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $parent */
 
 		$msg = 'TreeModel::makeFirstChildOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,
@@ -1021,7 +1022,7 @@ class TreeModelTest extends DatabaseTest
 		/** @var TreeModelStub $parent */
 
 		$msg = 'TreeModel::makeLastChildOf %s - Case: ' . $check['case'];
-		$db  = \JFactory::getDbo();
+		$db  = JoomlaFactory::getDbo();
 
 		$config = [
 			'autoChecks'  => false,

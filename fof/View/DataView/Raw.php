@@ -12,6 +12,7 @@ use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Collection;
 use FOF40\View\View;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\Registry\Registry;
 
@@ -247,9 +248,9 @@ class Raw extends View implements DataViewInterface
 		// Display limits
 		$defaultLimit = 20;
 
-		if (!$this->container->platform->isCli() && class_exists('JFactory'))
+		if (!$this->container->platform->isCli() && class_exists('\Joomla\CMS\Factory'))
 		{
-			$app = \JFactory::getApplication();
+			$app = JoomlaFactory::getApplication();
 
 			if (method_exists($app, 'get'))
 			{
@@ -287,7 +288,7 @@ class Raw extends View implements DataViewInterface
 		if ($this->container->platform->isFrontend())
 		{
 			/** @var SiteApplication $app */
-			$app = \JFactory::getApplication();
+			$app = JoomlaFactory::getApplication();
 			$params = $app->getParams();
 			$this->pageParams = $params;
 		}

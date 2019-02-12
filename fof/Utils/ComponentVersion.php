@@ -8,7 +8,7 @@
 namespace  FOF40\Utils;
 
 use Exception;
-use JFactory;
+use Joomla\CMS\Factory as JoomlaFactory;
 use SimpleXMLElement;
 
 defined('_JEXEC') or die;
@@ -74,7 +74,7 @@ abstract class ComponentVersion
 	 */
 	private static function getVersionFromDatabase($component)
 	{
-		$db      = JFactory::getDbo();
+		$db      = JoomlaFactory::getDbo();
 		$query   = $db->getQuery(true)
 			->select($db->qn('manifest_cache'))
 			->from($db->qn('#__extensions'))

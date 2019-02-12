@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\Registry\Registry;
 
 require_once 'PageParametersToStateDataprovider.php';
@@ -86,7 +87,7 @@ class PageParametersToStateTest extends DatabaseTest
 			},
 		]);
 
-		\JFactory::$application = $fakeApp;
+		JoomlaFactory::$application = $fakeApp;
 
 		$pageparams->onAfterConstruct($model);
 

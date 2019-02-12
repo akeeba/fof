@@ -13,6 +13,7 @@ use FOF40\Layout\LayoutFile;
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestJoomlaPlatform;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\Registry\Registry;
 
 /**
@@ -46,7 +47,7 @@ class LayoutFileTest extends FOFTestCase
 
 		$this->saveFactoryState();
 
-		\JFactory::$application = $this->getMockCmsApp();
+		JoomlaFactory::$application = $this->getMockCmsApp();
 	}
 
 	/**

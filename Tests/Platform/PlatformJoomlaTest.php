@@ -18,6 +18,7 @@ use FOF40\Tests\Helpers\ReflectionHelper;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Version as JoomlaVersion;
 
 /**
@@ -114,8 +115,8 @@ class PlatformJoomlaTest extends FOFTestCase
 	private function forceApplicationTypeAndResetPlatformCliAdminCache($mockApplicationType)
 	{
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
-		$config               = \JFactory::getConfig(JPATH_SITE . '/configuration.php');
-		\JFactory::$session   = $this->getMockSession();
+		$config               = JoomlaFactory::getConfig(JPATH_SITE . '/configuration.php');
+		JoomlaFactory::$session   = $this->getMockSession();
 
 		// Get the correct mock application
 		switch ($mockApplicationType)
@@ -137,8 +138,8 @@ class PlatformJoomlaTest extends FOFTestCase
 				$mockApplication = new \Exception('This is not an application');
 		}
 
-		// Set the mock application to JFactory
-		\JFactory::$application = $mockApplication;
+		// Set the mock application to JoomlaFactory
+		JoomlaFactory::$application = $mockApplication;
 
 		// Reset Platform's internal cache
 		$reflector = new \ReflectionClass('FOF40\\Platform\\Joomla\\Platform');
@@ -214,9 +215,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	{
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
 
-		\JFactory::$session = $this->getMockSession();
+		JoomlaFactory::$session = $this->getMockSession();
 
-		$expected = \JFactory::getApplication('site')->getTemplate();
+		$expected = JoomlaFactory::getApplication('site')->getTemplate();
 		$actual   = $this->platform->getTemplate();
 
 		$this->assertEquals($expected, $actual, "getTemplate() must return the application's template");
@@ -231,14 +232,14 @@ class PlatformJoomlaTest extends FOFTestCase
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
 
 		$fakeSession        = $this->getMockSession();
-		\JFactory::$session = $fakeSession;
+		JoomlaFactory::$session = $fakeSession;
 
-		// Required to let JFactory know which application to load
-		\JFactory::getApplication('site');
+		// Required to let JoomlaFactory know which application to load
+		JoomlaFactory::getApplication('site');
 
 		$actual = $this->platform->getUser();
 
-		$user = \JFactory::$session->get('user');
+		$user = JoomlaFactory::$session->get('user');
 
 		$this->assertInstanceOf('\Joomla\CMS\User\User', $actual, "getUser() must return a \Joomla\CMS\User\User object");
 		$this->assertEquals($user, $actual, "getUser() must return the requested user object");
@@ -252,12 +253,12 @@ class PlatformJoomlaTest extends FOFTestCase
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
 
 		$fakeSession        = $this->getMockSession();
-		\JFactory::$session = $fakeSession;
+		JoomlaFactory::$session = $fakeSession;
 
-		// Required to let JFactory know which application to load
-		\JFactory::getApplication('site');
+		// Required to let JoomlaFactory know which application to load
+		JoomlaFactory::getApplication('site');
 
-		$expected = \JFactory::getDocument();
+		$expected = JoomlaFactory::getDocument();
 
 		$reflector = new \ReflectionClass('FOF40\\Platform\\Joomla\\Platform');
 		$propIsCli = $reflector->getProperty('isCLI');
@@ -275,7 +276,7 @@ class PlatformJoomlaTest extends FOFTestCase
 		$actual = $this->platform->getDocument();
 
 		$this->assertInstanceOf('\Joomla\CMS\Document\Document', $actual, "getDocument() must return a JDocument object");
-		$this->assertEquals($expected, $actual, "getDocument() must return the document from JFactory");
+		$this->assertEquals($expected, $actual, "getDocument() must return the document from JoomlaFactory");
 	}
 
 
@@ -285,7 +286,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	 */
 	public function testGetLanguage()
 	{
-		$expected = \JFactory::getLanguage();
+		$expected = JoomlaFactory::getLanguage();
 		$actual   = $this->platform->getLanguage();
 
 		$this->assertInstanceOf('\Joomla\CMS\Language\Language	', $actual, "getLanguage() must return a Language object");
@@ -298,11 +299,11 @@ class PlatformJoomlaTest extends FOFTestCase
 	 */
 	public function testGetDbo()
 	{
-		$expected = \JFactory::getDbo();
+		$expected = JoomlaFactory::getDbo();
 		$actual   = $this->platform->getDbo();
 
 		$this->assertInstanceOf('\JDatabaseDriver', $actual, "getDbo() must return a JDatabaseDriver object");
-		$this->assertEquals($expected, $actual, "getDbo() must return the database object from JFactory");
+		$this->assertEquals($expected, $actual, "getDbo() must return the database object from JoomlaFactory");
 	}
 
 	/**
@@ -342,7 +343,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 		if ($applicationType != 'cli')
 		{
-			$app          = \JFactory::getApplication();
+			$app          = JoomlaFactory::getApplication();
 			$fakeTemplate = (object) [
 				'template' => 'system',
 			];
@@ -366,7 +367,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 		$mockLanguage                  = MockLanguage::create($this);
 		MockLanguage::$loadedLanguages = [];
-		\JFactory::$language           = $mockLanguage;
+		JoomlaFactory::$language           = $mockLanguage;
 
 		$this->platform->loadTranslations('com_foobar');
 

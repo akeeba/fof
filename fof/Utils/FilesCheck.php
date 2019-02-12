@@ -8,6 +8,7 @@
 namespace  FOF40\Utils;
 
 use FOF40\Timer\Timer;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 defined('_JEXEC') or die;
 
@@ -73,7 +74,7 @@ class FilesCheck
 		$this->date = $date;
 
 		// Retrieve the date and version from the #__extensions table
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true)->select('*')->from($db->qn('#__extensions'))
 			->where($db->qn('element') . ' = ' . $db->q($this->option))
 			->where($db->qn('type') . ' = ' . $db->q('component'));

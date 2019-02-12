@@ -10,6 +10,7 @@ namespace FOF40\Tests\DataModel\Collection;
 
 use FOF40\Model\DataModel\Collection;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'CollectionDataprovider.php';
 
@@ -129,7 +130,7 @@ class CollectionTest extends DatabaseTest
 		$result = $collection->max('foftest_bare_id');
 
 		// Let's get the maximum value directly from the db
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)->select('MAX(foftest_bare_id)')->from('#__foftest_bares');
 		$max   = $db->setQuery($query)->loadResult();
@@ -151,7 +152,7 @@ class CollectionTest extends DatabaseTest
 		$result = $collection->min('foftest_bare_id');
 
 		// Let's get the maximum value directly from the db
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)->select('MIN(foftest_bare_id)')->from('#__foftest_bares');
 		$min   = $db->setQuery($query)->loadResult();

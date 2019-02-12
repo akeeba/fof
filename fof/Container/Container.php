@@ -17,6 +17,7 @@ use FOF40\Render\RenderInterface;
 use FOF40\Template\Template;
 use FOF40\TransparentAuthentication\TransparentAuthentication as TransparentAuth;
 use FOF40\View\Compiler\Blade;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -656,7 +657,7 @@ END;
 		{
 			$this['session'] = function ()
 			{
-				return \JFactory::getSession();
+				return JoomlaFactory::getSession();
 			};
 		}
 
@@ -797,7 +798,7 @@ END;
 		// Get the site's secret
 		try
 		{
-			$app = \JFactory::getApplication();
+			$app = JoomlaFactory::getApplication();
 
 			if (method_exists($app, 'get'))
 			{

@@ -11,7 +11,7 @@ use DateInterval;
 use DateTime;
 use DateTimeZone;
 use JDatabaseDriver;
-use JFactory;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -416,7 +416,7 @@ class Date extends DateTime
 	 * Gets the date as an SQL datetime string.
 	 *
 	 * @param   boolean          $local  True to return the date string in the local time zone, false to return it in GMT.
-	 * @param   JDatabaseDriver  $db     The database driver or null to use JFactory::getDbo()
+	 * @param   JDatabaseDriver  $db     The database driver or null to use Factory::getDbo()
 	 *
 	 * @return  string     The date string in SQL datetime format.
 	 *
@@ -426,7 +426,7 @@ class Date extends DateTime
 	{
 		if ($db === null)
 		{
-			$db = JFactory::getDbo();
+			$db = JoomlaFactory::getDbo();
 		}
 
 		return $this->format($db->getDateFormat(), $local, false);

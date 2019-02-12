@@ -11,6 +11,7 @@ namespace FOF40\Tests\DataModel\Filter\Relation;
 use FOF40\Model\DataModel\Filter\Relation;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 /**
  * @covers      FOF40\Model\DataModel\Filter\Relation::<protected>
@@ -26,10 +27,10 @@ class RelationTest extends DatabaseTest
 	 */
 	public function test__construct()
 	{
-		$subquery = \JFactory::getDbo()->getQuery(true);
+		$subquery = JoomlaFactory::getDbo()->getQuery(true);
 		$subquery->select('*')->from('test');
 
-		$filter = new Relation(\JFactory::getDbo(), 'foo', $subquery);
+		$filter = new Relation(JoomlaFactory::getDbo(), 'foo', $subquery);
 
 		$this->assertEquals('foo', ReflectionHelper::getValue($filter, 'name'), 'Relation::__construct Failed to set filter name');
 		$this->assertEquals('relation', ReflectionHelper::getValue($filter, 'type'), 'Relation::__construct Failed to set filter type');
@@ -43,10 +44,10 @@ class RelationTest extends DatabaseTest
 	 */
 	public function testCallback()
 	{
-		$subquery = \JFactory::getDbo()->getQuery(true);
+		$subquery = JoomlaFactory::getDbo()->getQuery(true);
 		$subquery->select('*')->from('test');
 
-		$filter = new Relation(\JFactory::getDbo(), 'foo', $subquery);
+		$filter = new Relation(JoomlaFactory::getDbo(), 'foo', $subquery);
 
 		$result = $filter->callback(function ($query) {
 			$query->where('bar = 1');
@@ -68,10 +69,10 @@ WHERE bar = 1';
 	 */
 	public function testGetFieldName()
 	{
-		$subquery = \JFactory::getDbo()->getQuery(true);
+		$subquery = JoomlaFactory::getDbo()->getQuery(true);
 		$subquery->select('*')->from('test');
 
-		$filter = new Relation(\JFactory::getDbo(), 'foo', $subquery);
+		$filter = new Relation(JoomlaFactory::getDbo(), 'foo', $subquery);
 
 		$result = $filter->getFieldName();
 

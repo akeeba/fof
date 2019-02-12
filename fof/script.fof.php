@@ -7,7 +7,7 @@
 
 
 use Joomla\CMS\Date\Date as JoomlaDate;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Log\Log;
@@ -152,7 +152,7 @@ class file_fof40InstallerScript
 		}
 
 		// Install or update database
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		/** @var JoomlaInstaller $grandpa */
 		$grandpa   = $parent->getParent();
@@ -305,7 +305,7 @@ class file_fof40InstallerScript
 	 */
 	protected function getDependencies($package)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->select($db->qn('value'))
@@ -338,7 +338,7 @@ class file_fof40InstallerScript
 	 */
 	protected function setDependencies($package, array $dependencies)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->delete('#__akeeba_common')
@@ -586,7 +586,7 @@ class file_fof40InstallerScript
 	 */
 	protected function getOldFOF4LibraryExtensionID()
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		// If there are multiple #__extensions record, keep one of them
 		$query = $db->getQuery(true);
@@ -613,7 +613,7 @@ class file_fof40InstallerScript
 	 */
 	protected function removeUpdateSiteFor($id)
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->qn('update_site_id'))
 			->from($db->qn('#__update_sites_extensions'))
@@ -663,7 +663,7 @@ class file_fof40InstallerScript
 	protected function removeExtension($id)
 	{
 		/** @var Extension $extension */
-		$extension = new Extension(Factory::getDbo());
+		$extension = new Extension(JoomlaFactory::getDbo());
 		$extension->load($id);
 
 		$keyName = $extension->getKeyName();

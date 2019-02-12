@@ -350,7 +350,7 @@ class Platform extends BasePlatform
 	public function getUser($id = null)
 	{
 		/**
-		 * If I'm in CLI I need load the User directly, otherwise JFactory will check the session (which doesn't exist
+		 * If I'm in CLI I need load the User directly, otherwise JoomlaFactory will check the session (which doesn't exist
 		 * in CLI)
 		 */
 		if ($this->isCli())
@@ -913,7 +913,7 @@ class Platform extends BasePlatform
 		}
 
 		// Do not perform logging if we're under CLI. Even if we _could_ have a logged user in CLI, ActionlogsModelActionlog
-		// model always uses JFactory to fetch the current user, fetching data from the session. This means that under the CLI
+		// model always uses JoomlaFactory to fetch the current user, fetching data from the session. This means that under the CLI
 		// (where there is no session) such session is started, causing warnings because usually output was already started before
 		if ($this->isCli())
 		{

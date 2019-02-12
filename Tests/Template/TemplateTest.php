@@ -10,9 +10,9 @@ namespace FOF40\Tests\Template;
 
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\TestJoomlaPlatform;
-use JFactory;
 use JFolder;
 use Joomla\CMS\Document\Document;
+use Joomla\CMS\Factory as JoomlaFactory;
 use ReflectionProperty;
 
 /**
@@ -30,7 +30,7 @@ class TemplateTest extends FOFTestCase
 
 		// Force a HtmlDocument instance
 		$this->saveFactoryState();
-		JFactory::$document = Document::getInstance('html');
+		JoomlaFactory::$document = Document::getInstance('html');
 
 		// Fake the server variables to get Uri working right
 		global $_SERVER;
@@ -40,8 +40,8 @@ class TemplateTest extends FOFTestCase
 		$_SERVER['SCRIPT_NAME'] = '/index.php';
 
 		// Fake the session
-		JFactory::$session = $this->getMockSession();
-		$application       = JFactory::getApplication('site');
+		JoomlaFactory::$session = $this->getMockSession();
+		$application       = JoomlaFactory::getApplication('site');
 
 		// Reset the fake platform
 		TestJoomlaPlatform::$template         = null;
@@ -76,11 +76,11 @@ class TemplateTest extends FOFTestCase
 
 	protected function tearDown()
 	{
-		// Restore the JFactory
+		// Restore the JoomlaFactory
 		$this->restoreFactoryState();
 
 		// Reset the application template
-		$application = JFactory::getApplication('site');
+		$application = JoomlaFactory::getApplication('site');
 		$attribute   = new ReflectionProperty($application, 'template');
 		$attribute->setAccessible(true);
 		$attribute->setValue($application, null);
@@ -308,7 +308,7 @@ class TemplateTest extends FOFTestCase
 	 */
 	public function testRoute($url, $expect, $message)
 	{
-		$config = JFactory::getConfig();
+		$config = JoomlaFactory::getConfig();
 		$config->set('sef', 1); // Required by these tests
 		$fullurl = static::$container->template->route($url);
 		$this->assertEquals(

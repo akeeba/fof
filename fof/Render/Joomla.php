@@ -8,6 +8,7 @@
 namespace  FOF40\Render;
 
 use FOF40\Container\Container;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Toolbar\Toolbar as JoomlaToolbar;
 
 defined('_JEXEC') or die;
@@ -428,9 +429,9 @@ class Joomla extends RenderBase implements RenderInterface
 			'icon-32-save-new'	 => 'icon-repeat',
 		);
 
-		if (isset(\JFactory::getApplication()->JComponentTitle))
+		if (isset(JoomlaFactory::getApplication()->JComponentTitle))
 		{
-			$title	 = \JFactory::getApplication()->JComponentTitle;
+			$title	 = JoomlaFactory::getApplication()->JComponentTitle;
 		}
 		else
 		{

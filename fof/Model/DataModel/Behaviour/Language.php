@@ -11,6 +11,7 @@ use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 
@@ -50,7 +51,7 @@ class Language extends Observer
 		}
 
 		/** @var SiteApplication $app */
-		$app = \JFactory::getApplication();
+		$app = JoomlaFactory::getApplication();
 		$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 
 		if ($hasLanguageFilter)
@@ -84,7 +85,7 @@ class Language extends Observer
 		{
             // We have to use JInput since the language fragment is not set in the $_REQUEST, thus we won't have it in our model
             // TODO Double check the previous assumption
-			$languages[] = \JFactory::getApplication()->input->getCmd('language', '*');
+			$languages[] = JoomlaFactory::getApplication()->input->getCmd('language', '*');
 		}
 
 		// Filter out double languages
@@ -123,7 +124,7 @@ class Language extends Observer
 
 		// Make sure it is a multilingual site and get a list of languages
 		/** @var SiteApplication $app */
-		$app = \JFactory::getApplication();
+		$app = JoomlaFactory::getApplication();
 		$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 
 		if ($hasLanguageFilter)
@@ -154,7 +155,7 @@ class Language extends Observer
 		}
 		else
 		{
-			$languages[] = \JFactory::getApplication()->input->getCmd('language', '*');
+			$languages[] = JoomlaFactory::getApplication()->input->getCmd('language', '*');
 		}
 
 		// Filter out double languages

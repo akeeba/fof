@@ -12,6 +12,7 @@ use FOF40\Model\DataModel\Behaviour\Enabled;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'EnabledDataprovider.php';
 
@@ -39,7 +40,7 @@ class EnabledTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$behavior   = new Enabled($dispatcher);
 

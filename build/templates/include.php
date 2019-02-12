@@ -7,6 +7,7 @@
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Log\Log;
 
 if (!class_exists('FOF40\\Autoloader\\Autoloader'))
@@ -21,8 +22,8 @@ if (!defined('FOF40_INCLUDED'))
 {
 	define('FOF40_INCLUDED', '##VERSION##');
 
-	JFactory::getLanguage()->load('lib_fof40', JPATH_SITE, 'en-GB', true);
-	JFactory::getLanguage()->load('lib_fof40', JPATH_SITE, null, true);
+	JoomlaFactory::getLanguage()->load('lib_fof40', JPATH_SITE, 'en-GB', true);
+	JoomlaFactory::getLanguage()->load('lib_fof40', JPATH_SITE, null, true);
 
 	// Register a debug log
 	if (defined('JDEBUG') && JDEBUG && class_exists('\Joomla\CMS\Log\Log'))

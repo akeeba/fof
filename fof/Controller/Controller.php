@@ -17,6 +17,7 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Cache\Controller\ViewController;
 use Joomla\CMS\Document\Document;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
@@ -484,7 +485,7 @@ class Controller
 			// Get a Cache object
 			$option = $this->input->get('option', 'com_foobar', 'cmd');
 			/** @var ViewController $cache */
-			$cache = \JFactory::getCache($option, 'view');
+			$cache = JoomlaFactory::getCache($option, 'view');
 
 			// Set up a cache ID based on component, view, task and user group assignment
 			$user = $this->container->platform->getUser();
@@ -516,7 +517,7 @@ class Controller
 			if (is_array($urlparams))
 			{
 				/** @var CMSApplication $app */
-				$app = \JFactory::getApplication();
+				$app = JoomlaFactory::getApplication();
 
 				$registeredurlparams = null;
 

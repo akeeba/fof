@@ -6,6 +6,7 @@
  */
 
 use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 defined('_JEXEC') or die;
 
@@ -36,8 +37,8 @@ abstract class FEFHelperEdit
 
 		if (is_null($editorType))
 		{
-			$editorType = JFactory::getConfig()->get('editor');
-			$user   = JFactory::getUser();
+			$editorType = JoomlaFactory::getConfig()->get('editor');
+			$user   = JoomlaFactory::getUser();
 
 			if (!$user->guest)
 			{

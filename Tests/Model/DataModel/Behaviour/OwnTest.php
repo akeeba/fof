@@ -11,6 +11,7 @@ namespace FOF40\Tests\DataModel;
 use FOF40\Model\DataModel\Behaviour\Own;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'OwnDataprovider.php';
 
@@ -41,7 +42,7 @@ class OwnTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$filter     = new Own($dispatcher);
 

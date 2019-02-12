@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'RelationDataprovider.php';
 
@@ -63,7 +64,7 @@ class DataModelRealtionTest extends DatabaseTest
 		$model->find(1);
 		$model->save(null, null, null);
 
-		$db       = \JFactory::getDbo();
+		$db       = JoomlaFactory::getDbo();
 		$query    = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__fakeapp_children'))

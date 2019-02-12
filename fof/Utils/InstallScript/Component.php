@@ -9,11 +9,9 @@ namespace  FOF40\Utils\InstallScript;
 
 use FOF40\Database\Installer as DatabaseInstaller;
 use Exception;
-use JFactory;
 use JFile;
 use JFolder;
-use JLoader;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
@@ -226,7 +224,7 @@ class Component extends BaseInstaller
 		}
 
 		// Install or update database
-		$dbInstaller = new DatabaseInstaller(JFactory::getDbo(),
+		$dbInstaller = new DatabaseInstaller(JoomlaFactory::getDbo(),
 			($this->schemaXmlPathRelative ? JPATH_ADMINISTRATOR . '/components/' . $this->componentName : '') . '/' .
 			$this->schemaXmlPath
 		);
@@ -303,7 +301,7 @@ class Component extends BaseInstaller
 
 		// Clear the FOF cache
 		$false = false;
-		$cache = \JFactory::getCache('fof', '');
+		$cache = JoomlaFactory::getCache('fof', '');
 		$cache->store($false, 'cache', 'fof');
 
 		// Make sure the Joomla! menu structure is correct
@@ -324,7 +322,7 @@ class Component extends BaseInstaller
 	public function uninstall($parent)
 	{
 		// Uninstall database
-		$dbInstaller = new DatabaseInstaller(JFactory::getDbo(),
+		$dbInstaller = new DatabaseInstaller(JoomlaFactory::getDbo(),
 			($this->schemaXmlPathRelative ? JPATH_ADMINISTRATOR . '/components/' . $this->componentName : '') . '/' .
 			$this->schemaXmlPath
 		);
@@ -438,7 +436,7 @@ class Component extends BaseInstaller
 	 */
 	protected function bugfixDBFunctionReturnedNoError()
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		try
 		{
@@ -472,7 +470,7 @@ class Component extends BaseInstaller
 	 */
 	protected function bugfixCantBuildAdminMenus()
 	{
-		$db = JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		// If there are multiple #__extensions record, keep one of them
 		$query = $db->getQuery(true);
@@ -666,7 +664,7 @@ class Component extends BaseInstaller
 	 */
 	protected function uninstallObsoleteSubextensions($parent)
 	{
-		$db = JFactory::getDBO();
+		$db = JoomlaFactory::getDBO();
 
 		$status          = new \stdClass();
 		$status->modules = array();
@@ -752,7 +750,7 @@ class Component extends BaseInstaller
 	{
 		$db = $parent->getParent()->getDbo();
 		/** @var Menu $table */
-		$table  = new Menu(Factory::getDbo());
+		$table  = new Menu(JoomlaFactory::getDbo());
 		$option = $parent->get('element');
 
 		// If a component exists with this option in the table then we don't need to add menus
@@ -1048,7 +1046,7 @@ class Component extends BaseInstaller
 				$data['link'] = 'index.php?option=' . $option . $qstring;
 			}
 
-			$table = new Menu(Factory::getDbo());
+			$table = new Menu(JoomlaFactory::getDbo());
 
 			try
 			{
@@ -1114,7 +1112,7 @@ class Component extends BaseInstaller
 	 */
 	private function _rebuildMenu()
 	{
-		$table = new Menu(Factory::getDbo());
+		$table = new Menu(JoomlaFactory::getDbo());
 		$db    = $table->getDbo();
 
 		// We need to rebuild the menu based on its root item. By default this is the menu item with ID=1. However, some

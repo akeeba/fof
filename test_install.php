@@ -3,6 +3,7 @@
 // Configuration
 // ====================================================================================================================
 use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
@@ -45,13 +46,13 @@ require_once JPATH_LIBRARIES . '/cms.php';
 
 // Load the language files
 $paths = [JPATH_ADMINISTRATOR, JPATH_ROOT];
-$jlang = JFactory::getLanguage();
+$jlang = JoomlaFactory::getLanguage();
 $jlang->load('lib_joomla', $paths[0], 'en-GB', true);
 
 if (version_compare(JVERSION, '3.4.9999', 'ge'))
 {
 	// Joomla! 3.5 and later does not load the configuration.php unless you explicitly tell it to.
-	JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
+	JoomlaFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
 }
 
 class FOFTestInstall extends CliApplication
@@ -243,7 +244,7 @@ class FOFTestInstall extends CliApplication
 
 	public function setUserState($key, $value)
 	{
-		$session  = &JFactory::getSession();
+		$session  = &JoomlaFactory::getSession();
 		$registry = &$session->get('registry');
 
 		if (!is_null($registry))
@@ -258,7 +259,7 @@ class FOFTestInstall extends CliApplication
 try
 {
 	$cliApplication        = CliApplication::getInstance('FOFTestInstall');
-	JFactory::$application = $cliApplication;
+	JoomlaFactory::$application = $cliApplication;
 	$cliApplication->execute();
 }
 catch (Throwable $e)

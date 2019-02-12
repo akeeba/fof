@@ -12,6 +12,7 @@ use FOF40\Model\DataModel\Filter\AbstractFilter;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Stubs\Model\DataModel\Filter\FilterStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'AbstractFilterDataprovider.php';
 
@@ -29,7 +30,7 @@ class AbstractFilterTest extends DatabaseTest
 	 */
 	public function test__construct()
 	{
-		$db    = \JFactory::getDbo();
+		$db    = JoomlaFactory::getDbo();
 		$field = (object) [
 			'name' => 'test',
 			'type' => 'test',
@@ -51,7 +52,7 @@ class AbstractFilterTest extends DatabaseTest
 	{
 		$this->setExpectedException('InvalidArgumentException');
 
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		new FilterStub($db, $test['field']);
 	}
@@ -66,7 +67,7 @@ class AbstractFilterTest extends DatabaseTest
 	{
 		$msg = 'AbstractFilter::isEmpty %s - Case: ' . $check['case'];
 
-		$filter             = new FilterStub(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'test']);
+		$filter             = new FilterStub(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'test']);
 		$filter->null_value = $test['null'];
 
 		$result = $filter->isEmpty($test['value']);
@@ -81,7 +82,7 @@ class AbstractFilterTest extends DatabaseTest
 	 */
 	public function testGetSearchMethod()
 	{
-		$filter = new FilterStub(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'test']);
+		$filter = new FilterStub(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'test']);
 
 		$result = $filter->getSearchMethods();
 		$result = array_values($result);
@@ -108,7 +109,7 @@ class AbstractFilterTest extends DatabaseTest
 
 		$filter = $this->getMockBuilder('\FOF40\Tests\Stubs\Model\DataModel\Filter\FilterStub')
 			->setMethods(['isEmpty', 'getFieldName', 'search'])
-			->setConstructorArgs([\JFactory::getDbo(), $field])
+			->setConstructorArgs([JoomlaFactory::getDbo(), $field])
 			->getMock();
 
 		$filter->method('isEmpty')->willReturn($test['mock']['isEmpty']);
@@ -134,7 +135,7 @@ class AbstractFilterTest extends DatabaseTest
 
 		$filter = $this->getMockBuilder('\FOF40\Tests\Stubs\Model\DataModel\Filter\FilterStub')
 			->setMethods(['isEmpty', 'getFieldName'])
-			->setConstructorArgs([\JFactory::getDbo(), $field])
+			->setConstructorArgs([JoomlaFactory::getDbo(), $field])
 			->getMock();
 
 		$filter->method('isEmpty')->willReturn($test['mock']['isEmpty']);
@@ -152,7 +153,7 @@ class AbstractFilterTest extends DatabaseTest
 	 */
 	public function testGetFieldName()
 	{
-		$filter = new FilterStub(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'test']);
+		$filter = new FilterStub(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'test']);
 
 		$result = $filter->getFieldName();
 
@@ -168,7 +169,7 @@ class AbstractFilterTest extends DatabaseTest
 	{
 		$field = (object) ['name' => 'test', 'type' => 'int (10)'];
 
-		$result = AbstractFilter::getField($field, ['dbo' => \JFactory::getDbo()]);
+		$result = AbstractFilter::getField($field, ['dbo' => JoomlaFactory::getDbo()]);
 
 		$this->assertInstanceOf('\FOF40\Model\DataModel\Filter\AbstractFilter', $result, 'AbstractFilter::getField Failed to return the correct filter');
 	}

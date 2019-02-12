@@ -12,6 +12,7 @@ use FOF40\Model\DataModel\Behaviour\Access;
 use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\TestContainer;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'AccessDataprovider.php';
 
@@ -42,7 +43,7 @@ class AccessTest extends DatabaseTest
 
 		$model->expects($check['access'] ? $this->once() : $this->never())->method('applyAccessFiltering');
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$filter     = new Access($dispatcher);
 
@@ -77,7 +78,7 @@ class AccessTest extends DatabaseTest
 		$model->expects($check['reset'] ? $this->once() : $this->never())->method('reset');
 		$model->method('getFieldValue')->willReturn($test['mock']['access']);
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$filter     = new Access($dispatcher);
 

@@ -12,6 +12,7 @@ namespace FOF40\Tests\Layout;
 use FOF40\Layout\LayoutHelper;
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\TestJoomlaPlatform;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 /**
  * @covers  FOF40\Layout\LayoutHelper::<protected>
@@ -44,7 +45,7 @@ class LayoutHelperTest extends FOFTestCase
 
 		$this->saveFactoryState();
 
-		\JFactory::$application = $this->getMockCmsApp();
+		JoomlaFactory::$application = $this->getMockCmsApp();
 	}
 
 	/**

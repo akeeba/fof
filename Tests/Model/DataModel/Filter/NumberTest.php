@@ -10,6 +10,7 @@ namespace FOF40\Tests\DataModel\Number;
 
 use FOF40\Model\DataModel\Filter\Number;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'NumberDataprovider.php';
 
@@ -31,7 +32,7 @@ class NumberTest extends DatabaseTest
 
 		$filter = $this->getMockBuilder('FOF40\Model\DataModel\Filter\Number')
 			->setMethods(['exact'])
-			->setConstructorArgs([\JFactory::getDbo(), $field])
+			->setConstructorArgs([JoomlaFactory::getDbo(), $field])
 			->getMock();
 
 		// Should just invoke "exact"
@@ -49,7 +50,7 @@ class NumberTest extends DatabaseTest
 	public function testSearch($test, $check)
 	{
 		$msg    = 'Number::search %s - Case: ' . $check['case'];
-		$filter = new Number(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
+		$filter = new Number(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
 
 		$result = $filter->search($test['value'], $test['operator']);
 
@@ -65,7 +66,7 @@ class NumberTest extends DatabaseTest
 	public function testBetween($test, $check)
 	{
 		$msg    = 'Number::between %s - Case: ' . $check['case'];
-		$filter = new Number(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
+		$filter = new Number(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
 
 		$result = $filter->between($test['from'], $test['to'], $test['inclusive']);
 
@@ -81,7 +82,7 @@ class NumberTest extends DatabaseTest
 	public function testOutside($test, $check)
 	{
 		$msg    = 'Number::outside %s - Case: ' . $check['case'];
-		$filter = new Number(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
+		$filter = new Number(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
 
 		$result = $filter->outside($test['from'], $test['to'], $test['inclusive']);
 
@@ -97,7 +98,7 @@ class NumberTest extends DatabaseTest
 	public function testInterval($test, $check)
 	{
 		$msg    = 'Number::interval %s - Case: ' . $check['case'];
-		$filter = new Number(\JFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
+		$filter = new Number(JoomlaFactory::getDbo(), (object) ['name' => 'test', 'type' => 'int (10)']);
 
 		$result = $filter->interval($test['value'], $test['interval'], $test['inclusive']);
 

@@ -8,8 +8,13 @@
 
 namespace FOF40\Tests\Layout;
 
+use Joomla\CMS\Factory as JoomlaFactory;
+
 class LayoutHelperTestProvider
 {
+	/**
+	 * @return array
+	 */
 	public static function getTestRender()
 	{
 		$fakeBase      = realpath(__DIR__ . '/../_data/layout/base');
@@ -21,8 +26,8 @@ class LayoutHelperTestProvider
 				'root'   => realpath(__DIR__ . '/../_data/layout'),
 				'public' => realpath(__DIR__ . '/../_data/layout'),
 				'admin'  => realpath(__DIR__ . '/../_data/layout/administrator'),
-				'tmp'    => \JFactory::getConfig()->get('tmp_path'),
-				'log'    => \JFactory::getConfig()->get('tmp_path'),
+				'tmp'    => JoomlaFactory::getConfig()->get('tmp_path'),
+				'log'    => JoomlaFactory::getConfig()->get('tmp_path'),
 			],
 		];
 

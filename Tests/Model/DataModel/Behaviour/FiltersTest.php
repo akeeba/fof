@@ -10,6 +10,7 @@ namespace FOF40\Tests\DataModel;
 
 use FOF40\Model\DataModel\Behaviour\Filters;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'FiltersDataprovider.php';
 
@@ -53,7 +54,7 @@ class FiltersTest extends DatabaseTest
 
 		$model->setIgnoreRequest($test['ignore']);
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$filter     = new Filters($dispatcher);
 

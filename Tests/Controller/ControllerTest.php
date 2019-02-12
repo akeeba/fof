@@ -16,6 +16,7 @@ use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Controller\ControllerStub;
 use FOF40\Tests\Stubs\Model\ModelStub;
 use FOF40\Tests\Stubs\View\ViewStub;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'ControllerDataprovider.php';
 
@@ -510,20 +511,20 @@ class ControllerTest extends ApplicationTestCase
 		ReflectionHelper::setValue($controller, 'redirect', $test['mock']['redirect']);
 
 		// Let's save current app istances, I'll have to restore them later
-		if (is_object(\JFactory::$application))
+		if (is_object(JoomlaFactory::$application))
 		{
-			$oldapp = clone \JFactory::$application;
+			$oldapp = clone JoomlaFactory::$application;
 		}
 		else
 		{
-			$oldapp = \JFactory::$application;
+			$oldapp = JoomlaFactory::$application;
 		}
 
-		\JFactory::$application = $fakeapp;
+		JoomlaFactory::$application = $fakeapp;
 
 		$result = $controller->redirect();
 
-		\JFactory::$application = $oldapp;
+		JoomlaFactory::$application = $oldapp;
 
 		// If the redirection has been invoked, I have to nullify the result. In the real world I would be immediatly
 		// redirected to another page.

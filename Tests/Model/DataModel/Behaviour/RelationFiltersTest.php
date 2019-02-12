@@ -11,6 +11,7 @@ namespace FOF40\Tests\DataModel;
 use Fakeapp\Site\Model\Parents;
 use FOF40\Model\DataModel\Behaviour\RelationFilters;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 require_once 'RelationFiltersDataprovider.php';
 
@@ -48,7 +49,7 @@ class RelationFiltersTest extends DatabaseTest
 		/** @var \FOF40\Model\DataModel $model */
 		$model = new Parents(static::$container, $config);
 
-		$query      = \JFactory::getDbo()->getQuery(true)->select('*')->from('test');
+		$query      = JoomlaFactory::getDbo()->getQuery(true)->select('*')->from('test');
 		$dispatcher = $model->getBehavioursDispatcher();
 		$filter     = new RelationFilters($dispatcher);
 

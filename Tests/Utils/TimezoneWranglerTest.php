@@ -10,6 +10,7 @@ namespace FOF40\Tests\Utils;
 
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Utils\TimezoneWrangler;
+use Joomla\CMS\Factory as JoomlaFactory;
 
 
 /**
@@ -32,10 +33,10 @@ class TimezoneWranglerTest extends FOFTestCase
 	{
 		parent::setUpBeforeClass();
 
-		self::$savedOffset = \JFactory::getConfig()->get('offset', 'America/New_York');
+		self::$savedOffset = JoomlaFactory::getConfig()->get('offset', 'America/New_York');
 
 		// Set up the Server Timezone as US Eastern Time (GMT-05:00, follows GMT)
-		\JFactory::getConfig()->set('offset', 'America/New_York');
+		JoomlaFactory::getConfig()->set('offset', 'America/New_York');
 
 		// Custom users
 		self::deleteCustomUsers();
@@ -47,7 +48,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	 */
 	public static function tearDownAfterClass()
 	{
-		\JFactory::getConfig()->set('offset', self::$savedOffset);
+		JoomlaFactory::getConfig()->set('offset', self::$savedOffset);
 
 		parent::tearDownAfterClass();
 
@@ -60,7 +61,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	 */
 	private static function deleteCustomUsers()
 	{
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->delete($db->qn('#__users'))
@@ -81,7 +82,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	 */
 	private static function createCustomUsers()
 	{
-		$db = \JFactory::getDbo();
+		$db = JoomlaFactory::getDbo();
 
 		$userObject         = (object) [
 			'id'       => 1001,
@@ -153,7 +154,7 @@ class TimezoneWranglerTest extends FOFTestCase
 
 		if (!empty($userID))
 		{
-			$user = \JFactory::getUser($userID);
+			$user = JoomlaFactory::getUser($userID);
 		}
 
 		$tz = $tzWrangler->getApplicableTimezone($user);

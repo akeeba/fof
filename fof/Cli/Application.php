@@ -5,6 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\Registry\Registry;
 
@@ -192,7 +193,7 @@ if (@file_exists($cmsImportPath))
 }
 
 // Load the Joomla! configuration file to grab database information
-JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
+JoomlaFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
 
 if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 {

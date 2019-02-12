@@ -9,6 +9,7 @@ namespace  FOF40\View\DataView;
 
 use FOF40\Render\RenderInterface;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -82,8 +83,8 @@ class Html extends Raw implements DataViewInterface
 		}
 
 		/** @var SiteApplication $app */
-		$app = \JFactory::getApplication();
-		$document = \JFactory::getDocument();
+		$app = JoomlaFactory::getApplication();
+		$document = JoomlaFactory::getDocument();
 		$menus = $app->getMenu();
 		$menu = $menus->getActive();
 		$title = null;
@@ -156,7 +157,7 @@ class Html extends Raw implements DataViewInterface
 	protected function onBeforeAdd()
 	{
 		// Hide main menu
-		\JFactory::getApplication()->input->set('hidemainmenu', true);
+		JoomlaFactory::getApplication()->input->set('hidemainmenu', true);
 
 		parent::onBeforeAdd();
 	}
@@ -167,7 +168,7 @@ class Html extends Raw implements DataViewInterface
 	protected function onBeforeEdit()
 	{
 		// Hide main menu
-		\JFactory::getApplication()->input->set('hidemainmenu', true);
+		JoomlaFactory::getApplication()->input->set('hidemainmenu', true);
 
 		parent::onBeforeEdit();
 	}
