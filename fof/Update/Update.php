@@ -10,7 +10,7 @@ namespace  FOF40\Update;
 use FOF40\Container\Container;
 use FOF40\Model\Model;
 use Joomla\CMS\Component\ComponentHelper;
-use JUpdater;
+use Joomla\CMS\Updater\Updater;
 
 defined('_JEXEC') or die;
 
@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
  */
 class Update extends Model
 {
-	/** @var JUpdater The Joomla! updater object */
+	/** @var Updater The Joomla! updater object */
 	protected $updater = null;
 
 	/** @var int The extension_id of this component */
@@ -57,7 +57,7 @@ class Update extends Model
 		parent::__construct($container);
 
 		// Get an instance of the updater class
-		$this->updater = JUpdater::getInstance();
+		$this->updater = Updater::getInstance();
 
 		// Get the component name
 		if (isset($config['update_component']))
