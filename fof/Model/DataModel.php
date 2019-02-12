@@ -27,6 +27,7 @@ use FOF40\Model\DataModel\RelationManager;
 use FOF40\Utils\ArrayHelper;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Asset;
@@ -3848,7 +3849,7 @@ class DataModel extends Model implements TableInterface
 
 		// Fetch the extension name
 		$component = $aliasParts[0];
-		$component = \JComponentHelper::getComponent($component);
+		$component = ComponentHelper::getComponent($component);
 
 		// Fetch the name using the menu item
 		$query = $this->getDbo()->getQuery(true);

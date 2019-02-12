@@ -26,7 +26,7 @@ class ContentHistoryTest extends DatabaseTest
 	{
 		parent::tearDown();
 
-		ReflectionHelper::setValue('JComponentHelper', 'components', []);
+		ReflectionHelper::setValue('\Joomla\CMS\Component\ComponentHelper', 'components', []);
 	}
 
 	/**

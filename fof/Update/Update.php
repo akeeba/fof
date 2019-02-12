@@ -9,6 +9,7 @@ namespace  FOF40\Update;
 
 use FOF40\Container\Container;
 use FOF40\Model\Model;
+use Joomla\CMS\Component\ComponentHelper;
 use JUpdater;
 
 defined('_JEXEC') or die;
@@ -174,7 +175,7 @@ class Update extends Model
 		}
 
 		// Use the update cache timeout specified in com_installer
-		$comInstallerParams = \JComponentHelper::getParams('com_installer', false);
+		$comInstallerParams = ComponentHelper::getParams('com_installer', false);
 		$timeout = 3600 * $comInstallerParams->get('cachetimeout', '6');
 
 		// Load any updates from the network into the #__updates table
