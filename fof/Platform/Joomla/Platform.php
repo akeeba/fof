@@ -21,6 +21,7 @@ use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 use JUri;
 
@@ -515,7 +516,7 @@ class Platform extends BasePlatform
 	{
 		if (!$this->isCli())
 		{
-			\JPluginHelper::importPlugin($type);
+			PluginHelper::importPlugin($type);
 		}
 	}
 
@@ -531,6 +532,8 @@ class Platform extends BasePlatform
 	 * @return  array  A simple array containing the results of the plugins triggered
 	 *
 	 * @codeCoverageIgnore
+	 *
+	 * @throws Exception
 	 */
 	public function runPlugins($event, $data)
 	{

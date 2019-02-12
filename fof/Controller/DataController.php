@@ -15,6 +15,7 @@ use FOF40\Controller\Exception\TaskNotFound;
 use FOF40\Model\DataModel;
 use FOF40\View\View;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Response\JsonResponse;
 
 defined('_JEXEC') or die;
 
@@ -160,19 +161,25 @@ class DataController extends Controller
 	protected function onAfterExecute($task)
 	{
 		// JSON shouldn't have redirects
-		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') == 'json') {
+		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') == 'json')
+		{
 			// Error: deal with it in REST api way
-			if ($this->messageType == 'error') {
-				$response = new \JResponseJson($this->message, $this->message, true);
+			if ($this->messageType == 'error')
+			{
+				$response = new JsonResponse($this->message, $this->message, true);
 
 				echo $response;
 
 				$this->redirect = false;
 				$this->container->platform->setHeader('Status', 500);
-				return;
-			} else {
+
+				return true;
+			}
+			else
+			{
 				// Not an error, avoid redirect and display the record(s)
 				$this->redirect = false;
+
 				return $this->display();
 			}
 		}

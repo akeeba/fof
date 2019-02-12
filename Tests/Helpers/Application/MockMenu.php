@@ -15,7 +15,7 @@ class MockMenu
 	protected static $data = [];
 
 	/**
-	 * Creates an instance of the mock JMenu object.
+	 * Creates an instance of the mock AbstractMenu object.
 	 *
 	 * @param   FOFTestCase $test A test object.
 	 *
@@ -25,7 +25,7 @@ class MockMenu
 	 */
 	public static function create(FOFTestCase $test, $setDefault = true, $setActive = false)
 	{
-		// Collect all the relevant methods in JMenu (work in progress).
+		// Collect all the relevant methods in AbstractMenu (work in progress).
 		$methods = [
 			'getItem',
 			'setDefault',
@@ -40,7 +40,7 @@ class MockMenu
 		];
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('\JMenu')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Menu\AbstractMenu')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')

@@ -11,6 +11,7 @@ use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -65,7 +66,7 @@ class Language extends Observer
         // Ask Joomla for the plugin only if we don't already have it. Useful for tests
         if(!$this->lang_filter_plugin)
         {
-            $this->lang_filter_plugin = \JPluginHelper::getPlugin('system', 'languagefilter');
+            $this->lang_filter_plugin = PluginHelper::getPlugin('system', 'languagefilter');
         }
 
 		$lang_filter_params = new Registry($this->lang_filter_plugin->params);
@@ -138,7 +139,7 @@ class Language extends Observer
         // Ask Joomla for the plugin only if we don't already have it. Useful for tests
         if(!$this->lang_filter_plugin)
         {
-            $this->lang_filter_plugin = \JPluginHelper::getPlugin('system', 'languagefilter');
+            $this->lang_filter_plugin = PluginHelper::getPlugin('system', 'languagefilter');
         }
 
 		$lang_filter_params = new Registry($this->lang_filter_plugin->params);
