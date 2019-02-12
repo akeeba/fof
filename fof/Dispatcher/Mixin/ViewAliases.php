@@ -8,8 +8,7 @@
 namespace  FOF40\Dispatcher\Mixin;
 
 // Protect from unauthorized access
-use JFactory;
-use JUri;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -74,7 +73,7 @@ trait ViewAliases
 			&& (strtoupper($_SERVER['REQUEST_METHOD']) == 'GET')
 		)
 		{
-			$url = JUri::getInstance();
+			$url = Uri::getInstance();
 			$url->setVar('view', $this->view);
 
 			$this->container->platform->redirect($url, 301);

@@ -12,6 +12,7 @@ use FOF40\Hal\Document;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
@@ -602,7 +603,7 @@ class Template
 			}
 			elseif (substr($route, 0, 1) == '&')
 			{
-				$url = \JURI::getInstance();
+				$url = Uri::getInstance();
 				$vars = array();
 				parse_str($route, $vars);
 
@@ -612,7 +613,7 @@ class Template
 			}
 			else
 			{
-				$url = \JURI::getInstance();
+				$url = Uri::getInstance();
 				$props = $url->getQuery(true);
 
 				// Strip 'index.php?'

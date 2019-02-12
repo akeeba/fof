@@ -6,6 +6,7 @@
  */
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * User entry field, allowing selection of a user from a modal dialog
@@ -37,7 +38,7 @@ $user        = $item->getContainer()->platform->getUser($userID);
 $width       = isset($width) ? $width : 800;
 $height      = isset($height) ? $height : 500;
 
-$uri = new JUri('index.php?option=com_users&view=users&layout=modal&tmpl=component');
+$uri = new Uri('index.php?option=com_users&view=users&layout=modal&tmpl=component');
 $uri->setVar('required', (isset($required) ? ($required ? 1 : 0) : 0));
 $uri->setVar('field', $field);
 $url = 'index.php' . $uri->toString(['query']);

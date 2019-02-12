@@ -34,7 +34,7 @@ class ViewTest extends FOFTestCase
 		$platform            = static::$container->platform;
 		$platform::$template = 'fake_test_template';
 
-		// This is required by View constructor, since it will create an instance of JUri
+		// This is required by View constructor, since it will create an instance of Uri
 		$_SERVER['HTTP_HOST'] = 'www.example.com';
 	}
 

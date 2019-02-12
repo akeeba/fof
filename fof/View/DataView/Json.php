@@ -14,6 +14,7 @@ use Joomla\CMS\Document\Document as JoomlaDocument;
 use Joomla\CMS\Document\JsonDocument;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
@@ -370,7 +371,7 @@ class Json extends Raw implements DataViewInterface
 		}
 
 		// Create a self link
-		$uri = (string) (\JUri::getInstance());
+		$uri = (string) (Uri::getInstance());
 		$uri = $this->_removeURIBase($uri);
 		$uri = Route::_($uri);
 		$document->addLink('self', new Link($uri));
@@ -459,7 +460,7 @@ class Json extends Raw implements DataViewInterface
 
 		if (is_null($root))
 		{
-			$root = rtrim(\JUri::base(false), '/');
+			$root = rtrim(Uri::base(false), '/');
 			$rootlen = strlen($root);
 		}
 
@@ -472,14 +473,14 @@ class Json extends Raw implements DataViewInterface
 	}
 
 	/**
-	 * Returns a JUri instance with a prototype URI used as the base for the
+	 * Returns a Uri instance with a prototype URI used as the base for the
 	 * other URIs created by the JSON renderer
 	 *
-	 * @return  \JUri  The prototype JUri instance
+	 * @return  Uri  The prototype Uri instance
 	 */
 	protected function _getPrototypeURIForPagination()
 	{
-		$protoUri = new \JUri('index.php');
+		$protoUri = new Uri('index.php');
 		$protoUri->setQuery($this->input->getData());
 		$protoUri->delVar('savestate');
 		$protoUri->delVar('base_path');

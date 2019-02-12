@@ -25,9 +25,9 @@ use Joomla\CMS\Language\Language;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Version as JoomlaVersion;
 use Joomla\Registry\Registry;
-use JUri;
 
 defined('_JEXEC') or die;
 
@@ -962,7 +962,7 @@ class Platform extends BasePlatform
 	 */
 	public function URIroot($pathonly = false, $path = null)
 	{
-		return \JUri::root($pathonly, $path);
+		return Uri::root($pathonly, $path);
 	}
 
 	/**
@@ -976,7 +976,7 @@ class Platform extends BasePlatform
 	 */
 	public function URIbase($pathonly = false)
 	{
-		return \JUri::base($pathonly);
+		return Uri::base($pathonly);
 	}
 
 	/**
@@ -1214,7 +1214,7 @@ class Platform extends BasePlatform
 			'caching'      => false,
 		);
 
-		$cache_key = JUri::getInstance()->toString();
+		$cache_key = Uri::getInstance()->toString();
 		JCache::getInstance('page', $options)->cache->remove($cache_key, 'page');
 	}
 }

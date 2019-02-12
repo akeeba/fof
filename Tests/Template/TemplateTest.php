@@ -32,7 +32,7 @@ class TemplateTest extends FOFTestCase
 		$this->saveFactoryState();
 		JFactory::$document = Document::getInstance('html');
 
-		// Fake the server variables to get JURI working right
+		// Fake the server variables to get Uri working right
 		global $_SERVER;
 		$this->_stashedServer   = $_SERVER;
 		$_SERVER['HTTP_HOST']   = 'www.example.com';
@@ -50,8 +50,8 @@ class TemplateTest extends FOFTestCase
 		TestJoomlaPlatform::$isCli            = null;
 		TestJoomlaPlatform::$templateSuffixes = null;
 
-		// Reset JURI
-		$reflector = new \ReflectionClass('\JUri');
+		// Reset Uri
+		$reflector = new \ReflectionClass('\Joomla\CMS\Uri\Uri');
 
 		$instancesProp = $reflector->getProperty('instances');
 		$instancesProp->setAccessible(true);
