@@ -9,8 +9,8 @@ namespace  FOF40\Download;
 
 use FOF40\Container\Container;
 use FOF40\Download\Exception\DownloadError;
-use JText;
 use FOF40\Timer\Timer;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -330,7 +330,7 @@ class Download
 					{
 						// Can't open the file for writing
 						$retArray['status'] = false;
-						$retArray['error'] = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE', $localFilename);
+						$retArray['error'] = Text::sprintf('LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE', $localFilename);
 
 						return $retArray;
 					}

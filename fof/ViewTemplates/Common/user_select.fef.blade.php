@@ -5,6 +5,8 @@
  * @license     GNU GPL version 3 or later
  */
 
+use Joomla\CMS\Language\Text;
+
 /**
  * User entry field, allowing selection of a user from a modal dialog
  *
@@ -29,7 +31,7 @@
 
 $id          = isset($id) ? $id : $field;
 $readonly    = isset($readonly) ? ($readonly ? true : false) : false;
-$placeholder = isset($placeholder) ? JText::_($placeholder) : JText::_('JLIB_FORM_SELECT_USER');
+$placeholder = isset($placeholder) ? Text::_($placeholder) : Text::_('JLIB_FORM_SELECT_USER');
 $userID      = $item->getFieldValue($field, 0);
 $user        = $item->getContainer()->platform->getUser($userID);
 $width       = isset($width) ? $width : 800;

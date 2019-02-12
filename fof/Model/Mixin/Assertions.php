@@ -9,7 +9,7 @@ namespace  FOF40\Model\Mixin;
 
 defined('_JEXEC') or die;
 
-use JText;
+use Joomla\CMS\Language\Text;
 use RuntimeException;
 
 /**
@@ -29,7 +29,7 @@ trait Assertions
 	{
 		if (!$condition)
 		{
-			throw new RuntimeException(JText::_($message));
+			throw new RuntimeException(Text::_($message));
 		}
 	}
 

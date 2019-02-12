@@ -15,6 +15,7 @@ use FOF40\View\Exception\CannotGetName;
 use FOF40\View\Exception\EmptyStack;
 use FOF40\View\Exception\ModelNotFound;
 use FOF40\View\Exception\UnrecognisedExtension;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -808,7 +809,7 @@ class View
 			}
 			elseif (starts_with($empty, 'text|'))
 			{
-				$result = \JText::_(substr($empty, 5));
+				$result = Text::_(substr($empty, 5));
 			}
 			else
 			{

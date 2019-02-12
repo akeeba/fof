@@ -402,13 +402,13 @@ class BaseInstaller
 	 *                              action_file (RAD path to the PHP file) and action (PHP function name) keys. See
 	 *                              below for more information.
 	 *
-	 * title_key        The JText language key for the title of this PIM
+	 * title_key        The Text language key for the title of this PIM
 	 *                    Example: COM_FOOBAR_POSTINSTALL_MESSAGEONE_TITLE
 	 *
-	 * description_key    The JText language key for the main body (description) of this PIM
+	 * description_key    The Text language key for the main body (description) of this PIM
 	 *                    Example: COM_FOOBAR_POSTINSTALL_MESSAGEONE_DESCRIPTION
 	 *
-	 * action_key        The JText language key for the action button. Ignored and not required when type=message
+	 * action_key        The Text language key for the action button. Ignored and not required when type=message
 	 *                    Example: COM_FOOBAR_POSTINSTALL_MESSAGEONE_ACTION
 	 *
 	 * language_extension    The extension name which holds the language keys used above. For example, com_foobar,

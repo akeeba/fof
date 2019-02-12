@@ -540,7 +540,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileLang($expression)
 	{
-		return "<?php echo \\JText::_$expression; ?>";
+		return "<?php echo \\Joomla\\CMS\\Language\\Text::_$expression; ?>";
 	}
 
 	/**
@@ -551,7 +551,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSprintf($expression)
 	{
-		return "<?php echo \\JText::sprintf$expression; ?>";
+		return "<?php echo \\Joomla\\CMS\\Language\\Text::sprintf$expression; ?>";
 	}
 
 	/**
@@ -559,14 +559,14 @@ class Blade implements CompilerInterface
 	 *
 	 * e.g. @plural('COM_FOOBAR_N_ITEMS_SAVED', $countItemsSaved)
 	 *
-	 * @see JText::plural()
+	 * @see Text::plural()
 	 *
 	 * @param  string  $expression
 	 * @return string
 	 */
 	protected function compilePlural($expression)
 	{
-		return "<?php echo \\JText::plural$expression; ?>";
+		return "<?php echo \\Joomla\\CMS\\Language\\Text::plural$expression; ?>";
 	}
 
 	/**

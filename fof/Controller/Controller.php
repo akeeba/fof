@@ -14,6 +14,7 @@ use FOF40\Model\DataModel;
 use FOF40\Model\Model;
 use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -373,7 +374,7 @@ class Controller
 
 		if (!isset($this->taskMap[$task]) && !isset($this->taskMap['__default']))
 		{
-			throw new TaskNotFound(\JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
+			throw new TaskNotFound(Text::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
 		}
 
 		$result = $this->triggerEvent('onBeforeExecute', array(&$task));
@@ -726,7 +727,7 @@ class Controller
 
 			if (!preg_match('/(.*)\\\\Controller\\\\(.*)/i', get_class($this), $r))
 			{
-				throw new CannotGetName(\JText::_('LIB_FOF40_CONTROLLER_ERR_GET_NAME'), 500);
+				throw new CannotGetName(Text::_('LIB_FOF40_CONTROLLER_ERR_GET_NAME'), 500);
 			}
 
 			$this->name = $r[2];
@@ -987,7 +988,7 @@ class Controller
 
 		if (!$hasToken)
 		{
-			$platform->raiseError(403, \JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+			$platform->raiseError(403, Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 
 			return false;
 		}

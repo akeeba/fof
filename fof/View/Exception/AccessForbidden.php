@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -20,7 +21,7 @@ class AccessForbidden extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN');
+			$message = Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN');
 		}
 
 		parent::__construct( $message, $code, $previous );

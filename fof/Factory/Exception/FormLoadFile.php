@@ -8,6 +8,7 @@
 namespace  FOF40\Factory\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 use RuntimeException;
 
 defined('_JEXEC') or die;
@@ -16,7 +17,7 @@ class FormLoadFile extends FormLoadGeneric
 {
 	public function __construct( $file = "", $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF40_FORM_ERR_COULD_NOT_LOAD_FROM_FILE', $file);
+		$message = Text::sprintf('LIB_FOF40_FORM_ERR_COULD_NOT_LOAD_FROM_FILE', $file);
 
 		parent::__construct( $message, $code, $previous );
 	}

@@ -28,6 +28,7 @@ use FOF40\Utils\ArrayHelper;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Table\ContentHistory;
 use Joomla\CMS\Table\ContentType;
@@ -1363,7 +1364,7 @@ class DataModel extends Model implements TableInterface
 		// If the source value is not an array or object return false.
 		if (!is_object($data) && !is_array($data))
 		{
-			throw new \InvalidArgumentException(\JText::sprintf('LIB_FOF40_MODEL_ERR_BIND', get_class($this), gettype($data)));
+			throw new \InvalidArgumentException(Text::sprintf('LIB_FOF40_MODEL_ERR_BIND', get_class($this), gettype($data)));
 		}
 
 		// If the ignore value is a string, explode it over spaces.
@@ -1451,7 +1452,7 @@ class DataModel extends Model implements TableInterface
 				$text = $this->container->componentName . '_' . $this->container->inflector->singularize($this->getName()) . '_ERR_'
 					. $fieldName . '_EMPTY';
 
-				throw new \RuntimeException(\JText::_(strtoupper($text)), 500);
+				throw new \RuntimeException(Text::_(strtoupper($text)), 500);
 			}
 		}
 
@@ -2326,7 +2327,7 @@ class DataModel extends Model implements TableInterface
 
 				if ($obj->$pkField > 0)
 				{
-					$msg[] = \JText::_($table['label']);
+					$msg[] = Text::_($table['label']);
 				}
 
 				$i++;
@@ -2344,7 +2345,7 @@ class DataModel extends Model implements TableInterface
 
 				foreach ($msg as $key)
 				{
-					$message .= '<li>'.\JText::_(strtoupper($prefix . $key)).'</li>';
+					$message .= '<li>' . Text::_(strtoupper($prefix . $key)) . '</li>';
 				}
 
 				$message .= '</ul>';
@@ -3774,7 +3775,7 @@ class DataModel extends Model implements TableInterface
 				$this->unlock();
 			}
 
-			throw new BaseException(\JText::_('JLIB_APPLICATION_ERROR_HISTORY_ID_MISMATCH'));
+			throw new BaseException(Text::_('JLIB_APPLICATION_ERROR_HISTORY_ID_MISMATCH'));
 		}
 
 		$this->setState('save_date', $historyTable->save_date);
@@ -3853,7 +3854,7 @@ class DataModel extends Model implements TableInterface
 		$query = $this->getDbo()->getQuery(true);
 		$query->select('title')->from('#__menu')->where('component_id = ' . (int) $component->id);
 		$this->getDbo()->setQuery($query);
-		$component_name = \JText::_($this->getDbo()->loadResult());
+		$component_name = Text::_($this->getDbo()->loadResult());
 
 		$name = $component_name . ' ' . ucfirst($aliasParts[1]);
 

@@ -8,6 +8,7 @@
 namespace  FOF40\Model\DataModel\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -15,7 +16,7 @@ class NoContentType extends \UnexpectedValueException
 {
 	public function __construct( $className, $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF40_MODEL_ERR_NOCONTENTTYPE', $className);
+		$message = Text::sprintf('LIB_FOF40_MODEL_ERR_NOCONTENTTYPE', $className);
 
 		parent::__construct( $message, $code, $previous );
 	}

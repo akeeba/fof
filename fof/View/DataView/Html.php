@@ -9,6 +9,7 @@ namespace  FOF40\View\DataView;
 
 use FOF40\Render\RenderInterface;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -103,7 +104,7 @@ class Html extends Raw implements DataViewInterface
 		}
 		else
 		{
-			$params->def('page_heading', \JText::_($default));
+			$params->def('page_heading', Text::_($default));
 		}
 
 		// Set the document title
@@ -112,7 +113,7 @@ class Html extends Raw implements DataViewInterface
 
 		if ($title == $sitename)
 		{
-			$title = \JText::_($default);
+			$title = Text::_($default);
 		}
 
 		if (empty($title))
@@ -121,11 +122,11 @@ class Html extends Raw implements DataViewInterface
 		}
 		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = \JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
 		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = \JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$document->setTitle($title);

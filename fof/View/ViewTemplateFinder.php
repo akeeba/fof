@@ -8,6 +8,7 @@
 namespace  FOF40\View;
 
 use FOF40\Container\Container;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -360,7 +361,7 @@ class ViewTemplateFinder
 		}
 
 		// Nothing found, throw an error
-		throw new \RuntimeException(\JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $uri), 500);
+		throw new \RuntimeException(Text::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $uri), 500);
 	}
 
 	/**

@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -20,7 +21,7 @@ class CannotGetName extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF40_VIEW_ERR_GET_NAME');
+			$message = Text::_('LIB_FOF40_VIEW_ERR_GET_NAME');
 		}
 
 		parent::__construct($message, $code, $previous);

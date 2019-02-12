@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -18,7 +19,7 @@ class UnrecognisedExtension extends \InvalidArgumentException
 {
 	public function __construct($path, $code = 500, Exception $previous = null)
 	{
-		$message = \JText::sprintf('LIB_FOF40_VIEW_UNRECOGNISEDEXTENSION', $path);
+		$message = Text::sprintf('LIB_FOF40_VIEW_UNRECOGNISEDEXTENSION', $path);
 
 		parent::__construct($message, $code, $previous);
 	}

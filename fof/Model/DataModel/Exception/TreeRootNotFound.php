@@ -8,6 +8,7 @@
 namespace  FOF40\Model\DataModel\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -15,7 +16,7 @@ class TreeRootNotFound extends \RuntimeException
 {
 	public function __construct( $tableName, $lft, $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF40_MODEL_ERR_TREE_ROOTNOTFOUND', $tableName, $lft);
+		$message = Text::sprintf('LIB_FOF40_MODEL_ERR_TREE_ROOTNOTFOUND', $tableName, $lft);
 
 		parent::__construct( $message, $code, $previous );
 	}

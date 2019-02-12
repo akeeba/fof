@@ -8,6 +8,7 @@
 namespace  FOF40\Factory\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 use RuntimeException;
 
 defined('_JEXEC') or die;
@@ -16,7 +17,7 @@ class ControllerNotFound extends RuntimeException
 {
 	public function __construct( $controller, $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF40_CONTROLLER_ERR_NOT_FOUND', $controller);
+		$message = Text::sprintf('LIB_FOF40_CONTROLLER_ERR_NOT_FOUND', $controller);
 
 		parent::__construct( $message, $code, $previous );
 	}

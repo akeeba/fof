@@ -16,7 +16,7 @@ use FOF40\Utils\SelectOptions;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use JHtml;
-use JText;
+use Joomla\CMS\Language\Text;
 
 /**
  * An HTML helper for Browse views.
@@ -65,7 +65,7 @@ abstract class BrowseView
 
 			foreach ($keys as $key)
 			{
-				if (JText::_($key) != $key)
+				if (Text::_($key) != $key)
 				{
 					return $key;
 				}
@@ -88,7 +88,7 @@ abstract class BrowseView
 	 */
 	public static function fieldLabel($fieldName)
 	{
-		return JText::_(self::fieldLabelKey($fieldName));
+		return Text::_(self::fieldLabelKey($fieldName));
 	}
 
 	/**
@@ -141,7 +141,7 @@ abstract class BrowseView
 		}
 
 		$params = array_merge([
-			'list.none'      => '&mdash; ' . JText::_($placeholder) . ' &mdash;',
+			'list.none'      => '&mdash; ' . Text::_($placeholder) . ' &mdash;',
 			'value_field'    => $modelTitleField,
 			'fof.autosubmit' => true,
 		], $params);
@@ -154,7 +154,7 @@ abstract class BrowseView
 	 *
 	 * @param   string $localField  The name of the model field. Used when getting the filter state.
 	 * @param   string $searchField The INPUT element's name. Default: "filter_$localField".
-	 * @param   string $placeholder The JText language key for the placeholder. Default: extrapolate from $localField.
+	 * @param   string $placeholder The Text language key for the placeholder. Default: extrapolate from $localField.
 	 * @param   array  $attributes  HTML attributes for the INPUT element.
 	 *
 	 * @return  string
@@ -172,7 +172,7 @@ abstract class BrowseView
 		$attributes['name']        = $searchField;
 		$attributes['id']          = !isset($attributes['id']) ? "filter_$localField" : $attributes['id'];
 		$attributes['onchange']    = !isset($attributes['onchange']) ? 'document.adminForm.submit()' : null;
-		$attributes['placeholder'] = !isset($attributes['placeholder']) ? $view->escape(JText::_($placeholder)) : $attributes['placeholder'];
+		$attributes['placeholder'] = !isset($attributes['placeholder']) ? $view->escape(Text::_($placeholder)) : $attributes['placeholder'];
 		$attributes['title']       = isset($attributes['title']) ? $attributes['title'] : $attributes['placeholder'];
 		$attributes['value']       = $view->escape($model->getState($localField));
 
@@ -208,7 +208,7 @@ abstract class BrowseView
 		}
 
 		$params = array_merge([
-			'list.none'      => '&mdash; ' . JText::_($placeholder) . ' &mdash;',
+			'list.none'      => '&mdash; ' . Text::_($placeholder) . ' &mdash;',
 			'fof.autosubmit' => true,
 		], $params);
 
@@ -368,7 +368,7 @@ abstract class BrowseView
 	 * - format.indent The string to use for indentation, default is tab.
 	 * - groups If set, looks for keys with the value "<optgroup>" and synthesizes groups from them. Deprecated. Default: true.
 	 * - list.select Either the value of one selected option or an array of selected options. Default: $currentValue.
-	 * - list.translate If true, text and labels are translated via JText::_(). Default is false.
+	 * - list.translate If true, text and labels are translated via Text::_(). Default is false.
 	 * - list.attr HTML element attributes (key/value array or string)
 	 * - list.none Placeholder for no selection (creates an option with an empty string key)
 	 * - option.id The property in each option array to use as the selection id attribute. Defaults: null.
@@ -457,7 +457,7 @@ abstract class BrowseView
 
 		if (!empty($params['list.none']))
 		{
-			array_unshift($options, JHtml::_('FEFHelper.select.option', '', JText::_($params['list.none'])));
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_($params['list.none'])));
 		}
 
 		$html = [];
@@ -554,7 +554,7 @@ abstract class BrowseView
 	 * source_method        The static method to use on source_class
 	 * source_key           Use * if you're returning a key/value array. Otherwise the array key for the key (ID) value.
 	 * source_value         Use * if you're returning a key/value array. Otherwise the array key for the displayed value.
-	 * source_translate     Should I pass the value field through JText? Default: true
+	 * source_translate     Should I pass the value field through Text? Default: true
 	 * source_format        Set to "optionsobject" if you're returning an array of JHtml options. Ignored otherwise.
 	 *
 	 * @param  array $attribs
@@ -623,7 +623,7 @@ abstract class BrowseView
 
 							if ($source_translate)
 							{
-								$value = JText::_($value);
+								$value = Text::_($value);
 							}
 
 							$options[] = JHtml::_('FEFHelper.select.option', $key, $value, 'value', 'text');
@@ -647,7 +647,7 @@ abstract class BrowseView
 	 * apply_access     Should I apply Joomla ACLs to the model? Default: FALSE.
 	 * none             Placeholder for no selection. Default: NULL (no placeholder).
 	 * none_as_zero     When true, the 'none' placeholder applies to values '' **AND** '0' (empty string and zero)
-	 * translate        Should I pass the values through JText? Default: TRUE.
+	 * translate        Should I pass the values through Text? Default: TRUE.
 	 * with             Array of relation names for eager loading.
 	 * cache            Cache the results for faster reuse
 	 *
@@ -720,7 +720,7 @@ abstract class BrowseView
 		if (empty($params['none']) && !is_null($params['none']))
 		{
 			$langKey     = strtoupper($model->getContainer()->componentName . '_TITLE_' . $model->getName());
-			$placeholder = JText::_($langKey);
+			$placeholder = Text::_($langKey);
 
 			if ($langKey != $placeholder)
 			{
@@ -730,11 +730,11 @@ abstract class BrowseView
 
 		if (!empty($params['none']))
 		{
-			$options[] = JHtml::_('FEFHelper.select.option', null, JText::_($params['none']));
+			$options[] = JHtml::_('FEFHelper.select.option', null, Text::_($params['none']));
 
 			if ($params['none_as_zero'])
 			{
-				$options[] = JHtml::_('FEFHelper.select.option', 0, JText::_($params['none']));
+				$options[] = JHtml::_('FEFHelper.select.option', 0, Text::_($params['none']));
 			}
 		}
 
@@ -767,7 +767,7 @@ abstract class BrowseView
 
 				if ($params['translate'])
 				{
-					$value = JText::_($value);
+					$value = Text::_($value);
 				}
 
 				$options[] = JHtml::_('FEFHelper.select.option', $item->{$params['key_field']}, $value);

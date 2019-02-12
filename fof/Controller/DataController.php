@@ -14,6 +14,7 @@ use FOF40\Controller\Exception\NotADataModel;
 use FOF40\Controller\Exception\TaskNotFound;
 use FOF40\Model\DataModel;
 use FOF40\View\View;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -419,7 +420,7 @@ class DataController extends Controller
 			if ($model->getId() != reset($ids))
 			{
 				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
-				throw new ItemNotFound(\JText::_($key), 404);
+				throw new ItemNotFound(Text::_($key), 404);
 			}
 		}
 
@@ -568,7 +569,7 @@ class DataController extends Controller
 		}
 
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=edit&id=' . $id . $this->getItemidURLSuffix();
-		$this->setRedirect($url, \JText::_($textKey));
+		$this->setRedirect($url, Text::_($textKey));
 	}
 
 	/**
@@ -618,7 +619,7 @@ class DataController extends Controller
 		else
 		{
 			$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_COPIED');
-			$this->setRedirect($url, \JText::_($textKey));
+			$this->setRedirect($url, Text::_($textKey));
 		}
 	}
 
@@ -645,7 +646,7 @@ class DataController extends Controller
 		}
 
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
-		$this->setRedirect($url, \JText::_($textKey));
+		$this->setRedirect($url, Text::_($textKey));
 	}
 
 	/**
@@ -671,7 +672,7 @@ class DataController extends Controller
 		}
 
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->singularize($this->view) . '&task=add' . $this->getItemidURLSuffix();
-		$this->setRedirect($url, \JText::_($textKey));
+		$this->setRedirect($url, Text::_($textKey));
 	}
 
     /**
@@ -723,7 +724,7 @@ class DataController extends Controller
         else
         {
             $textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_COPIED');
-            $this->setRedirect($url, \JText::_($textKey));
+            $this->setRedirect($url, Text::_($textKey));
         }
     }
 
@@ -1317,7 +1318,7 @@ class DataController extends Controller
 		else
 		{
 			$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_DELETED');
-			$this->setRedirect($url, \JText::_($textKey));
+			$this->setRedirect($url, Text::_($textKey));
 		}
 	}
 
@@ -1554,14 +1555,14 @@ class DataController extends Controller
 		// Access check.
 		if (!$this->checkACL('@loadhistory'))
 		{
-			$this->setRedirect($returnUrl, \JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
+			$this->setRedirect($returnUrl, Text::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'), 'error');
 			$model->unlock();
 
 			return false;
 		}
 
 		$model->store();
-		$this->setRedirect($returnUrl, \JText::sprintf('JLIB_APPLICATION_SUCCESS_LOAD_HISTORY', $model->getState('save_date'), $model->getState('version_note')));
+		$this->setRedirect($returnUrl, Text::sprintf('JLIB_APPLICATION_SUCCESS_LOAD_HISTORY', $model->getState('save_date'), $model->getState('version_note')));
 
 		return true;
 	}

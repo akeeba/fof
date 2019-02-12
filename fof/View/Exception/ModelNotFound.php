@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -18,7 +19,7 @@ class ModelNotFound extends \RuntimeException
 {
 	public function __construct($path, $viewName, $code = 500, Exception $previous = null)
 	{
-		$message = \JText::sprintf('LIB_FOF40_VIEW_MODELNOTINVIEW', $path, $viewName);
+		$message = Text::sprintf('LIB_FOF40_VIEW_MODELNOTINVIEW', $path, $viewName);
 
 		parent::__construct($message, $code, $previous);
 	}

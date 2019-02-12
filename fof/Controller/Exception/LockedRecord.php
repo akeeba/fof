@@ -8,6 +8,7 @@
 namespace  FOF40\Controller\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -20,7 +21,7 @@ class LockedRecord extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF40_CONTROLLER_ERR_LOCKED');
+			$message = Text::_('LIB_FOF40_CONTROLLER_ERR_LOCKED');
 		}
 
 		parent::__construct($message, $code, $previous);

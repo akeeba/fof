@@ -8,6 +8,7 @@
 namespace  FOF40\Model\DataModel\Filter\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -17,7 +18,7 @@ class InvalidFieldObject extends \InvalidArgumentException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF40_MODEL_ERR_FILTER_INVALIDFIELD');
+			$message = Text::_('LIB_FOF40_MODEL_ERR_FILTER_INVALIDFIELD');
 		}
 
 		parent::__construct( $message, $code, $previous );

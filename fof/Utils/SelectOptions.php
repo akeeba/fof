@@ -11,7 +11,7 @@ use JCache;
 use JFactory;
 use JHtml;
 use Joomla\CMS\Language\LanguageHelper;
-use JText;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -124,7 +124,7 @@ class SelectOptions
 
 		if (isset($params['allLevels']) && $params['allLevels'])
 		{
-			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+			array_unshift($options, JHtml::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 		}
 
 		return $options;
@@ -157,7 +157,7 @@ class SelectOptions
 		// If all usergroups is allowed, push it into the array.
 		if (isset($params['allGroups']) && $params['allGroups'])
 		{
-			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
+			array_unshift($options, JHtml::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
 		}
 
 		return $options;
@@ -177,7 +177,7 @@ class SelectOptions
 		// Convert to name => name array.
 		foreach (JCache::getStores() as $store)
 		{
-			$options[] = JHtml::_('select.option', $store, JText::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
+			$options[] = JHtml::_('select.option', $store, Text::_('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
 		}
 
 		return $options;
@@ -227,7 +227,7 @@ class SelectOptions
 		$components = $db->setQuery($query)->loadObjectList('element');
 
 		// Convert to array of objects, so we can use sortObjects()
-		// Also translate component names with JText::_()
+		// Also translate component names with Text::_()
 		$aComponents = [];
 		$user        = JFactory::getUser();
 
@@ -247,7 +247,7 @@ class SelectOptions
 		}
 
 		// Reorder the components array, because the alphabetical
-		// ordering changed due to the JText::_() translation
+		// ordering changed due to the Text::_() translation
 		uasort(
 			$aComponents,
 			function ($a, $b) {
@@ -298,7 +298,7 @@ class SelectOptions
 
 		if (!empty($none))
 		{
-			array_unshift($options, JHtml::_('select.option', '*', JText::_($none)));
+			array_unshift($options, JHtml::_('select.option', '*', Text::_($none)));
 		}
 
 		return $options;
@@ -334,32 +334,32 @@ class SelectOptions
 
 		if (!empty($config['none']))
 		{
-			$options[] = JHtml::_('select.option', '', JText::_($config['none']));
+			$options[] = JHtml::_('select.option', '', Text::_($config['none']));
 		}
 
 		if ($config['published'])
 		{
-			$options[] = JHtml::_('select.option', '1', JText::_('JPUBLISHED'));
+			$options[] = JHtml::_('select.option', '1', Text::_('JPUBLISHED'));
 		}
 
 		if ($config['unpublished'])
 		{
-			$options[] = JHtml::_('select.option', '0', JText::_('JUNPUBLISHED'));
+			$options[] = JHtml::_('select.option', '0', Text::_('JUNPUBLISHED'));
 		}
 
 		if ($config['archived'])
 		{
-			$options[] = JHtml::_('select.option', '2', JText::_('JARCHIVED'));
+			$options[] = JHtml::_('select.option', '2', Text::_('JARCHIVED'));
 		}
 
 		if ($config['trash'])
 		{
-			$options[] = JHtml::_('select.option', '-2', JText::_('JTRASHED'));
+			$options[] = JHtml::_('select.option', '-2', Text::_('JTRASHED'));
 		}
 
 		if ($config['all'])
 		{
-			$options[] = JHtml::_('select.option', '*', JText::_('JALL'));
+			$options[] = JHtml::_('select.option', '*', Text::_('JALL'));
 		}
 
 		return $options;
@@ -385,11 +385,11 @@ class SelectOptions
 
 		if (!empty($config['none']))
 		{
-			$options[] = JHtml::_('select.option', '', JText::_($config['none']));
+			$options[] = JHtml::_('select.option', '', Text::_($config['none']));
 		}
 
-		$options[] = JHtml::_('select.option', '1', JText::_('JYES'));
-		$options[] = JHtml::_('select.option', '0', JText::_('JNO'));
+		$options[] = JHtml::_('select.option', '1', Text::_('JYES'));
+		$options[] = JHtml::_('select.option', '0', Text::_('JNO'));
 
 		return $options;
 	}
@@ -409,7 +409,7 @@ class SelectOptions
 	private static function _translateComponentName($item)
 	{
 		// Map the manifest cache to $item. This is needed to get the name from the
-		// manifest_cache and NOT from the name column, else some JText::_() translations fails.
+		// manifest_cache and NOT from the name column, else some Text::_() translations fails.
 		$mData = json_decode($item->manifest_cache);
 
 		if ($mData)
@@ -433,6 +433,6 @@ class SelectOptions
 		|| $lang->load("$item->element.sys", JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		|| $lang->load("$item->element.sys", $source, $lang->getDefault(), false, false);
 
-		return JText::_($item->name);
+		return Text::_($item->name);
 	}
 }

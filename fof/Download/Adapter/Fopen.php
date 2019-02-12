@@ -9,7 +9,7 @@ namespace  FOF40\Download\Adapter;
 
 use FOF40\Download\DownloadInterface;
 use FOF40\Download\Exception\DownloadError;
-use JText;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -118,7 +118,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 
 		if (!isset($http_response_header) && empty($http_response_header_test))
 		{
-			$error = JText::_('LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR');
+			$error = Text::_('LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR');
 			throw new DownloadError($error, 404);
 		}
 		else
@@ -145,14 +145,14 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 
 			if ($http_code >= 299)
 			{
-				$error = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_HTTPERROR', $http_code);
+				$error = Text::sprintf('LIB_FOF40_DOWNLOAD_ERR_HTTPERROR', $http_code);
 				throw new DownloadError($error, $http_code);
 			}
 		}
 
 		if ($result === false)
 		{
-			$error = JText::sprintf('LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR');
+			$error = Text::sprintf('LIB_FOF40_DOWNLOAD_ERR_FOPEN_ERROR');
 			throw new DownloadError($error, 1);
 		}
 		else

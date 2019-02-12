@@ -8,6 +8,7 @@
 namespace  FOF40\Factory\Scaffolding\Layout;
 
 use FOF40\Model\DataModel;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -277,7 +278,7 @@ class BaseErector implements ErectorInterface
 	 */
 	protected function addString($key, $value)
 	{
-		if (\JText::_($key) != $key)
+		if (Text::_($key) != $key)
 		{
 			return;
 		}

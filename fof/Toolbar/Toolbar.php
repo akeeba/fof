@@ -14,8 +14,8 @@ use FOF40\Toolbar\Exception\UnknownButtonType;
 use FOF40\Utils\StringHelper;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
+use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
-use JText;
 use JToolBarHelper;
 
 defined('_JEXEC') or die;
@@ -259,7 +259,7 @@ class Toolbar
 
 		$option = $this->container->componentName;
 
-		JToolBarHelper::title(JText::_(strtoupper($option)), str_replace('com_', '', $option));
+		JToolBarHelper::title(Text::_(strtoupper($option)), str_replace('com_', '', $option));
 
 		if (!$this->isDataView())
 		{
@@ -293,7 +293,7 @@ class Toolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $view);
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ': ' . JText::_($subtitle_key), str_replace('com_', '', $option));
+		JToolBarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), str_replace('com_', '', $option));
 
 		if (!$this->isDataView())
 		{
@@ -335,7 +335,7 @@ class Toolbar
 
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($option . '_CONFIRM_DELETE');
+			$msg = Text::_($option . '_CONFIRM_DELETE');
 			JToolBarHelper::deleteList(strtoupper($msg));
 		}
 
@@ -380,7 +380,7 @@ class Toolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $view . '_READ');
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ': ' . JText::_($subtitle_key), $componentName);
+		JToolBarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), $componentName);
 
 		if (!$this->isDataView())
 		{
@@ -410,7 +410,7 @@ class Toolbar
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $this->container->inflector->pluralize($view)) . '_EDIT';
-		JToolBarHelper::title(JText::_(strtoupper($option)) . ': ' . JText::_($subtitle_key), $componentName);
+		JToolBarHelper::title(Text::_(strtoupper($option)) . ': ' . Text::_($subtitle_key), $componentName);
 
 		if (!$this->isDataView())
 		{
@@ -584,25 +584,25 @@ class Toolbar
 			$key = strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($view);
 
 			//Do we have a translation for this key?
-			if (strtoupper(JText::_($key)) == $key)
+			if (strtoupper(Text::_($key)) == $key)
 			{
 				$altview = $this->container->inflector->isPlural($view) ? $this->container->inflector->singularize($view) : $this->container->inflector->pluralize($view);
 				$key2 = strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($altview);
 
 				// Maybe we have for the alternative view?
-				if (strtoupper(JText::_($key2)) == $key2)
+				if (strtoupper(Text::_($key2)) == $key2)
 				{
 					// Nope, let's use the raw name
 					$name = ucfirst($view);
 				}
 				else
 				{
-					$name = JText::_($key2);
+					$name = Text::_($key2);
 				}
 			}
 			else
 			{
-				$name = JText::_($key);
+				$name = Text::_($key);
 			}
 
 			$link = 'index.php?option=' . $this->container->componentName . '&view=' . $view;
@@ -858,7 +858,7 @@ class Toolbar
 				$icon  = isset($attributes['icon']) ? $attributes['icon'] : 'generic.png';
 				if (isset($attributes['translate']))
 				{
-					$value = JText::_($value);
+					$value = Text::_($value);
 				}
 
 				JToolbarHelper::title($value, $icon);

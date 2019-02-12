@@ -9,6 +9,7 @@ namespace  FOF40\Template;
 
 use FOF40\Container\Container;
 use JDocument;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -234,7 +235,7 @@ class Template
 	 */
 	public function sefSort($text, $field, $list)
 	{
-		$sort = \JHTML::_('grid.sort', \JText::_(strtoupper($text)) . '&nbsp;', $field, $list->order_Dir, $list->order);
+		$sort = \JHTML::_('grid.sort', Text::_(strtoupper($text)) . '&nbsp;', $field, $list->order_Dir, $list->order);
 
 		return str_replace('href="#"', 'href="javascript:void(0);"', $sort);
 	}

@@ -8,6 +8,7 @@
 namespace  FOF40\Model\DataModel\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -15,7 +16,7 @@ class TreeMethodOnlyAllowedInRoot extends \RuntimeException
 {
 	public function __construct( $method = '', $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF40_MODEL_ERR_TREE_ONLYINROOT', $method);
+		$message = Text::sprintf('LIB_FOF40_MODEL_ERR_TREE_ONLYINROOT', $method);
 
 		parent::__construct( $message, $code, $previous );
 	}

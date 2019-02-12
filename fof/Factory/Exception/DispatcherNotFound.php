@@ -8,6 +8,7 @@
 namespace  FOF40\Factory\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 use RuntimeException;
 
 defined('_JEXEC') or die;
@@ -16,7 +17,7 @@ class DispatcherNotFound extends RuntimeException
 {
 	public function __construct( $dispatcherClass, $code = 500, Exception $previous = null )
 	{
-		$message = \JText::sprintf('LIB_FOF40_DISPATCHER_ERR_NOT_FOUND', $dispatcherClass);
+		$message = Text::sprintf('LIB_FOF40_DISPATCHER_ERR_NOT_FOUND', $dispatcherClass);
 
 		parent::__construct( $message, $code, $previous );
 	}

@@ -6,6 +6,7 @@
  */
 
 use FOF40\Utils\ArrayHelper;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -54,7 +55,7 @@ abstract class FEFHelperSelect
 	 */
 	public static function booleanlist($name, $attribs = array(), $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
 	{
-		$arr = array(JHtml::_('FEFHelper.select.option', '0', JText::_($no)), JHtml::_('FEFHelper.select.option', '1', JText::_($yes)));
+		$arr = array(JHtml::_('FEFHelper.select.option', '0', Text::_($no)), JHtml::_('FEFHelper.select.option', '1', Text::_($yes)));
 
 		return JHtml::_('FEFHelper.select.radiolist', $arr, $name, $attribs, 'value', 'text', (int) $selected, $id);
 	}
@@ -161,7 +162,7 @@ abstract class FEFHelperSelect
 	 *                            list.select: either the value of one selected option or an array
 	 *                            of selected options. Default: none.
 	 *                            list.translate: Boolean. If set, text and labels are translated via
-	 *                            JText::_().
+	 *                            Text::_().
 	 *
 	 * @return  string  HTML for the select list
 	 *
@@ -435,7 +436,7 @@ abstract class FEFHelperSelect
 	 *                               -list.select: either the value of one selected option or an array
 	 *                                of selected options. Default: none.
 	 *                               -list.translate: Boolean. If set, text and labels are translated via
-	 *                                JText::_(). Default is false.
+	 *                                Text::_(). Default is false.
 	 *                               -option.id: The property in each option array to use as the
 	 *                                selection id attribute. Defaults to none.
 	 *                               -option.key: The property in each option array to use as the
@@ -572,7 +573,7 @@ abstract class FEFHelperSelect
 
 			if ($key === '<OPTGROUP>' && $options['groups'])
 			{
-				$html .= $baseIndent . '<optgroup label="' . ($options['list.translate'] ? JText::_($text) : $text) . '">' . $options['format.eol'];
+				$html .= $baseIndent . '<optgroup label="' . ($options['list.translate'] ? Text::_($text) : $text) . '">' . $options['format.eol'];
 				$baseIndent = str_repeat($options['format.indent'], ++$options['format.depth']);
 			}
 			elseif ($key === '</OPTGROUP>' && $options['groups'])
@@ -593,7 +594,7 @@ abstract class FEFHelperSelect
 
 				if (!empty($label) && $options['list.translate'])
 				{
-					$label = JText::_($label);
+					$label = Text::_($label);
 				}
 
 				if ($options['option.label.toHtml'])
@@ -632,7 +633,7 @@ abstract class FEFHelperSelect
 
 				if ($options['list.translate'])
 				{
-					$text = JText::_($text);
+					$text = Text::_($text);
 				}
 
 				// Generate the option, encoding as required
@@ -676,7 +677,7 @@ abstract class FEFHelperSelect
 		foreach ($data as $optionObject)
 		{
 			$optionValue = $optionObject->$optKey;
-			$labelText   = $translate ? JText::_($optionObject->$optText) : $optionObject->$optText;
+			$labelText   = $translate ? Text::_($optionObject->$optText) : $optionObject->$optText;
 			$id          = (isset($optionObject->id) ? $optionObject->id : null);
 
 			$extra = '';
@@ -752,9 +753,9 @@ abstract class FEFHelperSelect
 
 		$html  = '<div '.$attribs.'>';
 		$html .= 	'<input type="radio" class="radio-yes" name="'.$name.'" '.$checked_2.'id="'.$name .'-2" value="1">';
-		$html .=	'<label for="'.$name.'-2" class="green">'.JText::_('JYES').'</label>';
+		$html .=	'<label for="'.$name.'-2" class="green">'.Text::_('JYES').'</label>';
 		$html .=	'<input type="radio" class="radio-no" name="'.$name.'" '.$checked_1.'id="'.$name .'-1" value="0">';
-		$html .= 	'<label for="'.$name.'-1" class="red">'.JText::_('JNO').'</label>';
+		$html .= 	'<label for="'.$name.'-1" class="red">'.Text::_('JNO').'</label>';
 		$html .= '</div>';
 
 		return $html;

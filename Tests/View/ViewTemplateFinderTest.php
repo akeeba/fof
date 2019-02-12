@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\TestJoomlaPlatform;
 use FOF40\Tests\Helpers\VfsHelper;
 use FOF40\Tests\Stubs\View\DataView\RawStub;
 use FOF40\View\ViewTemplateFinder;
+use Joomla\CMS\Language\Text;
 use org\bovigo\vfs\vfsStream;
 
 class ViewTemplateFinderTest extends ApplicationTestCase
@@ -233,7 +234,7 @@ class ViewTemplateFinderTest extends ApplicationTestCase
 
 		if ($expected === false)
 		{
-			self::expectExceptionMessage(\JText::_('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND'));
+			self::expectExceptionMessage(Text::_('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND'));
 		}
 
 		$testObject = new ViewTemplateFinder(static::$view, $extraConfig);

@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -20,7 +21,7 @@ class PossiblySuhosin extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF40_VIEW_POSSIBLYSUHOSIN');
+			$message = Text::_('LIB_FOF40_VIEW_POSSIBLYSUHOSIN');
 		}
 
 		parent::__construct( $message, $code, $previous );

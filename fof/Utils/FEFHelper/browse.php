@@ -10,6 +10,7 @@ use FOF40\Utils\ArrayHelper;
 use FOF40\Utils\FEFHelper\BrowseView;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\DataView\Raw as DataViewRaw;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -60,7 +61,7 @@ abstract class FEFHelperBrowse
 		if ($tip)
 		{
 			$title = $enabled ? $active_title : $inactive_title;
-			$title = $translate ? JText::_($title) : $title;
+			$title = $translate ? Text::_($title) : $title;
 			$title = JHtml::_('tooltipText', $title, '', 0);
 		}
 
@@ -217,12 +218,12 @@ abstract class FEFHelperBrowse
 
 			if ($publish_up)
 			{
-				$tips[] = JText::sprintf('JLIB_HTML_PUBLISHED_START', JHtml::_('date', $publish_up, JText::_('DATE_FORMAT_LC5'), 'UTC'));
+				$tips[] = Text::sprintf('JLIB_HTML_PUBLISHED_START', JHtml::_('date', $publish_up, Text::_('DATE_FORMAT_LC5'), 'UTC'));
 			}
 
 			if ($publish_down)
 			{
-				$tips[] = JText::sprintf('JLIB_HTML_PUBLISHED_FINISHED', JHtml::_('date', $publish_down, JText::_('DATE_FORMAT_LC5'), 'UTC'));
+				$tips[] = Text::sprintf('JLIB_HTML_PUBLISHED_FINISHED', JHtml::_('date', $publish_down, Text::_('DATE_FORMAT_LC5'), 'UTC'));
 			}
 
 			$tip = empty($tips) ? false : implode('<br />', $tips);
@@ -251,9 +252,9 @@ abstract class FEFHelperBrowse
 				// Add tips to titles
 				if ($tip)
 				{
-					$states[$key][1] = JText::_($states[$key][1]);
-					$states[$key][2] = JText::_($states[$key][2]) . '<br />' . $tip;
-					$states[$key][3] = JText::_($states[$key][3]) . '<br />' . $tip;
+					$states[$key][1] = Text::_($states[$key][1]);
+					$states[$key][2] = Text::_($states[$key][2]) . '<br />' . $tip;
+					$states[$key][3] = Text::_($states[$key][3]) . '<br />' . $tip;
 					$states[$key][4] = true;
 				}
 			}
@@ -327,9 +328,9 @@ abstract class FEFHelperBrowse
 			$prefix   = array_key_exists('prefix', $options) ? $options['prefix'] : '';
 		}
 
-		$text           = $editorName . '<br />' . JHtml::_('date', $time, JText::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
-		$active_title   = JHtml::_('tooltipText', JText::_('JLIB_HTML_CHECKIN'), $text, 0);
-		$inactive_title = JHtml::_('tooltipText', JText::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
+		$text           = $editorName . '<br />' . JHtml::_('date', $time, Text::_('DATE_FORMAT_LC')) . '<br />' . JHtml::_('date', $time, 'H:i');
+		$active_title   = JHtml::_('tooltipText', Text::_('JLIB_HTML_CHECKIN'), $text, 0);
+		$inactive_title = JHtml::_('tooltipText', Text::_('JLIB_HTML_CHECKED_OUT'), $text, 0);
 
 		return static::action(
 			$i, 'checkin', $prefix, html_entity_decode($active_title, ENT_QUOTES, 'UTF-8'),
@@ -374,7 +375,7 @@ abstract class FEFHelperBrowse
 
 			if (!$hasAjaxOrderingSupport['saveOrder'])
 			{
-				$disabledLabel    = JText::_('JORDERINGDISABLED');
+				$disabledLabel    = Text::_('JORDERINGDISABLED');
 				$disableClassName = 'inactive tip-top hasTooltip';
 			}
 
@@ -408,8 +409,8 @@ abstract class FEFHelperBrowse
 	 */
 	public static function orderfield($orderingField = 'ordering', $icon = 'akion-stats-bars')
 	{
-		$title = JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN');
-		$orderingLabel = JText::_('JFIELD_ORDERING_LABEL');
+		$title = Text::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN');
+		$orderingLabel = Text::_('JFIELD_ORDERING_LABEL');
 
 		return <<< HTML
 <a href="#"
@@ -522,8 +523,8 @@ HTML;
 		}
 
 		$html = '<a href="#" onclick="Joomla.tableOrdering(\'' . $order . '\',\'' . $direction . '\',\'' . $task . '\'' . $form . ');return false;"'
-			. ' class="hasPopover" title="' . htmlspecialchars(JText::_($tip ?: $title)) . '"'
-			. ' data-content="' . htmlspecialchars(JText::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN')) . '" data-placement="top">';
+			. ' class="hasPopover" title="' . htmlspecialchars(Text::_($tip ?: $title)) . '"'
+			. ' data-content="' . htmlspecialchars(Text::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN')) . '" data-placement="top">';
 
 		if (isset($title['0']) && $title['0'] === '<')
 		{
@@ -531,7 +532,7 @@ HTML;
 		}
 		else
 		{
-			$html .= JText::_($title);
+			$html .= Text::_($title);
 		}
 
 		if ($order == $selected)
@@ -679,15 +680,15 @@ JS;
 		}
 
 		// Static hidden text labels
-		$limitLabel    = JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');
-		$orderingDescr = JText::_('JFIELD_ORDERING_DESC');
-		$sortByLabel   = JText::_('JGLOBAL_SORT_BY');
+		$limitLabel    = Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');
+		$orderingDescr = Text::_('JFIELD_ORDERING_DESC');
+		$sortByLabel   = Text::_('JGLOBAL_SORT_BY');
 
 		// Order direction dropdown
 		$directionSelect = JHtml::_('FEFHelper.select.genericlist', [
 			''     => $orderingDescr,
-			'asc'  => JText::_('JGLOBAL_ORDER_ASCENDING'),
-			'desc' => JText::_('JGLOBAL_ORDER_DESCENDING'),
+			'asc'  => Text::_('JGLOBAL_ORDER_ASCENDING'),
+			'desc' => Text::_('JGLOBAL_ORDER_DESCENDING'),
 		], 'directionTable', [
 			'id'          => 'directionTable',
 			'list.select' => $order_Dir,
@@ -700,7 +701,7 @@ JS;
 		// Sort by field dropdown
 
 		$sortTable = JHtml::_('FEFHelper.select.genericlist', array_merge([
-			'' => JText::_('JGLOBAL_SORT_BY'),
+			'' => Text::_('JGLOBAL_SORT_BY'),
 		], $sortFields), 'sortTable', [
 			'id'          => 'sortTable',
 			'list.select' => $sortBy,
@@ -794,7 +795,7 @@ HTML;
 			foreach ($possibleKeys as $langKey)
 			{
 				$langKey    = strtoupper($langKey);
-				$fieldLabel = JText::_($langKey);
+				$fieldLabel = Text::_($langKey);
 
 				if ($fieldLabel !== $langKey)
 				{

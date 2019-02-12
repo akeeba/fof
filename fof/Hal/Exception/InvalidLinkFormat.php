@@ -8,6 +8,7 @@
 namespace  FOF40\Hal\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -17,7 +18,7 @@ class InvalidLinkFormat extends \RuntimeException
 	{
 		if (empty($message))
 		{
-			$message = \JText::_('LIB_FOF40_HAL_ERR_INVALIDLINK');
+			$message = Text::_('LIB_FOF40_HAL_ERR_INVALIDLINK');
 		}
 
 		parent::__construct($message, $code, $previous);

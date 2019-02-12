@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -18,7 +19,7 @@ class EmptyStack extends \RuntimeException
 {
 	public function __construct($message = "", $code = 500, Exception $previous = null)
 	{
-		$message = \JText::_('LIB_FOF40_VIEW_EMPTYSECTIONSTACK');
+		$message = Text::_('LIB_FOF40_VIEW_EMPTYSECTIONSTACK');
 
 		parent::__construct($message, $code, $previous);
 	}
