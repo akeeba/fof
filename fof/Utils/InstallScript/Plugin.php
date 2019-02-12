@@ -11,6 +11,7 @@ use Exception;
 use FOF40\Database\Installer;
 use JFactory;
 use JLoader;
+use Joomla\CMS\Installer\Adapter\PluginAdapter;
 
 defined('_JEXEC') or die;
 
@@ -83,8 +84,8 @@ class Plugin extends BaseInstaller
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string                      $type   Installation type (install, update, discover_install)
-	 * @param   \JInstallerAdapterComponent $parent Parent object
+	 * @param   string         $type   Installation type (install, update, discover_install)
+	 * @param   PluginAdapter  $parent Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
@@ -113,8 +114,8 @@ class Plugin extends BaseInstaller
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string                      $type   install, update or discover_update
-	 * @param   \JInstallerAdapterComponent $parent Parent object
+	 * @param   string         $type   install, update or discover_update
+	 * @param   PluginAdapter  $parent Parent object
 	 *
      * @throws Exception
 	 *
@@ -153,7 +154,7 @@ class Plugin extends BaseInstaller
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   \JInstallerAdapterComponent $parent The parent object
+	 * @param   PluginAdapter  $parent The parent object
 	 */
 	public function uninstall($parent)
 	{
@@ -189,7 +190,7 @@ class Plugin extends BaseInstaller
 	 * ourselves WITHOUT going through the manifest, based entirely on the conventions we follow for Akeeba Ltd's
 	 * extensions.
 	 *
-	 * @param   \JInstallerAdapterComponent $parent
+	 * @param   PluginAdapter  $parent
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{

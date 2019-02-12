@@ -3,6 +3,7 @@
 // Configuration
 // ====================================================================================================================
 use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\Registry\Registry;
 
 $sitePath           = '/var/www/test3/cli';
@@ -177,7 +178,7 @@ class FOFTestInstall extends CliApplication
 	{
 		global $stableVersionPath, $installVersionPath;
 
-		$tmpInstaller = new JInstaller;
+		$tmpInstaller = new JoomlaInstaller();
 
 		$isStable = $this->input->exists('stable');
 

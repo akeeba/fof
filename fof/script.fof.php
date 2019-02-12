@@ -7,6 +7,8 @@
 
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Installer as JoomlaInstaller;
+use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Table\Extension;
 
 defined('_JEXEC') or die();
@@ -50,8 +52,8 @@ class file_fof40InstallerScript
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string     $type   Installation type (install, update, discover_install)
-	 * @param   JInstaller $parent Parent object
+	 * @param   string           $type   Installation type (install, update, discover_install)
+	 * @param   JoomlaInstaller  $parent Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
@@ -128,8 +130,8 @@ class file_fof40InstallerScript
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string                 $type    install, update or discover_update
-	 * @param   JInstallerAdapterFile  $parent  Parent object
+	 * @param   string            $type    install, update or discover_update
+	 * @param   InstallerAdapter  $parent  Parent object
 	 *
 	 * @throws  Exception
 	 */
@@ -150,7 +152,7 @@ class file_fof40InstallerScript
 		// Install or update database
 		$db = JFactory::getDbo();
 
-		/** @var JInstaller $grandpa */
+		/** @var JoomlaInstaller $grandpa */
 		$grandpa   = $parent->getParent();
 		$src       = $grandpa->getPath('source');
 		$sqlSource = $src . '/fof/sql';
@@ -200,7 +202,7 @@ class file_fof40InstallerScript
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   JInstallerAdapterFile $parent The parent object
+	 * @param   InstallerAdapter $parent The parent object
 	 *
 	 * @throws  RuntimeException  If the uninstallation is not allowed
 	 */
@@ -223,13 +225,13 @@ class file_fof40InstallerScript
 	 * Is this package an update to the currently installed FOF? If not (we're a downgrade) we will return false
 	 * and prevent the installation from going on.
 	 *
-	 * @param   JInstallerAdapterFile $parent The parent object
+	 * @param   InstallerAdapter $parent The parent object
 	 *
 	 * @return  array  The installation status
 	 */
 	protected function amIAnUpdate($parent)
 	{
-		/** @var JInstaller $grandpa */
+		/** @var JoomlaInstaller $grandpa */
 		$grandpa = $parent->getParent();
 
 		$source = $grandpa->getPath('source');
@@ -545,7 +547,7 @@ class file_fof40InstallerScript
 	 * added / modified files and folders you have. We are trying to work around it by retrying the copy operation
 	 * ourselves WITHOUT going through the manifest, based entirely on the conventions we follow.
 	 *
-	 * @param   \JInstallerAdapterComponent $parent
+	 * @param   InstallerAdapter $parent
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{

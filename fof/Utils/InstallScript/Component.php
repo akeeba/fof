@@ -7,14 +7,15 @@
 
 namespace  FOF40\Utils\InstallScript;
 
-use FOF40\Database\Installer;
+use FOF40\Database\Installer as DatabaseInstaller;
 use Exception;
 use JFactory;
 use JFile;
 use JFolder;
-use JInstaller;
 use JLoader;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Adapter\ComponentAdapter;
+use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Table\Menu;
 use Joomla\CMS\Table\Table;
 
@@ -164,8 +165,8 @@ class Component extends BaseInstaller
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string                      $type   Installation type (install, update, discover_install)
-	 * @param   \JInstallerAdapterComponent $parent Parent object
+	 * @param   string            $type   Installation type (install, update, discover_install)
+	 * @param   ComponentAdapter  $parent Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
@@ -186,7 +187,7 @@ class Component extends BaseInstaller
 		// Clear op-code caches to prevent any cached code issues
 		$this->clearOpcodeCaches();
 
-		// Workarounds for JInstaller issues.
+		// Workarounds for JoomlaInstaller issues.
 		if (in_array($type, array('install', 'discover_install')))
 		{
 			// Bugfix for "Database function returned no error"
@@ -206,8 +207,8 @@ class Component extends BaseInstaller
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string                      $type   install, update or discover_update
-	 * @param   \JInstallerAdapterComponent $parent Parent object
+	 * @param   string            $type   install, update or discover_update
+	 * @param   ComponentAdapter  $parent Parent object
 	 *
 	 * @throws Exception
 	 *
@@ -224,7 +225,7 @@ class Component extends BaseInstaller
 		}
 
 		// Install or update database
-		$dbInstaller = new Installer(JFactory::getDbo(),
+		$dbInstaller = new DatabaseInstaller(JFactory::getDbo(),
 			($this->schemaXmlPathRelative ? JPATH_ADMINISTRATOR . '/components/' . $this->componentName : '') . '/' .
 			$this->schemaXmlPath
 		);
@@ -317,12 +318,12 @@ class Component extends BaseInstaller
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   \JInstallerAdapterComponent $parent The parent object
+	 * @param   ComponentAdapter  $parent The parent object
 	 */
 	public function uninstall($parent)
 	{
 		// Uninstall database
-		$dbInstaller = new Installer(JFactory::getDbo(),
+		$dbInstaller = new DatabaseInstaller(JFactory::getDbo(),
 			($this->schemaXmlPathRelative ? JPATH_ADMINISTRATOR . '/components/' . $this->componentName : '') . '/' .
 			$this->schemaXmlPath
 		);
@@ -347,7 +348,7 @@ class Component extends BaseInstaller
 	/**
 	 * Copies the CLI scripts into Joomla!'s cli directory
 	 *
-	 * @param   \JInstallerAdapterComponent $parent
+	 * @param   ComponentAdapter  $parent
 	 */
 	protected function copyCliFiles($parent)
 	{
@@ -376,7 +377,7 @@ class Component extends BaseInstaller
 	 * ourselves WITHOUT going through the manifest, based entirely on the conventions we follow for Akeeba Ltd's
 	 * extensions.
 	 *
-	 * @param   \JInstallerAdapterComponent $parent
+	 * @param   ComponentAdapter  $parent
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{
@@ -414,7 +415,7 @@ class Component extends BaseInstaller
 	/**
 	 * Override this method to display a custom component installation message if you so wish
 	 *
-	 * @param  \JInstallerAdapterComponent $parent Parent class calling us
+	 * @param  ComponentAdapter  $parent Parent class calling us
 	 */
 	protected function renderPostInstallation($parent)
 	{
@@ -424,7 +425,7 @@ class Component extends BaseInstaller
 	/**
 	 * Override this method to display a custom component uninstallation message if you so wish
 	 *
-	 * @param  \JInstallerAdapterComponent $parent Parent class calling us
+	 * @param  ComponentAdapter  $parent Parent class calling us
 	 */
 	protected function renderPostUninstallation($parent)
 	{
@@ -658,7 +659,7 @@ class Component extends BaseInstaller
 	/**
 	 * Uninstalls obsolete subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   \JInstallerAdapterComponent $parent The parent object
+	 * @param   ComponentAdapter  $parent The parent object
 	 *
 	 * @return  \stdClass The subextension uninstallation status
 	 */
@@ -690,7 +691,7 @@ class Component extends BaseInstaller
 						// Uninstall the module
 						if ($id)
 						{
-							$installer         = new JInstaller;
+							$installer         = new JoomlaInstaller;
 							$result            = $installer->uninstall('module', $id, 1);
 							$status->modules[] = array(
 								'name'   => 'mod_' . $module,
@@ -740,7 +741,7 @@ class Component extends BaseInstaller
 	}
 
 	/**
-	 * @param \JInstallerAdapterComponent $parent
+	 * @param ComponentAdapter  $parent
 	 *
 	 * @return bool
 	 *
@@ -1076,7 +1077,7 @@ class Component extends BaseInstaller
 	/**
 	 * Make sure the Component menu items are really published!
 	 *
-	 * @param \JInstallerAdapterComponent $parent
+	 * @param ComponentAdapter  $parent
 	 *
 	 * @return bool
 	 */

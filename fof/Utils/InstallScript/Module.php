@@ -8,9 +8,9 @@
 namespace  FOF40\Utils\InstallScript;
 
 use Exception;
-use FOF40\Database\Installer;
+use FOF40\Database\Installer as DatabaseInstaller;
 use JFactory;
-use JLoader;
+use Joomla\CMS\Installer\Adapter\ModuleAdapter;
 
 defined('_JEXEC') or die;
 
@@ -74,8 +74,8 @@ class Module extends BaseInstaller
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string                      $type   Installation type (install, update, discover_install)
-	 * @param   \JInstallerAdapterComponent $parent Parent object
+	 * @param   string         $type   Installation type (install, update, discover_install)
+	 * @param   ModuleAdapter  $parent Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
@@ -104,8 +104,8 @@ class Module extends BaseInstaller
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string                      $type   install, update or discover_update
-	 * @param   \JInstallerAdapterComponent $parent Parent object
+	 * @param   string         $type   install, update or discover_update
+	 * @param   ModuleAdapter  $parent Parent object
 	 *
      * @throws Exception
 	 *
@@ -127,7 +127,7 @@ class Module extends BaseInstaller
 
 		if (@is_dir($schemaPath))
 		{
-			$dbInstaller = new Installer(JFactory::getDbo(), $schemaPath);
+			$dbInstaller = new DatabaseInstaller(JFactory::getDbo(), $schemaPath);
 			$dbInstaller->updateSchema();
 		}
 
@@ -144,7 +144,7 @@ class Module extends BaseInstaller
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   \JInstallerAdapterComponent $parent The parent object
+	 * @param   ModuleAdapter  $parent The parent object
 	 */
 	public function uninstall($parent)
 	{
@@ -154,7 +154,7 @@ class Module extends BaseInstaller
 		// Uninstall database
 		if (@is_dir($schemaPath))
 		{
-			$dbInstaller = new Installer(JFactory::getDbo(), $schemaPath);
+			$dbInstaller = new DatabaseInstaller(JFactory::getDbo(), $schemaPath);
 			$dbInstaller->removeSchema();
 		}
 
@@ -180,7 +180,7 @@ class Module extends BaseInstaller
 	 * ourselves WITHOUT going through the manifest, based entirely on the conventions we follow for Akeeba Ltd's
 	 * extensions.
 	 *
-	 * @param   \JInstallerAdapterComponent $parent
+	 * @param   ModuleAdapter  $parent
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{
