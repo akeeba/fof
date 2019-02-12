@@ -17,11 +17,6 @@ use JLoader;
 
 defined('_JEXEC') or die;
 
-JLoader::import('joomla.filesystem.folder');
-JLoader::import('joomla.filesystem.file');
-JLoader::import('joomla.installer.installer');
-JLoader::import('joomla.utilities.date');
-
 // In case FOF's autoloader is not present yet, e.g. new installation
 if (!class_exists('FOF40\\Utils\\InstallScript\\BaseInstaller', true))
 {
@@ -666,8 +661,6 @@ class Component extends BaseInstaller
 	 */
 	protected function uninstallObsoleteSubextensions($parent)
 	{
-		JLoader::import('joomla.installer.installer');
-
 		$db = JFactory::getDBO();
 
 		$status          = new \stdClass();

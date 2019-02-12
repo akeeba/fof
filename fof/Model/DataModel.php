@@ -366,7 +366,6 @@ class DataModel extends Model implements \JTableInterface
 
 		if (array_key_exists($asset_id_field, $this->knownFields))
 		{
-			\JLoader::import('joomla.access.rules');
 			$this->_trackAssets = true;
 		}
 
@@ -3588,11 +3587,6 @@ class DataModel extends Model implements \JTableInterface
 	public function setAssetsTracked($state)
 	{
 		$state = (bool) $state;
-
-		if ($state)
-		{
-			\JLoader::import('joomla.access.rules');
-		}
 
 		$this->_trackAssets = $state;
 	}

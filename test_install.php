@@ -38,18 +38,6 @@ else
 }
 require_once JPATH_LIBRARIES . '/cms.php';
 
-// Load the JApplicationCli class
-JLoader::import('joomla.application.cli');
-JLoader::import('joomla.environment.request');
-JLoader::import('joomla.environment.uri');
-JLoader::import('joomla.utilities.date');
-JLoader::import('joomla.application.component.helper');
-JLoader::import('legacy.component.helper');
-JLoader::import('joomla.application.component.helper');
-JLoader::import('joomla.updater.update');
-JLoader::import('joomla.filesystem.file');
-JLoader::import('joomla.filesystem.folder');
-
 // Load the language files
 $paths = [JPATH_ADMINISTRATOR, JPATH_ROOT];
 $jlang = JFactory::getLanguage();

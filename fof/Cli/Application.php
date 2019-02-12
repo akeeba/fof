@@ -189,16 +189,6 @@ if (@file_exists($cmsImportPath))
 	@include_once $cmsImportPath;
 }
 
-// Load requirements for various versions of Joomla!. This should NOT be required since circa Joomla! 3.7.
-JLoader::import('joomla.base.object');
-JLoader::import('joomla.application.application');
-JLoader::import('joomla.application.applicationexception');
-JLoader::import('joomla.log.log');
-JLoader::import('joomla.registry.registry');
-JLoader::import('joomla.filter.input');
-JLoader::import('joomla.filter.filterinput');
-JLoader::import('joomla.factory');
-
 // Load the Joomla! configuration file to grab database information
 JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
 

@@ -510,7 +510,6 @@ class Platform extends BasePlatform
 	{
 		if (!$this->isCli())
 		{
-			\JLoader::import('joomla.plugin.helper');
 			\JPluginHelper::importPlugin($type);
 		}
 	}
@@ -688,8 +687,6 @@ class Platform extends BasePlatform
 			$cache = \JFactory::getCache('fof', '');
 			$this->_cache = $cache->get('cache', 'fof');
 
-			\JLoader::import('joomla.registry.registry');
-
 			$isRegistry = is_object($this->_cache);
 
 			if ($isRegistry)
@@ -759,7 +756,6 @@ class Platform extends BasePlatform
 	 */
 	public function loginUser($authInfo)
 	{
-		\JLoader::import('joomla.user.authentication');
 		$options = array('remember' => false);
 		$authenticate = \JAuthentication::getInstance();
 		$response = $authenticate->authenticate($authInfo, $options);
@@ -810,7 +806,6 @@ class Platform extends BasePlatform
 
 			unset($results); // Just to make phpStorm happy
 
-			\JLoader::import('joomla.user.helper');
 			$userid = \JUserHelper::getUserId($response->username);
 			$user = $this->getUser($userid);
 
@@ -830,7 +825,6 @@ class Platform extends BasePlatform
 	 */
 	public function logoutUser()
 	{
-		\JLoader::import('joomla.user.authentication');
 		$app = \JFactory::getApplication();
 		$user = $this->getUser();
 		$options = array('remember' => false);
@@ -956,8 +950,6 @@ class Platform extends BasePlatform
 	 */
 	public function URIroot($pathonly = false, $path = null)
 	{
-		\JLoader::import('joomla.environment.uri');
-
 		return \JUri::root($pathonly, $path);
 	}
 
@@ -972,8 +964,6 @@ class Platform extends BasePlatform
 	 */
 	public function URIbase($pathonly = false)
 	{
-		\JLoader::import('joomla.environment.uri');
-
 		return \JUri::base($pathonly);
 	}
 

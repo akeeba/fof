@@ -15,8 +15,6 @@ use JFactory;
 use JFolder;
 use ReflectionProperty;
 
-\JLoader::import('joomla.filesystem.folder');
-
 /**
  * Class TemplateTest
  *

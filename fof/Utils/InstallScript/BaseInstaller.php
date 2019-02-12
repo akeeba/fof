@@ -17,11 +17,6 @@ use JLog;
 
 defined('_JEXEC') or die;
 
-JLoader::import('joomla.filesystem.folder');
-JLoader::import('joomla.filesystem.file');
-JLoader::import('joomla.installer.installer');
-JLoader::import('joomla.utilities.date');
-
 class BaseInstaller
 {
 	/**

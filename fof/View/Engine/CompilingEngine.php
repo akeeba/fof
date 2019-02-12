@@ -170,11 +170,6 @@ abstract class CompilingEngine extends AbstractEngine implements EngineInterface
 			return $cachePath;
 		}
 
-		if (!class_exists('JFile'))
-		{
-			\JLoader::import('joomla.filesystem.file');
-		}
-
 		if (\JFile::write($cachePath, $content))
 		{
 			return $cachePath;
