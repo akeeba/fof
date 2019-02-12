@@ -2,6 +2,7 @@
 // ====================================================================================================================
 // Configuration
 // ====================================================================================================================
+use Joomla\CMS\Application\CliApplication;
 use Joomla\Registry\Registry;
 
 $sitePath           = '/var/www/test3/cli';
@@ -51,10 +52,10 @@ if (version_compare(JVERSION, '3.4.9999', 'ge'))
 	JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
 }
 
-class FOFTestInstall extends JApplicationCli
+class FOFTestInstall extends CliApplication
 {
 	/**
-	 * JApplicationCli didn't want to run on PHP CGI. I have my way of becoming
+	 * CliApplication didn't want to run on PHP CGI. I have my way of becoming
 	 * VERY convincing. Now obey your true master, you petty class!
 	 *
 	 * @param JInputCli   $input
@@ -254,7 +255,7 @@ class FOFTestInstall extends JApplicationCli
 
 try
 {
-	$cliApplication        = JApplicationCli::getInstance('FOFTestInstall');
+	$cliApplication        = CliApplication::getInstance('FOFTestInstall');
 	JFactory::$application = $cliApplication;
 	$cliApplication->execute();
 }

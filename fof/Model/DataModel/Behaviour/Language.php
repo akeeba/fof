@@ -10,6 +10,7 @@ namespace  FOF40\Model\DataModel\Behaviour;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -47,7 +48,7 @@ class Language extends Observer
 			return;
 		}
 
-		/** @var \JApplicationSite $app */
+		/** @var SiteApplication $app */
 		$app = \JFactory::getApplication();
 		$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 
@@ -120,7 +121,7 @@ class Language extends Observer
 		}
 
 		// Make sure it is a multilingual site and get a list of languages
-		/** @var \JApplicationSite $app */
+		/** @var SiteApplication $app */
 		$app = \JFactory::getApplication();
 		$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 

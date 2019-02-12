@@ -14,7 +14,7 @@ use FOF40\Tests\Helpers\FOFTestCase;
 class MockApplicationCms extends MockApplicationWeb
 {
 	/**
-	 * Gets the methods of the JApplicationCms object.
+	 * Gets the methods of the CMSApplication object.
 	 *
 	 * @return  array
 	 *
@@ -22,7 +22,7 @@ class MockApplicationCms extends MockApplicationWeb
 	 */
 	public static function getMethods()
 	{
-		// Collect all the relevant methods in JApplicationCms (work in progress).
+		// Collect all the relevant methods in CMSApplication (work in progress).
 		$methods = [
 			'getMenu',
 			'getPathway',
@@ -51,14 +51,14 @@ class MockApplicationCms extends MockApplicationWeb
 	 */
 	public static function addBehaviours($test, $mockObject, $options)
 	{
-		// Mock calls to JApplicationCms::getMenu();
+		// Mock calls to CMSApplication::getMenu();
 		$mockObject->expects($test->any())->method('getMenu')->will($test->returnValue(MockMenu::create($test)));
 
 		return parent::addBehaviours($test, $mockObject, $options);
 	}
 
 	/**
-	 * Creates and instance of the mock JApplicationCms object.
+	 * Creates and instance of the mock CMSApplication object.
 	 *
 	 * The test can implement the following overrides:
 	 * - mockAppendBody
@@ -89,7 +89,7 @@ class MockApplicationCms extends MockApplicationWeb
 		if (isset($options))
 			// Create the mock.
 		{
-			$mockObject = $test->getMockBuilder('\JApplicationCms')
+			$mockObject = $test->getMockBuilder('\Joomla\CMS\Application\CMSApplication')
 				->setMethods($methods)
 				->setConstructorArgs($constructor)
 				->setMockClassName('')

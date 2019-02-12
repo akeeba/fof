@@ -13,6 +13,7 @@ use FOF40\Controller\Exception\TaskNotFound;
 use FOF40\Model\DataModel;
 use FOF40\Model\Model;
 use FOF40\View\View;
+use Joomla\CMS\Application\CMSApplication;
 
 defined('_JEXEC') or die;
 
@@ -508,7 +509,7 @@ class Controller
 
 			if (is_array($urlparams))
 			{
-				/** @var \JApplicationCms $app */
+				/** @var CMSApplication $app */
 				$app = \JFactory::getApplication();
 
 				$registeredurlparams = null;

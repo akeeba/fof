@@ -213,7 +213,7 @@ END;
 		$backEndNamespace = '\\' . $namespace . '\\Admin\\';
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
-		// suffixes after $this->componentNamespace (so you may use FOF with JApplicationWeb apps)
+		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
 		if ($frontEndPath == $backEndPath)
 		{
 			$frontEndNamespace = '\\' . $namespace . '\\';
@@ -351,7 +351,7 @@ END;
 		$backEndNamespace = '\\' . $this->componentNamespace . '\\Admin\\';
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
-		// suffixes after $this->componentNamespace (so you may use FOF with JApplicationWeb apps)
+		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
 		if ($this->frontEndPath == $this->backEndPath)
 		{
 			$frontEndNamespace = '\\' . $this->componentNamespace . '\\';
@@ -703,7 +703,7 @@ END;
 		$backEndNamespace = '\\' . $this->componentNamespace . '\\Admin\\';
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
-		// suffixes after $this->componentNamespace (so you may use FOF with JApplicationWeb apps)
+		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
 		if ($this->frontEndPath == $this->backEndPath)
 		{
 			$frontEndNamespace = '\\' . $this->componentNamespace . '\\';

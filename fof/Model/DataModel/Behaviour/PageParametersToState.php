@@ -9,6 +9,7 @@ namespace  FOF40\Model\DataModel\Behaviour;
 
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -29,7 +30,7 @@ class PageParametersToState extends Observer
 		}
 
 		// Get the page parameters
-		/** @var \JApplicationSite $app */
+		/** @var SiteApplication $app */
 		$app    = \JFactory::getApplication();
 		/** @var Registry $params */
 		$params = $app->getParams();

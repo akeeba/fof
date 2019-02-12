@@ -8,6 +8,7 @@
 namespace  FOF40\View\DataView;
 
 use FOF40\Render\RenderInterface;
+use Joomla\CMS\Application\SiteApplication;
 
 defined('_JEXEC') or die;
 
@@ -79,7 +80,7 @@ class Html extends Raw implements DataViewInterface
 			return '';
 		}
 
-		/** @var \JApplicationSite $app */
+		/** @var SiteApplication $app */
 		$app = \JFactory::getApplication();
 		$document = \JFactory::getDocument();
 		$menus = $app->getMenu();

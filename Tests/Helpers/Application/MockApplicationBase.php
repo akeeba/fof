@@ -13,7 +13,7 @@ use FOF40\Tests\Helpers\FOFTestCase;
 class MockApplicationBase
 {
 	/**
-	 * Gets the methods of the JApplicationBase object.
+	 * Gets the methods of the BaseApplication object.
 	 *
 	 * @return  array
 	 *
@@ -53,7 +53,7 @@ class MockApplicationBase
 	}
 
 	/**
-	 * Creates and instance of the mock JApplicationBase object.
+	 * Creates and instance of the mock BaseApplication object.
 	 *
 	 * @param   FOFTestCase $test    A test object.
 	 * @param   array       $options A set of options to configure the mock.
@@ -70,11 +70,11 @@ class MockApplicationBase
 			$_SERVER['HTTP_HOST'] = 'localhost';
 		}
 
-		// Collect all the relevant methods in JApplicationBase.
+		// Collect all the relevant methods in BaseApplication.
 		$methods = self::getMethods();
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('\JApplicationBase')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Application\BaseApplication')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')

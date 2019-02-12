@@ -16,6 +16,8 @@ use FOF40\Tests\Helpers\MockSession;
 use FOF40\Tests\Helpers\Platform\UserForAdminAuth;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Application\SiteApplication;
 
 /**
  * @covers FOF40\Platform\Joomla\Platform::<protected>
@@ -118,12 +120,12 @@ class PlatformJoomlaTest extends FOFTestCase
 		switch ($mockApplicationType)
 		{
 			case 'cli':
-				$mockApplication = new \JApplicationCli();
+				$mockApplication = new CliApplication();
 				break;
 
 			case 'site':
 			default:
-				$mockApplication = new \JApplicationSite(null, $config);
+				$mockApplication = new SiteApplication(null, $config);
 				break;
 
 			case 'admin':

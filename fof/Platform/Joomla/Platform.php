@@ -13,10 +13,11 @@ use FOF40\Date\Date;
 use FOF40\Date\DateDecorator;
 use FOF40\Input\Input;
 use FOF40\Platform\Base\Platform as BasePlatform;
-use JApplicationCms;
-use JApplicationWeb;
 use JCache;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\WebApplication;
 use Joomla\Registry\Registry;
 use JUri;
 
@@ -122,7 +123,7 @@ class Platform extends BasePlatform
 				else
 				{
 					$app = \JFactory::getApplication();
-					static::$isCLI = $app instanceof \Exception || $app instanceof \JApplicationCli;
+					static::$isCLI = $app instanceof \Exception || $app instanceof CliApplication;
 				}
 			}
 			catch (\Exception $e)
@@ -1031,9 +1032,9 @@ class Platform extends BasePlatform
 
 		$app = \JFactory::getApplication();
 
-		if (class_exists('JApplicationCms') && class_exists('JApplicationWeb')
-			&& ($app instanceof JApplicationCms)
-			&& ($app instanceof JApplicationWeb))
+		if (class_exists('\Joomla\CMS\Application\CMSApplication') && class_exists('\Joomla\CMS\Application\WebApplication')
+			&& ($app instanceof CMSApplication)
+			&& ($app instanceof WebApplication))
 		{
 			// In modern Joomla! versions we have versatility on setting the message and the redirection HTTP code
 			if (!empty($msg))

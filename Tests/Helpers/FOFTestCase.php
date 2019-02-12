@@ -10,6 +10,8 @@ namespace FOF40\Tests\Helpers;
 
 
 use FOF40\Tests\Helpers\Application\MockApplicationCms;
+use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Application\CMSApplication;
 
 class FOFTestCase extends ApplicationTestCase
 {
@@ -66,12 +68,12 @@ class FOFTestCase extends ApplicationTestCase
 	 * @param   array $options     A set of options to configure the mock.
 	 * @param   array $constructor An array containing constructor arguments to inject into the mock.
 	 *
-	 * @return  \JApplicationCms
+	 * @return  CMSApplication
 	 */
 	public function getMockCmsApp($options = [], $constructor = [])
 	{
 		// Attempt to load the real class first.
-		class_exists('\JApplicationCms');
+		class_exists('\Joomla\CMS\Application\CMSApplication');
 
 		return MockApplicationCms::create($this, $options, $constructor);
 	}
@@ -82,12 +84,12 @@ class FOFTestCase extends ApplicationTestCase
 	 * @param   array $options     A set of options to configure the mock.
 	 * @param   array $constructor An array containing constructor arguments to inject into the mock.
 	 *
-	 * @return  \JApplicationCli
+	 * @return  CliApplication
 	 */
 	public function getMockCliApp($options = [], $constructor = [])
 	{
 		// Attempt to load the real class first.
-		class_exists('\JApplicationCli');
+		class_exists('\Joomla\CMS\Application\CliApplication');
 
 		return MockApplicationCms::create($this, $options, $constructor);
 	}

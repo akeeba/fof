@@ -199,7 +199,7 @@ if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/inclu
 }
 
 /**
- * Base class for a Joomla! command line application. Adapted from JCli / JApplicationCli
+ * Base class for a Joomla! command line application. Adapted from CliApplication
  */
 abstract class FOFCliApplication
 {

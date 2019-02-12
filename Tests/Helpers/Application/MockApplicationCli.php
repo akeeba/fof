@@ -14,7 +14,7 @@ use FOF40\Tests\Helpers\FOFTestCase;
 class MockApplicationCli extends MockApplicationBase
 {
 	/**
-	 * Gets the methods of the JApplicationCli object.
+	 * Gets the methods of the CliApplication object.
 	 *
 	 * @return  array
 	 *
@@ -22,7 +22,7 @@ class MockApplicationCli extends MockApplicationBase
 	 */
 	public static function getMethods()
 	{
-		// Collect all the relevant methods in JApplicationCli.
+		// Collect all the relevant methods in CliApplication.
 		$methods = [
 			'get',
 			'execute',
@@ -36,7 +36,7 @@ class MockApplicationCli extends MockApplicationBase
 	}
 
 	/**
-	 * Creates and instance of the mock JApplicationCli object.
+	 * Creates and instance of the mock CliApplication object.
 	 *
 	 * @param   FOFTestCase $test    A test object.
 	 * @param   array       $options A set of options to configure the mock.
@@ -47,11 +47,11 @@ class MockApplicationCli extends MockApplicationBase
 	 */
 	public static function create($test, $options = [])
 	{
-		// Collect all the relevant methods in JApplicationCli.
+		// Collect all the relevant methods in CliApplication.
 		$methods = self::getMethods();
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('\JApplicationCli')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Application\CliApplication')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')

@@ -38,7 +38,7 @@ class MockApplicationWeb extends MockApplicationBase
 	public static $cachable = false;
 
 	/**
-	 * Gets the methods of the JApplicationWeb object.
+	 * Gets the methods of the WebApplication object.
 	 *
 	 * @return  array
 	 *
@@ -46,7 +46,7 @@ class MockApplicationWeb extends MockApplicationBase
 	 */
 	public static function getMethods()
 	{
-		// Collect all the relevant methods in JApplicationWeb (work in progress).
+		// Collect all the relevant methods in WebApplication (work in progress).
 		$methods = [
 			'allowCache',
 			'appendBody',
@@ -86,13 +86,13 @@ class MockApplicationWeb extends MockApplicationBase
 	 */
 	public static function addBehaviours($test, $mockObject, $options)
 	{
-		// Mock calls to JApplicationWeb::getDocument().
+		// Mock calls to WebApplication::getDocument().
 		$mockObject->expects($test->any())->method('getDocument')->willReturn(MockDocument::create($test));
 
-		// Mock calls to JApplicationWeb::getLanguage().
+		// Mock calls to WebApplication::getLanguage().
 		$mockObject->expects($test->any())->method('getLanguage')->willReturn(MockLanguage::create($test));
 
-		// Mock a call to JApplicationWeb::getSession().
+		// Mock a call to WebApplication::getSession().
 		if (isset($options['session']))
 		{
 			$mockObject->expects($test->any())->method('getSession')->willReturn($options['session']);
@@ -141,7 +141,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Creates and instance of the mock JApplicationWeb object.
+	 * Creates and instance of the mock WebApplication object.
 	 *
 	 * The test can implement the following overrides:
 	 * - mockAppendBody
@@ -169,11 +169,11 @@ class MockApplicationWeb extends MockApplicationBase
 			$_SERVER['HTTP_HOST'] = 'localhost';
 		}
 
-		// Collect all the relevant methods in JApplicationWeb (work in progress).
+		// Collect all the relevant methods in WebApplication (work in progress).
 		$methods = self::getMethods();
 
 		// Create the mock.
-		$mockObject = $test->getMockBuilder('\JApplicationWeb')
+		$mockObject = $test->getMockBuilder('\Joomla\CMS\Application\WebApplication')
 			->setMethods($methods)
 			->setConstructorArgs([])
 			->setMockClassName('')
@@ -185,7 +185,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->appendBody method.
+	 * Mock WebApplication->appendBody method.
 	 *
 	 * @param   string $content The content to append to the response body.
 	 *
@@ -199,7 +199,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->getBody method.
+	 * Mock WebApplication->getBody method.
 	 *
 	 * @param   boolean $asArray True to return the body as an array of strings.
 	 *
@@ -213,7 +213,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->appendBody method.
+	 * Mock WebApplication->appendBody method.
 	 *
 	 * @param   string $content The content to append to the response body.
 	 *
@@ -227,7 +227,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->setBody method.
+	 * Mock WebApplication->setBody method.
 	 *
 	 * @param   string $content The body of the response.
 	 *
@@ -241,7 +241,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->getHeaders method.
+	 * Mock WebApplication->getHeaders method.
 	 *
 	 * @return  array
 	 *
@@ -253,7 +253,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->setHeader method.
+	 * Mock WebApplication->setHeader method.
 	 *
 	 * @param   string  $name    The name of the header to set.
 	 * @param   string  $value   The value of the header to set.
@@ -289,7 +289,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->clearHeaders method.
+	 * Mock WebApplication->clearHeaders method.
 	 *
 	 * @return  void
 	 *
@@ -301,7 +301,7 @@ class MockApplicationWeb extends MockApplicationBase
 	}
 
 	/**
-	 * Mock JApplicationWeb->allowCache method.
+	 * Mock WebApplication->allowCache method.
 	 *
 	 * @param   boolean $allow True to allow browser caching.
 	 *

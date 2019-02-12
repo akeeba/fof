@@ -11,6 +11,7 @@ use FOF40\Container\Container;
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Collection;
 use FOF40\View\View;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -284,7 +285,7 @@ class Raw extends View implements DataViewInterface
 		// Pass page params on frontend only
 		if ($this->container->platform->isFrontend())
 		{
-			/** @var \JApplicationSite $app */
+			/** @var SiteApplication $app */
 			$app = \JFactory::getApplication();
 			$params = $app->getParams();
 			$this->pageParams = $params;

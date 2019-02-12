@@ -181,3 +181,9 @@ Finally, keep in mind that the default renderer is automatically detected using 
 classes. If FEF is installed on your site, FOF will automatically prefer the FEF renderer instead of the Joomla! 
 renderer. This many NOT be what you want. Always set up the desired renderer in your `fof.xml` file to prevent nasty
 surprises.
+
+## Obsolete methods
+
+`StringHelper::toSlug` was removed. Replace calls to it with `\Joomla\CMS\Application\ApplicationHelper::stringURLSafe()`
+
+`StringHelper::toASCII` was removed. Replace calls to it with `\Joomla\CMS\Factory::getLanguage()->transliterate()`
