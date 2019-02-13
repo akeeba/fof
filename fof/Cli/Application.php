@@ -7,7 +7,7 @@
 
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\Input\Input as JoomlaInput;
+use Joomla\Input\Input as JoomlaInput;
 use Joomla\Input\Cli as JoomlaInputCli;
 use Joomla\Registry\Registry;
 

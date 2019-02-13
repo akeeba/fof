@@ -10,7 +10,7 @@
 use FOF40\Tests\Helpers\TravisLogger;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Session\Session;
-use Joomla\Input\Cli as JoomlaInputCli;
+use Joomla\CMS\Input\Cli as JoomlaInputCli;
 
 define('_JEXEC', 1);
 define('JDEBUG', 0);
