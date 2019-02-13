@@ -155,7 +155,32 @@ require_once JPATH_LIBRARIES . '/cms.php';
 
 // Since there is no configuration file inside Joomla cloned repo, we have to read the installation one...
 TravisLogger::log(4, 'Including configuration.php-dist from Joomla environment');
-$config = JoomlaFactory::getConfig(JPATH_SITE . '/installation/configuration.php-dist');
+
+$files = [
+	JPATH_SITE . '/installation/configuration.php-dist',
+	JPATH_SITE . '/configuration.php',
+];
+
+$config = null;
+
+foreach ($files as $file)
+{
+	if (!file_exists($file) || !is_file($file) ||!is_readable($file))
+	{
+		continue;
+	}
+
+	include_once $file;
+
+	$config = JoomlaFactory::getConfig(JPATH_SITE . '/installation/configuration.php-dist');
+
+	break;
+}
+
+if (is_null($config))
+{
+	throw new RuntimeException(sprintf("The Joomla installation in %s does not have a configuration.php-dist or configuration.php file.", JPATH_SITE));
+}
 
 TravisLogger::log(4, 'Changing values for the JConfig object');
 // ... and then hijack some details
