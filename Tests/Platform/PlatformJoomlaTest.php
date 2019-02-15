@@ -19,6 +19,7 @@ use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Version as JoomlaVersion;
 
 /**
@@ -289,7 +290,7 @@ class PlatformJoomlaTest extends FOFTestCase
 		$expected = JoomlaFactory::getLanguage();
 		$actual   = $this->platform->getLanguage();
 
-		$this->assertInstanceOf('\Joomla\CMS\Language\Language	', $actual, "getLanguage() must return a Language object");
+		$this->assertInstanceOf(Language::class, $actual, "getLanguage() must return a Language object");
 		$this->assertEquals($expected, $actual, "getLanguage() must return the language object from Factory");
 	}
 
