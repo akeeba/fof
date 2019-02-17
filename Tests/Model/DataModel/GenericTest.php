@@ -1038,7 +1038,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		ReflectionHelper::setValue($model, '_trackAssets', true);
+		ReflectionHelper::setValue($model, 'trackAssets', true);
 
 		$this->assertEquals(true, $model->isAssetsTracked(), 'DataModel::isAssetTracked Returned the wrong result');
 	}
@@ -1058,7 +1058,7 @@ class DataModelGenericTest extends DatabaseTest
 		$model = new DataModelStub(static::$container, $config);
 		$model->setAssetsTracked(true);
 
-		$value = ReflectionHelper::getValue($model, '_trackAssets');
+		$value = ReflectionHelper::getValue($model, 'trackAssets');
 
 		$this->assertEquals(true, $value, 'DataModel::setAssetsTracked Returned the wrong result');
 	}

@@ -134,7 +134,7 @@ class DataModel extends Model implements TableInterface
 	protected $touches = array();
 
 	/** @var bool Should rows be tracked as ACL assets? */
-	protected $_trackAssets = false;
+	protected $trackAssets = false;
 
 	/** @var bool Does the resource support joomla tags? */
 	protected $_has_tags = false;
@@ -360,11 +360,11 @@ class DataModel extends Model implements TableInterface
 
 		if (array_key_exists($asset_id_field, $this->knownFields))
 		{
-			$this->_trackAssets = true;
+			$this->trackAssets = true;
 		}
 
 		/**
-		if ($this->_trackAssets && array_key_exists($access_field, $this->knownFields) && !($this->getState($access_field, null)))
+		if ($this->trackAssets && array_key_exists($access_field, $this->knownFields) && !($this->getState($access_field, null)))
 		{
 			$this->$access_field = (int) $this->container->platform->getConfig()->get('access');
 		}
@@ -3568,7 +3568,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function isAssetsTracked()
 	{
-		return $this->_trackAssets;
+		return $this->trackAssets;
 	}
 
 	/**
@@ -3582,7 +3582,7 @@ class DataModel extends Model implements TableInterface
 	{
 		$state = (bool) $state;
 
-		$this->_trackAssets = $state;
+		$this->trackAssets = $state;
 	}
 
 	/**
