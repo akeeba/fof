@@ -1019,7 +1019,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		ReflectionHelper::setValue($model, '_rules', 'test');
+		ReflectionHelper::setValue($model, 'rules', 'test');
 
 		$this->assertEquals('test', $model->getRules(), 'DataModel::getRules Returned the wrong result');
 	}
@@ -1077,7 +1077,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		ReflectionHelper::setValue($model, '_has_tags', true);
+		ReflectionHelper::setValue($model, 'has_tags', true);
 
 		$this->assertEquals(true, $model->hasTags(), 'DataModel::hasTags Returned the wrong result');
 	}
@@ -1097,7 +1097,7 @@ class DataModelGenericTest extends DatabaseTest
 		$model = new DataModelStub(static::$container, $config);
 		$model->setHasTags(true);
 
-		$value = ReflectionHelper::getValue($model, '_has_tags');
+		$value = ReflectionHelper::getValue($model, 'has_tags');
 
 		$this->assertEquals(true, $value, 'DataModel::setHasTags Returned the wrong result');
 	}
@@ -1117,7 +1117,7 @@ class DataModelGenericTest extends DatabaseTest
 		$model = new DataModelStub(static::$container, $config);
 		$model->setAssetKey('com_fakeapp.foobars');
 
-		$value = ReflectionHelper::getValue($model, '_assetKey');
+		$value = ReflectionHelper::getValue($model, 'assetKey');
 
 		$this->assertEquals('com_fakeapp.foobars', $value, 'DataModel::setAssetKey Returned the wrong result');
 	}
@@ -1144,7 +1144,7 @@ class DataModelGenericTest extends DatabaseTest
 			$model->find($test['load']);
 		}
 
-		ReflectionHelper::setValue($model, '_assetKey', $test['assetkey']);
+		ReflectionHelper::setValue($model, 'assetKey', $test['assetkey']);
 
 		if ($check['exception'])
 		{
@@ -1170,7 +1170,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		ReflectionHelper::setValue($model, '_assetKey', 'com_fakeapp.foobar');
+		ReflectionHelper::setValue($model, 'assetKey', 'com_fakeapp.foobar');
 
 		$this->assertEquals('com_fakeapp.foobar', $model->getAssetKey(), 'DataModel::getAssetKey Returned the wrong result');
 	}
@@ -1191,7 +1191,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$result = $model->setBehaviorParam('foo', 'bar');
 
-		$behaviors = ReflectionHelper::getValue($model, '_behaviorParams');
+		$behaviors = ReflectionHelper::getValue($model, 'behaviorParams');
 
 		$this->assertArrayHasKey('foo', $behaviors);
 		$this->assertEquals('bar', $behaviors['foo']);
@@ -1215,7 +1215,7 @@ class DataModelGenericTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		ReflectionHelper::setValue($model, '_behaviorParams', $test['mock']['behaviors']);
+		ReflectionHelper::setValue($model, 'behaviorParams', $test['mock']['behaviors']);
 
 		$result = $model->getBehaviorParam($test['name'], $test['default']);
 
@@ -1239,11 +1239,11 @@ class DataModelGenericTest extends DatabaseTest
 
 		$model = new DataModelStub(static::$container, $config);
 
-		ReflectionHelper::setValue($model, '_behaviorParams', ['blacklistFilters' => ['test']]);
+		ReflectionHelper::setValue($model, 'behaviorParams', ['blacklistFilters' => ['test']]);
 
 		$result = $model->blacklistFilters($test['list'], $test['reset']);
 
-		$behaviors = ReflectionHelper::getValue($model, '_behaviorParams');
+		$behaviors = ReflectionHelper::getValue($model, 'behaviorParams');
 		$filters   = isset($behaviors['blacklistFilters']) ? $behaviors['blacklistFilters'] : [];
 
 		$this->assertSame($check['result'], $result, sprintf($msg, 'Returned the wrong result'));

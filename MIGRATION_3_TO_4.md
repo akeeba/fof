@@ -187,3 +187,13 @@ surprises.
 `StringHelper::toSlug` was removed. Replace calls to it with `\Joomla\CMS\Application\ApplicationHelper::stringURLSafe()`
 
 `StringHelper::toASCII` was removed. Replace calls to it with `\Joomla\CMS\Factory::getLanguage()->transliterate()`
+
+## DataModel changes
+
+The following protected properties have been renamed, dropping their underscore prefix:
+
+* _trackAssets to trackAssets
+* _has_tags to has_tags
+* _rules to rules
+* _behaviorParams to behaviorParams
+* _assetKey to assetKey

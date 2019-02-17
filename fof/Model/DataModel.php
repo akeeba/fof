@@ -137,16 +137,16 @@ class DataModel extends Model implements TableInterface
 	protected $trackAssets = false;
 
 	/** @var bool Does the resource support joomla tags? */
-	protected $_has_tags = false;
+	protected $has_tags = false;
 
 	/** @var  Rules  The rules associated with this record. */
-	protected $_rules;
+	protected $rules;
 
 	/** @var  string  The UCM content type (typically: com_something.viewname, e.g. com_foobar.items) */
 	protected $contentType = null;
 
  	/** @var  array  Shared parameters for behaviors */
-	protected $_behaviorParams = array();
+	protected $behaviorParams = array();
 
 	/**
 	 * The asset key for items in this table. It's usually something in the
@@ -155,7 +155,7 @@ class DataModel extends Model implements TableInterface
 	 *
 	 * @var    string
 	 */
-	protected $_assetKey = '';
+	protected $assetKey = '';
 
 	/**
 	 * Public constructor. Overrides the parent constructor, adding support for database-aware models.
@@ -3543,11 +3543,11 @@ class DataModel extends Model implements TableInterface
 	{
 		if ($input instanceof Rules)
 		{
-			$this->_rules = $input;
+			$this->rules = $input;
 		}
 		else
 		{
-			$this->_rules = new Rules($input);
+			$this->rules = new Rules($input);
 		}
 	}
 
@@ -3558,7 +3558,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getRules()
 	{
-		return $this->_rules;
+		return $this->rules;
 	}
 
 	/**
@@ -3592,7 +3592,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function hasTags()
 	{
-		return $this->_has_tags;
+		return $this->has_tags;
 	}
 
 	/**
@@ -3602,7 +3602,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function setHasTags($newState = false)
 	{
-		$this->_has_tags = $newState;
+		$this->has_tags = $newState;
 	}
 
 	/**
@@ -3640,12 +3640,12 @@ class DataModel extends Model implements TableInterface
 		$k = $this->getKeyName();
 
 		// If there is no assetKey defined, stop here, or we'll get a wrong name
-		if (!$this->_assetKey || !$this->$k)
+		if (!$this->assetKey || !$this->$k)
 		{
 			throw new NoAssetKey;
 		}
 
-		return $this->_assetKey . '.' . (int) $this->$k;
+		return $this->assetKey . '.' . (int) $this->$k;
 	}
 
 	/**
@@ -3657,7 +3657,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getAssetKey()
 	{
-		return $this->_assetKey;
+		return $this->assetKey;
 	}
 
 	/**
@@ -3712,7 +3712,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function setAssetKey($assetKey)
 	{
-		$this->_assetKey = $assetKey;
+		$this->assetKey = $assetKey;
 	}
 
 	/**
@@ -3954,7 +3954,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function setBehaviorParam($name, $value)
 	{
-		$this->_behaviorParams[$name] = $value;
+		$this->behaviorParams[$name] = $value;
 
 		return $this;
 	}
@@ -3969,7 +3969,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getBehaviorParam($name, $default = null)
 	{
-		return isset($this->_behaviorParams[$name]) ? $this->_behaviorParams[$name] : $default;
+		return isset($this->behaviorParams[$name]) ? $this->behaviorParams[$name] : $default;
 	}
 
 	/**
