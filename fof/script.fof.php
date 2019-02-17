@@ -34,7 +34,7 @@ class file_fof40InstallerScript
 	 *
 	 * @var   string
 	 */
-	protected $minimumJoomlaVersion = '3.7.0';
+	protected $minimumJoomlaVersion = '3.8.0';
 
 	/**
 	 * The maximum Joomla! version this extension can be installed on

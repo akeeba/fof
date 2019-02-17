@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-You might wonder, are these people at Akeeba drunk? This is a library, why do they use a "files" extension type?
+There's a reason this is a "files" package, not a "library" package.
 
-No, we are not drunk but Joomla! sure is. When applying an update to a library package Joomla! will uninstall it
-BEFORE it executes the installation script's preflight event. This means that any checks made there to prevent the
-installation (e.g. wrong PHP or Joomla! version, or even preventing an accidental downgrade) results in the library
-being UNINSTALLED. This means that when you try to install an unsupported version of a package extension that bundles
-a library, your site CRASHES AND BURNS instead of the installation failing gracefuly. This is a catastrophic failure
-mode that counts as a Priority 1 ("drop everything and fix it") bug. Unfortunately, for Joomla! this is business as
-usual. It is a known issue since ~2017 but nobody will fix it until Joomla! 4.0 is released. Which means mid-2019 at
-the earliest.
+When applying an update to a "library" package Joomla! will delete all of the library files BEFORE it executes the
+installation script's preflight event. This means that any checks made there to prevent the installation (e.g. wrong PHP
+or Joomla! version, or even preventing an accidental downgrade) results in the library being UNINSTALLED. This means
+that when you try to install an unsupported version of a package extension that bundles a library, your site CRASHES AND
+BURNS instead of the installation failing gracefully.
 
-The only thing we can do to prevent your sites from burning to the ground if you try to install a version of our
-software which does not support your PHP and/or Joomla! versions is to deliver our library as a *files* package. This
-is nonsensical, it is 100% architecturally wrong BUT it is also the only way we can apply pre-installation checks which
-fail gracefully instead of causing your site to crash and burn.
+This is a catastrophic failure mode as far as we are concerned. It is a known Joomla! extensions installed issue since
+~2017 but wouldn't be fixed in Joomla! 3 due to backwards compatibility. It's uncertain whether it will be fixed in
+Joomla! 4.
+
+The only thing we can do to prevent your sites from crashing if you try to install a version of FOF which does not
+support your PHP and/or Joomla! versions is to deliver our library as a *files* package. While an architecturally wrong
+solution, our primary concern is not breaking your sites. Hence us deciding to use a files package. We are not crazy. We
+are making sure you won't be driven crazy by some quirky Joomla! extensions installer behavior decided a decade ago by a
+person who's left the project many years ago. You're welcome!
 -->
-<extension type="file" version="3.6" method="upgrade">
+<extension type="file" version="3.8" method="upgrade">
     <name>file_fof40</name>
 	<description>
 		<![CDATA[
-		Framework-on-Framework (FOF) 3.x - The rapid application development framework for Joomla!.<br/>
-		<b>WARNING</b>: This is NOT a duplicate of the FOF library already installed with Joomla!. It is a different version used by other extensions on your site. Do NOT uninstall either FOF package. If you do you will break your site.
+		Framework-on-Framework (FOF) 4.x - The rapid application development framework for Joomla!.<br/>
+		<b>WARNING</b>: This is NOT a duplicate of the FOF library already installed with Joomla! 3. It is a different version used by other extensions on your site. Do NOT uninstall either FOF package. If you do you will break your site.
 		]]>
 	</description>
 	<creationDate>##DATE##</creationDate>
 	<author>Nicholas K. Dionysopoulos / Akeeba Ltd</author>
 	<authorEmail>nicholas@akeebabackup.com</authorEmail>
 	<authorUrl>https://www.akeebabackup.com</authorUrl>
-	<copyright>(C)2010-2017 Nicholas K. Dionysopoulos</copyright>
-	<license>GNU GPLv2 or later</license>
+	<copyright>Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
+	<license>GNU GPL v3 or later</license>
 	<version>##VERSION##</version>
 	<packager>Akeeba Ltd</packager>
 	<packagerurl>https://www.AkeebaBackup.com/download.html</packagerurl>
@@ -85,6 +87,6 @@ fail gracefully instead of causing your site to crash and burn.
 	<scriptfile>script.fof.php</scriptfile>
 
     <updateservers>
-        <server type="extension" priority="1" name="FOF 3.x">http://cdn.akeebabackup.com/updates/fof4_file.xml</server>
+        <server type="extension" priority="1" name="FOF 4.x">http://cdn.akeebabackup.com/updates/fof4_file.xml</server>
     </updateservers>
 </extension>
