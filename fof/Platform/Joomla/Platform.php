@@ -119,21 +119,27 @@ class Platform extends BasePlatform
 	/**
 	 * Main function to detect if we're running in a CLI environment and we're admin
 	 *
-	 * @return  array  isCLI and isAdmin. It's not an associative array, so we can use list.
+	 * @return  array  isCLI and isAdmin. It's not an associative array, so we can use list().
 	 */
 	protected function isCliAdmin()
 	{
 		if (is_null(static::$isCLI) && is_null(static::$isAdmin))
 		{
+			static::$isCLI   = false;
+			static::$isAdmin = false;
+
 			try
 			{
 				if (is_null(JoomlaFactory::$application))
 				{
 					static::$isCLI = true;
+					static::$isAdmin = false;
+
+					return [static::$isCLI, static::$isAdmin];
 				}
 				else
 				{
-					$app = JoomlaFactory::getApplication();
+					$app           = JoomlaFactory::getApplication();
 					static::$isCLI = $app instanceof \Exception || $app instanceof CliApplication;
 				}
 			}
@@ -144,11 +150,25 @@ class Platform extends BasePlatform
 
 			if (static::$isCLI)
 			{
-				static::$isAdmin = false;
+				return [static::$isCLI, static::$isAdmin];
 			}
-			else
+
+			try
 			{
-				static::$isAdmin = !JoomlaFactory::$application ? false : JoomlaFactory::getApplication()->isAdmin();
+				$app = JoomlaFactory::getApplication();
+			}
+			catch (Exception $e)
+			{
+				return [static::$isCLI, static::$isAdmin];
+			}
+
+			if (method_exists($app, 'isAdmin'))
+			{
+				static::$isAdmin = $app->isAdmin();
+			}
+			elseif (method_exists($app, 'isClient'))
+			{
+				static::$isAdmin = $app->isClient('administrator');
 			}
 		}
 
@@ -799,7 +819,9 @@ class Platform extends BasePlatform
 					$response->email = $user->email;
 					$response->fullname = $user->name;
 
-					if (JoomlaFactory::getApplication()->isAdmin())
+					list($isCli, $isAdmin) = $this->isCliAdmin();
+
+					if ($isAdmin)
 					{
 						$response->language = $user->getParam('admin_language');
 					}
