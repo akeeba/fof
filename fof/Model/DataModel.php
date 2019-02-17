@@ -145,24 +145,6 @@ class DataModel extends Model implements TableInterface
 	/** @var  string  The UCM content type (typically: com_something.viewname, e.g. com_foobar.items) */
 	protected $contentType = null;
 
-	/**
-	 * Array of form objects
-	 *
-	 * @var  Form[]
-	 *
-	 * @deprecated 3.1  Support for XML forms will be removed in FOF 4
-	 */
-	protected $_forms = array();
-
-	/**
-	 * The data to load into a form
-	 *
-	 * @var  array
-	 *
-	 * @deprecated 3.1  Support for XML forms will be removed in FOF 4
-	 */
-	protected $_formData = array();
-
  	/** @var  array  Shared parameters for behaviors */
 	protected $_behaviorParams = array();
 
