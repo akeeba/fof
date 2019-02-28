@@ -8,7 +8,6 @@
 namespace  FOF40\Encrypt;
 
 use FOF40\Encrypt\AesAdapter\AdapterInterface;
-use FOF40\Encrypt\AesAdapter\Mcrypt;
 use FOF40\Encrypt\AesAdapter\OpenSSL;
 use FOF40\Utils\Phpfunc;
 
@@ -19,13 +18,13 @@ defined('_JEXEC') or die;
  *
  * Usage:
  *
- * // Create a new instance. The key is ignored – only use it if you have legacy encrypted content you need to decrypt
- * $aes = new Aes('ignored');
- * // Set the password. Do not use uf you have legacy encrypted content you need to decrypt
- * $aes->setPassword('yourRealPassword');
+ * // Create a new instance.
+ * $aes = new Aes();
+ * // Set the encryption password. It's expanded to a key automatically.
+ * $aes->setPassword('yourPassword');
  * // Encrypt something.
  * $cipherText = $aes->encryptString($sourcePlainText);
- * // Decypt something
+ * // Decrypt something
  * $plainText = $aes->decryptString($sourceCipherText);
  */
 class Aes
@@ -47,54 +46,24 @@ class Aes
 	/**
 	 * Initialise the AES encryption object.
 	 *
-	 * Note: If the key is not 16 bytes this class will do a stupid key expansion for legacy reasons (produce the
-	 * SHA-256 of the key string and throw away half of it).
-	 *
-	 * @param   string   $key       The encryption key (password). It can be a raw key (16 bytes) or a passphrase.
-	 * @param   int      $strength  Bit strength (128, 192 or 256) – ALWAYS USE 128 BITS. THIS PARAMETER IS DEPRECATED.
 	 * @param   string   $mode      Encryption mode. Can be ebc or cbc. We recommend using cbc.
 	 * @param   Phpfunc  $phpfunc   For testing
 	 */
-	public function __construct($key, $strength = 128, $mode = 'cbc', Phpfunc $phpfunc = null)
+	public function __construct($mode = 'cbc', Phpfunc $phpfunc = null)
 	{
 		$this->adapter = new OpenSSL();
 
-		if (!$this->adapter->isSupported($phpfunc))
-		{
-			$this->adapter = new Mcrypt();
-		}
-
-		$this->adapter->setEncryptionMode($mode, $strength);
-		$this->setPassword($key, true);
+		$this->adapter->setEncryptionMode($mode);
 	}
 
 	/**
 	 * Sets the password for this instance.
 	 *
-	 * WARNING: Do not use the legacy mode, it's insecure
-	 *
 	 * @param   string $password   The password (either user-provided password or binary encryption key) to use
-	 * @param   bool   $legacyMode True to use the legacy key expansion. We recommend against using it.
 	 */
-	public function setPassword($password, $legacyMode = false)
+	public function setPassword($password)
 	{
 		$this->key = $password;
-
-		$passLength = strlen($password);
-
-		if (function_exists('mb_strlen'))
-		{
-			$passLength = mb_strlen($password, 'ASCII');
-		}
-
-		// Legacy mode was doing something stupid, requiring a key of 32 bytes. DO NOT USE LEGACY MODE!
-		if ($legacyMode && ($passLength != 32))
-		{
-			// Legacy mode: use the sha256 of the password
-			$this->key = hash('sha256', $password, true);
-			// We have to trim or zero pad the password (we end up throwing half of it away in Rijndael-128 / AES...)
-			$this->key = $this->adapter->resizeKey($this->key, $this->adapter->getBlockSize());
-		}
 	}
 
 	/**
@@ -169,19 +138,7 @@ class Aes
 
 		if (!$adapter->isSupported($phpfunc))
 		{
-			if (defined('MCRYPT_RIJNDAEL_128'))
-			{
-				$adapter = new Mcrypt();
-
-				if (!$adapter->isSupported($phpfunc))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 
 		if (!$phpfunc->function_exists('base64_encode'))

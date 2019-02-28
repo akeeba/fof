@@ -17,8 +17,6 @@ class MockPhpfunc extends Phpfunc
 
 	protected $functions_enabled = null;
 
-	protected $mcrypt_algorithms = null;
-
 	protected $hash_algorithms = null;
 
 	protected $openssl_algorithms = null;
@@ -36,11 +34,6 @@ class MockPhpfunc extends Phpfunc
 	public function setFunctions($functions)
 	{
 		$this->functions_enabled = $functions;
-	}
-
-	public function setMcryptAlgorithms($algos)
-	{
-		$this->mcrypt_algorithms = $algos;
 	}
 
 	public function setOpenSSLAlgorithms($algos)
@@ -74,20 +67,6 @@ class MockPhpfunc extends Phpfunc
 
 		// for testing
 		return in_array($name, $this->functions_enabled);
-	}
-
-	public function mcrypt_list_algorithms()
-	{
-		// for parent coverage
-		$result = $this->__call('mcrypt_list_algorithms', []);
-
-		if (is_null($this->mcrypt_algorithms))
-		{
-			return $result;
-		}
-
-		// for testing
-		return $this->mcrypt_algorithms;
 	}
 
 	public function openssl_get_cipher_methods()

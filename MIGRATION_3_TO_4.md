@@ -197,3 +197,30 @@ The following protected properties have been renamed, dropping their underscore 
 * _rules to rules
 * _behaviorParams to behaviorParams
 * _assetKey to assetKey
+
+## Encrypt package backwards-incompatible changes
+
+### Discontinued mcrypt support
+
+The mcrypt PHP extension has been declared deprecated since PHP 7.1. Moreover, it's not been maintained since 2003, 
+making it unsuitable for production. PHP recommends replacing it with OpenSSL. To this end we had modified our Encrypt 
+package to work with both mcrypt and OpenSSL since FOF 3.0.13 released in August 2016. In FOF 4 we are completely 
+removing mcrypt support. This change is transparent as long as you use the Encrypt\Aes class. If you were instantiating
+Encrypt\AesAdapter\Mcrypt directly your code will break.
+
+### Changed signature of Encrypt\Aes methods
+
+AES encryption used to allow an optional strength. This behaved differently in mcrypt and OpenSSL implementation so it
+was deprecated. Support for the strength has been removed.
+
+Key expansion had also been modified in FOF 3. The very old method (renamed to Legacy Mode) was using an insecure key 
+expansion and was deprecated. The new method is much more secure. We removed the legacy method.
+
+As a result of the above we changed the following methods:
+
+* Encrypt\Aes::__construct. The deprecated $key and $strength parameters have been removed.
+* Encrypt\Aes::setPassword. The $legacy option has been removed.
+* Encrypt\AesAdapter\AdapterInterface::setEncryptionMode. The $strength parameter has been removed. 
+
+Moreover, we have removed the unused $strength parameter from Encrypt\Aes and also modified 
+Encrypt\AesAdapter\AdapterInterface::setEncryptionMode accordingly.

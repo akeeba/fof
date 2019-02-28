@@ -6,7 +6,11 @@
  */
 
 namespace  FOF40\Encrypt;
+
 use FOF40\Container\Container;
+use FOF40\Utils\Phpfunc;
+
+defined('_JEXEC') or die;
 
 /**
  * Data encryption service for FOF-based components.
@@ -122,11 +126,13 @@ class EncryptService
 	/**
 	 * Initialize the AES cryptography object
 	 *
-	 * @since  3.3.2
+	 * @param   Phpfunc  $phpFunc  used for testing
 	 *
-	 * @return void
+	 * @since   3.3.2
+	 *
+	 * @return  void
 	 */
-	private function initialize()
+	private function initialize(Phpfunc $phpFunc = null)
 	{
 		if (is_object($this->aes))
 		{
@@ -140,8 +146,13 @@ class EncryptService
 			return;
 		}
 
-		$phpFunc   = new \FOF40\Utils\Phpfunc();
-		$this->aes = new Aes($password, 128, 'cbc', $phpFunc);
+		if (is_null($phpFunc))
+		{
+			$phpFunc   = new Phpfunc();
+		}
+
+		$this->aes = new Aes('cbc', $phpFunc);
+		$this->aes->setPassword($password);
 	}
 
 	/**
@@ -165,9 +176,9 @@ class EncryptService
 	 * key file is created. You can define this constant anywhere in your code loaded before the encryption service is
 	 * first used to prevent a key file being created.
 	 *
-	 * @return string
+	 * @return  string
 	 *
-	 * @since  3.3.2
+	 * @since   3.3.2
 	 */
 	private function getConstantName()
 	{
@@ -252,7 +263,7 @@ class EncryptService
 			return;
 		}
 
-		$phpFunc      = new \FOF40\Utils\Phpfunc();
+		$phpFunc      = new Phpfunc();
 		$randval      = new Randval($phpFunc);
 		$secretKey    = $randval->getRandomPassword(64);
 		$constantName = $this->getConstantName();

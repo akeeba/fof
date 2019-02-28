@@ -384,7 +384,7 @@ abstract class ViewTemplateFinderProvider
 				// $backend, $layoutTemplate, $extraPaths, $extraConfig
 				false, '', [], []
 			]
-			// 'Common templates: using the Joomla! renderer results in template NOT being used'
+			// 'Common templates: using the Joomla! renderer results in common template NOT being used'
 			// 'Common templates: using the FEF renderer results in common template being used'
 			// 'Common templates: component .blade.php overrides Common Template'
 			// 'Common templates: component .php overrides Common Template'
