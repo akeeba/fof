@@ -63,14 +63,15 @@ class EncryptService
 	/**
 	 * EncryptService constructor.
 	 *
-	 * @param   Container  $c  The FOF component container
+	 * @param   Container  $c        The FOF component container
+	 * @param   Phpfunc    $phpFunc  For use in unit tests
 	 *
 	 * @since   3.3.2
 	 */
-	public function __construct(Container $c)
+	public function __construct(Container $c, Phpfunc $phpFunc)
 	{
 		$this->container = $c;
-		$this->initialize();
+		$this->initialize($phpFunc);
 	}
 
 	/**

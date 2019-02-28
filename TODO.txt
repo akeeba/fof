@@ -54,24 +54,23 @@
 
 [x] Replace deprecated Joomla! class names with namespaced ones (requires bump in minimum supported Joomla! version)
 
+[x] Encrypt: remove mcrypt support, it's been obsolete since 2003
+
 ========================================================================================================================
 
 [ ] Test ViewTemplateFinder
 
 
-[x] Encrypt: remove mcrypt support, it's been obsolete since 2003
+[ ] Encrypt: unit test EncryptService
 
 
-Encrypt: unit test EncryptService
+[ ] Encrypt: can I add Sodium support to replace the defunct mcrypt support?
 
 
-EncryptService: allow fallback to #__akeeba_common storage if key file is not found
+[ ] Input: provide custom implementation for CLI and files
 
 
-Input: provide custom implementation for CLI and files
-
-
-Each renderer should add FEF extensions for the following elements:
+[ ] Each renderer should add FEF extensions for the following elements:
 
     * `@sortgrid`
     * `@filedtitle`
@@ -82,16 +81,13 @@ Each renderer should add FEF extensions for the following elements:
 The default implementation can go through JHtml, I guess?
 
 
-MAYBE Blade keywords for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- defined by each Renderer
+[ ] MAYBE Blade keywords for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- defined by each Renderer
 
 
-Maybe: add Joomla 3 common Blade templates?
+[ ] Maybe: add Joomla 3 common Blade templates?
 
 
-Rewrite scaffolding (Layout) to produce Blade templates
+[ ] Rewrite scaffolding (Layout) to produce Blade templates
 
 
-Encrypt: can I add Sodium support to replace the defunct mcrypt support?
-
-
-Transparent authentication: must use tokens (link it to work to be done in J4?)
+[ ] Transparent authentication: must use tokens (link it to work to be done in J4?)
