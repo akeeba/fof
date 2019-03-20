@@ -10,12 +10,10 @@ namespace  FOF40\Controller;
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\CannotGetName;
 use FOF40\Controller\Exception\TaskNotFound;
-use FOF40\Model\DataModel;
 use FOF40\Model\Model;
 use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Cache\Cache;
-use Joomla\CMS\Cache\Controller\ViewController;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
@@ -199,6 +197,17 @@ class Controller
 	 * @var array
 	 */
 	protected $cacheableTasks = array();
+
+	/**
+	 * How user group membership affects caching. The values are:
+	 * - 0 : Not taken into account, everyone sees the same page, always
+	 * - 1 : Only user groups are taken into account (default behaviour of FOF 3.0 to 3.4.2)
+	 * - 2 : The user ID itself is taken into account
+	 *
+	 * @var   bool
+	 * @since 3.4.3
+	 */
+	protected $userCaching = 1;
 
 	/**
 	 * An associative array for required ACL privileges per task. For example:
@@ -497,6 +506,22 @@ class Controller
 				$groups = $user->groups;
 			}
 
+			$userId = $user->guest ? 0 : $user->id;
+
+			switch ($this->userCaching)
+			{
+				case 0:
+					// Developer chose to apply the same caching to everyone
+					$groups = [];
+					$userId = 0;
+					break;
+
+				case 1:
+					// Developer chose to apply caching per user group membership only
+					$userId = 0;
+					break;
+			}
+
 			$importantParameters = array();
 
 			// Set up safe URL parameters
@@ -541,7 +566,7 @@ class Controller
 			}
 
 			// Create the cache ID after setting the registered URL params, as they are used to generate the ID
-			$cacheId = md5(serialize(array(Cache::makeId(), $view->getName(), $this->doTask, $groups, $importantParameters)));
+			$cacheId = md5(serialize(array(Cache::makeId(), $view->getName(), $this->doTask, $groups, $userId, $importantParameters)));
 
 			// Get the cached view or cache the current view
 			try
