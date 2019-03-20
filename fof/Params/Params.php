@@ -8,6 +8,7 @@
 namespace  FOF40\Params;
 
 use FOF40\Container\Container;
+use FOF40\Utils\CacheCleaner;
 
 defined('_JEXEC') or die;
 
@@ -126,6 +127,9 @@ class Params
 		try
 		{
 			$db->execute();
+
+			// The component parameters are cached. We just changed them. Therefore we MUST reset the system cache which holds them.
+			CacheCleaner::clearCacheGroups(['_system'], $this->container->platform->isBackend() ? [0] : [1]);
 		}
 		catch (\Exception $e)
 		{
