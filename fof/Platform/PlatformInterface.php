@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     FOF
- * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright   Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license     GNU GPL version 2 or later
  */
 
@@ -496,4 +496,18 @@ interface PlatformInterface
 	 * @return  mixed
 	 */
 	public function getToken($formToken = false, $forceNew = false);
+
+	/**
+	 * Are plugins allowed to run in CLI mode?
+	 *
+	 * @return  bool
+	 */
+	public function isAllowPluginsInCli();
+
+	/**
+	 * Set whether plugins are allowed to run in CLI mode
+	 *
+	 * @param   bool  $allowPluginsInCli
+	 */
+	public function setAllowPluginsInCli($allowPluginsInCli);
 }

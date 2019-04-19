@@ -1,9 +1,13 @@
 <?php
 /**
  * @package     FOF
- * @copyright   Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright   Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license     GNU GPL version 2 or later
- *
+ */
+
+// Do not put the JEXEC or die check on this file (it's called from a CLI entry point, defining _JEXEC)
+
+/**
  * Joomla! CLI application helper. Include this file and extend your application class from FOFCliApplication.
  * Override the execute() method in your concrete class. At the end of your PHP file run the application with:
  *
