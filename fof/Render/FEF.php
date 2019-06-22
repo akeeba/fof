@@ -18,7 +18,9 @@ defined('_JEXEC') or die;
  * linkbar_style        Style for linkbars: joomla3|classic. Default: joomla3
  * load_fef             Load FEF CSS and JS? Set to false if you are loading it outside the renderer. Default: true
  * fef_reset            Should I reset the CSS styling for basic HTML elements inside the FEF container? Default: true
- * fef_dark             Should I load the FEF Dark Mode CSS and supporting JS? Default: false
+ * fef_dark             Should I load the FEF Dark Mode CSS and supporting JS? Default: 0 (no). Options: 1 (yes and
+ *                      activate immediately), -1 (include dark.css but not enable by default, also enables auto mode
+ *                      for Safari)
  * custom_css           Comma-separated list of custom CSS files to load _after_ the main FEF CSS file, e.g.
  *                      media://com_foo/css/bar.min.css,media://com_foo/css/baz.min.css
  * remove_wrapper_classes  Comma-separated list of classes to REMOVE from the container
@@ -58,13 +60,13 @@ class FEF extends Joomla
 	{
 		$useReset    = $this->getOption('fef_reset', true);
 		$useFEF      = $this->getOption('load_fef', true);
-		$useDarkMode = $this->getOption('fef_dark', false);
+		$useDarkMode = $this->getOption('fef_dark', 0);
 
 		if ($useFEF && class_exists('AkeebaFEFHelper'))
 		{
 			\AkeebaFEFHelper::load($useReset);
 
-			if ($useDarkMode)
+			if ($useDarkMode != 0)
 			{
 				$this->container->template->addCSS('media://fef/css/dark.min.css');
 				$this->container->template->addJS('media://fef/js/darkmode.min.js');
@@ -86,21 +88,21 @@ class FEF extends Joomla
 	 */
 	protected function openPageWrapper($classes)
 	{
-		$classes[] = 'akeeba-renderer-fef';
-
-		// Check for FEF Dark Mode
 		$useDarkMode = $this->getOption('fef_dark', false);
 
-		if ($useDarkMode && !in_array('akeeba-renderer-fef--dark', $classes))
+		if (($useDarkMode == 1) && !in_array('akeeba-renderer-fef--dark', $classes))
 		{
 			$classes[] = 'akeeba-renderer-fef--dark';
 		}
 
-		// Remove wrapper classes which are no longer used with FEF
+		/**
+		 * Remove wrapper classes. By default these are classes for the Joomla 3 sidebar which is not used in FEF
+		 * components anymore.
+		 */
 		$removeClasses = $this->getOption('remove_wrapper_classes', [
 			'j-toggle-main',
 			'j-toggle-transition',
-			'row-fluid'
+			'row-fluid',
 		]);
 
 		if (!is_array($removeClasses))
@@ -108,13 +110,48 @@ class FEF extends Joomla
 			$removeClasses = explode(',', $removeClasses);
 		}
 
-		// Always remove the 'akeeba_renderer_joomla' wrapper class.
-		$removeClasses[] = 'akeeba_renderer_joomla';
+		$removeClasses = array_map('trim', $removeClasses);
 
-		$this->setOption('remove_wrapper_classes', implode(',', $removeClasses));
+		foreach ($removeClasses as $class)
+		{
+			$x = array_search($class, $classes);
 
-		// Call the parent method
-		parent::openPageWrapper($classes);
+			if ($x !== false)
+			{
+				unset($classes[$x]);
+			}
+		}
+
+		// Add the following classes to the wrapper div
+		$addClasses = $this->getOption('add_wrapper_classes', '');
+
+		if (!is_array($addClasses))
+		{
+			$addClasses = explode(',', $addClasses);
+		}
+
+		$addClasses = array_map('trim', $addClasses);
+
+		$customClasses = implode(array_unique(array_merge($classes, $addClasses)), ' ');
+
+		echo <<< HTML
+<div id="akeeba-renderer-fef" class="akeeba-renderer-fef $customClasses">
+
+HTML;
+	}
+
+	/**
+	 * Close the FEF styling wrapper element.
+	 *
+	 * @return  void
+	 */
+	protected function closePageWrapper()
+	{
+		echo <<< HTML
+</div>
+
+HTML;
+
 	}
 
 	/**
