@@ -239,15 +239,6 @@ Furthermore, some of the methods have changed their return type for sanity's sak
 changes. Typically, methods which returned some less-than-sane types (e.g. string or boolean false) have had their 
 return type converted to a nullable type (e.g. string or null, denoted by `?string`).
 
-The following classes and interfaces have been refactored:
-
-* FOF40\Platform\PlatformInterface 
-* FOF40\Platform\Base\Platform 
-* FOF40\Platform\Joomla\Platform 
-* FOF40\Platform\FilesystemInterface 
-* FOF40\Platform\Base\Filesysten 
-* FOF40\Platform\Joomla\Filesysten 
-
 The following methods have had their return type changed:
 
 * FOF40\Platform\FilesystemInterface::pathFind() -- FROM string|bool TO string|null

@@ -1,62 +1,33 @@
-! Keep a Markdown file with FOF 3 to FOF 4 upgrade notices
-    Removed the Form package
-    Removed View\DataView\Form class
-    Removed the LESS package, @less() Blade template and View::addLess() method
-    FOF is looking in <libroot>/ViewTemplates (default: libraries/fof40/ViewTemplates) for fallback view templates. Document the default view templates in there.
-    You can override default FOF templates in <templateFolder>/<TEMPLATE_NAME>/html/lib_fof40.
+[ ] Refactor classes to include parameter and return value type hints
+    [X] Autoloader
+    [X] Cli
+    [X] Configuration
+    [X] Container
+    [X] Database
+    [ ] Date
+    [ ] Dispatcher
+    [ ] Download
+    [ ] Encrypt
+    [ ] Event
+    [ ] Factory
+    [ ] Hal
+    [ ] Inflector
+    [ ] Input
+    [ ] Layout
+    [ ] Params
+    [X] Platform
+    [ ] Render
+    [ ] Template
+    [ ] Timer
+    [ ] Toolbar
+    [ ] TransparentAuthentication
+    [ ] Update
+    [ ] Utils
+    [ ] Controller
+    [ ] View
+    [ ] Model
+    [ ] ViewTemplates
 
-    Automatic suffixes on PHP and Blade view templates depending on the
-    Joomla! version and renderer being used, parsed from most to least
-    specific. For example:
-
-    * default.j39.fef.php
-    * default.j39.php
-    * default.j3.fef.php
-    * default.j3.php
-    * default.fef.php
-    * default.php
-
-    This does not override the path priority which remains: template
-    overrides, specified side of the application, opposite side of the
-    application.
-
-    If a less specific view template is found in a higher priority path it
-    will be used instead. The idea being that a template override is always
-    most specific as it's done for a specific site which runs a specific
-    Joomla! version and for a specific component whose renderer you already
-    know.
-
-[x] Remove XML forms support
-    [x] Remove Form package
-    [x] Remove form support from Controller
-    [x] Remove form support from Model
-    [x] Remove form support from View
-    [x] Remove form support from Factory
-
-[x] Remove LESS integration
-
-[x] Allow Blade to include common templates from FOF itself (<fofRoot>/ViewTemplates)
-
-[x] View template suffixes for the Joomla version and renderer being used e.g. default.j39.fef.blade.php, default.j3.php, default.strapper.php. Parsed from most to least specific.
-
-[x] Import common Blade templates into <fofRoot>/ViewTemplates
-
-[x] Remove AkeebaStrapper renderer
-
-[x] Dependency tracking in installation
-    Remove dependency from FOF 3, add dependency to FOF 4 on install/upgrade
-    Remove dependency from FOF 3 and FOF 4 on uninstall
-
-[x] Is HAL still relevant?
-    See https://sookocheff.com/post/api/on-choosing-a-hypermedia-format/
-    Using JSON:API would be best, but it'd break all existing applications due to the wrapping
-    So we get to keep HAL.
-
-[x] Replace deprecated Joomla! class names with namespaced ones (requires bump in minimum supported Joomla! version)
-
-[x] Encrypt: remove mcrypt support, it's been obsolete since 2003
-
-========================================================================================================================
 
 [ ] Test ViewTemplateFinder
 

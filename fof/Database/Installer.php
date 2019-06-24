@@ -32,10 +32,8 @@ class Installer
 	 *
 	 * @param   JDatabaseDriver  $db         The database driver we're going to use to install the tables
 	 * @param   string           $directory  The directory holding the XML schema update files
-	 *
-	 * @param   array  $config  The configuration array
 	 */
-	public function __construct(JDatabaseDriver $db, $directory)
+	public function __construct(JDatabaseDriver $db, string $directory)
 	{
 		$this->db = $db;
 
@@ -49,7 +47,7 @@ class Installer
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setXmlDirectory($xmlDirectory)
+	public function setXmlDirectory(string $xmlDirectory)
 	{
 		$this->xmlDirectory = $xmlDirectory;
 	}
@@ -61,7 +59,7 @@ class Installer
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getXmlDirectory()
+	public function getXmlDirectory(): string
 	{
 		return $this->xmlDirectory;
 	}
@@ -73,7 +71,7 @@ class Installer
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getForcedFile()
+	public function getForcedFile(): string
 	{
 		return $this->forcedFile;
 	}
@@ -86,7 +84,7 @@ class Installer
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setForcedFile($forcedFile)
+	public function setForcedFile(string $forcedFile)
 	{
 		$this->forcedFile = $forcedFile;
 	}
@@ -96,7 +94,7 @@ class Installer
      *
      * @return  void
      */
-    public function nukeCache()
+    public function nukeCache(): void
     {
         static::$allTables = array();
     }
@@ -108,7 +106,7 @@ class Installer
 	 *
 	 * @throws  Exception  When a database query fails and it doesn't have the canfail flag
 	 */
-	public function updateSchema()
+	public function updateSchema(): void
 	{
 		// Get the schema XML file
 		$xml = $this->findSchemaXml();
@@ -304,7 +302,7 @@ class Installer
 	 *
 	 * @return  void
 	 */
-	public function removeSchema()
+	public function removeSchema(): void
 	{
 		// Get the schema XML file
 		$xml = $this->findSchemaXml();
@@ -354,7 +352,7 @@ class Installer
 	 *
 	 * @return  null|SimpleXMLElement  Null if no suitable schema XML file is found
 	 */
-	protected function findSchemaXml()
+	protected function findSchemaXml(): ?SimpleXMLElement
 	{
 		$xml = null;
 
@@ -402,7 +400,7 @@ class Installer
 	 *
 	 * @return  false|SimpleXMLElement  False if it's not a suitable XML schema file
 	 */
-	protected function openAndVerify($fileName)
+	protected function openAndVerify($fileName): ?SimpleXMLElement
 	{
 		$driverType = $this->db->name;
 
@@ -486,7 +484,7 @@ class Installer
 	 *
 	 * @return  bool
 	 */
-	protected function conditionMet($table, SimpleXMLElement $node)
+	protected function conditionMet(string $table, SimpleXMLElement $node): bool
 	{
 		if (empty(static::$allTables))
 		{
@@ -521,7 +519,7 @@ class Installer
 					{
 						$tableColumns = $this->db->getTableColumns($tableNormal, true);
 					}
-					catch (\Exception $e)
+					catch (Exception $e)
 					{
 						$tableColumns = array();
 					}
@@ -537,7 +535,7 @@ class Installer
 				{
 					$tableColumns = $this->db->getTableColumns($tableNormal, true);
 				}
-				catch (\Exception $e)
+				catch (Exception $e)
 				{
 					$tableColumns = array();
 				}
@@ -635,7 +633,7 @@ class Installer
 	 *
 	 * @return  string  The collation, e.g. "utf8_general_ci"
 	 */
-	private function getTableCollation($tableName)
+	private function getTableCollation(string $tableName): string
 	{
 		static $cache = array();
 
@@ -656,7 +654,7 @@ class Installer
 	 *
 	 * @return  string  The collation, e.g. "utf8_general_ci"
 	 */
-	private function realGetTableCollation($tableName)
+	private function realGetTableCollation(string $tableName): string
 	{
 		$utf8Support = method_exists($this->db, 'hasUTFSupport') && $this->db->hasUTFSupport();
 		$utf8mb4Support = $utf8Support && method_exists($this->db, 'hasUTF8mb4Support') && $this->db->hasUTF8mb4Support();
@@ -669,7 +667,7 @@ class Installer
 		{
 			$row = $this->db->setQuery($query)->loadAssoc();
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			return $collation;
 		}
@@ -700,7 +698,7 @@ class Installer
 	 *
 	 * @return  string  The collation, e.g. "utf8_general_ci"
 	 */
-	private function getColumnCollation($tableName, $columnName)
+	private function getColumnCollation(string $tableName, string $columnName): string
 	{
 		static $cache = array();
 
@@ -728,7 +726,7 @@ class Installer
 	 *
 	 * @return  string  The collation, e.g. "utf8_general_ci"
 	 */
-	private function realGetColumnCollation($tableName, $columnName)
+	private function realGetColumnCollation(string $tableName, string $columnName): string
 	{
 		$collation = $this->getTableCollation($tableName);
 
@@ -738,7 +736,7 @@ class Installer
 		{
 			$row = $this->db->setQuery($query)->loadAssoc();
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			return $collation;
 		}
@@ -771,7 +769,7 @@ class Installer
 	 *
 	 * @return  string  The converted query
 	 */
-	private function convertUtf8mb4QueryToUtf8($query)
+	private function convertUtf8mb4QueryToUtf8(string $query): string
 	{
 		// If it's not an ALTER TABLE or CREATE TABLE command there's nothing to convert
 		$beginningOfQuery = substr($query, 0, 12);
@@ -805,7 +803,7 @@ class Installer
 	 *
 	 * @return  string  The converted query
 	 */
-	private function convertUtf8QueryToUtf8mb4($query)
+	private function convertUtf8QueryToUtf8mb4(string $query): string
 	{
 		// If it's not an ALTER TABLE or CREATE TABLE command there's nothing to convert
 		$beginningOfQuery = substr($query, 0, 12);
@@ -835,12 +833,12 @@ class Installer
 	/**
 	 * Analyzes a query. If it's a CREATE TABLE query the table is added to the $tables array.
 	 * 
-	 * @param   string  $query   The query to analyze
-	 * @param   string  $tables  The array where the name of the detected table is added
+	 * @param   string    $query   The query to analyze
+	 * @param   string[]  $tables  The array where the name of the detected table is added
 	 * 
 	 * @return  void
 	 */
-	private function extractTablesToConvert($query, &$tables)
+	private function extractTablesToConvert(string $query, array &$tables): void
 	{
 		// Normalize the whitespace of the query
 		$query = trim($query);
@@ -892,7 +890,7 @@ class Installer
 	 *
 	 * @return  void
 	 */
-	private function convertTablesToUtf8mb4($tablesToConvert)
+	private function convertTablesToUtf8mb4(array $tablesToConvert): void
 	{
 		// Make sure the database driver REALLY has support for converting character sets
 		if (!method_exists($this->db, 'getAlterTableCharacterSet'))
@@ -920,7 +918,7 @@ class Installer
 						$this->db->setQuery($query)->execute();
 					}
 				}
-				catch (\Exception $e)
+				catch (Exception $e)
 				{
 					// We ignore failed conversions. Remember, you MUST change your indices MANUALLY.
 				}
@@ -937,7 +935,7 @@ class Installer
 	 *
 	 * @return  bool
 	 */
-	private function hasIndex($tableName, $indexName)
+	private function hasIndex(string $tableName, string $indexName): bool
 	{
 		static $isMySQL = null;
 		static $cache = array();
@@ -991,7 +989,7 @@ class Installer
 
 				$cache[$tableName][$indexName] = in_array($indexName, $indices);
 			}
-			catch (\Exception $e)
+			catch (Exception $e)
 			{
 				// Ignore errors
 			}
