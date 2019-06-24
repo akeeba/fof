@@ -5,9 +5,10 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Dispatcher\Mixin;
+namespace FOF40\Dispatcher\Mixin;
 
 // Protect from unauthorized access
+use FOF40\Dispatcher\Dispatcher;
 use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
@@ -58,14 +59,14 @@ trait ViewAliases
 	 *
 	 * If you are overriding this method in your component remember to alias it and call it from your overridden method.
 	 */
-	protected function onBeforeDispatch()
+	protected function onBeforeDispatch(): void
 	{
 		if (!array_key_exists($this->view, $this->viewNameAliases))
 		{
 			return;
 		}
 
-		$this->view = $this->viewNameAliases[ $this->view ];
+		$this->view = $this->viewNameAliases[$this->view];
 		$this->container->input->set('view', $this->view);
 
 		// Perform HTTP 301 Moved permanently redirection on GET requests if requested to do so

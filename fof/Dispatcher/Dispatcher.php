@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Dispatcher;
+namespace FOF40\Dispatcher;
 
 use Exception;
 use FOF40\Container\Container;
@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 /**
  * A generic MVC dispatcher
  *
- * @property-read  \FOF40\Input\Input  $input  The input object (magic __get returns the Input from the Container)
+ * @property-read  \FOF40\Input\Input $input  The input object (magic __get returns the Input from the Container)
  */
 class Dispatcher
 {
@@ -26,7 +26,7 @@ class Dispatcher
 	public $defaultView = null;
 
 	/** @var  array  Local cache of the dispatcher configuration */
-	protected $config = array();
+	protected $config = [];
 
 	/** @var  Container  The container we belong to */
 	protected $container = null;
@@ -37,7 +37,7 @@ class Dispatcher
 	/** @var  string  The layout for rendering the view */
 	protected $layout = null;
 
-	/** @var  Controller  The controller which will be used  */
+	/** @var  Controller  The controller which will be used */
 	protected $controller = null;
 
 	/** @var  bool  Is this user transparently logged in? */
@@ -52,10 +52,10 @@ class Dispatcher
 	 * Do note that $config is passed to the Controller and through it to the Model and View. Please see these classes
 	 * for more information on the configuration variables they accept.
 	 *
-	 * @param \FOF40\Container\Container $container
-	 * @param array                      $config
+	 * @param Container $container
+	 * @param array     $config
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		$this->container = $container;
 
@@ -69,7 +69,7 @@ class Dispatcher
 		}
 
 		// Get the default values for the view and layout names
-		$this->view = $this->input->getCmd('view', null);
+		$this->view   = $this->input->getCmd('view', null);
 		$this->layout = $this->input->getCmd('layout', null);
 
 		// Not redundant; you may pass an empty but non-null view which is invalid, so we need the fallback
@@ -84,11 +84,11 @@ class Dispatcher
 	 * Magic get method. Handles magic properties:
 	 * $this->input  mapped to $this->container->input
 	 *
-	 * @param   string  $name  The property to fetch
+	 * @param string $name The property to fetch
 	 *
 	 * @return  mixed|null
 	 */
-	public function __get($name)
+	public function __get(string $name)
 	{
 		// Handle $this->input
 		if ($name == 'input')
@@ -113,9 +113,10 @@ class Dispatcher
 	 *
 	 * @return  void
 	 *
-	 * @throws  AccessForbidden  When the access is forbidden
+	 * @throws AccessForbidden  When the access is forbidden
+	 * @throws Exception For displaying an error page
 	 */
-	public function dispatch()
+	public function dispatch(): void
 	{
 		// Load the translations for this component;
 		$this->container->platform->loadTranslations($this->container->componentName);
@@ -216,7 +217,7 @@ class Dispatcher
 	 *
 	 * @return Controller
 	 */
-	public function &getController()
+	public function &getController(): Controller
 	{
 		return $this->controller;
 	}
@@ -231,12 +232,12 @@ class Dispatcher
 	 * 1. $this->onBeforeDispatch(123, 456)
 	 * 2. Joomla! plugin event onComFoobarDispatcherBeforeDispatch($this, 123, 456)
 	 *
-	 * @param   string  $event      The name of the event, typically named onPredicateVerb e.g. onBeforeKick
-	 * @param   array   $arguments  The arguments to pass to the event handlers
+	 * @param string $event     The name of the event, typically named onPredicateVerb e.g. onBeforeKick
+	 * @param array  $arguments The arguments to pass to the event handlers
 	 *
 	 * @return  bool
 	 */
-	protected function triggerEvent($event, array $arguments = array())
+	protected function triggerEvent(string $event, array $arguments = []): bool
 	{
 		$result = true;
 
@@ -264,7 +265,7 @@ class Dispatcher
 					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
 					break;
 				default:
-					$result = call_user_func_array(array($this, $event), $arguments);
+					$result = call_user_func_array([$this, $event], $arguments);
 					break;
 			}
 		}
@@ -284,7 +285,7 @@ class Dispatcher
 		if (substr($event, 0, 2) == 'on')
 		{
 			$prefix = 'on';
-			$event = substr($event, 2);
+			$event  = substr($event, 2);
 		}
 
 		// Get the component/model prefix for the event
@@ -313,11 +314,11 @@ class Dispatcher
 	/**
 	 * Handles the transparent authentication log in
 	 */
-	protected function transparentAuthenticationLogin()
+	protected function transparentAuthenticationLogin(): void
 	{
 		/** @var TransparentAuthentication $transparentAuth */
 		$transparentAuth = $this->container->transparentAuth;
-		$authInfo = $transparentAuth->getTransparentAuthenticationCredentials();
+		$authInfo        = $transparentAuth->getTransparentAuthenticationCredentials();
 
 		if (empty($authInfo))
 		{
@@ -330,7 +331,7 @@ class Dispatcher
 	/**
 	 * Handles the transparent authentication log out
 	 */
-	protected function transparentAuthenticationLogout()
+	protected function transparentAuthenticationLogout(): void
 	{
 		if (!$this->isTransparentlyLoggedIn)
 		{
