@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Configuration\Domain;
+namespace FOF40\Configuration\Domain;
 
 use SimpleXMLElement;
 
@@ -21,15 +21,15 @@ class Views implements DomainInterface
 	/**
 	 * Parse the XML data, adding them to the $ret array
 	 *
-	 * @param   SimpleXMLElement  $xml   The XML data of the component's configuration area
-	 * @param   array             &$ret  The parsed data, in the form of a hash array
+	 * @param SimpleXMLElement   $xml The XML data of the component's configuration area
+	 * @param array             &$ret The parsed data, in the form of a hash array
 	 *
 	 * @return  void
 	 */
-	public function parseDomain(SimpleXMLElement $xml, array &$ret)
+	public function parseDomain(SimpleXMLElement $xml, array &$ret): void
 	{
 		// Initialise
-		$ret['views'] = array();
+		$ret['views'] = [];
 
 		// Parse view configuration
 		$viewData = $xml->xpath('view');
@@ -46,47 +46,47 @@ class Views implements DomainInterface
 			$key = (string) $aView['name'];
 
 			// Parse ACL options
-			$ret['views'][$key]['acl'] = array();
-			$aclData = $aView->xpath('acl/task');
+			$ret['views'][$key]['acl'] = [];
+			$aclData                   = $aView->xpath('acl/task');
 
 			if (!empty($aclData))
 			{
 				foreach ($aclData as $acl)
 				{
-					$k = (string) $acl['name'];
+					$k                             = (string) $acl['name'];
 					$ret['views'][$key]['acl'][$k] = (string) $acl;
 				}
 			}
 
 			// Parse taskmap
-			$ret['views'][$key]['taskmap'] = array();
-			$taskmapData = $aView->xpath('taskmap/task');
+			$ret['views'][$key]['taskmap'] = [];
+			$taskmapData                   = $aView->xpath('taskmap/task');
 
 			if (!empty($taskmapData))
 			{
 				foreach ($taskmapData as $map)
 				{
-					$k = (string) $map['name'];
+					$k                                 = (string) $map['name'];
 					$ret['views'][$key]['taskmap'][$k] = (string) $map;
 				}
 			}
 
 			// Parse controller configuration
-			$ret['views'][$key]['config'] = array();
-			$optionData = $aView->xpath('config/option');
+			$ret['views'][$key]['config'] = [];
+			$optionData                   = $aView->xpath('config/option');
 
 			if (!empty($optionData))
 			{
 				foreach ($optionData as $option)
 				{
-					$k = (string) $option['name'];
+					$k                                = (string) $option['name'];
 					$ret['views'][$key]['config'][$k] = (string) $option;
 				}
 			}
 
 			// Parse the toolbar
-			$ret['views'][$key]['toolbar'] = array();
-			$toolBars = $aView->xpath('toolbar');
+			$ret['views'][$key]['toolbar'] = [];
+			$toolBars                      = $aView->xpath('toolbar');
 
 			if (!empty($toolBars))
 			{
@@ -97,9 +97,9 @@ class Views implements DomainInterface
 					// If a toolbar title is specified, create a title element.
 					if (isset($toolBar['title']))
 					{
-						$ret['views'][$key]['toolbar'][$taskName]['title'] = array(
-							'value' => (string) $toolBar['title']
-						);
+						$ret['views'][$key]['toolbar'][$taskName]['title'] = [
+							'value' => (string) $toolBar['title'],
+						];
 					}
 
 					// Parse the toolbar buttons data
@@ -109,8 +109,8 @@ class Views implements DomainInterface
 					{
 						foreach ($toolbarData as $button)
 						{
-							$k = (string) $button['type'];
-							$ret['views'][$key]['toolbar'][$taskName][$k] = current($button->attributes());
+							$k                                                     = (string) $button['type'];
+							$ret['views'][$key]['toolbar'][$taskName][$k]          = current($button->attributes());
 							$ret['views'][$key]['toolbar'][$taskName][$k]['value'] = (string) $button;
 						}
 					}
@@ -122,17 +122,17 @@ class Views implements DomainInterface
 	/**
 	 * Return a configuration variable
 	 *
-	 * @param   string  &$configuration  Configuration variables (hashed array)
-	 * @param   string  $var             The variable we want to fetch
-	 * @param   mixed   $default         Default value
+	 * @param string  &$configuration Configuration variables (hashed array)
+	 * @param string   $var           The variable we want to fetch
+	 * @param mixed    $default       Default value
 	 *
 	 * @return  mixed  The variable's value
 	 */
-	public function get(&$configuration, $var, $default)
+	public function get(array &$configuration, string $var, $default = null)
 	{
 		$parts = explode('.', $var);
 
-		$view = $parts[0];
+		$view   = $parts[0];
 		$method = 'get' . ucfirst($parts[1]);
 
 		if (!method_exists($this, $method))
@@ -151,16 +151,16 @@ class Views implements DomainInterface
 	/**
 	 * Internal function to return the task map for a view
 	 *
-	 * @param   string  $view            The view for which we will be fetching a task map
-	 * @param   array   &$configuration  The configuration parameters hash array
-	 * @param   array   $params          Extra options (not used)
-	 * @param   array   $default         ßDefault task map; empty array if not provided
+	 * @param string   $view          The view for which we will be fetching a task map
+	 * @param array   &$configuration The configuration parameters hash array
+	 * @param array    $params        Extra options (not used)
+	 * @param array    $default       ßDefault task map; empty array if not provided
 	 *
 	 * @return  array  The task map as a hash array in the format task => method
 	 */
-	protected function getTaskmap($view, &$configuration, $params, $default = array())
+	protected function getTaskmap(string $view, array &$configuration, array $params = [], ?array $default = []): ?array
 	{
-		$taskmap = array();
+		$taskmap = [];
 
 		if (isset($configuration['views']['*']) && isset($configuration['views']['*']['taskmap']))
 		{
@@ -184,16 +184,16 @@ class Views implements DomainInterface
 	 * Internal method to return the ACL mapping (privilege required to access
 	 * a specific task) for the given view's tasks
 	 *
-	 * @param   string  $view            The view for which we will be fetching a task map
-	 * @param   array   &$configuration  The configuration parameters hash array
-	 * @param   array   $params          Extra options; key 0 defines the task we want to fetch
-	 * @param   string  $default         Default ACL option; empty (no ACL check) if not defined
+	 * @param string   $view          The view for which we will be fetching a task map
+	 * @param array   &$configuration The configuration parameters hash array
+	 * @param array    $params        Extra options; key 0 defines the task we want to fetch
+	 * @param string   $default       Default ACL option; empty (no ACL check) if not defined
 	 *
 	 * @return  string  The privilege required to access this view
 	 */
-	protected function getAcl($view, &$configuration, $params, $default = '')
+	protected function getAcl(string $view, array &$configuration, array $params = [], ?string $default = ''): ?string
 	{
-		$aclmap = array();
+		$aclmap = [];
 
 		if (isset($configuration['views']['*']) && isset($configuration['views']['*']['acl']))
 		{
@@ -229,18 +229,18 @@ class Views implements DomainInterface
 	 * Internal method to return the a configuration option for the view. These
 	 * are equivalent to $config array options passed to the Controller
 	 *
-	 * @param   string  $view            The view for which we will be fetching a task map
-	 * @param   array   &$configuration  The configuration parameters hash array
-	 * @param   array   $params          Extra options; key 0 defines the option variable we want to fetch
-	 * @param   mixed   $default         Default option; null if not defined
+	 * @param string      $view          The view for which we will be fetching a task map
+	 * @param array   &   $configuration The configuration parameters hash array
+	 * @param array       $params        Extra options; key 0 defines the option variable we want to fetch
+	 * @param string|null $default       Default option; null if not defined
 	 *
-	 * @return  string  The setting for the requested option
+	 * @return  string|null  The setting for the requested option
 	 */
-	protected function getConfig($view, &$configuration, $params, $default = null)
+	protected function getConfig(string $view, array &$configuration, array $params = [], ?string $default = null): ?string
 	{
 		$ret = $default;
 
-		$config = array();
+		$config = [];
 
 		if (isset($configuration['views']['*']['config']))
 		{
@@ -268,16 +268,16 @@ class Views implements DomainInterface
 	/**
 	 * Internal method to return the toolbar infos.
 	 *
-	 * @param   string  $view            The view for which we will be fetching buttons
-	 * @param   array   &$configuration  The configuration parameters hash array
-	 * @param   array   $params          Extra options
-	 * @param   string  $default         Default option
+	 * @param string      $view          The view for which we will be fetching buttons
+	 * @param array   &   $configuration The configuration parameters hash array
+	 * @param array       $params        Extra options
+	 * @param array|null $default       Default option
 	 *
-	 * @return  string  The toolbar data for this view
+	 * @return  array|null  The toolbar data for this view
 	 */
-	protected function getToolbar($view, &$configuration, $params, $default = '')
+	protected function getToolbar(string $view, array &$configuration, array $params = [], ?array $default = []): ?array
 	{
-		$toolbar = array();
+		$toolbar = [];
 
 		if (isset($configuration['views']['*'])
 			&& isset($configuration['views']['*']['toolbar'])

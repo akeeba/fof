@@ -28,16 +28,16 @@ interface DomainInterface
 	 *
 	 * @return  void
 	 */
-	public function parseDomain(SimpleXMLElement $xml, array &$ret);
+	public function parseDomain(SimpleXMLElement $xml, array &$ret): void;
 
 	/**
 	 * Return a configuration variable
 	 *
-	 * @param   string  &$configuration  Configuration variables (hashed array)
+	 * @param   array   &$configuration  Configuration variables (hashed array)
 	 * @param   string  $var             The variable we want to fetch
 	 * @param   mixed   $default         Default value
 	 *
 	 * @return  mixed  The variable's value
 	 */
-	public function get(&$configuration, $var, $default);
+	public function get(array &$configuration, string $var, $default = null);
 }

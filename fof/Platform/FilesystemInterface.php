@@ -119,7 +119,7 @@ interface FilesystemInterface
 	public function folderFiles(string $path, string $filter = '.', bool $recurse = false, bool $full = false,
 	                            array $exclude = [
 		                            '.svn', 'CVS', '.DS_Store', '__MACOSX',
-	                            ], array $excludefilter = ['^\..*', '.*~']): array;
+	                            ], array $excludefilter = ['^\..*', '.*~'], bool $naturalSort = false): array;
 
 	/**
 	 * Utility function to read the folders in a folder.

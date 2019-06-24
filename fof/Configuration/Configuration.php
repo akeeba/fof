@@ -50,7 +50,7 @@ class Configuration
 	 *
 	 * @return  mixed  The value of the variable
 	 */
-	public function get($variable, $default = null)
+	public function get(string $variable, $default = null)
 	{
 		static $domains = null;
 
@@ -78,7 +78,7 @@ class Configuration
 	 *
 	 * @return  void
 	 */
-	protected function parseComponent()
+	protected function parseComponent(): void
 	{
 		if ($this->container->platform->isCli())
 		{
@@ -116,7 +116,7 @@ class Configuration
 	 *
 	 * @return  array  A hash array with the configuration data
 	 */
-	protected function parseComponentArea($area, $userConfig = false)
+	protected function parseComponentArea(string $area, bool $userConfig = false): array
 	{
 		$component = $this->container->componentName;
 
@@ -199,7 +199,7 @@ class Configuration
 	 *
 	 * @return  array  A list of the available domains
 	 */
-	protected function getDomains()
+	protected function getDomains(): array
 	{
 		static $domains = array();
 

@@ -152,13 +152,14 @@ class Filesystem extends BaseFilesystem
 	 * @param array  $exclude       Array with names of files which should not be shown in the result.
 	 * @param array  $excludefilter Array of filter to exclude
 	 * @param bool   $naturalSort   False for asort, true for natsort
+	 * @param bool   $naturalSort   False for asort, true for natsort
 	 *
 	 * @return  array  Files in the given folder.
 	 */
 	public function folderFiles(string $path, string $filter = '.', bool $recurse = false, bool $full = false,
 	                            array $exclude = [
 		                            '.svn', 'CVS', '.DS_Store', '__MACOSX',
-	                            ], array $excludefilter = ['^\..*', '.*~']): array
+	                            ], array $excludefilter = ['^\..*', '.*~'], bool $naturalSort = false): array
 	{
 		// JFolder throws nonsense errors if the path is not a folder
 		try

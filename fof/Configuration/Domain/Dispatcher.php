@@ -26,7 +26,7 @@ class Dispatcher implements DomainInterface
 	 *
 	 * @return  void
 	 */
-	public function parseDomain(SimpleXMLElement $xml, array &$ret)
+	public function parseDomain(SimpleXMLElement $xml, array &$ret): void
 	{
 		// Initialise
 		$ret['dispatcher'] = array();
@@ -62,7 +62,7 @@ class Dispatcher implements DomainInterface
 	 *
 	 * @return  mixed  The variable's value
 	 */
-	public function get(&$configuration, $var, $default)
+	public function get(array &$configuration, string $var, $default = null)
 	{
 		if ($var == '*')
 		{
