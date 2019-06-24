@@ -5,9 +5,10 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Container;
+namespace FOF40\Container;
 
 use FOF40\Autoloader\Autoloader;
+use FOF40\Container\Exception\NoComponent;
 use FOF40\Encrypt\EncryptService;
 use FOF40\Factory\FactoryInterface;
 use FOF40\Inflector\Inflector;
@@ -82,7 +83,7 @@ class Container extends ContainerBase
 	 *
 	 * @var   array
 	 */
-	protected static $instances = array();
+	protected static $instances = [];
 
 	/**
 	 * The container SHOULD NEVER be serialised. If this happens, it means that any of the installed version is doing
@@ -104,7 +105,7 @@ END;
 		}
 
 		// Otherwise we serialise the Container
-		return array('values', 'factories', 'protected', 'frozen', 'raw', 'keys');
+		return ['values', 'factories', 'protected', 'frozen', 'raw', 'keys'];
 	}
 
 	/**
@@ -115,13 +116,13 @@ END;
 	 * Pass the value 'tempInstance' => true in the $values array to get a temporary instance. Otherwise you will get
 	 * the cached instance of the previously created container.
 	 *
-	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
-	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
-	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in auto-detection.
+	 * @param string $component The component you want to get a container for, e.g. com_foobar.
+	 * @param array  $values    Container configuration overrides you want to apply. Optional.
+	 * @param string $section   The application section (site, admin) you want to fetch. Any other value results in auto-detection.
 	 *
 	 * @return \FOF40\Container\Container
 	 */
-	public static function &getInstance($component, array $values = array(), $section = 'auto')
+	public static function &getInstance(string $component, array $values = [], string $section = 'auto'): self
 	{
 		$tempInstance = false;
 
@@ -149,19 +150,21 @@ END;
 	/**
 	 * Returns a temporary container instance for a specific component.
 	 *
-	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
-	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
-	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in auto-detection.
+	 * @param string $component The component you want to get a container for, e.g. com_foobar.
+	 * @param array  $values    Container configuration overrides you want to apply. Optional.
+	 * @param string $section   The application section (site, admin) you want to fetch. Any other value results in auto-detection.
 	 *
 	 * @return \FOF40\Container\Container
+	 *
+	 * @throws Exception\NoComponent
 	 */
-	protected static function &makeInstance($component, array $values = array(), $section = 'auto')
+	protected static function &makeInstance(string $component, array $values = [], string $section = 'auto'): self
 	{
 		// Try to auto-detect some defaults
-		$tmpConfig = array_merge($values, array('componentName' => $component));
+		$tmpConfig    = array_merge($values, ['componentName' => $component]);
 		$tmpContainer = new Container($tmpConfig);
 
-		if (!in_array($section, array('site', 'admin')))
+		if (!in_array($section, ['site', 'admin']))
 		{
 			$section = $tmpContainer->platform->isBackend() ? 'admin' : 'site';
 		}
@@ -192,11 +195,11 @@ END;
 
 		// Get the default front-end/back-end paths
 		$frontEndPath = $appConfig->get('container.frontEndPath', JPATH_SITE . '/components/' . $component);
-		$backEndPath = $appConfig->get('container.backEndPath', JPATH_ADMINISTRATOR . '/components/' . $component);
+		$backEndPath  = $appConfig->get('container.backEndPath', JPATH_ADMINISTRATOR . '/components/' . $component);
 
 		// Parse path variables if necessary
 		$frontEndPath = $tmpContainer->parsePathVariables($frontEndPath);
-		$backEndPath = $tmpContainer->parsePathVariables($backEndPath);
+		$backEndPath  = $tmpContainer->parsePathVariables($backEndPath);
 
 		// Apply path overrides
 		if (isset($values['frontEndPath']))
@@ -213,14 +216,14 @@ END;
 
 		// Get the namespaces for the front-end and back-end parts of the component
 		$frontEndNamespace = '\\' . $namespace . '\\Site\\';
-		$backEndNamespace = '\\' . $namespace . '\\Admin\\';
+		$backEndNamespace  = '\\' . $namespace . '\\Admin\\';
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
 		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
 		if ($frontEndPath == $backEndPath)
 		{
 			$frontEndNamespace = '\\' . $namespace . '\\';
-			$backEndNamespace = '\\' . $namespace . '\\';
+			$backEndNamespace  = '\\' . $namespace . '\\';
 		}
 
 		// Do we have to register the component's namespaces with the autoloader?
@@ -238,10 +241,10 @@ END;
 
 		// Get the Container class name
 		$classNamespace = ($section == 'admin') ? $backEndNamespace : $frontEndNamespace;
-		$class = $classNamespace . 'Container';
+		$class          = $classNamespace . 'Container';
 
 		// Get the values overrides from fof.xml
-		$values = array_merge(array(
+		$values = array_merge([
 			'factoryClass'              => '\\FOF40\\Factory\\BasicFactory',
 			'platformClass'             => '\\FOF40\\Platform\\Joomla\\Platform',
 			'scaffolding'               => false,
@@ -249,10 +252,10 @@ END;
 			'saveControllerScaffolding' => false,
 			'saveModelScaffolding'      => false,
 			'saveViewScaffolding'       => false,
-			'section'					=> $section,
-		), $values);
+			'section'                   => $section,
+		], $values);
 
-		$values = array_merge($values, array(
+		$values = array_merge($values, [
 			'componentName'             => $component,
 			'componentNamespace'        => $namespace,
 			'frontEndPath'              => $frontEndPath,
@@ -266,7 +269,7 @@ END;
 			'saveControllerScaffolding' => $appConfig->get('container.saveControllerScaffolding', $values['saveControllerScaffolding']),
 			'saveModelScaffolding'      => $appConfig->get('container.saveModelScaffolding', $values['saveModelScaffolding']),
 			'saveViewScaffolding'       => $appConfig->get('container.saveViewScaffolding', $values['saveViewScaffolding']),
-		));
+		]);
 
 		if (empty($values['rendererClass']))
 		{
@@ -299,21 +302,21 @@ END;
 	/**
 	 * Public constructor. This does NOT go through the fof.xml file. You are advised to use getInstance() instead.
 	 *
-	 * @param   array  $values  Overrides for the container configuration and services
+	 * @param array $values Overrides for the container configuration and services
 	 *
-	 * @throws  \FOF40\Container\Exception\NoComponent  If no component name is specified
+	 * @throws  NoComponent  If no component name is specified
 	 */
-	public function __construct(array $values = array())
+	public function __construct(array $values = [])
 	{
 		// Initialise
-		$this->bareComponentName = '';
-		$this->componentName = '';
+		$this->bareComponentName  = '';
+		$this->componentName      = '';
 		$this->componentNamespace = '';
-		$this->frontEndPath = '';
-		$this->backEndPath = '';
-		$this->thisPath = '';
-		$this->factoryClass = 'FOF40\\Factory\\BasicFactory';
-		$this->platformClass = 'FOF40\\Platform\\Joomla\\Platform';
+		$this->frontEndPath       = '';
+		$this->backEndPath        = '';
+		$this->thisPath           = '';
+		$this->factoryClass       = 'FOF40\\Factory\\BasicFactory';
+		$this->platformClass      = 'FOF40\\Platform\\Joomla\\Platform';
 
 		// Try to construct this container object
 		parent::__construct($values);
@@ -351,14 +354,14 @@ END;
 
 		// Get the namespaces for the front-end and back-end parts of the component
 		$frontEndNamespace = '\\' . $this->componentNamespace . '\\Site\\';
-		$backEndNamespace = '\\' . $this->componentNamespace . '\\Admin\\';
+		$backEndNamespace  = '\\' . $this->componentNamespace . '\\Admin\\';
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
 		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
 		if ($this->frontEndPath == $this->backEndPath)
 		{
 			$frontEndNamespace = '\\' . $this->componentNamespace . '\\';
-			$backEndNamespace = '\\' . $this->componentNamespace . '\\';
+			$backEndNamespace  = '\\' . $this->componentNamespace . '\\';
 		}
 
 		// Do we have to register the component's namespaces with the autoloader?
@@ -377,8 +380,7 @@ END;
 		// Inflector service
 		if (!isset($this['inflector']))
 		{
-			$this['inflector'] = function (Container $c)
-			{
+			$this['inflector'] = function (Container $c) {
 				return new Inflector();
 			};
 		}
@@ -386,8 +388,7 @@ END;
 		// Filesystem abstraction service
 		if (!isset($this['filesystem']))
 		{
-			$this['filesystem'] = function (Container $c)
-			{
+			$this['filesystem'] = function (Container $c) {
 				return new JoomlaFilesystem($c);
 			};
 		}
@@ -400,8 +401,7 @@ END;
 				$c['platformClass'] = 'FOF40\\Platform\\Joomla\\Platform';
 			}
 
-			$this['platform'] = function (Container $c)
-			{
+			$this['platform'] = function (Container $c) {
 				$className = $c['platformClass'];
 
 				return new $className($c);
@@ -421,8 +421,7 @@ END;
 		// MVC Factory service
 		if (!isset($this['factory']))
 		{
-			$this['factory'] = function (Container $c)
-			{
+			$this['factory'] = function (Container $c) {
 				if (empty($c['factoryClass']))
 				{
 					$c['factoryClass'] = 'FOF40\\Factory\\BasicFactory';
@@ -439,7 +438,7 @@ END;
 					else
 					{
 						$c['factoryClass'] = '\\FOF40\\Factory\\' . ucfirst($c['factoryClass']) . 'Factory';
- 					}
+					}
 				}
 
 				if (!class_exists($c['factoryClass'], true))
@@ -462,25 +461,25 @@ END;
 					$factory->setSaveScaffolding($c['saveScaffolding']);
 				}
 
-                if (isset($c['saveControllerScaffolding']))
-                {
-                    $factory->setSaveControllerScaffolding($c['saveControllerScaffolding']);
-                }
+				if (isset($c['saveControllerScaffolding']))
+				{
+					$factory->setSaveControllerScaffolding($c['saveControllerScaffolding']);
+				}
 
-                if (isset($c['saveModelScaffolding']))
-                {
-                    $factory->setSaveModelScaffolding($c['saveModelScaffolding']);
-                }
+				if (isset($c['saveModelScaffolding']))
+				{
+					$factory->setSaveModelScaffolding($c['saveModelScaffolding']);
+				}
 
-                if (isset($c['saveViewScaffolding']))
-                {
-                    $factory->setSaveViewScaffolding($c['saveViewScaffolding']);
-                }
+				if (isset($c['saveViewScaffolding']))
+				{
+					$factory->setSaveViewScaffolding($c['saveViewScaffolding']);
+				}
 
-                if (isset($c['section']))
-                {
-                    $factory->setSection($c['section']);
-                }
+				if (isset($c['section']))
+				{
+					$factory->setSection($c['section']);
+				}
 
 				return $factory;
 			};
@@ -489,8 +488,7 @@ END;
 		// Component Configuration service
 		if (!isset($this['appConfig']))
 		{
-			$this['appConfig'] = function (Container $c)
-			{
+			$this['appConfig'] = function (Container $c) {
 				$class = $c->getNamespacePrefix() . 'Configuration\\Configuration';
 
 				if (!class_exists($class, true))
@@ -505,8 +503,7 @@ END;
 		// Component Params service
 		if (!isset($this['params']))
 		{
-			$this['params'] = function (Container $c)
-			{
+			$this['params'] = function (Container $c) {
 				return new Params($c);
 			};
 		}
@@ -514,8 +511,7 @@ END;
 		// Blade view template compiler service
 		if (!isset($this['blade']))
 		{
-			$this['blade'] = function (Container $c)
-			{
+			$this['blade'] = function (Container $c) {
 				return new Blade($c);
 			};
 		}
@@ -523,8 +519,7 @@ END;
 		// Database Driver service
 		if (!isset($this['db']))
 		{
-			$this['db'] = function (Container $c)
-			{
+			$this['db'] = function (Container $c) {
 				return $c->platform->getDbo();
 			};
 		}
@@ -532,8 +527,7 @@ END;
 		// Request Dispatcher service
 		if (!isset($this['dispatcher']))
 		{
-			$this['dispatcher'] = function (Container $c)
-			{
+			$this['dispatcher'] = function (Container $c) {
 				return $c->factory->dispatcher();
 			};
 		}
@@ -541,8 +535,7 @@ END;
 		// Component toolbar provider
 		if (!isset($this['toolbar']))
 		{
-			$this['toolbar'] = function (Container $c)
-			{
+			$this['toolbar'] = function (Container $c) {
 				return $c->factory->toolbar();
 			};
 		}
@@ -550,8 +543,7 @@ END;
 		// Component toolbar provider
 		if (!isset($this['transparentAuth']))
 		{
-			$this['transparentAuth'] = function (Container $c)
-			{
+			$this['transparentAuth'] = function (Container $c) {
 				return $c->factory->transparentAuthentication();
 			};
 		}
@@ -559,11 +551,10 @@ END;
 		// View renderer
 		if (!isset($this['renderer']))
 		{
-			$this['renderer'] = function (Container $c)
-			{
+			$this['renderer'] = function (Container $c) {
 				if (isset($c['rendererClass']) && class_exists($c['rendererClass']))
 				{
-					$class = $c['rendererClass'];
+					$class    = $c['rendererClass'];
 					$renderer = new $class($c);
 
 					if ($renderer instanceof RenderInterface)
@@ -572,13 +563,13 @@ END;
 					}
 				}
 
-				$filesystem     = $c->filesystem;
+				$filesystem = $c->filesystem;
 
 				// Try loading the stock renderers shipped with F0F
-				$path = dirname(__FILE__) . '/../Render/';
+				$path        = dirname(__FILE__) . '/../Render/';
 				$renderFiles = $filesystem->folderFiles($path, '.php');
-				$renderer = null;
-				$priority = 0;
+				$renderer    = null;
+				$priority    = 0;
 
 				if (!empty($renderFiles))
 				{
@@ -625,31 +616,31 @@ END;
 
 		// Input Access service
 		if (isset($this['input']) &&
-		    (!(is_object($this['input'])) ||
-		     !($this['input'] instanceof FOFInput) ||
-		     !($this['input'] instanceof JoomlaInput))
-		) {
+			(!(is_object($this['input'])) ||
+				!($this['input'] instanceof FOFInput) ||
+				!($this['input'] instanceof JoomlaInput))
+		)
+		{
 			if (empty($this['input']))
 			{
-				$this['input'] = array();
+				$this['input'] = [];
 			}
 
 			// This swap is necessary to prevent infinite recursion
 			$this['rawInputData'] = array_merge($this['input']);
 			unset($this['input']);
 
-			$this['input'] = function (Container $c)
-			{
+			$this['input'] = function (Container $c) {
 				$input = new FOFInput($c['rawInputData']);
 				unset($c['rawInputData']);
+
 				return $input;
 			};
 		}
 
 		if (!isset($this['input']))
 		{
-			$this['input'] = function ()
-			{
+			$this['input'] = function () {
 				return new FOFInput();
 			};
 		}
@@ -657,8 +648,7 @@ END;
 		// Session service
 		if (!isset($this['session']))
 		{
-			$this['session'] = function ()
-			{
+			$this['session'] = function () {
 				return JoomlaFactory::getSession();
 			};
 		}
@@ -666,8 +656,7 @@ END;
 		// Template service
 		if (!isset($this['template']))
 		{
-			$this['template'] = function (Container $c)
-			{
+			$this['template'] = function (Container $c) {
 				return new Template($c);
 			};
 		}
@@ -681,8 +670,7 @@ END;
 		// Encryption / cryptography service
 		if (!isset($this['crypto']))
 		{
-			$this['crypto'] = function (Container $c)
-			{
+			$this['crypto'] = function (Container $c) {
 				return new EncryptService($c);
 			};
 		}
@@ -690,27 +678,27 @@ END;
 
 	/**
 	 * Get the applicable namespace prefix for a component section. Possible sections:
-	 * auto			Auto-detect which is the current component section
+	 * auto            Auto-detect which is the current component section
 	 * inverse      The inverse area than auto
-	 * site			Frontend
-	 * admin		Backend
+	 * site            Frontend
+	 * admin        Backend
 	 *
-	 * @param   string  $section  The section you want to get information for
+	 * @param string $section The section you want to get information for
 	 *
 	 * @return  string  The namespace prefix for the component's classes, e.g. \Foobar\Example\Site\
 	 */
-	public function getNamespacePrefix($section = 'auto')
+	public function getNamespacePrefix(string $section = 'auto'): string
 	{
 		// Get the namespaces for the front-end and back-end parts of the component
 		$frontEndNamespace = '\\' . $this->componentNamespace . '\\Site\\';
-		$backEndNamespace = '\\' . $this->componentNamespace . '\\Admin\\';
+		$backEndNamespace  = '\\' . $this->componentNamespace . '\\Admin\\';
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
 		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
 		if ($this->frontEndPath == $this->backEndPath)
 		{
 			$frontEndNamespace = '\\' . $this->componentNamespace . '\\';
-			$backEndNamespace = '\\' . $this->componentNamespace . '\\';
+			$backEndNamespace  = '\\' . $this->componentNamespace . '\\';
 		}
 
 		switch ($section)
@@ -748,12 +736,27 @@ END;
 		}
 	}
 
-	public function parsePathVariables($path)
+	/**
+	 * Replace the path variables in the $path string.
+	 *
+	 * The recognized variables are:
+	 * * %root%    Path to the site root
+	 * * %public%  Path to the public area of the site
+	 * * %admin%   Path to the administrative area of the site
+	 * * %api%     Path to the API application area of the site
+	 * * %tmp%     Path to the temp directory
+	 * * %log%     Path to the log directory
+	 *
+	 * @param string $path
+	 *
+	 * @return mixed
+	 */
+	public function parsePathVariables(string $path)
 	{
 		$platformDirs = $this->platform->getPlatformBaseDirs();
 		// root public admin tmp log
 
-		$search = array_map(function ($x){
+		$search  = array_map(function ($x) {
 			return '%' . strtoupper($x) . '%';
 		}, array_keys($platformDirs));
 		$replace = array_values($platformDirs);
@@ -767,23 +770,23 @@ END;
 	 *
 	 * @return  string
 	 */
-	protected function getDefaultMediaVersion()
+	protected function getDefaultMediaVersion(): string
 	{
 		// Initialise
 		$version = '0.0.0';
-		$date = '0000-00-00';
-		$secret = '';
+		$date    = '0000-00-00';
+		$secret  = '';
 
 		// Get the version and date of the component from the manifest cache
 		try
 		{
-			$db = $this->db;
+			$db    = $this->db;
 			$query = $db->getQuery(true)
-	            ->select(array(
-		            $db->qn('manifest_cache')
-	            ))->from($db->qn('#__extensions'))
-	            ->where($db->qn('type') . ' = ' . $db->q('component'))
-	            ->where($db->qn('name') . ' = ' . $db->q($this->componentName));
+				->select([
+					$db->qn('manifest_cache'),
+				])->from($db->qn('#__extensions'))
+				->where($db->qn('type') . ' = ' . $db->q('component'))
+				->where($db->qn('name') . ' = ' . $db->q($this->componentName));
 
 			$db->setQuery($query);
 
