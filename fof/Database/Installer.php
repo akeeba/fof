@@ -361,7 +361,7 @@ class Installer
 		{
 			$xml = $this->openAndVerify($this->forcedFile);
 
-			if ($xml !== false)
+			if (!is_null($xml))
 			{
 				return $xml;
 			}
@@ -385,7 +385,7 @@ class Installer
 
 			$xml = $this->openAndVerify($fileName);
 
-			if ($xml !== false)
+			if (!is_null($xml))
 			{
 				return $xml;
 			}
@@ -407,7 +407,7 @@ class Installer
 		// Make sure the file exists
 		if (!@file_exists($fileName))
 		{
-			return false;
+			return null;
 		}
 
 		// Make sure the file is a valid XML document
@@ -419,7 +419,7 @@ class Installer
 		{
 			$xml = null;
 
-			return false;
+			return null;
 		}
 
 		// Make sure the file is an XML schema file
@@ -427,21 +427,21 @@ class Installer
 		{
 			$xml = null;
 
-			return false;
+			return null;
 		}
 
 		if (!$xml->meta)
 		{
 			$xml = null;
 
-			return false;
+			return null;
 		}
 
 		if (!$xml->meta->drivers)
 		{
 			$xml = null;
 
-			return false;
+			return null;
 		}
 
 		/** @var SimpleXMLElement $drivers */
@@ -473,7 +473,7 @@ class Installer
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
