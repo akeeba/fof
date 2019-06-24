@@ -39,6 +39,11 @@ class Filesystem extends BaseFilesystem
 	 */
 	public function fileDelete($file): bool
 	{
+		if (!is_string($file) && !is_array($file))
+		{
+			throw new \InvalidArgumentException(sprintf('%s::%s -- $file expects a string or an array', __CLASS__, __METHOD__));
+		}
+
 		return \JFile::delete($file);
 	}
 
@@ -110,6 +115,11 @@ class Filesystem extends BaseFilesystem
 	 */
 	public function pathFind($paths, string $file): ?string
 	{
+		if (!is_string($paths) && !is_array($paths))
+		{
+			throw new \InvalidArgumentException(sprintf('%s::%s -- $paths expects a string or an array', __CLASS__, __METHOD__));
+		}
+
 		return \JPath::find($paths, $file);
 	}
 

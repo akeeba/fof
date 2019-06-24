@@ -7,6 +7,7 @@
 
 namespace  FOF40\Platform\Joomla;
 
+use DateTime;
 use DateTimeZone;
 use Exception;
 use FOF40\Container\Container;
@@ -192,6 +193,7 @@ class Platform extends BasePlatform
 	 * * root    Path to the site root
 	 * * public  Path to the public area of the site
 	 * * admin   Path to the administrative area of the site
+	 * * api     Path to the API application area of the site
 	 * * tmp     Path to the temp directory
 	 * * log     Path to the log directory
 	 *
@@ -204,6 +206,7 @@ class Platform extends BasePlatform
 			'public' => JPATH_SITE,
 			'media'  => JPATH_SITE . '/media',
 			'admin'  => JPATH_ADMINISTRATOR,
+			'api'    => defined('JPATH_API') ? JPATH_API : (JPATH_ROOT . '/api'),
 			'tmp'    => JoomlaFactory::getConfig()->get('tmp_path'),
 			'log'    => JoomlaFactory::getConfig()->get('log_path')
 		);
@@ -460,6 +463,11 @@ class Platform extends BasePlatform
 	 */
 	public function getDate(string $time = 'now', $tzOffest = null, $locale = true): Date
 	{
+		if (!is_string($time) && (!is_object($time) || !($time instanceof DateTime)))
+		{
+			throw new \InvalidArgumentException(sprintf('%s::%s -- $time expects a string or a DateTime object', __CLASS__, __METHOD__));
+		}
+
 		if ($locale)
 		{
 			// Work around a bug in Joomla! 3.7.0.
@@ -991,6 +999,11 @@ class Platform extends BasePlatform
 	 */
 	public function logUserAction($title, string $logText, string $extension): void
 	{
+		if (!is_string($title) && !is_array($title))
+		{
+			throw new \InvalidArgumentException(sprintf('%s::%s -- $title expects a string or an array', __CLASS__, __METHOD__));
+		}
+
 		static $joomlaModelAdded = false;
 
 		// User Actions Log is available only under Joomla 3.9+
