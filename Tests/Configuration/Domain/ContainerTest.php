@@ -12,14 +12,14 @@ use FOF40\Configuration\Domain\Container;
 use FOF40\Tests\Helpers\FOFTestCase;
 
 /**
- * @covers  FOF40\Configuration\Domain\Container::<protected>
- * @covers  FOF40\Configuration\Domain\Container::<private>
+ * @covers  \FOF40\Configuration\Domain\Container::<protected>
+ * @covers  \FOF40\Configuration\Domain\Container::<private>
  */
 class ContainerTest extends FOFTestCase
 {
 	/**
 	 * @group       ConfigurationContainer
-	 * @covers      FOF40\Configuration\Domain\Container::parseDomain
+	 * @covers      \FOF40\Configuration\Domain\Container::parseDomain
 	 */
 	public function testParseDomain()
 	{
@@ -41,7 +41,7 @@ class ContainerTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Configuration\Domain\Container::get
+	 * @covers       \FOF40\Configuration\Domain\Container::get
 	 *
 	 * @dataProvider getTestGet
 	 *

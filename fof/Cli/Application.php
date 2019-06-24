@@ -11,7 +11,6 @@ use Joomla\Input\Input as JoomlaInput;
 use Joomla\Input\Cli as JoomlaInputCli;
 use Joomla\Registry\Registry;
 
-
 /**
  * Joomla! CLI application helper. Include this file and extend your application class from FOFCliApplication.
  * Override the execute() method in your concrete class. At the end of your PHP file run the application with:
@@ -233,7 +232,7 @@ abstract class FOFCliApplication
 	 *
 	 * @var   array
 	 */
-	protected static $cliOptions = array();
+	protected static $cliOptions = [];
 
 	/**
 	 * Filter object to use.
@@ -280,11 +279,11 @@ abstract class FOFCliApplication
 	 *
 	 * This method must be invoked the first time as $cli = FOFCliApplication::getInstance('YourClassName');
 	 *
-	 * @param   string $name The name of the FOFCliApplication class to instantiate.
+	 * @param string|null $name The name of the FOFCliApplication class to instantiate.
 	 *
 	 * @return  FOFCliApplication  A FOFCliApplication object
 	 */
-	public static function &getInstance($name = null)
+	public static function &getInstance(?string $name = null): self
 	{
 		// Only create the object if it doesn't exist.
 		if (empty(self::$instance))
@@ -305,16 +304,16 @@ abstract class FOFCliApplication
 	 *
 	 * @return  void
 	 */
-	abstract public function execute();
+	abstract public function execute(): void;
 
 	/**
 	 * Exit the application.
 	 *
-	 * @param   integer $code Exit code.
+	 * @param int $code Exit code.
 	 *
 	 * @return  void
 	 */
-	public function close($code = 0)
+	public function close(int $code = 0): void
 	{
 		exit($code);
 	}
@@ -322,13 +321,21 @@ abstract class FOFCliApplication
 	/**
 	 * Load an object or array into the application configuration object.
 	 *
-	 * @param   mixed $data Either an array or object to be loaded into the configuration object.
+	 * @param mixed $data Either an array or object to be loaded into the configuration object.
 	 *
 	 * @return  void
 	 */
-	public function loadConfiguration($data)
+	public function loadConfiguration($data): void
 	{
-		// Load the data into the configuration object.
+		// No data: do nothing.
+		if (is_null($data))
+		{
+			$this->config->loadArray([]);
+
+			return;
+		}
+
+		// We have an array
 		if (is_array($data))
 		{
 			$this->config->loadArray($data);
@@ -336,23 +343,26 @@ abstract class FOFCliApplication
 			return;
 		}
 
+		// We have a (JConfig) object
 		if (is_object($data))
 		{
 			$this->config->loadObject($data);
 
 			return;
 		}
+
+		throw new \InvalidArgumentException(sprintf('%s::%s -- $data expects an object or an array', __CLASS__, __METHOD__));
 	}
 
 	/**
 	 * Write a string to standard output.
 	 *
-	 * @param   string  $text The text to display.
-	 * @param   boolean $nl   True to append a new line at the end of the output string.
+	 * @param string $text The text to display.
+	 * @param bool   $nl   True to append a new line at the end of the output string.
 	 *
 	 * @return  void
 	 */
-	public function out($text = '', $nl = true)
+	public function out(string $text = '', bool $nl = true): void
 	{
 		fwrite(STDOUT, $text . ($nl ? "\n" : null));
 	}
@@ -362,7 +372,7 @@ abstract class FOFCliApplication
 	 *
 	 * @return  string  The input string from standard input.
 	 */
-	public function in()
+	public function in(): string
 	{
 		return rtrim(fread(STDIN, 8192), "\n");
 	}
@@ -372,9 +382,9 @@ abstract class FOFCliApplication
 	 * will extend this method in child classes to provide configuration data from whatever data source is relevant
 	 * for your specific application.
 	 *
-	 * @return  mixed  Either an array or object to be loaded into the configuration object.
+	 * @return  JConfig|null  Either an object to be loaded into the configuration object or null if loading failed.
 	 */
-	protected function fetchConfigurationData()
+	protected function fetchConfigurationData(): ?JConfig
 	{
 		// Set the configuration file name.
 		$file = JPATH_BASE . '/configuration.php';
@@ -382,7 +392,7 @@ abstract class FOFCliApplication
 		// Import the configuration file.
 		if (!is_file($file))
 		{
-			return false;
+			return null;
 		}
 
 		include_once $file;
@@ -390,27 +400,25 @@ abstract class FOFCliApplication
 		// Instantiate the configuration object.
 		if (!class_exists('JConfig'))
 		{
-			return false;
+			return null;
 		}
 
-		$config = new JConfig;
-
-		return $config;
+		return new JConfig;
 	}
 
 	/**
 	 * Returns a fancy formatted time lapse code
 	 *
-	 * @param   int    $referencedate Timestamp of the reference date/time
-	 * @param   int    $timepointer   Timestamp of the current date/time
-	 * @param   string $measureby     Time unit. One of s, m, h, d, or y.
-	 * @param   bool   $autotext      Add "ago" / "from now" suffix?
+	 * @param int    $referencedate Timestamp of the reference date/time
+	 * @param int    $timepointer   Timestamp of the current date/time
+	 * @param string $measureby     Time unit. One of s, m, h, d, or y.
+	 * @param bool   $autotext      Add "ago" / "from now" suffix?
 	 *
 	 * @return  string
 	 */
-	protected function timeAgo($referencedate = 0, $timepointer = '', $measureby = '', $autotext = true)
+	protected function timeAgo(int $referencedate = 0, int $timepointer = 0, ?string $measureby = null, bool $autotext = true): string
 	{
-		if ($timepointer == '')
+		if ($timepointer === 0)
 		{
 			$timepointer = time();
 		}
@@ -419,23 +427,23 @@ abstract class FOFCliApplication
 		$Raw   = $timepointer - $referencedate;
 		$Clean = abs($Raw);
 
-		$calcNum = array(
-			array('s', 60),
-			array('m', 60 * 60),
-			array('h', 60 * 60 * 60),
-			array('d', 60 * 60 * 60 * 24),
-			array('y', 60 * 60 * 60 * 24 * 365),
-		);
+		$calcNum = [
+			['s', 60],
+			['m', 60 * 60],
+			['h', 60 * 60 * 60],
+			['d', 60 * 60 * 60 * 24],
+			['y', 60 * 60 * 60 * 24 * 365],
+		];
 
-		$calc = array(
-			's' => array(1, 'second'),
-			'm' => array(60, 'minute'),
-			'h' => array(60 * 60, 'hour'),
-			'd' => array(60 * 60 * 24, 'day'),
-			'y' => array(60 * 60 * 24 * 365, 'year'),
-		);
+		$calc = [
+			's' => [1, 'second'],
+			'm' => [60, 'minute'],
+			'h' => [60 * 60, 'hour'],
+			'd' => [60 * 60 * 24, 'day'],
+			'y' => [60 * 60 * 24 * 365, 'year'],
+		];
 
-		if ($measureby == '')
+		if (empty($measureby))
 		{
 			$usemeasure = 's';
 
@@ -491,13 +499,13 @@ abstract class FOFCliApplication
 	/**
 	 * Formats a number of bytes in human readable format
 	 *
-	 * @param   int $size The size in bytes to format, e.g. 8254862
+	 * @param int $size The size in bytes to format, e.g. 8254862
 	 *
 	 * @return  string  The human-readable representation of the byte size, e.g. "7.87 Mb"
 	 */
-	protected function formatByteSize($size)
+	protected function formatByteSize(int $size): string
 	{
-		$unit = array('b', 'KB', 'MB', 'GB', 'TB', 'PB');
+		$unit = ['b', 'KB', 'MB', 'GB', 'TB', 'PB'];
 
 		return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
 	}
@@ -507,7 +515,7 @@ abstract class FOFCliApplication
 	 *
 	 * @return  string
 	 */
-	protected function memUsage()
+	protected function memUsage(): string
 	{
 		if (function_exists('memory_get_usage'))
 		{
@@ -526,7 +534,7 @@ abstract class FOFCliApplication
 	 *
 	 * @return  string
 	 */
-	protected function peakMemUsage()
+	protected function peakMemUsage(): string
 	{
 		if (function_exists('memory_get_peak_usage'))
 		{
@@ -548,7 +556,7 @@ abstract class FOFCliApplication
 	 *
 	 * @return  void
 	 */
-	protected function parseOptions()
+	protected function parseOptions(): void
 	{
 		global $argc, $argv;
 
@@ -576,7 +584,7 @@ abstract class FOFCliApplication
 		}
 
 		$currentName = "";
-		$options     = array();
+		$options     = [];
 
 		for ($i = 1; $i < $argc; $i++)
 		{
@@ -600,7 +608,7 @@ abstract class FOFCliApplication
 
 				if (!isset($options[$currentName]) || ($options[$currentName] == null))
 				{
-					$options[$currentName] = array();
+					$options[$currentName] = [];
 				}
 			}
 
@@ -619,7 +627,7 @@ abstract class FOFCliApplication
 
 				if (is_null($values))
 				{
-					$values = array();
+					$values = [];
 				}
 
 				if (is_null($key))
@@ -641,18 +649,18 @@ abstract class FOFCliApplication
 	/**
 	 * Returns the value of a command line option. This does NOT use JoomlaInputCli. You MUST run parseOptions before.
 	 *
-	 * @param   string $key     The full name of the option, e.g. "foobar"
-	 * @param   mixed  $default The default value to return
-	 * @param   string $type    Joomla! filter type, e.g. cmd, int, bool and so on.
+	 * @param string $key     The full name of the option, e.g. "foobar"
+	 * @param mixed  $default The default value to return
+	 * @param string $type    Joomla! filter type, e.g. cmd, int, bool and so on.
 	 *
 	 * @return  mixed  The value of the option
 	 */
-	protected function getOption($key, $default = null, $type = 'raw')
+	protected function getOption(string $key, $default = null, string $type = 'raw')
 	{
 		// If the key doesn't exist set it to the default value
 		if (!array_key_exists($key, self::$cliOptions))
 		{
-			self::$cliOptions[$key] = is_array($default) ? $default : array($default);
+			self::$cliOptions[$key] = is_array($default) ? $default : [$default];
 		}
 
 		$type = strtolower($type);
@@ -675,12 +683,12 @@ abstract class FOFCliApplication
 	/**
 	 * Filter a variable using InputFilter
 	 *
-	 * @param   mixed  $var  The variable to filter
-	 * @param   string $type The filter type, default 'cmd'
+	 * @param mixed  $var  The variable to filter
+	 * @param string $type The filter type, default 'cmd'
 	 *
 	 * @return  mixed  The filtered value
 	 */
-	protected function filterVariable($var, $type = 'cmd')
+	protected function filterVariable($var, string $type = 'cmd')
 	{
 		return $this->filter->clean($var, $type);
 	}
@@ -689,7 +697,7 @@ abstract class FOFCliApplication
 	 * Detect if we are running under CGI mode. In this case it populates the global $argv and $argc parameters off the
 	 * CGI input ($_GET superglobal).
 	 */
-	private function detectAndWorkAroundCGIMode()
+	private function detectAndWorkAroundCGIMode(): void
 	{
 		$cgiMode = false;
 
@@ -730,9 +738,9 @@ abstract class FOFCliApplication
  * A default exception handler. Catches all unhandled exceptions, displays debug information about them and sets the
  * error level to 254.
  *
- * @param   Throwable $ex The Exception / Error being handled
+ * @param Throwable $ex The Exception / Error being handled
  */
-function FOFCliExceptionHandler($ex)
+function FOFCliExceptionHandler($ex): void
 {
 	echo "\n\n";
 	echo "********** ERROR! **********\n\n";
@@ -754,7 +762,7 @@ function FOFCliExceptionHandler($ex)
  *
  * @return  void
  */
-function FOFCliTimeoutHandler()
+function FOFCliTimeoutHandler(): void
 {
 	$connection_status = connection_status();
 
@@ -822,14 +830,14 @@ END;
  * IMPORTANT! Under PHP 7 the default exception handler will be called instead, including when there is a non-catchable
  *            fatal error.
  *
- * @param   int    $errno   Error number
- * @param   string $errstr  Error string, tells us what went wrong
- * @param   string $errfile Full path to file where the error occurred
- * @param   int    $errline Line number where the error occurred
+ * @param int    $errno   Error number
+ * @param string $errstr  Error string, tells us what went wrong
+ * @param string $errfile Full path to file where the error occurred
+ * @param int    $errline Line number where the error occurred
  *
  * @return  void
  */
-function FOFCliErrorHandler($errno, $errstr, $errfile, $errline)
+function FOFCliErrorHandler(int $errno, string $errstr, string $errfile, int $errline): void
 {
 	switch ($errno)
 	{
