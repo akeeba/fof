@@ -23,8 +23,8 @@ use Joomla\CMS\Language\Language;
 use Joomla\CMS\Version as JoomlaVersion;
 
 /**
- * @covers FOF40\Platform\Joomla\Platform::<protected>
- * @covers FOF40\Platform\Joomla\Platform::<private>
+ * @covers \FOF40\Platform\Joomla\Platform::<protected>
+ * @covers \FOF40\Platform\Joomla\Platform::<private>
  */
 class PlatformJoomlaTest extends FOFTestCase
 {
@@ -48,7 +48,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::checkExecution
+	 * @covers \FOF40\Platform\Joomla\Platform::checkExecution
 	 */
 	public function testCheckExecution()
 	{
@@ -56,7 +56,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::raiseError
+	 * @covers \FOF40\Platform\Joomla\Platform::raiseError
 	 */
 	public function testRaiseError()
 	{
@@ -66,10 +66,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::isCli
-	 * @covers       FOF40\Platform\Joomla\Platform::isCliAdmin
+	 * @covers       \FOF40\Platform\Joomla\Platform::isCli
+	 * @covers       \FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsCli
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsCli
 	 */
 	public function testIsCli($mockApplicationType, $expected, $message)
 	{
@@ -81,10 +81,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::isBackend
-	 * @covers       FOF40\Platform\Joomla\Platform::isCliAdmin
+	 * @covers       \FOF40\Platform\Joomla\Platform::isBackend
+	 * @covers       \FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsBackend
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsBackend
 	 */
 	public function testIsBackend($mockApplicationType, $expected, $message)
 	{
@@ -96,10 +96,10 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::isFrontend
-	 * @covers       FOF40\Platform\Joomla\Platform::isCliAdmin
+	 * @covers       \FOF40\Platform\Joomla\Platform::isFrontend
+	 * @covers       \FOF40\Platform\Joomla\Platform::isCliAdmin
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsFrontend
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestIsFrontend
 	 */
 	public function testIsFrontend($mockApplicationType, $expected, $message)
 	{
@@ -153,7 +153,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getPlatformBaseDirs
+	 * @covers \FOF40\Platform\Joomla\Platform::getPlatformBaseDirs
 	 */
 	public function testGetPlatformBaseDirs()
 	{
@@ -180,9 +180,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::getComponentBaseDirs
+	 * @covers       \FOF40\Platform\Joomla\Platform::getComponentBaseDirs
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestComponentBaseDirs
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestComponentBaseDirs
 	 */
 	public function testGetComponentBaseDirs($area, $expectedMain, $expectedAlt)
 	{
@@ -210,7 +210,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getTemplate
+	 * @covers \FOF40\Platform\Joomla\Platform::getTemplate
 	 */
 	public function testGetTemplate()
 	{
@@ -226,7 +226,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getUser
+	 * @covers \FOF40\Platform\Joomla\Platform::getUser
 	 */
 	public function testGetUser()
 	{
@@ -247,7 +247,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getDocument
+	 * @covers \FOF40\Platform\Joomla\Platform::getDocument
 	 */
 	public function testGetDocument()
 	{
@@ -282,7 +282,7 @@ class PlatformJoomlaTest extends FOFTestCase
 
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getLanguage
+	 * @covers \FOF40\Platform\Joomla\Platform::getLanguage
 	 *
 	 */
 	public function testGetLanguage()
@@ -295,7 +295,7 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers FOF40\Platform\Joomla\Platform::getDbo
+	 * @covers \FOF40\Platform\Joomla\Platform::getDbo
 	 *
 	 */
 	public function testGetDbo()
@@ -308,9 +308,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers          FOF40\Platform\Joomla\Platform::getTemplateSuffixes
+	 * @covers          \FOF40\Platform\Joomla\Platform::getTemplateSuffixes
 	 *
-	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateSuffixes
+	 * @XXXdataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateSuffixes
 	 *
 	 */
 	public function testGetTemplateSuffixes()
@@ -333,9 +333,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::getTemplateOverridePath
+	 * @covers       \FOF40\Platform\Joomla\Platform::getTemplateOverridePath
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateOverridePath
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetTemplateOverridePath
 	 *
 	 */
 	public function testGetTemplateOverridePath($applicationType, $component, $absolute, $expected, $message)
@@ -357,9 +357,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::loadTranslations
+	 * @covers       \FOF40\Platform\Joomla\Platform::loadTranslations
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoadTranslations
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestLoadTranslations
 	 *
 	 */
 	public function testLoadTranslations($appType, $regularPath, $otherPath, $message)
@@ -384,9 +384,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::authorizeAdmin
+	 * @covers       \FOF40\Platform\Joomla\Platform::authorizeAdmin
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorizeAdmin
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorizeAdmin
 	 *
 	 */
 	public function testAuthorizeAdmin($appType, $auths, $expected, $message)
@@ -403,9 +403,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::authorise
+	 * @covers       \FOF40\Platform\Joomla\Platform::authorise
 	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorise
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestAuthorise
 	 *
 	 */
 	public function testAuthorise($appType, $auths, $assetName, $action, $expected, $message)
@@ -422,18 +422,9 @@ class PlatformJoomlaTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers          FOF40\Platform\Joomla\Platform::loginUser
+	 * @covers       \FOF40\Platform\Joomla\Platform::getDate
 	 *
-	 */
-	public function testLoginUser()
-	{
-		$this->markTestSkipped('Cannot test user login / logout from CLI');
-	}
-
-	/**
-	 * @covers       FOF40\Platform\Joomla\Platform::getDate
-	 *
-	 * @dataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestDate
+	 * @dataProvider \FOF40\Tests\Platform\PlatformJoomlaProvider::getTestDate
 	 */
 	public function testGetDate($test)
 	{
@@ -454,25 +445,5 @@ class PlatformJoomlaTest extends FOFTestCase
 
 			$this->assertInstanceOf('\Joomla\CMS\Date\Date', $decorated, "$case -- The decorated property must be a \Joomla\CMS\Date\Date object");
 		}
-	}
-
-	/**
-	 * @covers          FOF40\Platform\Joomla\Platform::logoutUser
-	 *
-	 */
-	public function testLogoutUser()
-	{
-		$this->markTestSkipped('Cannot test user login / logout from CLI');
-	}
-
-	/**
-	 * @covers          FOF40\Platform\Joomla\Platform::getUserStateFromRequest
-	 *
-	 * @XXXdataProvider FOF40\Tests\Platform\PlatformJoomlaProvider::getTestGetUserStateFromRequest
-	 *
-	 */
-	public function testGetUserStateFromRequest()
-	{
-		$this->markTestSkipped('Cannot implement request in CLI');
 	}
 }

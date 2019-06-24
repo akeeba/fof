@@ -8,7 +8,11 @@
 
 namespace FOF40\Tests\Helpers;
 
+use FOF40\Input\Input;
 use FOF40\Platform\Joomla\Platform as PlatformJoomla;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\User\User;
+use Joomla\Registry\Registry;
 
 /**
  * A specialised Joomla! platform abstraction class which can lie about running under CLI, frontend or backend.
@@ -21,6 +25,9 @@ class TestJoomlaPlatform extends PlatformJoomla
 	/** @var bool Should this platform instance report running under Joomla! backend? */
 	public static $isAdmin = false;
 
+	/** @var bool Should this platform instance report running under Joomla! backend? */
+	public static $isApi= false;
+
 	/** @var string|null The template name reported by this class */
 	public static $template = null;
 
@@ -30,7 +37,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 	/** @var array|null The platform base directories to return */
 	public static $baseDirs = null;
 
-	/** @var object|null The current user */
+	/** @var User|null The current user */
 	public static $user = null;
 
 	public static $uriBase = null;
@@ -79,7 +86,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		static::$getTemplateOverridePath = null;
 	}
 
-	public function getUser($id = null)
+	public function getUser(?int $id = null): User
 	{
 		if (isset(static::$user))
 		{
@@ -89,7 +96,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::getUser($id);
 	}
 
-	public function URIbase($pathonly = false)
+	public function URIbase(bool $pathonly = false): string
 	{
 		if (isset(static::$uriBase))
 		{
@@ -99,7 +106,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::URIbase($pathonly);
 	}
 
-	public function URIroot($pathonly = false, $path = null)
+	public function URIroot(bool $pathonly = false, ?string $path = null): string
 	{
 		if (isset(static::$uriRoot))
 		{
@@ -109,7 +116,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::URIroot($pathonly, $path);
 	}
 
-	public function authorise($action, $assetname)
+	public function authorise(string $action, ?string $assetname = null): bool
 	{
 		if (is_callable(static::$authorise))
 		{
@@ -124,9 +131,9 @@ class TestJoomlaPlatform extends PlatformJoomla
 	 *
 	 * @return  array  isCLI and isAdmin. It's not an associative array, so we can use list.
 	 */
-	protected function isCliAdmin()
+	protected function isCliAdminApi(): array
 	{
-		return [self::$isCli, self::$isAdmin];
+		return [self::$isCli, self::$isAdmin, self::$isApi];
 	}
 
 	/**
@@ -136,7 +143,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 	 *
 	 * @return  string  The template name. System is the fallback.
 	 */
-	public function getTemplate($params = false)
+	public function getTemplate(?array $params = null): string
 	{
 		if (is_null(self::$template))
 		{
@@ -146,7 +153,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return self::$template;
 	}
 
-	public function getTemplateSuffixes()
+	public function getTemplateSuffixes(): array
 	{
 		if (is_null(self::$templateSuffixes))
 		{
@@ -156,7 +163,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return self::$templateSuffixes;
 	}
 
-	public function getPlatformBaseDirs()
+	public function getPlatformBaseDirs(): array
 	{
 		if (is_null(self::$baseDirs))
 		{
@@ -171,10 +178,10 @@ class TestJoomlaPlatform extends PlatformJoomla
 	 */
 	public function resetIsCliAdmin()
 	{
-		list(self::$isCli, self::$isAdmin) = parent::isCliAdmin();
+		list(self::$isCli, self::$isAdmin) = parent::isCliAdminApi();
 	}
 
-	public function getUserStateFromRequest($key, $request, $input, $default = null, $type = 'none', $setUserState = true)
+	public function getUserStateFromRequest(string $key, string $request, Input $input, $default = null, string $type = 'none', bool $setUserState = true)
 	{
 		if (is_callable(static::$getUserStateFromRequest))
 		{
@@ -186,7 +193,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::getUserStateFromRequest($key, $request, $input, $default, $type, $setUserState);
 	}
 
-	public function runPlugins($event, $data)
+	public function runPlugins(string $event, array $data = []): array
 	{
 		if (is_callable(static::$runPlugins))
 		{
@@ -196,7 +203,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::runPlugins($event, $data);
 	}
 
-	public function getLanguage()
+	public function getLanguage(): Language
 	{
 		if (is_callable(static::$language))
 		{
@@ -206,7 +213,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::getLanguage();
 	}
 
-	public function getConfig()
+	public function getConfig(): Registry
 	{
 		if (is_callable(static::$config))
 		{
@@ -216,7 +223,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::getConfig();
 	}
 
-	public function getComponentBaseDirs($component)
+	public function getComponentBaseDirs(string $component): array
 	{
 		if (is_callable(static::$getComponentBaseDirs))
 		{
@@ -226,7 +233,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 		return parent::getComponentBaseDirs($component);
 	}
 
-	public function getTemplateOverridePath($component, $absolute = true)
+	public function getTemplateOverridePath(string $component, bool $absolute = true): string
 	{
 		if (is_callable(static::$getTemplateOverridePath))
 		{
