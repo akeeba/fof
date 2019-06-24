@@ -5,7 +5,7 @@
     [X] Container
     [X] Database
     [X] Date
-    [ ] Dispatcher
+    [X] Dispatcher
     [ ] Download
     [ ] Encrypt
     [ ] Event

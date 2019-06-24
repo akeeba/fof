@@ -48,7 +48,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 	 *
 	 * @throws  DownloadError  A generic exception is thrown on error
 	 */
-	public function downloadAndReturn($url, $from = null, $to = null, array $params = array())
+	public function downloadAndReturn(string $url, ?int $from = null, ?int $to = null, array $params = []): string
 	{
 		$ch = curl_init();
 
@@ -175,7 +175,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  integer  The file size, or -1 if the remote server doesn't support this feature
 	 */
-	public function getFileSize($url)
+	public function getFileSize(string $url): int
 	{
 		$result = -1;
 
@@ -233,7 +233,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 			}
 		}
 
-		return $result;
+		return (int) $result;
 	}
 
 	/**
@@ -244,7 +244,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  int  The length of the $data string
 	 */
-	protected function reponseHeaderCallback(&$ch, &$data)
+	protected function reponseHeaderCallback(&$ch, string &$data): int
 	{
 		$strlen = strlen($data);
 

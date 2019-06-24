@@ -54,7 +54,7 @@ abstract class AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  boolean  True if chunk download is supported
 	 */
-	public function supportsChunkDownload()
+	public function supportsChunkDownload(): bool
 	{
 		return $this->supportsChunkDownload;
 	}
@@ -64,7 +64,7 @@ abstract class AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  boolean  True if remote file size determination is supported
 	 */
-	public function supportsFileSize()
+	public function supportsFileSize(): bool
 	{
 		return $this->supportsFileSize;
 	}
@@ -74,7 +74,7 @@ abstract class AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  boolean  True if this server environment supports this download class
 	 */
-	public function isSupported()
+	public function isSupported(): bool
 	{
 		return $this->isSupported;
 	}
@@ -84,9 +84,9 @@ abstract class AbstractAdapter implements DownloadInterface
 	 * supported on a site, the one with the highest priority will be
 	 * used.
 	 *
-	 * @return  boolean
+	 * @return  int
 	 */
-	public function getPriority()
+	public function getPriority(): int
 	{
 		return $this->priority;
 	}
@@ -96,7 +96,7 @@ abstract class AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  string
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
@@ -120,7 +120,7 @@ abstract class AbstractAdapter implements DownloadInterface
 	 *
 	 * @throws  DownloadError  A generic exception is thrown on error
 	 */
-	public function downloadAndReturn($url, $from = null, $to = null, array $params = array())
+	public function downloadAndReturn(string $url, ?int $from = null, ?int $to = null, array $params = []): string
 	{
 		return '';
 	}
@@ -132,7 +132,7 @@ abstract class AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  integer  The file size, or -1 if the remote server doesn't support this feature
 	 */
-	public function getFileSize($url)
+	public function getFileSize(string $url): int
 	{
 		return -1;
 	}

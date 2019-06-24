@@ -242,3 +242,4 @@ return type converted to a nullable type (e.g. string or null, denoted by `?stri
 The following methods have had their return type changed:
 
 * FOF40\Platform\FilesystemInterface::pathFind() -- FROM string|bool TO string|null
+* FOF40\Download\Download::getFromURL() -- FROM string|bool TO string|null

@@ -9,7 +9,9 @@ namespace  FOF40\Download\Exception;
 
 defined('_JEXEC') or die;
 
-class DownloadError extends \RuntimeException
+use RuntimeException;
+
+class DownloadError extends RuntimeException
 {
 
 }

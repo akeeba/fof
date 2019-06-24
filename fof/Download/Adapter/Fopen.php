@@ -55,7 +55,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 	 *
 	 * @throws  DownloadError  A generic exception is thrown on error
 	 */
-	public function downloadAndReturn($url, $from = null, $to = null, array $params = array())
+	public function downloadAndReturn(string $url, ?int $from = null, ?int $to = null, array $params = []): string
 	{
 		if (empty($from))
 		{

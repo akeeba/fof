@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Download;
+namespace FOF40\Download;
 
 use FOF40\Container\Container;
 use FOF40\Download\Exception\DownloadError;
@@ -28,7 +28,7 @@ class Download
 	 *
 	 * @var  array
 	 */
-	private $params = array();
+	private $params = [];
 
 	/**
 	 * The download adapter which will be used by this class
@@ -42,20 +42,20 @@ class Download
 	 *
 	 * @var  array
 	 */
-	private $adapterOptions = array();
+	private $adapterOptions = [];
 
 	/**
 	 * Public constructor
 	 *
-	 * @param   \FOF40\Container\Container   $c  The component container
+	 * @param Container $c The component container
 	 */
 	public function __construct(Container $c)
 	{
 		$this->container = $c;
 
 		// Find the best fitting adapter
-		$allAdapters = self::getFiles(__DIR__ . '/Adapter', array(), array('AbstractAdapter.php', 'cacert.pem'));
-		$priority = 0;
+		$allAdapters = self::getFiles(__DIR__ . '/Adapter', [], ['AbstractAdapter.php', 'cacert.pem']);
+		$priority    = 0;
 
 		foreach ($allAdapters as $adapterInfo)
 		{
@@ -70,7 +70,7 @@ class Download
 			if ($adapter->priority > $priority)
 			{
 				$this->adapter = $adapter;
-				$priority = $adapter->priority;
+				$priority      = $adapter->priority;
 			}
 		}
 
@@ -81,10 +81,15 @@ class Download
 	/**
 	 * Forces the use of a specific adapter
 	 *
-	 * @param   string  $className  The name of the class or the name of the adapter
+	 * @param string $className The name of the class or the name of the adapter
 	 */
-	public function setAdapter($className)
+	public function setAdapter(?string $className = null): void
 	{
+		if (is_null($className))
+		{
+			return;
+		}
+
 		$adapter = null;
 
 		if (class_exists($className, true))
@@ -94,7 +99,7 @@ class Download
 		elseif (class_exists('\\FOF40\\Download\\Adapter\\' . ucfirst($className)))
 		{
 			$className = '\\FOF40\\Download\\Adapter\\' . ucfirst($className);
-			$adapter = new $className;
+			$adapter   = new $className;
 		}
 
 		if (is_object($adapter) && ($adapter instanceof DownloadInterface))
@@ -108,9 +113,9 @@ class Download
 	 *
 	 * @return string
 	 */
-	public function getAdapterName()
+	public function getAdapterName(): string
 	{
-		if(is_object($this->adapter))
+		if (is_object($this->adapter))
 		{
 			$class = get_class($this->adapter);
 
@@ -127,7 +132,7 @@ class Download
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setAdapterOptions(array $options)
+	public function setAdapterOptions(array $options): void
 	{
 		$this->adapterOptions = $options;
 	}
@@ -139,7 +144,7 @@ class Download
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getAdapterOptions()
+	public function getAdapterOptions(): array
 	{
 		return $this->adapterOptions;
 	}
@@ -147,12 +152,12 @@ class Download
 	/**
 	 * Used to decode the $params array
 	 *
-	 * @param   string $key     The parameter key you want to retrieve the value for
-	 * @param   mixed  $default The default value, if none is specified
+	 * @param string $key     The parameter key you want to retrieve the value for
+	 * @param mixed  $default The default value, if none is specified
 	 *
 	 * @return  mixed  The value for this parameter key
 	 */
-	private function getParam($key, $default = null)
+	private function getParam(string $key, $default = null)
 	{
 		if (array_key_exists($key, $this->params))
 		{
@@ -171,13 +176,13 @@ class Download
 	 * to 499, NOT from 1 to 500. If you ask more bytes than there are in the file or a range which is invalid or does
 	 * not exist this method will return false.
 	 *
-	 * @param   string  $url   The URL to download from
-	 * @param   int     $from  Byte range to start downloading from. Use null (default) for start of file.
-	 * @param   int     $to    Byte range to stop downloading. Use null to download the entire file ($from will be ignored!)
+	 * @param string $url  The URL to download from
+	 * @param int    $from Byte range to start downloading from. Use null (default) for start of file.
+	 * @param int    $to   Byte range to stop downloading. Use null to download the entire file ($from will be ignored!)
 	 *
-	 * @return  bool|string  The downloaded data or false on failure
+	 * @return  string  The downloaded data or null on failure
 	 */
-	public function getFromURL($url, $from = null, $to = null)
+	public function getFromURL(string $url, ?int $from = null, ?int $to = null): ?string
 	{
 		try
 		{
@@ -185,30 +190,30 @@ class Download
 		}
 		catch (DownloadError $e)
 		{
-			return false;
+			return null;
 		}
 	}
 
 	/**
 	 * Performs the staggered download of file.
 	 *
-	 * @param   array $params A parameters array, as sent by the user interface
+	 * @param array $params A parameters array, as sent by the user interface
 	 *
 	 * @return  array  A return status array
 	 */
-	public function importFromURL($params)
+	public function importFromURL(array $params): array
 	{
 		$this->params = $params;
 
 		// Fetch data
-		$url         	= $this->getParam('url');
-		$localFilename	= $this->getParam('localFilename');
-		$frag        	= $this->getParam('frag', -1);
-		$totalSize   	= $this->getParam('totalSize', -1);
-		$doneSize    	= $this->getParam('doneSize', -1);
-		$maxExecTime 	= $this->getParam('maxExecTime', 5);
-		$runTimeBias 	= $this->getParam('runTimeBias', 75);
-		$length      	= $this->getParam('length', 1048576);
+		$url           = $this->getParam('url');
+		$localFilename = $this->getParam('localFilename');
+		$frag          = $this->getParam('frag', -1);
+		$totalSize     = $this->getParam('totalSize', -1);
+		$doneSize      = $this->getParam('doneSize', -1);
+		$maxExecTime   = $this->getParam('maxExecTime', 5);
+		$runTimeBias   = $this->getParam('runTimeBias', 75);
+		$length        = $this->getParam('length', 1048576);
 
 		if (empty($localFilename))
 		{
@@ -216,27 +221,27 @@ class Download
 
 			if (strpos($localFilename, '?') !== false)
 			{
-				$paramsPos = strpos($localFilename, '?');
+				$paramsPos     = strpos($localFilename, '?');
 				$localFilename = substr($localFilename, 0, $paramsPos - 1);
 
 				$platformBaseDirectories = $this->container->platform->getPlatformBaseDirs();
-				$tmpDir =  $platformBaseDirectories['tmp'];
-				$tmpDir = rtrim($tmpDir, '/\\');
+				$tmpDir                  = $platformBaseDirectories['tmp'];
+				$tmpDir                  = rtrim($tmpDir, '/\\');
 
 				$localFilename = $tmpDir . '/' . $localFilename;
 			}
 		}
 
 		// Init retArray
-		$retArray = array(
+		$retArray = [
 			"status"    => true,
 			"error"     => '',
 			"frag"      => $frag,
 			"totalSize" => $totalSize,
 			"doneSize"  => $doneSize,
 			"percent"   => 0,
-			"localfile"	=> $localFilename
-		);
+			"localfile" => $localFilename,
+		];
 
 		try
 		{
@@ -294,7 +299,7 @@ class Download
 				catch (DownloadError $e)
 				{
 					$result = false;
-					$error = $e->getMessage();
+					$error  = $e->getMessage();
 				}
 
 				if ($result === false)
@@ -304,16 +309,16 @@ class Download
 					{
 						// Failure to download first frag = failure to download. Period.
 						$retArray['status'] = false;
-						$retArray['error'] = $error;
+						$retArray['error']  = $error;
 
 						return $retArray;
 					}
 					else
 					{
 						// Since this is a staggered download, consider this normal and finish
-						$frag = -1;
+						$frag      = -1;
 						$totalSize = $doneSize;
-						$break = true;
+						$break     = true;
 					}
 				}
 
@@ -330,7 +335,7 @@ class Download
 					{
 						// Can't open the file for writing
 						$retArray['status'] = false;
-						$retArray['error'] = Text::sprintf('LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE', $localFilename);
+						$retArray['error']  = Text::sprintf('LIB_FOF40_DOWNLOAD_ERR_COULDNOTWRITELOCALFILE', $localFilename);
 
 						return $retArray;
 					}
@@ -348,7 +353,7 @@ class Download
 						$frag = -1;
 						//debugMsg("-- Import complete (partial download of last frag)");
 						$totalSize = $doneSize;
-						$break = true;
+						$break     = true;
 					}
 				}
 
@@ -388,19 +393,19 @@ class Download
 			}
 
 			// Update $retArray
-			$retArray = array(
+			$retArray = [
 				"status"    => true,
 				"error"     => '',
 				"frag"      => $frag,
 				"totalSize" => $totalSize,
 				"doneSize"  => $doneSize,
 				"percent"   => $percent,
-			);
+			];
 		}
 		catch (DownloadError $e)
 		{
 			$retArray['status'] = false;
-			$retArray['error'] = $e->getMessage();
+			$retArray['error']  = $e->getMessage();
 		}
 
 		return $retArray;
@@ -411,16 +416,16 @@ class Download
 	 * that will be analyzed by __construct. Then it organizes them into an
 	 * associative array.
 	 *
-	 * @param   string $path          Folder where we should start looking
-	 * @param   array  $ignoreFolders Folder ignore list
-	 * @param   array  $ignoreFiles   File ignore list
+	 * @param string $path          Folder where we should start looking
+	 * @param array  $ignoreFolders Folder ignore list
+	 * @param array  $ignoreFiles   File ignore list
 	 *
 	 * @return  array   Associative array, where the `fullpath` key contains the path to the file,
 	 *                  and the `classname` key contains the name of the class
 	 */
-	protected static function getFiles($path, array $ignoreFolders = array(), array $ignoreFiles = array())
+	protected static function getFiles(string $path, array $ignoreFolders = [], array $ignoreFiles = []): array
 	{
-		$return = array();
+		$return = [];
 
 		$files = self::scanDirectory($path, $ignoreFolders, $ignoreFiles);
 
@@ -432,10 +437,10 @@ class Download
 
 			$parts = explode('/', $clean);
 
-			$return[] = array(
+			$return[] = [
 				'fullpath'  => $file,
-				'classname' => '\\FOF40\\Download\\Adapter\\' . ucfirst(basename($parts[0], '.php'))
-			);
+				'classname' => '\\FOF40\\Download\\Adapter\\' . ucfirst(basename($parts[0], '.php')),
+			];
 		}
 
 		return $return;
@@ -445,15 +450,15 @@ class Download
 	 * Recursive function that will scan every directory unless it's in the
 	 * ignore list. Files that aren't in the ignore list are returned.
 	 *
-	 * @param   string  $path           Folder where we should start looking
-	 * @param   array   $ignoreFolders  Folder ignore list
-	 * @param   array   $ignoreFiles    File ignore list
+	 * @param string $path          Folder where we should start looking
+	 * @param array  $ignoreFolders Folder ignore list
+	 * @param array  $ignoreFiles   File ignore list
 	 *
 	 * @return  array   List of all the files
 	 */
-	protected static function scanDirectory($path, array $ignoreFolders = array(), array $ignoreFiles = array())
+	protected static function scanDirectory(string $path, array $ignoreFolders = [], array $ignoreFiles = []): array
 	{
-		$return = array();
+		$return = [];
 
 		$handle = @opendir($path);
 

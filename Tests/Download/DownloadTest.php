@@ -53,7 +53,7 @@ class DownloadTest extends FOFTestCase
 	/**
 	 * @covers          FOF40\Download\Download::setAdapter
 	 *
-	 * @dataProvider    FOF40\Tests\Download\DownloadDataprovider::getTestSetAdapter
+	 * @dataProvider    \FOF40\Tests\Download\DownloadDataprovider::getTestSetAdapter
 	 */
 	public function testSetAdapter($className, $shouldChange = true)
 	{
@@ -106,7 +106,7 @@ class DownloadTest extends FOFTestCase
 
 		if ($test['false'])
 		{
-			$this->assertFalse($ret);
+			$this->assertNull($ret);
 		}
 		else
 		{
