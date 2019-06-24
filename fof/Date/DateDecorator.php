@@ -5,10 +5,11 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Date;
+namespace FOF40\Date;
 
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 use JDatabaseDriver;
 
 defined('_JEXEC') or die;
@@ -23,11 +24,14 @@ class DateDecorator extends Date
 	/**
 	 * The decorated object
 	 *
+	 * @param string              $date String in a format accepted by strtotime(), defaults to "now".
+	 * @param string|DateTimeZone $tz   Time zone to be used for the date. Might be a string or a DateTimeZone object.
+	 *
 	 * @var   DateTime
 	 */
 	protected $decorated = null;
 
-	public function __construct($date = 'now', $tz = null)
+	public function __construct(string $date = 'now', $tz = null)
 	{
 		if (is_object($date) && ($date instanceof DateTime))
 		{
@@ -50,31 +54,33 @@ class DateDecorator extends Date
 	/**
 	 * Magic method to access properties of the date given by class to the format method.
 	 *
-	 * @param   string  $name  The name of the property.
+	 * @param string $name The name of the property.
 	 *
 	 * @return  mixed   A value if the property name is valid, null otherwise.
 	 */
-	public function __get($name)
+	public function __get(string $name)
 	{
 		return $this->decorated->$name;
 	}
 
-	public function __call($name, $arguments)
+	public function __call(string $name, array $arguments = [])
 	{
 		if (method_exists($this->decorated, $name))
 		{
-			return call_user_func_array(array($this->decorated, $name), $arguments);
+			return call_user_func_array([$this->decorated, $name], $arguments);
 		}
 
 		throw new \InvalidArgumentException("Date object does not have a $name method");
 	}
 
+	// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
 	public function sub($interval)
 	{
 		// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
 		return $this->decorated->sub($interval);
 	}
 
+	// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
 	public function add($interval)
 	{
 		// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
@@ -86,64 +92,64 @@ class DateDecorator extends Date
 		return $this->decorated->modify($modify);
 	}
 
-	public function __toString()
+	public function __toString(): string
 	{
 		return (string) $this->decorated;
 	}
 
-	public static function getInstance($date = 'now', $tz = null)
+	public static function getInstance(string $date = 'now', $tz = null): self
 	{
 		$coreObject = new Date($date, $tz);
 
 		return new DateDecorator($coreObject);
 	}
 
-	public function dayToString($day, $abbr = false)
+	public function dayToString(int $day, bool $abbr = false): string
 	{
 		return $this->decorated->dayToString($day, $abbr);
 	}
 
-	public function calendar($format, $local = false, $translate = true)
+	public function calendar(string $format, bool $local = false, bool $translate = true): string
 	{
 		return $this->decorated->calendar($format, $local, $translate);
 	}
 
-	public function format($format, $local = false, $translate = true)
+	public function format($format, bool $local = false, bool $translate = true): string
 	{
 		return $this->decorated->format($format, $local, $translate);
 	}
 
-	public function getOffsetFromGmt($hours = false)
+	public function getOffsetFromGmt(bool $hours = false): float
 	{
 		return $this->decorated->getOffsetFromGMT($hours);
 	}
 
-	public function monthToString($month, $abbr = false)
+	public function monthToString(int $month, bool $abbr = false)
 	{
 		return $this->monthToString($month, $abbr);
 	}
 
-	public function setTimezone($tz)
+	public function setTimezone($tz): Date
 	{
 		return $this->decorated->setTimezone($tz);
 	}
 
-	public function toISO8601($local = false)
+	public function toISO8601(bool $local = false): string
 	{
 		return $this->decorated->toISO8601($local);
 	}
 
-	public function toSql($local = false, JDatabaseDriver $db = null)
+	public function toSql(bool $local = false, JDatabaseDriver $db = null): string
 	{
 		return $this->decorated->toSql($local, $db);
 	}
 
-	public function toRFC822($local = false)
+	public function toRFC822(bool $local = false): string
 	{
 		return $this->decorated->toRFC822($local);
 	}
 
-	public function toUnix()
+	public function toUnix(): int
 	{
 		return $this->decorated->toUnix();
 	}
