@@ -6,7 +6,7 @@
     [X] Database
     [X] Date
     [X] Dispatcher
-    [ ] Download
+    [X] Download
     [ ] Encrypt
     [ ] Event
     [ ] Factory
