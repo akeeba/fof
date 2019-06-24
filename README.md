@@ -1,67 +1,62 @@
 # Framework on Framework [![Build Status](https://travis-ci.org/akeeba/fof.png)](https://travis-ci.org/akeeba/fof)
 
+## WORK IN PROGRESS!
+
+Hi! This is the development branch of FOF 4, the upcoming version of our RAD framework which is being rewritten to cater
+for Joomla! 4 and newer versions of PHP. It's currently in active development. Things may be broken from time to time.
+Please only use it to explore the feasibility of porting your extensions from FOF 3 to FOF 4. Take a look at the 
+MIGRATION_3_TO_4.md document for backwards incompatible changes and information about migrating your component to FOF 4. 
+
 ## What is FOF? 
 
-FOF (Framework on Framework) is a rapid application development framework for Joomla!.
-Unlike other frameworks, it is not standalone. It uses parts of the the Joomla! core
-API while providing its own rewritten MVC classes, keeping a strong resemblance to
-the existing Joomla! MVC API. This means that you don't have to relearn writing Joomla!
-extensions. Instead, you can start being productive from the first day you start using
-it. Our goal is to always support the officially supported LTS versions of Joomla! and
-not break backwards compatibility without a clear deprecation and migration path.
+FOF stands for Framework on Framework. It is a rapid application development (RAD) framework for Joomla!.
 
-## Free Software means collaboration
+Unlike other PHP frameworks you may have used, FOF is not standalone. It is designed to sit on top of the Joomla! API,
+abstracting most of the differences between different Joomla releases so you can write better code, faster, focusing
+only on what matters: your business logic.
 
-The reason of existence of FOSS (Free and Open Source Software) is collaboration between developers. FOF is no exception; it exists because of and for the community of Joomla! developers. It is provided free of charge and with all of the freedoms of the GPL for you to benefit. And in true Free Software spirit, the community aspect is very strong. Participating is easy and fun.
+FOF uses the MVC pattern as its fundamental building block, just like Joomla. Unlike Joomla, it extends the concept by
+adding one Container per component (for the purists: it's really a Service Locator but let's not split hairs). Moreover,
+it abstracts the main entry point of your component through a Dispatcher. Two further important differences are the
+concept of automatically generated Events for most public methods in Controllers, Models and Views as well as the
+support of Blade templates, in a form that's similar (but not identical) to the Blade template language used by Laravel.
+When used right, FOF lets you separate your application into independent, logically organised layers of code which
+promote seperation of concerns and maintainability. FOF is not about code purism and doesn't care about it; it's about
+empowering developers to write smaller, more robust code in a smaller amount of time than with traditional Joomla MVC.
 
-If you want to discuss FOF, there is [a Google Groups mailing list](https://groups.google.com/forum/?hl=en&fromgroups#!forum/frameworkonframework). This is a peer discussion group where developers working with FOF can freely discuss.
+FOF has been in continuous development since 2011. Many of the features and concepts it introduced, such as the service
+locator and the data-driven Model, have already been ported into Joomla 4 itself. Still, FOF proper is a major asset to
+developers as it offers abstraction of Joomla API changes and features which haven't and probably won't make it into
+Joomla itself.
 
-If you have a feature proposal or have found a bug, but you're not sure how to code it yourself, please report it on the list.
+All of the extensions written by Akeeba Ltd make use of FOF. That is to say, as long as we exist as a company you can be
+fairly certain FOF will be maintained and developed further. 
 
-If you have a patch, feel free to fork this project on GitHub (you only need a free account to do that) and send a pull request. Please remember to describe what you intended to achieve to help me review your code faster.
+## Requirements
 
-If you've found a cool hack (in the benign sense of the word, not the malicious one...), something missing from the documentation or have a tip which can help other developers, feel free to edit the Wiki. We're all grown-ups and professionals, I believe there is no need of policing the wiki edits. If you're unsure about whether a wiki edit is appropriate, please ask on the list.
+FOF 4 requires Joomla 3.8 or later and PHP 7.0 or later. It will not work on older Joomla and PHP versions.
 
 ## How to contribute
 
-Thank you for your interest in improving the Joomla! Rapid Application Development Layer (FOF). No matter how small or how big your contribution is, it has the potential to make a great positive impact to hundreds of people. In this short how-to we are going to answer your questions on making this positive change.
+Thank you for your interest in improving FOF! No matter how small or how big your contribution is, it has the potential to make a great positive impact to hundreds of people. In this short how-to we are going to answer your questions on making this positive change.
 
 ### Which code should I be using?
 
-FOF has its code in a separate Git repository hosted on GitHub. You can access it at [https://github.com/akeeba/fof](https://github.com/akeeba/fof).
+Always use the `development` branch in our [GitHub repository](https://github.com/akeeba/fof).
 
-No matter if you want to work on code or documentation we kindly ask you to always use the latest [development branch](https://github.com/akeeba/fof/tree/development) on our Git repository. Before starting to fix / improve something make sure it's not already taken care of in this branch. The core value of FOF is having developers use their time productively.
+Before starting to fix / improve something make sure it's not already taken care of in this branch. The core value of FOF is having developers use their time productively.
 
-### How can I contribute?
-
-Contrary to popular belief, contributing code is *not* the only way to contribute to FOF. Contributions come in many shapes and forms:
-
-* **Help other people**. FOF is up and foremost a project by people for people. As its use increases, more people will have questions about how to do something. Even if you feel relatively inexperienced with it do remember that someone knows *even less* than you. Don't underestimate yourself!
-* **Documentation**. There can never be enough documentation! If you have found a typo, omission, error or if you want to add your tips and tricks it's great.
-* **Docblocks**. The code should be self-documenting, so we have docblocks in the top of each file, class and method. Well, that's the theory. Despite our best intentions, sometimes something is missing or is not up to date. Even though it sounds like a trivial contribution it's anything but!
-* **Code style**. Code is like poetry. Words matter, but formatting them makes the change between a slump of text and a life-changing poem. When our code follows the Joomla! coding standards we're helping other developers read it and improve upon it. If you have spotted some code not following those standards please fix it and we'll be owing you big time.
-* **Unit testing**. The Holy Grail of development is making sure that no matter how many changes we do to it, it's still working without breaking anything. Testing the code ensures that. Manual testing is only possible up to a certain point. Automated testing, in the form of Unit Testing, makes sure that this code quality checks run every time we make a commit. Contributing a Unit Test is definitely one of the most major contributions you can make.
-* **Code**. Code, sweet code. Which developer doesn't like the smell of fresh code in the morning? Fixed a bug? Created a feature? Improved a sample component? Made some other awesome modification to the code? Send a PR, explain what you did (and why) and you're instantly helping scores of people.
-
-In the next sections you can see how to perform each of these contributions.
-
-#### Helping other people
-
-As you probably know we have [a mailing list](https://groups.google.com/forum/#!forum/frameworkonframework) where users of FOF help each other. Quite naturally we have newbies who have some basic questions on the fundamentals of using FOF, to experienced users asking arcane questions. The good news is that for every user with a question there is at least another user with an answer. Most certainly you are the one with answers to someone else's questions.
-
-All we ask you to do is to subscribe to this low volume mailing list and volunteer to answer the questions you know the answer for. If you get it wrong, no worries! Someone else with more experience will come in and help both you and the original poster. This way we all learn something new every day – and this applies even to the people who write FOF.
-
-#### Documentation
+### Contributing to the documentation
 
 [The main documentation of FOF](https://github.com/akeeba/fof/wiki) is located in the [github wiki](https://github.com/akeeba/fof/wiki) in the Git repository.
 
 Make sure you read the "How do I submit a Pull Request" section to find out how to contribute your changes to the project.
 
-#### Code, docblocks and code style
+### Code, docblocks and code style
 
 First make sure that you have checked out the latest development branch. Changes happen on a daily basis, often many times a day. Checking out the latest development branch will ensure you're not trying to improve something already taken care of.
 
-If you are going to touch docblocks and code style only please, please be careful not to make any accidental code changes. If you're dealing with docblocks it's easy for people with commit access to spot any issues; if they see a change in code lines they will know that they have to skip that when committing. Code style changes are actually much tougher as the committer has to go through the original and modified file line-by-line to make sure nothing got inadvertently changes. In order to help them please do small changes at any one time, ideally up to 100 lines of code or less. If you want to make many changes in many files break your work into smaller chunks. If unsure on what to do, ask on the mailing list.
+If you are going to touch docblocks and code style only please, please be careful not to make any accidental code changes. If you're dealing with docblocks it's easy for people with commit access to spot any issues; if they see a change in code lines they will know that they have to skip that when committing. Code style changes are actually much tougher as the committer has to go through the original and modified file line-by-line to make sure nothing got inadvertently changes. In order to help them please do small changes at any one time, ideally up to 100 lines of code or less. If you want to make many changes in many files break your work into smaller chunks. If unsure on what to do, create an issue first.
 
 If you are working on a code change it's always a good idea to first discuss this on the list with Nicholas. He's the lead architect of FOF and he's the most qualified to tell you if your intended change is something that can be included and in which version. Usually changes are included right away, unless there are backwards compatibility issues.
 
@@ -95,6 +90,7 @@ Now go to github.com, into the forked FOF repository under your user account. Cl
 
 In order to build the installation package of this library you need to have
 the following tools:
+
 * A command line environment. bash under Linux / Mac OS X works best. On Windows you will need to run most tools using an elevated privileges (administrator) command prompt.
 * The PHP CLI binary in your path
 * Command line Subversion and Git binaries(*)
@@ -104,69 +100,32 @@ the following tools:
 You will also need the following path structure on your system:
 * `fof` This repository, a.k.a. MAIN directory
 * `buildfiles` [Akeeba Build Tools](https://github.com/akeeba/buildfiles). The name of the directory is important. This is where the master Phing script, also used by FOF to build packages, is located in.
-* `translations` [Akeeba Translations](https://github.com/akeeba/translations). The name of the directory is important. This is where we store all of the language files.
 
 ### Useful Phing tasks
 
-All of the following commands are to be run from the MAIN/build directory.
-Lines starting with $ indicate a Mac OS X / Linux / other *NIX system commands.
-Lines starting with > indicate Windows commands. The starting character ($ or >)
-MUST NOT be typed!
+All of the following commands are to be run from the MAIN/build directory. Best used with a bash or zsh shell, you 
+should also be able to use PowerShell on Windows.
 
 You are advised to NOT distribute the library installation packages you have built yourselves with your components. It
 is best to only use the official library packages released by Akeeba Ltd.
 
-1. Relinking internal files
-
-   This is only required when the buildfiles change.
-
-		$ phing link
-		> phing link
-
 1. Creating a dev release installation package
 
    This creates the installable ZIP packages of the component inside the
-   MAIN/release directory.
+   MAIN/release directory. It also takes care of initializing the repository
+   so you can symlink it to an existing Joomla! installation 
 
-		$ phing git
-		> phing git
+		phing git
+		
+    Please note that the generated ZIP file is written to the `release` directory inside the repository's root.
 
-1. Build the documentation in PDF format
 
-   This creates the documentation in PDF format
+1. Symlink to a Joomla! installation
 
-		$ phing doc-pdf
-		> phing doc-pdf
+   This symlinks to fof folder to your site's libraries/fof40 folder, allowing you to test your changes on a Joomla!
+   installation.
 
-1. Build the documentation in ePub format
-
-   This creates the documentation in ePub format for use with e-readers (also Kindle, iPad, Android tablets, ...)
-
-		$ phing doc-epub
-		> phing doc-epub
-
-   Unlike the other formats, this doesn't generate a single file. Instead, it creates a META-INF and a OEBPS folder in
-   the `release` directory.
-
-1. Build the documentation in HTML format
-
-   This creates the documentation as a single-page PDF file
-
-		$ phing doc-html
-		> phing doc-html
-
-Please note that all generated files (ZIP library packages, PDF files, HTML files) are written to the
-`release` directory inside the repository's root.
-
-## Third Party Links
-
-### Caveat
-
-This section lists FOF (ie, F0F) related links by third parties. 
-
-These links are listed as a courtesy only. Akeeba Limited is not responsible for the content on these sites, nor guarantees the accuracy of any information contain therein. 
-
-### Contribute your links
-
-Submit a PR (see instructions above) and edit this README.md (scroll down to this very section). 
-
+		phing relink -Dsite=/path/to/site
+    
+    Where /path/to/site is the full path to your site's root folder. It must be in the same drive (Windows), volume 
+    (macOS) or mount point (Linux, BSD, etc). 
