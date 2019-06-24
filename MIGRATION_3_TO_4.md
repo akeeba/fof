@@ -224,3 +224,30 @@ As a result of the above we changed the following methods:
 
 Moreover, we have removed the unused $strength parameter from Encrypt\Aes and also modified 
 Encrypt\AesAdapter\AdapterInterface::setEncryptionMode accordingly.
+
+## PHP 7.1 and method declarations
+
+Since the minimum version has been raised to PHP 7.1 we are also changing the method declarations to include parameter
+type hints for scalar types and method return values including nullable types and the special type "void". When this is
+not possible (e.g. a method parameter accepts a string and an array) type checking is implemented in the method, 
+throwing an InvalidArgumentException when the type constraints are violated.
+
+These changes imply that any overrides of the methods need to conform to the new, typed declaration. This may cause
+backwards incompatible breaks in your code.
+
+Furthermore, some of the methods have changed their return type for sanity's sake, again causing backwards incompatible
+changes. Typically, methods which returned some less-than-sane types (e.g. string or boolean false) have had their 
+return type converted to a nullable type (e.g. string or null, denoted by `?string`).
+
+The following classes and interfaces have been refactored:
+
+* FOF40\Platform\PlatformInterface 
+* FOF40\Platform\Base\Platform 
+* FOF40\Platform\Joomla\Platform 
+* FOF40\Platform\FilesystemInterface 
+* FOF40\Platform\Base\Filesysten 
+* FOF40\Platform\Joomla\Filesysten 
+
+The following methods have had their return type changed:
+
+* FOF40\Platform\FilesystemInterface::pathFind() -- FROM string|bool TO string|null

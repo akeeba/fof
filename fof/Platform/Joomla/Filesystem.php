@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Platform\Joomla;
+namespace FOF40\Platform\Joomla;
 
 use FOF40\Container\Container;
 use FOF40\Platform\Base\Filesystem as BaseFilesystem;
@@ -24,7 +24,7 @@ class Filesystem extends BaseFilesystem
 	 *
 	 * @return  bool
 	 */
-	public function fileExists($path)
+	public function fileExists(string $path): bool
 	{
 		return \JFile::exists($path);
 	}
@@ -32,12 +32,12 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Delete a file or array of files
 	 *
-	 * @param   mixed  $file  The file name or an array of file names
+	 * @param mixed $file The file name or an array of file names
 	 *
-	 * @return  boolean  True on success
+	 * @return  bool  True on success
 	 *
 	 */
-	public function fileDelete($file)
+	public function fileDelete($file): bool
 	{
 		return \JFile::delete($file);
 	}
@@ -45,14 +45,14 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Copies a file
 	 *
-	 * @param   string   $src          The path to the source file
-	 * @param   string   $dest         The path to the destination file
-	 * @param   string   $path         An optional base path to prefix to the file names
-	 * @param   boolean  $use_streams  True to use streams
+	 * @param string $src         The path to the source file
+	 * @param string $dest        The path to the destination file
+	 * @param string $path        An optional base path to prefix to the file names
+	 * @param bool   $use_streams True to use streams
 	 *
-	 * @return  boolean  True on success
+	 * @return  bool  True on success
 	 */
-	public function fileCopy($src, $dest, $path = null, $use_streams = false)
+	public function fileCopy(string $src, string $dest, ?string $path = null, bool $use_streams = false): bool
 	{
 		return \JFile::copy($src, $dest, $path, $use_streams);
 	}
@@ -60,13 +60,13 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Write contents to a file
 	 *
-	 * @param   string   $file         The full file path
-	 * @param   string   &$buffer      The buffer to write
-	 * @param   boolean  $use_streams  Use streams
+	 * @param string    $file        The full file path
+	 * @param string   &$buffer      The buffer to write
+	 * @param bool      $use_streams Use streams
 	 *
-	 * @return  boolean  True on success
+	 * @return  bool  True on success
 	 */
-	public function fileWrite($file, &$buffer, $use_streams = false)
+	public function fileWrite(string $file, string &$buffer, bool $use_streams = false): bool
 	{
 		return \JFile::write($file, $buffer, $use_streams);
 	}
@@ -74,13 +74,13 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Checks for snooping outside of the file system root.
 	 *
-	 * @param   string  $path  A file system path to check.
+	 * @param string $path A file system path to check.
 	 *
 	 * @return  string  A cleaned version of the path or exit on error.
 	 *
 	 * @throws  \Exception
 	 */
-	public function pathCheck($path)
+	public function pathCheck(string $path): string
 	{
 		return \JPath::check($path);
 	}
@@ -88,14 +88,14 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Function to strip additional / or \ in a path name.
 	 *
-	 * @param   string  $path  The path to clean.
-	 * @param   string  $ds    Directory separator (optional).
+	 * @param string $path The path to clean.
+	 * @param string $ds   Directory separator (optional).
 	 *
 	 * @return  string  The cleaned path.
 	 *
 	 * @throws  \UnexpectedValueException
 	 */
-	public function pathClean($path, $ds = DIRECTORY_SEPARATOR)
+	public function pathClean(string $path, string $ds = DIRECTORY_SEPARATOR): string
 	{
 		return \JPath::clean($path, $ds);
 	}
@@ -103,12 +103,12 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Searches the directory paths for a given file.
 	 *
-	 * @param   mixed   $paths  An path string or array of path strings to search in
-	 * @param   string  $file   The file name to look for.
+	 * @param mixed  $paths An path string or array of path strings to search in
+	 * @param string $file  The file name to look for.
 	 *
-	 * @return  mixed   The full path and file name for the target file, or boolean false if the file is not found in any of the paths.
+	 * @return  mixed   The full path and file name for the target file, or bool false if the file is not found in any of the paths.
 	 */
-	public function pathFind($paths, $file)
+	public function pathFind($paths, string $file): ?string
 	{
 		return \JPath::find($paths, $file);
 	}
@@ -116,11 +116,11 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Wrapper for the standard file_exists function
 	 *
-	 * @param   string  $path  Folder name relative to installation dir
+	 * @param string $path Folder name relative to installation dir
 	 *
-	 * @return  boolean  True if path is a folder
+	 * @return  bool  True if path is a folder
 	 */
-	public function folderExists($path)
+	public function folderExists(string $path): bool
 	{
 		try
 		{
@@ -135,18 +135,20 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Utility function to read the files in a folder.
 	 *
-	 * @param   string   $path           The path of the folder to read.
-	 * @param   string   $filter         A filter for file names.
-	 * @param   mixed    $recurse        True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full           True to return the full path to the file.
-	 * @param   array    $exclude        Array with names of files which should not be shown in the result.
-	 * @param   array    $excludefilter  Array of filter to exclude
-	 * @param   boolean  $naturalSort    False for asort, true for natsort
+	 * @param string $path          The path of the folder to read.
+	 * @param string $filter        A filter for file names.
+	 * @param mixed  $recurse       True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param bool   $full          True to return the full path to the file.
+	 * @param array  $exclude       Array with names of files which should not be shown in the result.
+	 * @param array  $excludefilter Array of filter to exclude
+	 * @param bool   $naturalSort   False for asort, true for natsort
 	 *
 	 * @return  array  Files in the given folder.
 	 */
-	public function folderFiles($path, $filter = '.', $recurse = false, $full = false, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX'),
-								$excludefilter = array('^\..*', '.*~'), $naturalSort = false)
+	public function folderFiles(string $path, string $filter = '.', bool $recurse = false, bool $full = false,
+	                            array $exclude = [
+		                            '.svn', 'CVS', '.DS_Store', '__MACOSX',
+	                            ], array $excludefilter = ['^\..*', '.*~']): array
 	{
 		// JFolder throws nonsense errors if the path is not a folder
 		try
@@ -155,12 +157,12 @@ class Filesystem extends BaseFilesystem
 		}
 		catch (\Exception $e)
 		{
-			return array();
+			return [];
 		}
 
 		if (!@is_dir($path))
 		{
-			return array();
+			return [];
 		}
 
 		// Now call JFolder
@@ -170,17 +172,18 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Utility function to read the folders in a folder.
 	 *
-	 * @param   string   $path           The path of the folder to read.
-	 * @param   string   $filter         A filter for folder names.
-	 * @param   mixed    $recurse        True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full           True to return the full path to the folders.
-	 * @param   array    $exclude        Array with names of folders which should not be shown in the result.
-	 * @param   array    $excludefilter  Array with regular expressions matching folders which should not be shown in the result.
+	 * @param string $path          The path of the folder to read.
+	 * @param string $filter        A filter for folder names.
+	 * @param mixed  $recurse       True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param bool   $full          True to return the full path to the folders.
+	 * @param array  $exclude       Array with names of folders which should not be shown in the result.
+	 * @param array  $excludefilter Array with regular expressions matching folders which should not be shown in the result.
 	 *
 	 * @return  array  Folders in the given folder.
 	 */
-	public function folderFolders($path, $filter = '.', $recurse = false, $full = false, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX'),
-								  $excludefilter = array('^\..*'))
+	public function folderFolders(string $path, string $filter = '.', bool $recurse = false, bool $full = false, array $exclude = [
+		'.svn', 'CVS', '.DS_Store', '__MACOSX',
+	], array $excludefilter = ['^\..*']): array
 	{
 		// JFolder throws idiotic errors if the path is not a folder
 		try
@@ -189,12 +192,12 @@ class Filesystem extends BaseFilesystem
 		}
 		catch (\Exception $e)
 		{
-			return array();
+			return [];
 		}
 
 		if (!@is_dir($path))
 		{
-			return array();
+			return [];
 		}
 
 		// Now call JFolder
@@ -204,12 +207,12 @@ class Filesystem extends BaseFilesystem
 	/**
 	 * Create a folder -- and all necessary parent folders.
 	 *
-	 * @param   string   $path  A path to create from the base path.
-	 * @param   integer  $mode  Directory permissions to set for folders created. 0755 by default.
+	 * @param string  $path A path to create from the base path.
+	 * @param integer $mode Directory permissions to set for folders created. 0755 by default.
 	 *
-	 * @return  boolean  True if successful.
+	 * @return  bool  True if successful.
 	 */
-	public function folderCreate($path = '', $mode = 0755)
+	public function folderCreate(string $path = '', int $mode = 0755): bool
 	{
 		return \JFolder::create($path, $mode);
 	}

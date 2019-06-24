@@ -329,7 +329,7 @@ class ViewTemplateFinder
 
 					$fileName = $filesystem->pathFind($paths, $filenameToFind);
 
-					if ($fileName)
+					if (!is_null($fileName))
 					{
 						return $fileName;
 					}
@@ -353,7 +353,7 @@ class ViewTemplateFinder
 
 				$fileName = $filesystem->pathFind($paths, $filenameToFind);
 
-				if ($fileName)
+				if (!is_null($fileName))
 				{
 					return $fileName;
 				}

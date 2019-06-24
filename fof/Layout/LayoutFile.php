@@ -77,8 +77,7 @@ class LayoutFile extends FileLayout
 					break;
 				}
 
-				$r              = $filesystem->pathFind($possiblePaths, $fileName);
-				$this->fullPath = $r === false ? null : $r;
+				$this->fullPath = $filesystem->pathFind($possiblePaths, $fileName);
 			}
 		}
 

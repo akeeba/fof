@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Platform;
+namespace FOF40\Platform;
 
 use FOF40\Container\Container;
 
@@ -16,7 +16,7 @@ interface FilesystemInterface
 	/**
 	 * Public constructor.
 	 *
-	 * @param   \FOF40\Container\Container  $c  The component container
+	 * @param \FOF40\Container\Container $c The component container
 	 */
 	public function __construct(Container $c);
 
@@ -27,135 +27,141 @@ interface FilesystemInterface
 	 *
 	 * @return  bool
 	 */
-	public function fileExists($path);
+	public function fileExists(string $path): bool;
 
 	/**
 	 * Delete a file or array of files
 	 *
-	 * @param   mixed  $file  The file name or an array of file names
+	 * @param string|array $file The file name or an array of file names
 	 *
-	 * @return  boolean  True on success
+	 * @return  bool  True on success
 	 *
 	 */
-	public function fileDelete($file);
+	public function fileDelete($file): bool;
 
 	/**
 	 * Copies a file
 	 *
-	 * @param   string   $src          The path to the source file
-	 * @param   string   $dest         The path to the destination file
+	 * @param string $src         The path to the source file
+	 * @param string $dest        The path to the destination file
+	 * @param string $path        An optional base path to prefix to the file names
+	 * @param bool   $use_streams True to use streams
 	 *
-	 * @return  boolean  True on success
+	 * @return  bool  True on success
 	 */
-	public function fileCopy($src, $dest);
+	public function fileCopy(string $src, string $dest, ?string $path = null, bool $use_streams = false): bool;
 
 	/**
 	 * Write contents to a file
 	 *
-	 * @param   string   $file         The full file path
-	 * @param   string   &$buffer      The buffer to write
+	 * @param string    $file        The full file path
+	 * @param string   &$buffer      The buffer to write
+	 * @param bool      $use_streams Use streams
 	 *
-	 * @return  boolean  True on success
+	 * @return  bool  True on success
 	 */
-	public function fileWrite($file, &$buffer);
+	public function fileWrite(string $file, string &$buffer, bool $use_streams = false): bool;
 
 	/**
 	 * Checks for snooping outside of the file system root.
 	 *
-	 * @param   string  $path  A file system path to check.
+	 * @param string $path A file system path to check.
 	 *
 	 * @return  string  A cleaned version of the path or exit on error.
 	 *
 	 * @throws  \Exception
 	 */
-	public function pathCheck($path);
+	public function pathCheck(string $path): string;
 
 	/**
 	 * Function to strip additional / or \ in a path name.
 	 *
-	 * @param   string  $path  The path to clean.
-	 * @param   string  $ds    Directory separator (optional).
+	 * @param string $path The path to clean.
+	 * @param string $ds   Directory separator (optional).
 	 *
 	 * @return  string  The cleaned path.
 	 *
 	 * @throws  \UnexpectedValueException
 	 */
-	public function pathClean($path, $ds = DIRECTORY_SEPARATOR);
+	public function pathClean(string $path, string $ds = DIRECTORY_SEPARATOR): string;
 
 	/**
 	 * Searches the directory paths for a given file.
 	 *
-	 * @param   mixed   $paths  An path string or array of path strings to search in
-	 * @param   string  $file   The file name to look for.
+	 * @param string|array $paths An path string or array of path strings to search in
+	 * @param string       $file  The file name to look for.
 	 *
-	 * @return  mixed   The full path and file name for the target file, or boolean false if the file is not found in any of the paths.
+	 * @return  string|null   The full path and file name for the target file; null if the file is not found in any of the paths.
 	 */
-	public function pathFind($paths, $file);
+	public function pathFind($paths, string $file): ?string;
 
 	/**
 	 * Wrapper for the standard file_exists function
 	 *
-	 * @param   string  $path  Folder name relative to installation dir
+	 * @param string $path Folder name relative to installation dir
 	 *
-	 * @return  boolean  True if path is a folder
+	 * @return  bool  True if path is a folder
 	 */
-	public function folderExists($path);
+	public function folderExists(string $path): bool;
 
 	/**
 	 * Utility function to read the files in a folder.
 	 *
-	 * @param   string   $path           The path of the folder to read.
-	 * @param   string   $filter         A filter for file names.
-	 * @param   mixed    $recurse        True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full           True to return the full path to the file.
-	 * @param   array    $exclude        Array with names of files which should not be shown in the result.
-	 * @param   array    $excludefilter  Array of filter to exclude
+	 * @param string $path          The path of the folder to read.
+	 * @param string $filter        A filter for file names.
+	 * @param mixed  $recurse       True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param bool   $full          True to return the full path to the file.
+	 * @param array  $exclude       Array with names of files which should not be shown in the result.
+	 * @param array  $excludefilter Array of filter to exclude
 	 *
 	 * @return  array  Files in the given folder.
 	 */
-	public function folderFiles($path, $filter = '.', $recurse = false, $full = false, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX'),
-								$excludefilter = array('^\..*', '.*~'));
+	public function folderFiles(string $path, string $filter = '.', bool $recurse = false, bool $full = false,
+	                            array $exclude = [
+		                            '.svn', 'CVS', '.DS_Store', '__MACOSX',
+	                            ], array $excludefilter = ['^\..*', '.*~']): array;
 
 	/**
 	 * Utility function to read the folders in a folder.
 	 *
-	 * @param   string   $path           The path of the folder to read.
-	 * @param   string   $filter         A filter for folder names.
-	 * @param   mixed    $recurse        True to recursively search into sub-folders, or an integer to specify the maximum depth.
-	 * @param   boolean  $full           True to return the full path to the folders.
-	 * @param   array    $exclude        Array with names of folders which should not be shown in the result.
-	 * @param   array    $excludefilter  Array with regular expressions matching folders which should not be shown in the result.
+	 * @param string $path          The path of the folder to read.
+	 * @param string $filter        A filter for folder names.
+	 * @param mixed  $recurse       True to recursively search into sub-folders, or an integer to specify the maximum depth.
+	 * @param bool   $full          True to return the full path to the folders.
+	 * @param array  $exclude       Array with names of folders which should not be shown in the result.
+	 * @param array  $excludefilter Array with regular expressions matching folders which should not be shown in the result.
 	 *
 	 * @return  array  Folders in the given folder.
 	 */
-	public function folderFolders($path, $filter = '.', $recurse = false, $full = false, $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX'),
-								  $excludefilter = array('^\..*'));
+	public function folderFolders(string $path, string $filter = '.', bool $recurse = false, bool $full = false, array $exclude = [
+		'.svn', 'CVS', '.DS_Store', '__MACOSX',
+	], array $excludefilter = ['^\..*']): array;
 
 	/**
 	 * Create a folder -- and all necessary parent folders.
 	 *
-	 * @param   string   $path  A path to create from the base path.
-	 * @param   integer  $mode  Directory permissions to set for folders created. 0755 by default.
+	 * @param string  $path A path to create from the base path.
+	 * @param integer $mode Directory permissions to set for folders created. 0755 by default.
 	 *
-	 * @return  boolean  True if successful.
+	 * @return  bool  True if successful.
 	 */
-	public function folderCreate($path = '', $mode = 0755);
+	public function folderCreate(string $path = '', int $mode = 0755): bool;
 
 	/**
 	 * Gets the extension of a file name
 	 *
-	 * @param   string  $file  The file name
+	 * @param string $file The file name
 	 *
 	 * @return  string  The file extension
 	 */
-	public function getExt($file);
+	public function getExt(string $file): string;
 
 	/**
 	 * Strips the last extension off of a file name
 	 *
-	 * @param   string  $file  The file name
+	 * @param string $file The file name
 	 *
 	 * @return  string  The file name without the extension
 	 */
-	public function stripExt($file);
+	public function stripExt(string $file): string;
 }
