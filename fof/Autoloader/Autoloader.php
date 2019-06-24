@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Autoloader;
+namespace FOF40\Autoloader;
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 
@@ -17,13 +17,13 @@ namespace  FOF40\Autoloader;
 class Autoloader
 {
 	/** @var   array  Lengths of PSR-4 prefixes */
-	private $prefixLengths = array();
+	private $prefixLengths = [];
 
 	/** @var   array  Prefix to directory map */
-	private $prefixDirs = array();
+	private $prefixDirs = [];
 
 	/** @var   array  Fall-back directories */
-	private $fallbackDirs = array();
+	private $fallbackDirs = [];
 
 	/** @var   Autoloader  The static instance of this autoloader */
 	private static $instance;
@@ -31,7 +31,7 @@ class Autoloader
 	/**
 	 * @return Autoloader
 	 */
-	public static function getInstance()
+	public static function getInstance(): self
 	{
 		if (!is_object(self::$instance))
 		{
@@ -46,7 +46,7 @@ class Autoloader
 	 *
 	 * @return  array
 	 */
-	public function getPrefixes()
+	public function getPrefixes(): array
 	{
 		return $this->prefixDirs;
 	}
@@ -56,7 +56,7 @@ class Autoloader
 	 *
 	 * @return  array
 	 */
-	public function getFallbackDirs()
+	public function getFallbackDirs(): array
 	{
 		return $this->fallbackDirs;
 	}
@@ -65,16 +65,21 @@ class Autoloader
 	 * Registers a set of PSR-4 directories for a given namespace, either
 	 * appending or prefixing to the ones previously set for this namespace.
 	 *
-	 * @param   string        $prefix   The prefix/namespace, with trailing '\\'
-	 * @param   array|string  $paths    The PSR-0 base directories
-	 * @param   boolean       $prepend  Whether to prefix the directories
+	 * @param string       $prefix  The prefix/namespace, with trailing '\\'
+	 * @param array|string $paths   The PSR-0 base directories
+	 * @param boolean      $prepend Whether to prefix the directories
 	 *
 	 * @return  $this for chaining
 	 *
 	 * @throws  \InvalidArgumentException  When the prefix is invalid
 	 */
-	public function addMap($prefix, $paths, $prepend = false)
+	public function addMap(string $prefix, $paths, bool $prepend = false): self
 	{
+		if (!is_string($paths) && !is_array($paths))
+		{
+			throw new \InvalidArgumentException(sprintf('%s::%s -- $paths expects a string or array', __CLASS__, __METHOD__));
+		}
+
 		if ($prefix)
 		{
 			$prefix = ltrim($prefix, '\\');
@@ -86,7 +91,7 @@ class Autoloader
 			if ($prepend)
 			{
 				$this->fallbackDirs = array_merge(
-					(array)$paths,
+					(array) $paths,
 					$this->fallbackDirs
 				);
 
@@ -96,7 +101,7 @@ class Autoloader
 			{
 				$this->fallbackDirs = array_merge(
 					$this->fallbackDirs,
-					(array)$paths
+					(array) $paths
 				);
 
 				$this->fallbackDirs = array_unique($this->fallbackDirs);
@@ -111,13 +116,13 @@ class Autoloader
 				throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
 			}
 			$this->prefixLengths[$prefix[0]][$prefix] = $length;
-			$this->prefixDirs[$prefix] = (array)$paths;
+			$this->prefixDirs[$prefix]                = (array) $paths;
 		}
 		elseif ($prepend)
 		{
 			// Prepend directories for an already registered namespace.
 			$this->prefixDirs[$prefix] = array_merge(
-				(array)$paths,
+				(array) $paths,
 				$this->prefixDirs[$prefix]
 			);
 
@@ -128,7 +133,7 @@ class Autoloader
 			// Append directories for an already registered namespace.
 			$this->prefixDirs[$prefix] = array_merge(
 				$this->prefixDirs[$prefix],
-				(array)$paths
+				(array) $paths
 			);
 
 			$this->prefixDirs[$prefix] = array_unique($this->prefixDirs[$prefix]);
@@ -140,7 +145,7 @@ class Autoloader
 	/**
 	 * Does the autoloader have a map for the specified prefix?
 	 *
-	 * @param   string  $prefix
+	 * @param string $prefix
 	 *
 	 * @return  bool
 	 */
@@ -153,8 +158,8 @@ class Autoloader
 	 * Registers a set of PSR-4 directories for a given namespace,
 	 * replacing any others previously set for this namespace.
 	 *
-	 * @param   string        $prefix  The prefix/namespace, with trailing '\\'
-	 * @param   array|string  $paths   The PSR-4 base directories
+	 * @param string       $prefix The prefix/namespace, with trailing '\\'
+	 * @param array|string $paths  The PSR-4 base directories
 	 *
 	 * @return  void
 	 *
@@ -169,7 +174,7 @@ class Autoloader
 
 		if (!$prefix)
 		{
-			$this->fallbackDirs = (array)$paths;
+			$this->fallbackDirs = (array) $paths;
 		}
 		else
 		{
@@ -179,20 +184,20 @@ class Autoloader
 				throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
 			}
 			$this->prefixLengths[$prefix[0]][$prefix] = $length;
-			$this->prefixDirs[$prefix] = (array)$paths;
+			$this->prefixDirs[$prefix]                = (array) $paths;
 		}
 	}
 
 	/**
 	 * Registers this instance as an autoloader.
 	 *
-	 * @param   boolean  $prepend  Whether to prepend the autoloader or not
+	 * @param boolean $prepend Whether to prepend the autoloader or not
 	 *
 	 * @return  void
 	 */
 	public function register($prepend = false)
 	{
-		spl_autoload_register(array($this, 'loadClass'), true, $prepend);
+		spl_autoload_register([$this, 'loadClass'], true, $prepend);
 	}
 
 	/**
@@ -202,13 +207,13 @@ class Autoloader
 	 */
 	public function unregister()
 	{
-		spl_autoload_unregister(array($this, 'loadClass'));
+		spl_autoload_unregister([$this, 'loadClass']);
 	}
 
 	/**
 	 * Loads the given class or interface.
 	 *
-	 * @param   string  $class  The name of the class
+	 * @param string $class The name of the class
 	 *
 	 * @return  boolean|null True if loaded, null otherwise
 	 */
@@ -225,7 +230,7 @@ class Autoloader
 	/**
 	 * Finds the path to the file where the class is defined.
 	 *
-	 * @param   string  $class  The name of the class
+	 * @param string $class The name of the class
 	 *
 	 * @return  string|false  The path if found, false otherwise
 	 */
@@ -271,5 +276,5 @@ class Autoloader
 }
 
 // Register the current namespace with the autoloader
-Autoloader::getInstance()->addMap('FOF40\\', array(realpath(__DIR__ . '/..')));
+Autoloader::getInstance()->addMap('FOF40\\', [realpath(__DIR__ . '/..')]);
 Autoloader::getInstance()->register();
