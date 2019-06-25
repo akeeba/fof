@@ -32,12 +32,11 @@ class Timer
 	 * Public constructor, creates the timer object and calculates the execution
 	 * time limits.
 	 *
-	 * @param   integer  $max_exec_time  Maximum execution time, in seconds
-	 * @param   integer  $runtime_bias   Runtime bias factor, as percent points of the max execution time
+	 * @param integer $max_exec_time Maximum execution time, in seconds
+	 * @param integer $runtime_bias  Runtime bias factor, as percent points of the max execution time
 	 *
-	 * @return  Timer
 	 */
-	public function __construct($max_exec_time = 5, $runtime_bias = 75)
+	public function __construct(int $max_exec_time = 5, int $runtime_bias = 75)
 	{
 		// Initialize start time
 		$this->start_time = microtime(true);
@@ -61,7 +60,7 @@ class Timer
 	 *
 	 * @return  float
 	 */
-	public function getTimeLeft()
+	public function getTimeLeft(): float
 	{
 		return $this->max_exec_time - $this->getRunningTime();
 	}
@@ -72,7 +71,7 @@ class Timer
 	 *
 	 * @return  float
 	 */
-	public function getRunningTime()
+	public function getRunningTime(): float
 	{
 		return microtime(true) - $this->start_time;
 	}
@@ -82,7 +81,7 @@ class Timer
 	 *
 	 * @return  void
 	 */
-	public function resetTime()
+	public function resetTime(): void
 	{
 		$this->start_time = microtime(true);
 	}
