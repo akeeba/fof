@@ -10,7 +10,7 @@
     [X] Encrypt
     [X] Event
     [X] Factory
-    [ ] Inflector
+    [X] Inflector
     [ ] Input
     [ ] Layout
     [ ] Params
@@ -26,6 +26,7 @@
     [ ] View
     [ ] Model
     [ ] ViewTemplates
+
 
 
 [ ] Test ViewTemplateFinder
