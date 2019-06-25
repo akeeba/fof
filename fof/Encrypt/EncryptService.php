@@ -83,7 +83,7 @@ class EncryptService
 	 *
 	 * @since   3.3.2
 	 */
-	public function encrypt($data)
+	public function encrypt(string $data): string
 	{
 		if (!is_object($this->aes))
 		{
@@ -104,7 +104,7 @@ class EncryptService
 	 *
 	 * @since   3.3.2
 	 */
-	public function decrypt($data)
+	public function decrypt(string $data): string
 	{
 		if (substr($data, 0, 12) != '###AES128###')
 		{
@@ -133,7 +133,7 @@ class EncryptService
 	 *
 	 * @return  void
 	 */
-	private function initialize(Phpfunc $phpFunc = null)
+	private function initialize(Phpfunc $phpFunc = null): void
 	{
 		if (is_object($this->aes))
 		{
@@ -163,7 +163,7 @@ class EncryptService
 	 *
 	 * @since   3.3.2
 	 */
-	private function getPasswordFilePath()
+	private function getPasswordFilePath(): string
 	{
 		$default  = 'encrypt_service_key';
 		$baseName = $this->container->appConfig->get('container.encrypt_key_file', $default);
@@ -181,7 +181,7 @@ class EncryptService
 	 *
 	 * @since   3.3.2
 	 */
-	private function getConstantName()
+	private function getConstantName(): string
 	{
 		$default = strtoupper($this->container->bareComponentName) . '_FOF_ENCRYPT_SERVICE_SECRETKEY';
 
@@ -195,7 +195,7 @@ class EncryptService
 	 *
 	 * @since   3.3.2
 	 */
-	private function getPassword()
+	private function getPassword(): string
 	{
 		$constantName = $this->getConstantName();
 
@@ -253,7 +253,7 @@ class EncryptService
 	 *
 	 * @since   3.3.2
 	 */
-	private function makePasswordFile()
+	private function makePasswordFile(): void
 	{
 		// Get the path to the new secret key file.
 		$filePath = $this->getPasswordFilePath();

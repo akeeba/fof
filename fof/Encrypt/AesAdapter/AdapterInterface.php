@@ -22,9 +22,9 @@ interface AdapterInterface
 	 *
 	 * @param   string  $mode      Choose between CBC (recommended) or ECB
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
-	public function setEncryptionMode($mode = 'cbc');
+	public function setEncryptionMode(string $mode = 'cbc'): void;
 
 	/**
 	 * Encrypts a string. Returns the raw binary ciphertext.
@@ -38,7 +38,7 @@ interface AdapterInterface
 	 *
 	 * @return  string  The raw encrypted binary string.
 	 */
-	public function encrypt($plainText, $key, $iv = null);
+	public function encrypt(string $plainText, string $key, ?string $iv = null): string;
 
 	/**
 	 * Decrypts a string. Returns the raw binary plaintext.
@@ -56,19 +56,19 @@ interface AdapterInterface
 	 *
 	 * @return  string  The raw unencrypted binary string.
 	 */
-	public function decrypt($cipherText, $key);
+	public function decrypt(string $cipherText, string $key): string;
 
 	/**
 	 * Returns the encryption block size in bytes
 	 *
 	 * @return  int
 	 */
-	public function getBlockSize();
+	public function getBlockSize(): int;
 
 	/**
 	 * Is this adapter supported?
 	 *
 	 * @return  bool
 	 */
-	public function isSupported(Phpfunc $phpfunc = null);
+	public function isSupported(Phpfunc $phpfunc = null): bool;
 }

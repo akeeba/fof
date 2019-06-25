@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Encrypt;
+namespace FOF40\Encrypt;
 
 use FOF40\Encrypt\AesAdapter\AdapterInterface;
 use FOF40\Encrypt\AesAdapter\OpenSSL;
@@ -46,10 +46,10 @@ class Aes
 	/**
 	 * Initialise the AES encryption object.
 	 *
-	 * @param   string   $mode      Encryption mode. Can be ebc or cbc. We recommend using cbc.
-	 * @param   Phpfunc  $phpfunc   For testing
+	 * @param string  $mode    Encryption mode. Can be ebc or cbc. We recommend using cbc.
+	 * @param Phpfunc $phpfunc For testing
 	 */
-	public function __construct($mode = 'cbc', Phpfunc $phpfunc = null)
+	public function __construct(string $mode = 'cbc', Phpfunc $phpfunc = null)
 	{
 		$this->adapter = new OpenSSL();
 
@@ -57,77 +57,11 @@ class Aes
 	}
 
 	/**
-	 * Sets the password for this instance.
-	 *
-	 * @param   string $password   The password (either user-provided password or binary encryption key) to use
-	 */
-	public function setPassword($password)
-	{
-		$this->key = $password;
-	}
-
-	/**
-	 * Encrypts a string using AES
-	 *
-	 * @param   string $stringToEncrypt The plaintext to encrypt
-	 * @param   bool   $base64encoded   Should I Base64-encode the result?
-	 *
-	 * @return   string  The cryptotext. Please note that the first 16 bytes of
-	 *                   the raw string is the IV (initialisation vector) which
-	 *                   is necessary for decoding the string.
-	 */
-	public function encryptString($stringToEncrypt, $base64encoded = true)
-	{
-		$blockSize = $this->adapter->getBlockSize();
-		$randVal   = new Randval();
-		$iv        = $randVal->generate($blockSize);
-
-		$key        = $this->getExpandedKey($blockSize, $iv);
-		$cipherText = $this->adapter->encrypt($stringToEncrypt, $key, $iv);
-
-		// Optionally pass the result through Base64 encoding
-		if ($base64encoded)
-		{
-			$cipherText = base64_encode($cipherText);
-		}
-
-		// Return the result
-		return $cipherText;
-	}
-
-	/**
-	 * Decrypts a ciphertext into a plaintext string using AES
-	 *
-	 * @param   string $stringToDecrypt The ciphertext to decrypt. The first 16 bytes of the raw string must contain
-	 *                                  the IV (initialisation vector).
-	 * @param   bool   $base64encoded   Should I Base64-decode the data before decryption?
-	 *
-	 * @return   string  The plain text string
-	 */
-	public function decryptString($stringToDecrypt, $base64encoded = true)
-	{
-		if ($base64encoded)
-		{
-			$stringToDecrypt = base64_decode($stringToDecrypt);
-		}
-
-		// Extract IV
-		$iv_size = $this->adapter->getBlockSize();
-		$iv      = substr($stringToDecrypt, 0, $iv_size);
-		$key     = $this->getExpandedKey($iv_size, $iv);
-
-		// Decrypt the data
-		$plainText = $this->adapter->decrypt($stringToDecrypt, $key);
-
-		return $plainText;
-	}
-
-	/**
 	 * Is AES encryption supported by this PHP installation?
 	 *
 	 * @return boolean
 	 */
-	public static function isSupported(Phpfunc $phpfunc = null)
+	public static function isSupported(Phpfunc $phpfunc = null): bool
 	{
 		if (!is_object($phpfunc) || !($phpfunc instanceof $phpfunc))
 		{
@@ -167,12 +101,83 @@ class Aes
 	}
 
 	/**
-	 * @param $blockSize
-	 * @param $iv
+	 * Sets the password for this instance.
+	 *
+	 * @param string $password The password (either user-provided password or binary encryption key) to use
+	 */
+	public function setPassword(string $password)
+	{
+		$this->key = $password;
+	}
+
+	/**
+	 * Encrypts a string using AES
+	 *
+	 * @param string $stringToEncrypt The plaintext to encrypt
+	 * @param bool   $base64encoded   Should I Base64-encode the result?
+	 *
+	 * @return   string  The cryptotext. Please note that the first 16 bytes of
+	 *                   the raw string is the IV (initialisation vector) which
+	 *                   is necessary for decoding the string.
+	 */
+	public function encryptString(string $stringToEncrypt, bool $base64encoded = true): string
+	{
+		$blockSize = $this->adapter->getBlockSize();
+		$randVal   = new Randval();
+		$iv        = $randVal->generate($blockSize);
+
+		$key        = $this->getExpandedKey($blockSize, $iv);
+		$cipherText = $this->adapter->encrypt($stringToEncrypt, $key, $iv);
+
+		// Optionally pass the result through Base64 encoding
+		if ($base64encoded)
+		{
+			$cipherText = base64_encode($cipherText);
+		}
+
+		// Return the result
+		return $cipherText;
+	}
+
+	/**
+	 * Decrypts a ciphertext into a plaintext string using AES
+	 *
+	 * @param string $stringToDecrypt   The ciphertext to decrypt. The first 16 bytes of the raw string must contain
+	 *                                  the IV (initialisation vector).
+	 * @param bool   $base64encoded     Should I Base64-decode the data before decryption?
+	 *
+	 * @return   string  The plain text string
+	 */
+	public function decryptString(string $stringToDecrypt, bool $base64encoded = true): string
+	{
+		if ($base64encoded)
+		{
+			$stringToDecrypt = base64_decode($stringToDecrypt);
+		}
+
+		// Extract IV
+		$iv_size = $this->adapter->getBlockSize();
+		$iv      = substr($stringToDecrypt, 0, $iv_size);
+		$key     = $this->getExpandedKey($iv_size, $iv);
+
+		// Decrypt the data
+		$plainText = $this->adapter->decrypt($stringToDecrypt, $key);
+
+		return $plainText;
+	}
+
+	/**
+	 * Performs key expansion using PBKDF2
+	 *
+	 * CAVEAT: If your password ($this->key) is the same size as $blockSize you don't get key expansion. Practically,
+	 * it means that you should avoid using 16 byte passwords.
+	 *
+	 * @param int    $blockSize Block size in bytes. This should always be 16 since we only deal with 128-bit AES here.
+	 * @param string $iv        The initial vector. Use Randval::generate($blockSize)
 	 *
 	 * @return string
 	 */
-	public function getExpandedKey($blockSize, $iv)
+	public function getExpandedKey(int $blockSize, string $iv): string
 	{
 		$key        = $this->key;
 		$passLength = strlen($key);
@@ -193,6 +198,11 @@ class Aes
 	}
 }
 
+/**
+ * Compatibility mode for servers lacking the hash_pbkdf2 PHP function (typically, the hash extension is installed but
+ * PBKDF2 was not compiled into it). This is really slow but since it's used sparingly you shouldn't notice a
+ * substantial performance degradation under most circumstances.
+ */
 if (!function_exists('hash_pbkdf2'))
 {
 	function hash_pbkdf2($algo, $password, $salt, $count, $length = 0, $raw_output = false)

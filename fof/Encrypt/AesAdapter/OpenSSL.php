@@ -49,7 +49,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		}
 	}
 
-	public function setEncryptionMode($mode = 'cbc')
+	public function setEncryptionMode(string $mode = 'cbc'): void
 	{
 		static $availableAlgorithms = null;
 		static $defaultAlgo = 'aes-128-cbc';
@@ -86,7 +86,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		$this->method = $algo;
 	}
 
-	public function encrypt($plainText, $key, $iv = null)
+	public function encrypt(string $plainText, string $key, ?string $iv = null): string
 	{
 		$iv_size = $this->getBlockSize();
 		$key     = $this->resizeKey($key, $iv_size);
@@ -105,7 +105,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		return $cipherText;
 	}
 
-	public function decrypt($cipherText, $key)
+	public function decrypt(string $cipherText, string $key): string
 	{
 		$iv_size    = $this->getBlockSize();
 		$key        = $this->resizeKey($key, $iv_size);
@@ -116,7 +116,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		return $plainText;
 	}
 
-	public function isSupported(Phpfunc $phpfunc = null)
+	public function isSupported(Phpfunc $phpfunc = null): bool
 	{
 		if (!is_object($phpfunc) || !($phpfunc instanceof $phpfunc))
 		{
@@ -178,7 +178,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 	/**
 	 * @return int
 	 */
-	public function getBlockSize()
+	public function getBlockSize(): int
 	{
 		return openssl_cipher_iv_length($this->method);
 	}

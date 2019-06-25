@@ -6,7 +6,8 @@
 		"php": ">=5.6.0",
       "ext-curl": "*",
       "ext-simplexml": "*",
-      "ext-json": "*"
+      "ext-json": "*",
+      "ext-openssl": "*"
     },
 	"keywords": ["framework","joomla","mvc","rad"],
 	"homepage": "https://github.com/akeeba/fof",

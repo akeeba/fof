@@ -7,7 +7,7 @@
     [X] Date
     [X] Dispatcher
     [X] Download
-    [ ] Encrypt
+    [X] Encrypt
     [ ] Event
     [ ] Factory
     [ ] Hal

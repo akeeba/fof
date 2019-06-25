@@ -29,7 +29,7 @@ class Base32
 	 *
 	 * @return  string  String of 0's and 1's
 	 */
-	private function str2bin($str)
+	private function str2bin(string $str): string
 	{
 		$chrs = unpack('C*', $str);
 
@@ -45,7 +45,7 @@ class Base32
 	 *
 	 * @throws  \InvalidArgumentException
 	 */
-	private function bin2str($str)
+	private function bin2str(string $str): string
 	{
 		if (strlen($str) % 8 > 0)
 		{
@@ -75,7 +75,7 @@ class Base32
 	 *
 	 * @throws  \InvalidArgumentException
 	 */
-	private function fromBin($str)
+	private function fromBin(string $str): string
 	{
 		if (strlen($str) % 8 > 0)
 		{
@@ -117,7 +117,7 @@ class Base32
 	 *
 	 * @throws  \InvalidArgumentException
 	 */
-	private function toBin($str)
+	private function toBin(string $str): string
 	{
 		if (!preg_match('/^[' . self::CSRFC3548 . ']+$/', $str))
 		{
@@ -150,7 +150,7 @@ class Base32
 	 *
 	 * @return  string  The converted base32 string
 	 */
-	public function encode($str)
+	public function encode(string $str): string
 	{
 		return $this->fromBin($this->str2bin($str));
 	}
@@ -163,7 +163,7 @@ class Base32
 	 *
 	 * @return  string  The normal string
 	 */
-	public function decode($str)
+	public function decode(string $str): string
 	{
 		$str = strtoupper($str);
 
@@ -180,7 +180,7 @@ class Base32
 	 *
 	 * @access private
 	 */
-	private function mapCharset($str)
+	private function mapCharset(string $str): string
 	{
 		// Huh!
 		$x = self::CSRFC3548;
@@ -198,7 +198,7 @@ class Base32
 	 *
 	 * @access private
 	 */
-	private function mapBin($chr)
+	private function mapBin(string $chr): string
 	{
 		return sprintf('%08b', strpos(self::CSRFC3548, $chr));
 	}

@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Encrypt;
+namespace FOF40\Encrypt;
 
 // Protect from unauthorized access
 defined('_JEXEC') or die();
@@ -13,11 +13,11 @@ defined('_JEXEC') or die();
 interface RandvalInterface
 {
 	/**
-	 *
 	 * Returns a cryptographically secure random value.
 	 *
-	 * @return string
+	 * @param int $bytes How many random bytes do you want to be returned?
 	 *
+	 * @return string
 	 */
-	public function generate();
+	public function generate(int $bytes = 32): string;
 }

@@ -17,6 +17,7 @@ defined('_JEXEC') or die;
  * @method  function_exists(string $function)
  * @method  mcrypt_list_algorithms()
  * @method  hash_algos()
+ * @method openssl_get_cipher_methods()
  */
 class Phpfunc
 {

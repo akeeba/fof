@@ -23,7 +23,7 @@ abstract class AbstractAdapter
 	 *
 	 * @return  null|string  Null if $key is null, treated string of $size byte length otherwise
 	 */
-	public function resizeKey($key, $size)
+	public function resizeKey(string $key, int $size): ?string
 	{
 		if (empty($key))
 		{
@@ -63,7 +63,7 @@ abstract class AbstractAdapter
 	 *
 	 * @return  string  The zero bytes to append to the string to zero pad it to $blockSize
 	 */
-	protected function getZeroPadding($string, $blockSize)
+	protected function getZeroPadding(string $string, int $blockSize): string
 	{
 		$stringSize = strlen($string);
 
