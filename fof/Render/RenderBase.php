@@ -9,6 +9,7 @@ namespace  FOF40\Render;
 
 use FOF40\Container\Container;
 use Joomla\Registry\Registry;
+use stdClass;
 
 defined('_JEXEC') or die;
 
@@ -48,7 +49,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	public function setOption($key, $value)
+	function setOption(string $key, string $value): void
 	{
 		$this->optionsRegistry->set($key, $value);
 	}
@@ -60,7 +61,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	public function setOptions(array $options)
+	function setOptions(array $options): void
 	{
 		foreach ($options as $key => $value)
 		{
@@ -76,7 +77,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  mixed  The parameter value
 	 */
-	public function getOption($key, $default = null)
+	function getOption(string $key, ?string $default = null): string
 	{
 		return $this->optionsRegistry->get($key, $default);
 	}
@@ -84,9 +85,9 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Returns the information about this renderer
 	 *
-	 * @return  \stdClass
+	 * @return  stdClass
 	 */
-	public function getInformation()
+	function getInformation(): stdClass
 	{
 		$classParts = explode('\\', get_class($this));
 
@@ -105,7 +106,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function preRender($view, $task)
+	function preRender(string $view, string $task): void
 	{
 	}
 
@@ -117,7 +118,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function postRender($view, $task)
+	function postRender(string $view, string $task): void
 	{
 	}
 
@@ -131,7 +132,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function renderCategoryLinkbar()
+	function renderCategoryLinkbar(): void
 	{
 		throw new \LogicException(sprintf('Renderer class %s must implement the %s method', get_class($this), __METHOD__));
 	}
@@ -143,7 +144,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	protected function openPageWrapper($classes)
+	protected function openPageWrapper(array $classes): void
 	{
 		$removeClasses = $this->getOption('remove_wrapper_classes', []);
 
@@ -187,7 +188,7 @@ HTML;
 	 *
 	 * @return  void
 	 */
-	protected function closePageWrapper()
+	protected function closePageWrapper(): void
 	{
 		echo "</div>\n";
 	}

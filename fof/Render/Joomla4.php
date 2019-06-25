@@ -39,7 +39,7 @@ class Joomla4 extends Joomla
 	 *
 	 * @return  void
 	 */
-	protected function openPageWrapper($classes)
+	protected function openPageWrapper(array $classes): void
 	{
 		$classes[] = 'akeeba-renderer-joomla4';
 

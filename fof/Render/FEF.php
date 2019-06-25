@@ -56,7 +56,7 @@ class FEF extends Joomla
 	 *
 	 * @return  void
 	 */
-	public function preRender($view, $task)
+	function preRender(string $view, string $task): void
 	{
 		$useReset    = $this->getOption('fef_reset', true);
 		$useFEF      = $this->getOption('load_fef', true);
@@ -86,7 +86,7 @@ class FEF extends Joomla
 	 *
 	 * @return  void
 	 */
-	protected function openPageWrapper($classes)
+	protected function openPageWrapper(array $classes): void
 	{
 		$useDarkMode = $this->getOption('fef_dark', false);
 
@@ -145,7 +145,7 @@ HTML;
 	 *
 	 * @return  void
 	 */
-	protected function closePageWrapper()
+	protected function closePageWrapper(): void
 	{
 		echo <<< HTML
 </div>
@@ -157,7 +157,7 @@ HTML;
 	/**
 	 * Loads the custom CSS files defined in the custom_css renderer option.
 	 */
-	private function loadCustomCss()
+	private function loadCustomCss(): void
 	{
 		$custom_css_raw = $this->getOption('custom_css', '');
 		$custom_css_raw = trim($custom_css_raw);

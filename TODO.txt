@@ -13,9 +13,9 @@
     [X] Inflector
     [X] Input
     [X] Layout
-    [ ] Params
+    [X] Params
     [X] Platform
-    [ ] Render
+    [X] Render
     [ ] Template
     [ ] Timer
     [ ] Toolbar

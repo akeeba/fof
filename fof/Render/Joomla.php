@@ -5,8 +5,9 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Render;
+namespace FOF40\Render;
 
+use Fakeapp\Site\Toolbar\Toolbar;
 use FOF40\Container\Container;
 use JHtmlSidebar;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -30,8 +31,8 @@ class Joomla extends RenderBase implements RenderInterface
 {
 	public function __construct(Container $container)
 	{
-		$this->priority	 = 30;
-		$this->enabled	 = true;
+		$this->priority = 30;
+		$this->enabled  = true;
 
 		parent::__construct($container);
 	}
@@ -39,21 +40,21 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Echoes any HTML to show before the view template
 	 *
-	 * @param   string    $view    The current view
-	 * @param   string    $task    The current task
+	 * @param string $view The current view
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	public function preRender($view, $task)
+	function preRender(string $view, string $task): void
 	{
-		$input = $this->container->input;
+		$input    = $this->container->input;
 		$platform = $this->container->platform;
 
-		$format	 = $input->getCmd('format', 'html');
+		$format = $input->getCmd('format', 'html');
 
 		if (empty($format))
 		{
-			$format	 = 'html';
+			$format = 'html';
 		}
 
 		if ($format != 'html')
@@ -74,17 +75,17 @@ class Joomla extends RenderBase implements RenderInterface
 		$minorVersion = $versionParts[0] . $versionParts[1];
 		$majorVersion = $versionParts[0];
 
-		$classes = array();
+		$classes = [];
 
 		if ($platform->isBackend())
 		{
-			$area = $platform->isBackend() ? 'admin' : 'site';
-			$option = $input->getCmd('option', '');
+			$area            = $platform->isBackend() ? 'admin' : 'site';
+			$option          = $input->getCmd('option', '');
 			$viewForCssClass = $input->getCmd('view', '');
-			$layout = $input->getCmd('layout', '');
+			$layout          = $input->getCmd('layout', '');
 			$taskForCssClass = $input->getCmd('task', '');
 
-			$classes = array(
+			$classes = [
 				'joomla-version-' . $majorVersion,
 				'joomla-version-' . $minorVersion,
 				$area,
@@ -98,7 +99,7 @@ class Joomla extends RenderBase implements RenderInterface
 				'j-toggle-main',
 				'j-toggle-transition',
 				'row-fluid',
-			);
+			];
 
 			$classes = array_unique($classes);
 		}
@@ -116,21 +117,21 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Echoes any HTML to show after the view template
 	 *
-	 * @param   string    $view    The current view
-	 * @param   string    $task    The current task
+	 * @param string $view The current view
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	public function postRender($view, $task)
+	function postRender(string $view, string $task): void
 	{
-		$input = $this->container->input;
+		$input    = $this->container->input;
 		$platform = $this->container->platform;
 
-		$format	 = $input->getCmd('format', 'html');
+		$format = $input->getCmd('format', 'html');
 
 		if (empty($format))
 		{
-			$format	 = 'html';
+			$format = 'html';
 		}
 
 		if ($format != 'html')
@@ -151,12 +152,12 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Renders the submenu (link bar)
 	 *
-	 * @param   string    $view    The active view name
-	 * @param   string    $task    The current task
+	 * @param string $view The active view name
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbar($view, $task)
+	protected function renderLinkbar(string $view, string $task): void
 	{
 		$style = $this->getOption('linkbar_style', 'joomla');
 
@@ -177,12 +178,12 @@ class Joomla extends RenderBase implements RenderInterface
 	 * Renders the submenu (link bar) in F0F's classic style, using a Bootstrapped
 	 * tab bar.
 	 *
-	 * @param   string    $view    The active view name
-	 * @param   string    $task    The current task
+	 * @param string $view The active view name
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbar_classic($view, $task)
+	protected function renderLinkbar_classic(string $view, string $task): void
 	{
 		$platform = $this->container->platform;
 
@@ -322,12 +323,12 @@ class Joomla extends RenderBase implements RenderInterface
 	 * is a list of bar separated links, on Joomla! 3 it's a sidebar at the
 	 * left-hand side of the page.
 	 *
-	 * @param   string    $view    The active view name
-	 * @param   string    $task    The current task
+	 * @param string $view The active view name
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbar_joomla($view, $task)
+	protected function renderLinkbar_joomla(string $view, string $task)
 	{
 		$platform = $this->container->platform;
 
@@ -352,11 +353,11 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Render the linkbar
 	 *
-	 * @param   JoomlaToolbar $toolbar A toolbar object
+	 * @param Toolbar $toolbar A toolbar object
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbarItems($toolbar)
+	protected function renderLinkbarItems(Toolbar $toolbar): void
 	{
 		$links = $toolbar->getLinks();
 
@@ -387,12 +388,12 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Renders the toolbar buttons
 	 *
-	 * @param   string    $view    The active view name
-	 * @param   string    $task    The current task
+	 * @param string $view The active view name
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	protected function renderButtons($view, $task)
+	protected function renderButtons(string $view, string $task): void
 	{
 		$platform = $this->container->platform;
 
@@ -402,8 +403,8 @@ class Joomla extends RenderBase implements RenderInterface
 		}
 
 		// Do not render buttons unless we are in the the frontend area and we are asked to do so
-		$toolbar				 = $this->container->toolbar;
-		$renderFrontendButtons	 = $toolbar->getRenderFrontendButtons();
+		$toolbar               = $this->container->toolbar;
+		$renderFrontendButtons = $toolbar->getRenderFrontendButtons();
 
 		// Load main backend language, in order to display toolbar strings
 		// (JTOOLBAR_BACK, JTOOLBAR_PUBLISH etc etc)
@@ -414,64 +415,64 @@ class Joomla extends RenderBase implements RenderInterface
 			return;
 		}
 
-		$bar	 = JoomlaToolbar::getInstance('toolbar');
-		$items	 = $bar->getItems();
+		$bar   = JoomlaToolbar::getInstance('toolbar');
+		$items = $bar->getItems();
 
-		$substitutions = array(
-			'icon-32-new'		 => 'icon-plus',
-			'icon-32-publish'	 => 'icon-eye-open',
-			'icon-32-unpublish'	 => 'icon-eye-close',
-			'icon-32-delete'	 => 'icon-trash',
-			'icon-32-edit'		 => 'icon-edit',
-			'icon-32-copy'		 => 'icon-th-large',
-			'icon-32-cancel'	 => 'icon-remove',
-			'icon-32-back'		 => 'icon-circle-arrow-left',
-			'icon-32-apply'		 => 'icon-ok',
-			'icon-32-save'		 => 'icon-hdd',
-			'icon-32-save-new'	 => 'icon-repeat',
-		);
+		$substitutions = [
+			'icon-32-new'       => 'icon-plus',
+			'icon-32-publish'   => 'icon-eye-open',
+			'icon-32-unpublish' => 'icon-eye-close',
+			'icon-32-delete'    => 'icon-trash',
+			'icon-32-edit'      => 'icon-edit',
+			'icon-32-copy'      => 'icon-th-large',
+			'icon-32-cancel'    => 'icon-remove',
+			'icon-32-back'      => 'icon-circle-arrow-left',
+			'icon-32-apply'     => 'icon-ok',
+			'icon-32-save'      => 'icon-hdd',
+			'icon-32-save-new'  => 'icon-repeat',
+		];
 
 		if (isset(JoomlaFactory::getApplication()->JComponentTitle))
 		{
-			$title	 = JoomlaFactory::getApplication()->JComponentTitle;
+			$title = JoomlaFactory::getApplication()->JComponentTitle;
 		}
 		else
 		{
 			$title = '';
 		}
 
-		$html	 = array();
-		$actions = array();
+		$html    = [];
+		$actions = [];
 
 		// We have to use the same id we're using inside other renderers
-		$html[]	 = '<div class="well" id="FOFHeaderContainer">';
-		$html[]  =      '<div class="titleContainer">'.$title.'</div>';
-		$html[]  =      '<div class="buttonsContainer">';
+		$html[] = '<div class="well" id="FOFHeaderContainer">';
+		$html[] = '<div class="titleContainer">' . $title . '</div>';
+		$html[] = '<div class="buttonsContainer">';
 
 		foreach ($items as $node)
 		{
-			$type	 = $node[0];
-			$button	 = $bar->loadButtonType($type);
+			$type   = $node[0];
+			$button = $bar->loadButtonType($type);
 
 			if ($button !== false)
 			{
 				/**
-				if (method_exists($button, 'fetchId'))
-				{
-				$id = call_user_func_array(array(&$button, 'fetchId'), $node);
-				}
-				else
-				{
-				$id = null;
-				}
-				/**/
+				 * if (method_exists($button, 'fetchId'))
+				 * {
+				 * $id = call_user_func_array(array(&$button, 'fetchId'), $node);
+				 * }
+				 * else
+				 * {
+				 * $id = null;
+				 * }
+				 * /**/
 
-				$action	    = call_user_func_array(array(&$button, 'fetchButton'), $node);
-				$action	    = str_replace('class="toolbar"', 'class="toolbar btn"', $action);
-				$action	    = str_replace('<span ', '<i ', $action);
-				$action	    = str_replace('</span>', '</i>', $action);
-				$action	    = str_replace(array_keys($substitutions), array_values($substitutions), $action);
-				$actions[]	= $action;
+				$action    = call_user_func_array([&$button, 'fetchButton'], $node);
+				$action    = str_replace('class="toolbar"', 'class="toolbar btn"', $action);
+				$action    = str_replace('<span ', '<i ', $action);
+				$action    = str_replace('</span>', '</i>', $action);
+				$action    = str_replace(array_keys($substitutions), array_values($substitutions), $action);
+				$actions[] = $action;
 			}
 		}
 
@@ -485,11 +486,11 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Opens the wrapper DIV element. Our component's output will be inside this wrapper.
 	 *
-	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
+	 * @param array $classes An array of additional CSS classes to add to the outer page wrapper element.
 	 *
 	 * @return  void
 	 */
-	protected function openPageWrapper($classes)
+	protected function openPageWrapper(array $classes): void
 	{
 		$classes[] = 'akeeba-renderer-joomla';
 

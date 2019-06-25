@@ -5,9 +5,10 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Render;
+namespace FOF40\Render;
 
 use FOF40\Container\Container;
+use stdClass;
 
 defined('_JEXEC') or die;
 
@@ -16,7 +17,7 @@ interface RenderInterface
 	/**
 	 * Public constructor
 	 *
-	 * @param   Container  $container  The container we are attached to
+	 * @param Container $container The container we are attached to
 	 */
 	function __construct(Container $container);
 
@@ -25,27 +26,27 @@ interface RenderInterface
 	 *
 	 * @return object
 	 */
-	function getInformation();
+	function getInformation(): stdClass;
 
 	/**
 	 * Echoes any HTML to show before the view template
 	 *
-	 * @param   string $view The current view
-	 * @param   string $task The current task
+	 * @param string $view The current view
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	function preRender($view, $task);
+	function preRender(string $view, string $task): void;
 
 	/**
 	 * Echoes any HTML to show after the view template
 	 *
-	 * @param   string $view The current view
-	 * @param   string $task The current task
+	 * @param string $view The current view
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
-	function postRender($view, $task);
+	function postRender(string $view, string $task): void;
 
 	/**
 	 * Renders the submenu (link bar) for a category view when it is used in a
@@ -57,34 +58,34 @@ interface RenderInterface
 	 *
 	 * @return  void
 	 */
-	function renderCategoryLinkbar();
+	function renderCategoryLinkbar(): void;
 
 	/**
 	 * Set a renderer option (depends on the renderer)
 	 *
-	 * @param   string  $key    The name of the option to set
-	 * @param   string  $value  The value of the option
+	 * @param string $key   The name of the option to set
+	 * @param string $value The value of the option
 	 *
 	 * @return  void
 	 */
-	function setOption($key, $value);
+	function setOption(string $key, string $value): void;
 
 	/**
 	 * Set multiple renderer options at once (depends on the renderer)
 	 *
-	 * @param   array  $options  The options to set as key => value pairs
+	 * @param array $options The options to set as key => value pairs
 	 *
 	 * @return  void
 	 */
-	function setOptions(array $options);
+	function setOptions(array $options): void;
 
 	/**
 	 * Get the value of a renderer option
 	 *
-	 * @param   string  $key      The name of the parameter
-	 * @param   mixed   $default  The default value to return if the parameter is not set
+	 * @param string      $key     The name of the parameter
+	 * @param string|null $default The default value to return if the parameter is not set
 	 *
-	 * @return  mixed  The parameter value
+	 * @return  string|null  The parameter value
 	 */
-	function getOption($key, $default = null);
+	function getOption(string $key, ?string $default = null): string;
 }
