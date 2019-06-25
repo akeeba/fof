@@ -5,14 +5,22 @@
  * @license     GNU GPL version 3 or later
  */
 
+/**
+ * @package     FOF
+ * @copyright   Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license     GNU GPL version 3 or later
+ */
+
 
 namespace FOF40\Tests\Factory;
 
 use FOF40\Factory\BasicFactory;
+use FOF40\Factory\Exception\ControllerNotFound;
+use FOF40\Factory\Exception\ModelNotFound;
+use FOF40\Factory\Exception\ViewNotFound;
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
-use FOF40\Tests\Stubs\View\ViewStub;
 
 require_once 'BasicFactoryDataprovider.php';
 
@@ -25,51 +33,26 @@ class BasicFactoryTest extends FOFTestCase
 {
 	/**
 	 * @group           BasicFactory
-	 * @covers          FOF40\Factory\BasicFactory::__construct
-	 */
-	public function test__construct()
-	{
-		$factory   = new BasicFactory(static::$container);
-		$container = ReflectionHelper::getValue($factory, 'container');
-
-		$this->assertSame(static::$container, $container, 'BasicFactory::__construct Failed to pass the container');
-	}
-
-	/**
-	 * @group           BasicFactory
 	 * @covers          FOF40\Factory\BasicFactory::controller
 	 * @dataProvider    BasicFactoryDataprovider::getTestController
 	 */
 	public function testController($test, $check)
 	{
-		$msg   = 'BasicFactory::controller %s - Case: ' . $check['case'];
-		$names = [];
+		$msg = 'BasicFactory::controller %s - Case: ' . $check['case'];
 
-		$factory = $this->getMockBuilder('FOF40\Factory\BasicFactory')
-			->setMethods(['createController'])
-			->setConstructorArgs([static::$container])
-			->getMock();
+		$platform           = static::$container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-		$factory->method('createController')->willReturnCallback(function ($class) use (&$test, &$names) {
-			$names[] = $class;
-			$result  = array_shift($test['mock']['create']);
+		$factory = new BasicFactory(static::$container);
 
-			if ($result !== true)
-			{
-				throw new $result($class);
-			}
-
-			return $result;
-		});
-
-		if ($check['exception'])
+		if (!$check['result'])
 		{
-			$this->setExpectedException($check['exception']);
+			$this->expectException(ControllerNotFound::class);
 		}
 
-		$factory->controller($test['view']);
+		$result = $factory->controller($test['view']);
 
-		$this->assertEquals($check['names'], $names, sprintf($msg, 'Failed to correctly search for the classname'));
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
 	}
 
 	/**
@@ -79,34 +62,21 @@ class BasicFactoryTest extends FOFTestCase
 	 */
 	public function testModel($test, $check)
 	{
-		$msg   = 'BasicFactory::model %s - Case: ' . $check['case'];
-		$names = [];
+		$msg = 'BasicFactory::model %s - Case: ' . $check['case'];
 
-		$factory = $this->getMockBuilder('FOF40\Factory\BasicFactory')
-			->setMethods(['createModel'])
-			->setConstructorArgs([static::$container])
-			->getMock();
+		$platform           = static::$container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-		$factory->method('createModel')->willReturnCallback(function ($class) use (&$test, &$names) {
-			$names[] = $class;
-			$result  = array_shift($test['mock']['create']);
+		$factory = new BasicFactory(static::$container);
 
-			if ($result !== true)
-			{
-				throw new $result($class);
-			}
-
-			return $result;
-		});
-
-		if ($check['exception'])
+		if (!$check['result'])
 		{
-			$this->setExpectedException($check['exception']);
+			$this->expectException(ModelNotFound::class);
 		}
 
-		$factory->model($test['view']);
+		$result = $factory->model($test['view']);
 
-		$this->assertEquals($check['names'], $names, sprintf($msg, 'Failed to correctly search for the classname'));
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
 	}
 
 	/**
@@ -116,34 +86,22 @@ class BasicFactoryTest extends FOFTestCase
 	 */
 	public function testView($test, $check)
 	{
-		$msg   = 'BasicFactory::view %s - Case: ' . $check['case'];
-		$names = [];
+		$msg                 = 'BasicFactory::view %s - Case: ' . $check['case'];
+		$platform            = static::$container->platform;
+		$platform::$template = 'fake_test_template';
+		$platform::$uriBase  = 'www.example.com';
+		$platform::$isAdmin  = $test['backend'];
 
-		$factory = $this->getMockBuilder('FOF40\Factory\BasicFactory')
-			->setMethods(['createView'])
-			->setConstructorArgs([static::$container])
-			->getMock();
+		$factory = new BasicFactory(static::$container);
 
-		$factory->method('createView')->willReturnCallback(function ($class) use (&$test, &$names) {
-			$names[] = $class;
-			$result  = array_shift($test['mock']['create']);
-
-			if ($result !== true)
-			{
-				throw new $result($class);
-			}
-
-			return $result;
-		});
-
-		if ($check['exception'])
+		if (!$check['result'])
 		{
-			$this->setExpectedException($check['exception']);
+			$this->expectException(ViewNotFound::class);
 		}
 
-		$factory->view($test['view'], $test['type']);
+		$result = $factory->view($test['view']);
 
-		$this->assertEquals($check['names'], $names, sprintf($msg, 'Failed to correctly search for the classname'));
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
 	}
 
 	/**
@@ -153,38 +111,20 @@ class BasicFactoryTest extends FOFTestCase
 	 */
 	public function testDispatcher($test, $check)
 	{
-		$msg  = 'BasicFactory::dispatcher %s - Case: ' . $check['case'];
-		$name = '';
+		$msg = 'BasicFactory::dispatcher %s - Case: ' . $check['case'];
 
-		$factory = $this->getMockBuilder('FOF40\Factory\BasicFactory')
-			->setMethods(['createDispatcher'])
-			->setConstructorArgs([static::$container])
-			->getMock();
+		$container = new TestContainer([
+			'componentName' => $test['component'],
+		]);
 
-		$factory->method('createDispatcher')->willReturnCallback(function ($class) use ($test, &$name) {
-			$name   = $class;
-			$result = $test['mock']['create'];
+		$platform           = $container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-			if ($result !== true)
-			{
-				throw new $result($class);
-			}
-
-			return $result;
-		});
+		$factory = new BasicFactory($container);
 
 		$result = $factory->dispatcher();
 
-		$this->assertEquals($check['name'], $name, sprintf($msg, 'Failed to search for the correct class'));
-
-		if (is_object($result))
-		{
-			$this->assertEquals('FOF40\Dispatcher\Dispatcher', get_class($result), sprintf($msg, 'Failed to return the correct result'));
-		}
-		else
-		{
-			$this->assertEquals($check['result'], $result, sprintf($msg, 'Failed to return the correct result'));
-		}
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
 	}
 
 	/**
@@ -194,38 +134,20 @@ class BasicFactoryTest extends FOFTestCase
 	 */
 	public function testToolbar($test, $check)
 	{
-		$msg  = 'BasicFactory::toolbar %s - Case: ' . $check['case'];
-		$name = '';
+		$msg = 'BasicFactory::toolbar %s - Case: ' . $check['case'];
 
-		$factory = $this->getMockBuilder('FOF40\Factory\BasicFactory')
-			->setMethods(['createToolbar'])
-			->setConstructorArgs([static::$container])
-			->getMock();
+		$container = new TestContainer([
+			'componentName' => $test['component'],
+		]);
 
-		$factory->method('createToolbar')->willReturnCallback(function ($class) use ($test, &$name) {
-			$name   = $class;
-			$result = $test['mock']['create'];
+		$platform           = $container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-			if ($result !== true)
-			{
-				throw new $result($class);
-			}
-
-			return $result;
-		});
+		$factory = new BasicFactory($container);
 
 		$result = $factory->toolbar();
 
-		$this->assertEquals($check['name'], $name, sprintf($msg, 'Failed to search for the correct class'));
-
-		if (is_object($result))
-		{
-			$this->assertEquals('FOF40\Toolbar\Toolbar', get_class($result), sprintf($msg, 'Failed to return the correct result'));
-		}
-		else
-		{
-			$this->assertEquals($check['result'], $result, sprintf($msg, 'Failed to return the correct result'));
-		}
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
 	}
 
 	/**
@@ -235,76 +157,19 @@ class BasicFactoryTest extends FOFTestCase
 	 */
 	public function testTransparentAuthentication($test, $check)
 	{
-		$msg  = 'BasicFactory::transparentAuthentication %s - Case: ' . $check['case'];
-		$name = '';
+		$msg = 'BasicFactory::transparentAuthentication %s - Case: ' . $check['case'];
 
-		$factory = $this->getMockBuilder('FOF40\Factory\BasicFactory')
-			->setMethods(['createTransparentAuthentication'])
-			->setConstructorArgs([static::$container])
-			->getMock();
+		$container = new TestContainer([
+			'componentName' => $test['component'],
+		]);
 
-		$factory->method('createTransparentAuthentication')->willReturnCallback(function ($class) use ($test, &$name) {
-			$name   = $class;
-			$result = $test['mock']['create'];
+		$platform           = $container->platform;
+		$platform::$isAdmin = $test['backend'];
 
-			if ($result !== true)
-			{
-				throw new $result($class);
-			}
-
-			return $result;
-		});
+		$factory = new BasicFactory($container);
 
 		$result = $factory->transparentAuthentication();
 
-		$this->assertEquals($check['name'], $name, sprintf($msg, 'Failed to search for the correct class'));
-
-		if (is_object($result))
-		{
-			$this->assertEquals('FOF40\TransparentAuthentication\TransparentAuthentication', get_class($result), sprintf($msg, 'Failed to return the correct result'));
-		}
-		else
-		{
-			$this->assertEquals($check['result'], $result, sprintf($msg, 'Failed to return the correct result'));
-		}
-	}
-
-	/**
-	 * @group           BasicFactory
-	 * @covers          FOF40\Factory\BasicFactory::viewFinder
-	 */
-	public function testViewFinder()
-	{
-		$msg = 'BasicFactory::viewFinder %s';
-
-		$configuration = $this->getMockBuilder('FOF40\Configuration\Configuration')
-			->setMethods(['get'])
-			->setConstructorArgs([])
-			->setMockClassName('')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$configuration->method('get')->willReturnCallback(
-			function ($key, $default) {
-				return $default;
-			}
-		);
-
-		$container = new TestContainer([
-			'appConfig' => $configuration,
-		]);
-
-		$platform            = $container->platform;
-		$platform::$template = 'fake_test_template';
-		$platform::$uriBase  = 'www.example.com';
-
-		$view    = new ViewStub($container);
-		$factory = new BasicFactory($container);
-
-		$result = $factory->viewFinder($view, []);
-
-		// I can only test if the correct object is passed, since we are simply collecting all the data
-		// and passing it to the ViewTemplateFinder constructor
-		$this->assertEquals('FOF40\View\ViewTemplateFinder', get_class($result), sprintf($msg, 'Returned the wrong result'));
+		$this->assertEquals($check['result'], get_class($result), sprintf($msg, 'Returned the wrong result'));
 	}
 }

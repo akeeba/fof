@@ -5,6 +5,12 @@
  * @license     GNU GPL version 3 or later
  */
 
+/**
+ * @package     FOF
+ * @copyright   Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license     GNU GPL version 3 or later
+ */
+
 
 class BasicFactoryDataprovider
 {
@@ -12,49 +18,67 @@ class BasicFactoryDataprovider
 	{
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'mock' => [
-					'create' => [true],
-				],
+				'backend' => false,
+				'view'    => 'foobars',
 			],
 			[
-				'case'      => 'Controller is immediately found',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\Controller\Foobars'],
+				'case'   => 'Frontend, Foobars, found',
+				'result' => 'Fakeapp\Site\Controller\Foobars',
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'mock' => [
-					'create' => [
-						'FOF40\Factory\Exception\ControllerNotFound',
-						true,
-					],
-				],
+				'backend' => false,
+				'view'    => 'foobar',
 			],
 			[
-				'case'      => 'Controller is found at second try',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\Controller\Foobars', '\Fakeapp\Site\Controller\Foobar'],
+				'case'   => 'Frontend, Foobar, not found',
+				'result' => false,
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'mock' => [
-					'create' => [
-						'FOF40\Factory\Exception\ControllerNotFound',
-						'FOF40\Factory\Exception\ControllerNotFound',
-					],
-				],
+				'backend' => false,
+				'view'    => 'bare',
 			],
 			[
-				'case'      => 'Controller is not found',
-				'exception' => 'FOF40\Factory\Exception\ControllerNotFound',
-				'names'     => [],
+				'case'   => 'Frontend, Bare, not found',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'foobars',
+			],
+			[
+				'case'   => 'Backend, Foobars, found',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'foobar',
+			],
+			[
+				'case'   => 'Backend, Foobar, not found',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'bare',
+			],
+			[
+				'case'   => 'Backend, Bare, not found',
+				'result' => \Fakeapp\Admin\Controller\Bare::class,
 			],
 		];
 
@@ -65,49 +89,45 @@ class BasicFactoryDataprovider
 	{
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'mock' => [
-					'create' => [true],
-				],
+				'backend' => false,
+				'view'    => 'foobar',
 			],
 			[
-				'case'      => 'Model is immediately found',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\Model\Foobars'],
+				'case'   => 'Frontend Foobar, found',
+				'result' => \Fakeapp\Site\Model\Foobar::class,
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'mock' => [
-					'create' => [
-						'FOF40\Factory\Exception\ModelNotFound',
-						true,
-					],
-				],
+				'backend' => false,
+				'view'    => 'foobar',
 			],
 			[
-				'case'      => 'Model is found at second try',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\Model\Foobars', '\Fakeapp\Site\Model\Foobar'],
+				'case'   => 'Frontend Foobars, not found',
+				'result' => \Fakeapp\Site\Model\Foobar::class,
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'mock' => [
-					'create' => [
-						'FOF40\Factory\Exception\ModelNotFound',
-						'FOF40\Factory\Exception\ModelNotFound',
-					],
-				],
+				'backend' => true,
+				'view'    => 'foobar',
 			],
 			[
-				'case'      => 'Model is not found',
-				'exception' => 'FOF40\Factory\Exception\ModelNotFound',
-				'names'     => [],
+				'case'   => 'Backend Foobar, found',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'foobar',
+			],
+			[
+				'case'   => 'Backend Foobars, not found',
+				'result' => false,
 			],
 		];
 
@@ -118,67 +138,112 @@ class BasicFactoryDataprovider
 	{
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'type' => 'html',
-				'mock' => [
-					'create' => [true],
-				],
+				'backend' => false,
+				'view'    => 'parents',
 			],
 			[
-				'case'      => 'View is immediately found',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\View\Foobars\Html'],
+				'case'   => 'Frontend Parents, found',
+				'result' => 'Fakeapp\Site\View\Parents\Html',
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'type' => 'json',
-				'mock' => [
-					'create' => [true],
-				],
+				'backend' => false,
+				'view'    => 'parent',
 			],
 			[
-				'case'      => 'View is immediately found, JSON type',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\View\Foobars\Json'],
+				'case'   => 'Frontend Parent, not found',
+				'result' => false,
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'type' => 'html',
-				'mock' => [
-					'create' => [
-						'FOF40\Factory\Exception\ViewNotFound',
-						true,
-					],
-				],
+				'backend' => false,
+				'view'    => 'foobars',
 			],
 			[
-				'case'      => 'View is found at second try',
-				'exception' => '',
-				'names'     => ['\Fakeapp\Site\View\Foobars\Html', '\Fakeapp\Site\View\Foobar\Html'],
+				'case'   => 'Frontend Foobars, found',
+				'result' => 'Fakeapp\Site\View\Foobars\Html',
 			],
 		];
 
 		$data[] = [
 			[
-				'view' => 'foobars',
-				'type' => 'html',
-				'mock' => [
-					'create' => [
-						'FOF40\Factory\Exception\ViewNotFound',
-						'FOF40\Factory\Exception\ViewNotFound',
-					],
-				],
+				'backend' => false,
+				'view'    => 'foobar',
 			],
 			[
-				'case'      => 'View is not found',
-				'exception' => 'FOF40\Factory\Exception\ViewNotFound',
-				'names'     => [],
+				'case'   => 'Frontend Foobar, not found (will not singularize)',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => false,
+				'view'    => 'bare',
+			],
+			[
+				'case'   => 'Frontend Bare, not found',
+				'result' => false,
+			],
+		];
+
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'parents',
+			],
+			[
+				'case'   => 'Backend Parents, not found',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'parent',
+			],
+			[
+				'case'   => 'Backend Parent, not found',
+				'result' => false,
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'foobar',
+			],
+			[
+				'case'   => 'Backend Foobar, found',
+				'result' => 'Fakeapp\Admin\View\Foobar\Html',
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'foobars',
+			],
+			[
+				'case'   => 'Backend Foobars, found (will pluralize)',
+				'result' => 'Fakeapp\Admin\View\Foobar\Html',
+			],
+		];
+
+		$data[] = [
+			[
+				'backend' => true,
+				'view'    => 'bare',
+			],
+			[
+				'case'   => 'Backend Bare, found',
+				'result' => 'Fakeapp\Admin\View\Bare\Html',
 			],
 		];
 
@@ -189,27 +254,34 @@ class BasicFactoryDataprovider
 	{
 		$data[] = [
 			[
-				'mock' => [
-					'create' => true,
-				],
+				'backend'   => false,
+				'component' => 'com_fakeapp',
 			],
 			[
-				'case'   => 'Dispatcher found',
-				'name'   => '\Fakeapp\Site\Dispatcher\Dispatcher',
-				'result' => true,
+				'case'   => 'Frontend dispatcher, not found, fallback to default',
+				'result' => 'FOF40\Dispatcher\Dispatcher',
 			],
 		];
 
 		$data[] = [
 			[
-				'mock' => [
-					'create' => 'FOF40\Factory\Exception\DispatcherNotFound',
-				],
+				'backend'   => true,
+				'component' => 'com_fakeapp',
 			],
 			[
-				'case'   => 'Dispatcher not found, fall back to the default one',
-				'name'   => '\Fakeapp\Site\Dispatcher\Dispatcher',
-				'result' => true,
+				'case'   => 'Backend dispatcher, found',
+				'result' => 'Fakeapp\Admin\Dispatcher\Dispatcher',
+			],
+		];
+
+		$data[] = [
+			[
+				'backend'   => true,
+				'component' => 'com_dummyapp',
+			],
+			[
+				'case'   => 'Dispatcher not found, fall back to the standard one',
+				'result' => 'FOF40\Dispatcher\Dispatcher',
 			],
 		];
 
@@ -220,27 +292,34 @@ class BasicFactoryDataprovider
 	{
 		$data[] = [
 			[
-				'mock' => [
-					'create' => true,
-				],
+				'backend'   => false,
+				'component' => 'com_fakeapp',
 			],
 			[
-				'case'   => 'Toolbar found',
-				'name'   => '\Fakeapp\Site\Toolbar\Toolbar',
-				'result' => true,
+				'case'   => 'Frontend toolbar, found',
+				'result' => 'Fakeapp\Site\Toolbar\Toolbar',
 			],
 		];
 
 		$data[] = [
 			[
-				'mock' => [
-					'create' => 'FOF40\Factory\Exception\ToolbarNotFound',
-				],
+				'backend'   => true,
+				'component' => 'com_fakeapp',
 			],
 			[
-				'case'   => 'Toolbar not found, fall back to the default one',
-				'name'   => '\Fakeapp\Site\Toolbar\Toolbar',
-				'result' => true,
+				'case'   => 'Backend toolbarnot found, fall back to the standard one',
+				'result' => 'FOF40\Toolbar\Toolbar',
+			],
+		];
+
+		$data[] = [
+			[
+				'backend'   => true,
+				'component' => 'com_dummyapp',
+			],
+			[
+				'case'   => 'Toolbar not found, fall back to the standard one',
+				'result' => 'FOF40\Toolbar\Toolbar',
 			],
 		];
 
@@ -251,152 +330,34 @@ class BasicFactoryDataprovider
 	{
 		$data[] = [
 			[
-				'mock' => [
-					'create' => true,
-				],
+				'backend'   => false,
+				'component' => 'com_fakeapp',
 			],
 			[
-				'case'   => 'Authentication found',
-				'name'   => '\Fakeapp\Site\TransparentAuthentication\TransparentAuthentication',
-				'result' => true,
+				'case'   => 'Frontend transparentAuthentication, not found, fall back to the standard one',
+				'result' => 'FOF40\TransparentAuthentication\TransparentAuthentication',
 			],
 		];
 
 		$data[] = [
 			[
-				'mock' => [
-					'create' => 'FOF40\Factory\Exception\TransparentAuthenticationNotFound',
-				],
+				'backend'   => true,
+				'component' => 'com_fakeapp',
 			],
 			[
-				'case'   => 'Authentication not found, fall back to the default one',
-				'name'   => '\Fakeapp\Site\TransparentAuthentication\TransparentAuthentication',
-				'result' => true,
-			],
-		];
-
-		return $data;
-	}
-
-	public static function getTestForm()
-	{
-		$data[] = [
-			[
-				'mock'    => [
-					'formFilename' => false,
-					'scaffolding'  => false,
-				],
-				'name'    => 'item',
-				'source'  => 'form.default',
-				'view'    => 'children',
-				'options' => [],
-				'replace' => true,
-				'xpath'   => false,
-			],
-			[
-				'case'      => 'No scaffolding, no filename, source is the name of the form',
-				'result'    => null,
-				'exception' => false,
+				'case'   => 'Backend transparentAuthentication, found',
+				'result' => 'Fakeapp\Admin\TransparentAuthentication\TransparentAuthentication',
 			],
 		];
 
 		$data[] = [
 			[
-				'mock'    => [
-					'formFilename' => false,
-					'scaffolding'  => true,
-				],
-				'name'    => 'item',
-				'source'  => 'form.default',
-				'view'    => 'children',
-				'options' => [],
-				'replace' => true,
-				'xpath'   => false,
+				'backend'   => true,
+				'component' => 'com_dummyapp',
 			],
 			[
-				'case'      => 'With scaffolding, no filename, source is the name of the form',
-				'result'    => true,
-				'exception' => false,
-			],
-		];
-
-		$data[] = [
-			[
-				'mock'    => [
-					'formFilename' => JPATH_TESTS . '/_data/form/form.default.xml',
-					'scaffolding'  => true,
-				],
-				'name'    => 'item',
-				'source'  => 'form.default',
-				'view'    => 'children',
-				'options' => [],
-				'replace' => true,
-				'xpath'   => false,
-			],
-			[
-				'case'      => 'With scaffolding, with filename, source is the name of the form',
-				'result'    => true,
-				'exception' => false,
-			],
-		];
-
-		$data[] = [
-			[
-				'mock'    => [
-					'formFilename' => 'wrong_path',
-					'scaffolding'  => true,
-				],
-				'name'    => 'item',
-				'source'  => 'form.default',
-				'view'    => 'children',
-				'options' => [],
-				'replace' => true,
-				'xpath'   => false,
-			],
-			[
-				'case'      => 'With scaffolding, with filename (not existing), source is the name of the form',
-				'result'    => true,
-				'exception' => 'FOF40\Factory\Exception\FormLoadFile',
-			],
-		];
-
-		$data[] = [
-			[
-				'mock'    => [
-					'formFilename' => 'wrong_path',
-					'scaffolding'  => true,
-				],
-				'name'    => 'item',
-				'source'  => file_get_contents(JPATH_TESTS . '/_data/form/form.default.xml'),
-				'view'    => 'children',
-				'options' => [],
-				'replace' => true,
-				'xpath'   => false,
-			],
-			[
-				'case'      => 'With scaffolding, no filename, source is a correct string',
-				'result'    => true,
-				'exception' => false,
-			],
-		];
-
-		$data[] = [
-			[
-				'mock'    => [
-					'formFilename' => 'wrong_path',
-					'scaffolding'  => true,
-				],
-				'name'    => 'item',
-				'source'  => '<form this is simply wrong',
-				'view'    => 'children',
-				'options' => [],
-				'replace' => true,
-				'xpath'   => false,
-			],
-			[
-				'case'      => 'With scaffolding, no filename, source is a malformed string',
-				'result'    => true,
-				'exception' => 'FOF40\Factory\Exception\FormLoadData',
+				'case'   => 'TransparentAuthentication not found, fall back to the standard one',
+				'result' => 'FOF40\TransparentAuthentication\TransparentAuthentication',
 			],
 		];
 
