@@ -57,7 +57,7 @@ class TemplateTest extends FOFTestCase
 		$instancesProp->setAccessible(true);
 		$instancesProp->setValue([]);
 
-		$baseProp = $reflector->getProperty('base');
+		$baseProp = $reflector->getProperty('layout');
 		$baseProp->setAccessible(true);
 		$baseProp->setValue([]);
 

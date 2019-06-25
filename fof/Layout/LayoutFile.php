@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Layout;
+namespace FOF40\Layout;
 
 use FOF40\Container\Container;
 use Joomla\CMS\Layout\FileLayout;
@@ -62,11 +62,11 @@ class LayoutFile extends FileLayout
 			$platformDirs = $this->container->platform->getPlatformBaseDirs();
 			$prefix       = $this->container->platform->isBackend() ? $platformDirs['admin'] : $platformDirs['root'];
 
-			$possiblePaths = array(
+			$possiblePaths = [
 				$prefix . '/templates/' . $this->container->platform->getTemplate() . '/html/layouts/' . $filePath,
 				$this->basePath . '/' . $filePath,
 				$platformDirs['root'] . '/layouts/' . $filePath,
-			);
+			];
 
 			reset($files);
 

@@ -60,9 +60,9 @@ class LayoutHelperTest extends FOFTestCase
 	}
 
 	/**
-	 * @covers       FOF40\Layout\LayoutHelper::render
+	 * @covers       \FOF40\Layout\LayoutHelper::render
 	 *
-	 * @dataProvider FOF40\Tests\Layout\LayoutHelperTestProvider::getTestRender
+	 * @dataProvider \FOF40\Tests\Layout\LayoutHelperTestProvider::getTestRender
 	 *
 	 * @param string $layoutId       The layout to load
 	 * @param array  $platformSetup  Platform setup (baseDirs, template, templateSuffixes)
@@ -93,19 +93,19 @@ class LayoutHelperTest extends FOFTestCase
 
 		unset($reflector);
 
-		// Set up a fake base
-		$fakeBase = realpath(__DIR__ . '/../_data/layout/base');
+		// Set up a fake layout
+		$fakeBase = realpath(__DIR__ . '/../_data/layout/layout');
 
 		// Create the layout file object
-		$actual = LayoutHelper::render(self::$container, $layoutId, null, $fakeBase);
+		$actual = LayoutHelper::render(self::$container, $layoutId, [], $fakeBase);
 
 		$this->assertEquals($expectedOutput, $actual, $message);
 	}
 
 	/**
-	 * @covers       FOF40\Layout\LayoutHelper::render
+	 * @covers       \FOF40\Layout\LayoutHelper::render
 	 *
-	 * @dataProvider FOF40\Tests\Layout\LayoutHelperTestProvider::getTestRender
+	 * @dataProvider \FOF40\Tests\Layout\LayoutHelperTestProvider::getTestRender
 	 *
 	 * @param string $layoutId       The layout to load
 	 * @param array  $platformSetup  Platform setup (baseDirs, template, templateSuffixes)
@@ -136,8 +136,8 @@ class LayoutHelperTest extends FOFTestCase
 
 		unset($reflector);
 
-		// Set up a fake base
-		$fakeBase = realpath(__DIR__ . '/../_data/layout/base');
+		// Set up a fake layout
+		$fakeBase = realpath(__DIR__ . '/../_data/layout/layout');
 
 		// Create the layout file object
 		LayoutHelper::$defaultBasePath = $fakeBase;

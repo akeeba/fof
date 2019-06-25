@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Layout;
+namespace FOF40\Layout;
 
 use FOF40\Container\Container;
 
@@ -24,22 +24,22 @@ class LayoutHelper
 	/**
 	 * Method to render the layout.
 	 *
-	 * @param   Container  $container    The container of your component
-	 * @param   string     $layoutFile   Dot separated path to the layout file, relative to base path
-	 * @param   object     $displayData  Object which properties are used inside the layout file to build displayed output
-	 * @param   string     $basePath     Base path to use when loading layout files
+	 * @param Container $container   The container of your component
+	 * @param string    $layoutFile  Dot separated path to the layout file, relative to base path
+	 * @param array     $displayData Array with values to be used inside the layout file to build displayed output
+	 * @param string    $basePath    Base path to use when loading layout files
 	 *
 	 * @return  string
 	 */
-	public static function render(Container $container, $layoutFile, $displayData = null, $basePath = '')
+	public static function render(Container $container, string $layoutFile, array $displayData = [], string $basePath = ''): string
 	{
 		$basePath = empty($basePath) ? self::$defaultBasePath : $basePath;
 
 		// Make sure we send null to LayoutFile if no path set
-		$basePath = empty($basePath) ? null : $basePath;
-		$layout = new LayoutFile($layoutFile, $basePath);
+		$basePath          = empty($basePath) ? null : $basePath;
+		$layout            = new LayoutFile($layoutFile, $basePath);
 		$layout->container = $container;
-		$renderedLayout = $layout->render($displayData);
+		$renderedLayout    = $layout->render($displayData);
 
 		return $renderedLayout;
 	}

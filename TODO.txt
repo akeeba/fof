@@ -12,7 +12,7 @@
     [X] Factory
     [X] Inflector
     [X] Input
-    [ ] Layout
+    [X] Layout
     [ ] Params
     [X] Platform
     [ ] Render

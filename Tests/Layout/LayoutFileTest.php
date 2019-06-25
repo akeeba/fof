@@ -101,7 +101,7 @@ class LayoutFileTest extends FOFTestCase
 			'client' => 0,
 		]);
 
-		$fakeBase = realpath(__DIR__ . '/../_data/layout/base');
+		$fakeBase = realpath(__DIR__ . '/../_data/layout/layout');
 
 		// Create the layout file object
 		$layoutFile            = new LayoutFile($layoutId, $fakeBase, $fakeOptions);

@@ -111,7 +111,7 @@ class Filesystem extends BaseFilesystem
 	 * @param mixed  $paths An path string or array of path strings to search in
 	 * @param string $file  The file name to look for.
 	 *
-	 * @return  mixed   The full path and file name for the target file, or bool false if the file is not found in any of the paths.
+	 * @return  string|null   The full path and file name for the target file, or bool false if the file is not found in any of the paths.
 	 */
 	public function pathFind($paths, string $file): ?string
 	{
@@ -120,7 +120,14 @@ class Filesystem extends BaseFilesystem
 			throw new \InvalidArgumentException(sprintf('%s::%s -- $paths expects a string or an array', __CLASS__, __METHOD__));
 		}
 
-		return \JPath::find($paths, $file);
+		$ret = \JPath::find($paths, $file);
+
+		if (($ret === false) || ($ret === ''))
+		{
+			return null;
+		}
+
+		return $ret;
 	}
 
 	/**

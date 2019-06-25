@@ -42,7 +42,7 @@ class ObserverClosure extends Observer
 	}
 
 	/*
-	 * The base object will perform a "method_exists" check, so we have to create them, otherwise they won't be invoked
+	 * The layout object will perform a "method_exists" check, so we have to create them, otherwise they won't be invoked
 	 */
 	public function onBeforeMove(&$subject, &$delta, &$where)
 	{

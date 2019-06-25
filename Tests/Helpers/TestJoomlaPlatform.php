@@ -34,7 +34,7 @@ class TestJoomlaPlatform extends PlatformJoomla
 	/** @var array|null The template suffixes to return e.g. ['.j32', '.j3'] and so on */
 	public static $templateSuffixes = null;
 
-	/** @var array|null The platform base directories to return */
+	/** @var array|null The platform layout directories to return */
 	public static $baseDirs = null;
 
 	/** @var User|null The current user */
