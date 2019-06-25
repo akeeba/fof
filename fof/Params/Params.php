@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Params;
+namespace FOF40\Params;
 
 use FOF40\Container\Container;
 use FOF40\Utils\CacheCleaner;
@@ -31,7 +31,7 @@ class Params
 	/**
 	 * Public constructor for the params object
 	 *
-	 * @param  \FOF40\Container\Container $container  The container we belong to
+	 * @param \FOF40\Container\Container $container The container we belong to
 	 */
 	public function __construct(Container $container)
 	{
@@ -43,15 +43,15 @@ class Params
 	/**
 	 * Reload the params
 	 */
-	public function reload()
+	public function reload(): void
 	{
 		$db = $this->container->db;
 
-		$sql = $db->getQuery(true)
-				  ->select($db->qn('params'))
-				  ->from($db->qn('#__extensions'))
-				  ->where($db->qn('type') . " = " . $db->q('component'))
-				  ->where($db->qn('element') . " = " . $db->q($this->container->componentName));
+		$sql  = $db->getQuery(true)
+			->select($db->qn('params'))
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . " = " . $db->q('component'))
+			->where($db->qn('element') . " = " . $db->q($this->container->componentName));
 		$json = $db->setQuery($sql)->loadResult();
 
 		$this->params = new \Joomla\Registry\Registry($json);
@@ -60,12 +60,12 @@ class Params
 	/**
 	 * Returns the value of a component configuration parameter
 	 *
-	 * @param   string $key     The parameter to get
-	 * @param   mixed  $default Default value
+	 * @param string $key     The parameter to get
+	 * @param mixed  $default Default value
 	 *
 	 * @return  mixed
 	 */
-	public function get($key, $default = null)
+	public function get(string $key, $default = null)
 	{
 		return $this->params->get($key, $default);
 	}
@@ -75,7 +75,7 @@ class Params
 	 *
 	 * @return  array
 	 */
-	public function getParams()
+	public function getParams(): array
 	{
 		return $this->params->toArray();
 	}
@@ -83,24 +83,24 @@ class Params
 	/**
 	 * Sets the value of a component configuration parameter
 	 *
-	 * @param   string $key    The parameter to set
-	 * @param   mixed  $value  The value to set
+	 * @param string $key   The parameter to set
+	 * @param mixed  $value The value to set
 	 *
 	 * @return  void
 	 */
-	public function set($key, $value)
+	public function set(string $key, $value)
 	{
-		$this->setParams(array($key => $value));
+		$this->setParams([$key => $value]);
 	}
 
 	/**
 	 * Sets the value of multiple component configuration parameters at once
 	 *
-	 * @param   array  $params  The parameters to set
+	 * @param array $params The parameters to set
 	 *
 	 * @return  void
 	 */
-	public function setParams(array $params)
+	public function setParams(array $params): void
 	{
 		foreach ($params as $key => $value)
 		{
@@ -111,16 +111,16 @@ class Params
 	/**
 	 * Actually Save the params into the db
 	 */
-	public function save()
+	public function save(): void
 	{
 		$db   = $this->container->db;
 		$data = $this->params->toString();
 
-		$sql  = $db->getQuery(true)
-				   ->update($db->qn('#__extensions'))
-				   ->set($db->qn('params') . ' = ' . $db->q($data))
-				   ->where($db->qn('element') . ' = ' . $db->q($this->container->componentName))
-				   ->where($db->qn('type') . ' = ' . $db->q('component'));
+		$sql = $db->getQuery(true)
+			->update($db->qn('#__extensions'))
+			->set($db->qn('params') . ' = ' . $db->q($data))
+			->where($db->qn('element') . ' = ' . $db->q($this->container->componentName))
+			->where($db->qn('type') . ' = ' . $db->q('component'));
 
 		$db->setQuery($sql);
 
