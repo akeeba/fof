@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Render;
+namespace FOF40\Render;
 
 use FOF40\Container\Container;
 
@@ -44,15 +44,15 @@ class FEF extends Joomla
 			include_once $helperFile;
 		}
 
-		$this->priority	 = 20;
-		$this->enabled	 = class_exists('AkeebaFEFHelper');
+		$this->priority = 20;
+		$this->enabled  = class_exists('AkeebaFEFHelper');
 	}
 
 	/**
 	 * Echoes any HTML to show before the view template. We override it to load the CSS files required for FEF.
 	 *
-	 * @param   string    $view    The current view
-	 * @param   string    $task    The current task
+	 * @param string $view The current view
+	 * @param string $task The current task
 	 *
 	 * @return  void
 	 */
@@ -82,7 +82,7 @@ class FEF extends Joomla
 	/**
 	 * Opens the FEF styling wrapper element. Our component's output will be inside this wrapper.
 	 *
-	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
+	 * @param array $classes An array of additional CSS classes to add to the outer page wrapper element.
 	 *
 	 * @return  void
 	 */

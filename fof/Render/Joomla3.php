@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Render;
+namespace FOF40\Render;
 
 use FOF40\Container\Container;
 
@@ -36,7 +36,7 @@ class Joomla3 extends Joomla
 	/**
 	 * Opens the FEF styling wrapper element. Our component's output will be inside this wrapper.
 	 *
-	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
+	 * @param array $classes An array of additional CSS classes to add to the outer page wrapper element.
 	 *
 	 * @return  void
 	 */
