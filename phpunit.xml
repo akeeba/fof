@@ -48,7 +48,6 @@
                 <file>fof/Configuration/Domain/DomainInterface.php</file>
                 <file>fof/Download/DownloadInterface.php</file>
                 <file>fof/Factory/FactoryInterface.php</file>
-                <file>fof/Factory/Scaffolding/ErectorInterface.php</file>
                 <file>fof/Form/FieldInterface.php</file>
                 <file>fof/Form/HeaderInterface.php</file>
                 <file>fof/Hal/Render/RenderInterface.php</file>
