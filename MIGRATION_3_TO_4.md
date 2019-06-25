@@ -93,8 +93,7 @@ templates. Even if we rewrote the entire feature to use JLayouts there was no in
 provide overrides for our JLayouts so we still had the same issue.
 
 On top of that, using XML forms in real world software proved that they are limited and cumbersome. Very quickly you end
-up writing hordes of custom fields which are very difficult (if not impossible) to override. This makes output
-customisation very painful.
+up writing hordes of custom fields which are very difficult (if not impossible) to override. This makes output customisation very painful.
 
 PHP view templates, introduced in Joomla! 1.5 back in 2007, are a much more versatile approach but they have a
 fundamental issue: they are very verbose and make it difficult for frontend developers to understand what is going on.
@@ -107,6 +106,14 @@ folder). If the tokenizer is not available you will fall back to PrecompiledTemp
 overrides in this case must be pure PHP templates, not Blade. If you are on a bad host which doesn't allow you to use
 the tokenizer just switch hosts. There is absolutely no security reason whatosever to disable the tokenizer extension.
 The only real reason is that your host doesn't understand how PHP works -- which in itself is a security threat!!!
+
+## Removal of scaffolding
+
+Scaffolding in FOF 3 let you create Controllers, Models, Views and XML forms based on your database schema. This was a quick way to start hashing out a component. However, most of that functionality has been superseded by other FOF features, making this feature obsolete.
+
+Creating a Controller, Model or View class file is not actually necessary. If you want to quickly whip out a component you have two options. One, create empty class files extending the base Controller/DataController, Model/DataModel and View/Html/Json/Csv classes respectively. This is the recommended method. Two, use the Magic factory to have FOF fill in the gaps for you.
+
+This leaves us with view templates. Scaffolding was only really useful in creating XML forms which could kinda sorta be used to represent your data but suffered from all the problems plaguing XML forms, outlined above. We consider using Blade and the built-in common Blade view templates the best way to create a quick interface for your component. Moreover, you get to choose the CSS framework you'd like to implement instead of being forced to use Bootstrap 2 as was the case with XML forms. You win something, you lose something. In our experience the end result is far more flexible without too much additional time spent designing the interface.
 
 ## Removal of the LESS package
 

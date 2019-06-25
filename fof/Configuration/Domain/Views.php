@@ -189,9 +189,9 @@ class Views implements DomainInterface
 	 * @param array    $params        Extra options; key 0 defines the task we want to fetch
 	 * @param string   $default       Default ACL option; empty (no ACL check) if not defined
 	 *
-	 * @return  string  The privilege required to access this view
+	 * @return  string|array  The privilege required to access this view
 	 */
-	protected function getAcl(string $view, array &$configuration, array $params = [], ?string $default = ''): ?string
+	protected function getAcl(string $view, array &$configuration, array $params = [], ?string $default = '')
 	{
 		$aclmap = [];
 
@@ -229,14 +229,14 @@ class Views implements DomainInterface
 	 * Internal method to return the a configuration option for the view. These
 	 * are equivalent to $config array options passed to the Controller
 	 *
-	 * @param string      $view          The view for which we will be fetching a task map
-	 * @param array   &   $configuration The configuration parameters hash array
-	 * @param array       $params        Extra options; key 0 defines the option variable we want to fetch
-	 * @param string|null $default       Default option; null if not defined
+	 * @param string            $view          The view for which we will be fetching a task map
+	 * @param array   &         $configuration The configuration parameters hash array
+	 * @param array             $params        Extra options; key 0 defines the option variable we want to fetch
+	 * @param string|array|null $default       Default option; null if not defined
 	 *
-	 * @return  string|null  The setting for the requested option
+	 * @return  string|array|null  The setting for the requested option
 	 */
-	protected function getConfig(string $view, array &$configuration, array $params = [], ?string $default = null): ?string
+	protected function getConfig(string $view, array &$configuration, array $params = [], $default = null)
 	{
 		$ret = $default;
 
@@ -271,7 +271,7 @@ class Views implements DomainInterface
 	 * @param string      $view          The view for which we will be fetching buttons
 	 * @param array   &   $configuration The configuration parameters hash array
 	 * @param array       $params        Extra options
-	 * @param array|null $default       Default option
+	 * @param array|null  $default       Default option
 	 *
 	 * @return  array|null  The toolbar data for this view
 	 */

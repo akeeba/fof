@@ -8,8 +8,8 @@
     [X] Dispatcher
     [X] Download
     [X] Encrypt
-    [ ] Event
-    [ ] Factory
+    [X] Event
+    [-] Factory
     [ ] Hal
     [ ] Inflector
     [ ] Input

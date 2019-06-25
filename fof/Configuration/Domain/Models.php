@@ -183,14 +183,14 @@ class Models implements DomainInterface
 	/**
 	 * Internal method to return the magic field mapping
 	 *
-	 * @param string      $model         The model for which we will be fetching a field map
-	 * @param array  &    $configuration The configuration parameters hash array
-	 * @param array       $params        Extra options
-	 * @param string|null $default       Default magic field mapping; empty if not defined
+	 * @param string            $model         The model for which we will be fetching a field map
+	 * @param array  &          $configuration The configuration parameters hash array
+	 * @param array             $params        Extra options
+	 * @param string|array|null $default       Default magic field mapping; empty if not defined
 	 *
-	 * @return  string|null   Field map
+	 * @return  string|array|null   Field map
 	 */
-	protected function getField(string $model, array &$configuration, array $params, ?string $default = ''): ?string
+	protected function getField(string $model, array &$configuration, array $params, $default = '')
 	{
 		$fieldmap = [];
 
@@ -331,14 +331,14 @@ class Models implements DomainInterface
 	/**
 	 * Internal method to return the a configuration option for the Model.
 	 *
-	 * @param string      $model         The view for which we will be fetching a task map
-	 * @param array  &    $configuration The configuration parameters hash array
-	 * @param array       $params        Extra options; key 0 defines the option variable we want to fetch
-	 * @param string|null $default       Default option; null if not defined
+	 * @param string            $model         The view for which we will be fetching a task map
+	 * @param array  &          $configuration The configuration parameters hash array
+	 * @param array             $params        Extra options; key 0 defines the option variable we want to fetch
+	 * @param string|array|null $default       Default option; null if not defined
 	 *
-	 * @return  string|null  The setting for the requested option
+	 * @return  string|array|null  The setting for the requested option
 	 */
-	protected function getConfig(string $model, array &$configuration, array $params = [], ?string $default = null): ?string
+	protected function getConfig(string $model, array &$configuration, array $params = [], $default = null)
 	{
 		$ret = $default;
 
