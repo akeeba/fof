@@ -250,3 +250,9 @@ The following methods have had their return type changed:
 
 * FOF40\Platform\FilesystemInterface::pathFind() -- FROM string|bool TO string|null
 * FOF40\Download\Download::getFromURL() -- FROM string|bool TO string|null
+
+## Removed HAL support from JSON output
+
+In FOF 3 you could set the useHypermedia property to true to automatically inject HAL metadata to the JSON output. However, the HAL specification has not been updated since 2013 and we don't really see it being much used in the wild or supported by frameworks consuming JSON data. A better suited replacement would be JSON-LD (JSON for Linking Data, a W3C standard) but it's not possible to automatically derive the context the format calls for. In fact, writing a FOF wrapper around it would make it far more complicated to use than if we just let you override the JSON output through a Json View class and / or a suitable JSON view template!
+
+As a result we removed the HAL support from FOF and ask you to implement whichever JSON metadata scheme you want yourself.  

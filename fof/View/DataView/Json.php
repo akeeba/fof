@@ -5,15 +5,11 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\View\DataView;
+namespace FOF40\View\DataView;
 
-use FOF40\Hal\Document;
-use FOF40\Hal\Link;
 use FOF40\Model\DataModel;
 use Joomla\CMS\Document\Document as JoomlaDocument;
 use Joomla\CMS\Document\JsonDocument;
-use Joomla\CMS\Pagination\Pagination;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
@@ -49,14 +45,6 @@ class Json extends Raw implements DataViewInterface
 	protected $item = null;
 
 	/**
-	 * When set to true we'll add hypermedia to the output, implementing the
-	 * HAL specification (http://stateless.co/hal_specification.html)
-	 *
-	 * @var   boolean
-	 */
-	public $useHypermedia = false;
-
-	/**
 	 * Set to true if your onBefore* methods have already populated the item, items, limitstart etc properties used to
 	 * render a JSON document.
 	 *
@@ -68,7 +56,7 @@ class Json extends Raw implements DataViewInterface
 	 * Overrides the default method to execute and display a template script.
 	 * Instead of loadTemplate is uses loadAnyTemplate.
 	 *
-	 * @param   string  $tpl  The name of the template file to parse
+	 * @param string $tpl The name of the template file to parse
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -77,10 +65,10 @@ class Json extends Raw implements DataViewInterface
 	public function display($tpl = null)
 	{
 		$eventName = 'onBefore' . ucfirst($this->doTask);
-		$this->triggerEvent($eventName, array($tpl));
+		$this->triggerEvent($eventName, [$tpl]);
 
 		$eventName = 'onAfter' . ucfirst($this->doTask);
-		$this->triggerEvent($eventName, array($tpl));
+		$this->triggerEvent($eventName, [$tpl]);
 
 		return true;
 	}
@@ -88,7 +76,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * The event which runs when we are displaying the record list JSON view
 	 *
-	 * @param   string  $tpl  The sub-template to use
+	 * @param string $tpl The sub-template to use
 	 */
 	public function onBeforeBrowse($tpl = null)
 	{
@@ -101,9 +89,9 @@ class Json extends Raw implements DataViewInterface
 		if (!$this->alreadyLoaded)
 		{
 			$this->limitStart = $model->getState('limitstart', 0);
-			$this->limit = $model->getState('limit', 0);
-			$this->items = $model->get(true, $this->limitStart, $this->limit);
-			$this->total = $model->count();
+			$this->limit      = $model->getState('limit', 0);
+			$this->items      = $model->get(true, $this->limitStart, $this->limit);
+			$this->total      = $model->count();
 		}
 
 		$document = $this->container->platform->getDocument();
@@ -111,14 +99,7 @@ class Json extends Raw implements DataViewInterface
 		/** @var JsonDocument $document */
 		if ($document instanceof JoomlaDocument)
 		{
-			if ($this->useHypermedia)
-			{
-				$document->setMimeEncoding('application/hal+json');
-			}
-			else
-			{
-				$document->setMimeEncoding('application/json');
-			}
+			$document->setMimeEncoding('application/json');
 		}
 
 		if (is_null($tpl))
@@ -145,49 +126,27 @@ class Json extends Raw implements DataViewInterface
 		if ($hasFailed)
 		{
 			// Default JSON behaviour in case the template isn't there!
-			if ($this->useHypermedia)
+			$result = [];
+
+			foreach ($this->items as $item)
 			{
-                $data = array();
-
-                foreach($this->items as $item)
-                {
-                    if(is_object($item) && method_exists($item, 'toArray'))
-                    {
-                        $data[] = $item->toArray();
-                    }
-                    else
-                    {
-                        $data[] = $item;
-                    }
-                }
-
-				$HalDocument = $this->_createDocumentWithHypermedia($data, $model);
-				$json = $HalDocument->render('json');
-			}
-			else
-			{
-                $result = array();
-
-                foreach($this->items as $item)
-                {
-                    if(is_object($item) && method_exists($item, 'toArray'))
-                    {
-                        $result[] = $item->toArray();
-                    }
-                    else
-                    {
-                        $result[] = $item;
-                    }
-                }
-
-				if (version_compare(PHP_VERSION, '5.4', 'ge'))
+				if (is_object($item) && method_exists($item, 'toArray'))
 				{
-					$json = json_encode($result, JSON_PRETTY_PRINT);
+					$result[] = $item->toArray();
 				}
 				else
 				{
-					$json = json_encode($result);
+					$result[] = $item;
 				}
+			}
+
+			if (version_compare(PHP_VERSION, '5.4', 'ge'))
+			{
+				$json = json_encode($result, JSON_PRETTY_PRINT);
+			}
+			else
+			{
+				$json = json_encode($result);
 			}
 
 			// JSONP support
@@ -200,7 +159,7 @@ class Json extends Raw implements DataViewInterface
 			else
 			{
 				$defaultName = $this->input->get('view', 'main', 'cmd');
-				$filename = $this->input->get('basename', $defaultName, 'cmd');
+				$filename    = $this->input->get('basename', $defaultName, 'cmd');
 
 				$document->setName($filename);
 				echo $json;
@@ -215,7 +174,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * The event which runs when we are displaying a single item JSON view
 	 *
-	 * @param   string  $tpl  The view sub-template to use
+	 * @param string $tpl The view sub-template to use
 	 */
 	protected function onBeforeRead($tpl = null)
 	{
@@ -225,7 +184,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * The event which runs when we are displaying a single item JSON view
 	 *
-	 * @param   string  $tpl  The view sub-template to use
+	 * @param string $tpl The view sub-template to use
 	 */
 	protected function onAfterSave($tpl = null)
 	{
@@ -235,9 +194,10 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * Renders a single item JSON view
 	 *
-	 * @param   string  $tpl  The view sub-template to use
+	 * @param string $tpl The view sub-template to use
 	 */
-	protected function renderSingleItem($tpl) {
+	protected function renderSingleItem($tpl)
+	{
 		// Load the model
 		/** @var DataModel $model */
 		$model = $this->getModel();
@@ -255,14 +215,7 @@ class Json extends Raw implements DataViewInterface
 		/** @var JsonDocument $document */
 		if ($document instanceof JoomlaDocument)
 		{
-			if ($this->useHypermedia)
-			{
-				$document->setMimeEncoding('application/hal+json');
-			}
-			else
-			{
-				$document->setMimeEncoding('application/json');
-			}
+			$document->setMimeEncoding('application/json');
 		}
 
 		if (is_null($tpl))
@@ -290,31 +243,22 @@ class Json extends Raw implements DataViewInterface
 		{
 			// Default JSON behaviour in case the template isn't there!
 
-			if ($this->useHypermedia)
+			if (is_object($this->item) && method_exists($this->item, 'toArray'))
 			{
-				$haldocument = $this->_createDocumentWithHypermedia($this->item, $model);
-				$json = $haldocument->render('json');
+				$data = $this->item->toArray();
 			}
 			else
 			{
-                if (is_object($this->item) && method_exists($this->item, 'toArray'))
-                {
-                    $data = $this->item->toArray();
-                }
-                else
-                {
-                    $data = $this->item;
-                }
+				$data = $this->item;
+			}
 
-				if (version_compare(PHP_VERSION, '5.4', 'ge'))
-				{
-					$json = json_encode($data, JSON_PRETTY_PRINT);
-				}
-				else
-				{
-					$json = json_encode($data);
-				}
-
+			if (version_compare(PHP_VERSION, '5.4', 'ge'))
+			{
+				$json = json_encode($data, JSON_PRETTY_PRINT);
+			}
+			else
+			{
+				$json = json_encode($data);
 			}
 
 			// JSONP support
@@ -327,7 +271,7 @@ class Json extends Raw implements DataViewInterface
 			else
 			{
 				$defaultName = $this->input->get('view', 'main', 'cmd');
-				$filename = $this->input->get('basename', $defaultName, 'cmd');
+				$filename    = $this->input->get('basename', $defaultName, 'cmd');
 				$document->setName($filename);
 
 				echo $json;
@@ -340,117 +284,9 @@ class Json extends Raw implements DataViewInterface
 	}
 
 	/**
-	 * Creates a \FOF40\Hal\Document using the provided data
-	 *
-	 * @param   mixed|array  $data   The data to put in the document
-	 * @param   DataModel    $model  The model of this view
-	 *
-	 * @return  \FOF40\Hal\Document  A HAL-enabled document
-	 */
-	protected function _createDocumentWithHypermedia($data, $model = null)
-	{
-		// Create a new HAL document
-
-		if (is_array($data))
-		{
-			$count = count($data);
-		}
-		else
-		{
-			$count = null;
-		}
-
-		if ($count == 1)
-		{
-			reset($data);
-			$document = new Document(end($data));
-		}
-		else
-		{
-			$document = new Document($data);
-		}
-
-		// Create a self link
-		$uri = (string) (Uri::getInstance());
-		$uri = $this->_removeURIBase($uri);
-		$uri = Route::_($uri);
-		$document->addLink('self', new Link($uri));
-
-		// Create relative links in a record list context
-		if (is_array($data) && ($model instanceof DataModel))
-		{
-            if(!isset($this->total))
-            {
-                $this->total = $model->count();
-            }
-
-            if(!isset($this->limitStart))
-            {
-                $this->limitStart = $model->getState('limitstart', 0);
-            }
-
-            if(!isset($this->limit))
-            {
-                $this->limit = $model->getState('limit', 0);
-            }
-
-			$pagination = new Pagination($this->total, $this->limitStart, $this->limit);
-
-			if ($pagination->pagesTotal > 1)
-			{
-				// Try to guess URL parameters and create a prototype URL
-				// NOTE: You are better off specialising this method
-				$protoUri = $this->_getPrototypeURIForPagination();
-
-				// The "first" link
-				$uri = clone $protoUri;
-				$uri->setVar('limitstart', 0);
-				$uri = Route::_($uri);
-
-				$document->addLink('first', new Link($uri));
-
-				// Do we need a "prev" link?
-				if ($pagination->pagesCurrent > 1)
-				{
-					$prevPage = $pagination->pagesCurrent - 1;
-					$limitstart = ($prevPage - 1) * $pagination->limit;
-					$uri = clone $protoUri;
-					$uri->setVar('limitstart', $limitstart);
-					$uri = Route::_($uri);
-
-					$document->addLink('prev', new Link($uri));
-				}
-
-				// Do we need a "next" link?
-				if ($pagination->pagesCurrent < $pagination->pagesTotal)
-				{
-					$nextPage = $pagination->pagesCurrent + 1;
-					$limitstart = ($nextPage - 1) * $pagination->limit;
-					$uri = clone $protoUri;
-					$uri->setVar('limitstart', $limitstart);
-					$uri = Route::_($uri);
-
-					$document->addLink('next', new Link($uri));
-				}
-
-				// The "last" link?
-				$lastPage = $pagination->pagesTotal;
-				$limitstart = ($lastPage - 1) * $pagination->limit;
-				$uri = clone $protoUri;
-				$uri->setVar('limitstart', $limitstart);
-				$uri = Route::_($uri);
-
-				$document->addLink('last', new Link($uri));
-			}
-		}
-
-		return $document;
-	}
-
-	/**
 	 * Convert an absolute URI to a relative one
 	 *
-	 * @param   string  $uri  The URI to convert
+	 * @param string $uri The URI to convert
 	 *
 	 * @return  string  The relative URL
 	 */
@@ -460,7 +296,7 @@ class Json extends Raw implements DataViewInterface
 
 		if (is_null($root))
 		{
-			$root = rtrim(Uri::base(false), '/');
+			$root    = rtrim(Uri::base(false), '/');
 			$rootlen = strlen($root);
 		}
 

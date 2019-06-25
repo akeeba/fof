@@ -10,7 +10,6 @@
     [X] Encrypt
     [X] Event
     [X] Factory
-    [ ] Hal
     [ ] Inflector
     [ ] Input
     [ ] Layout
