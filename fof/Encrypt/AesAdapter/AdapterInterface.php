@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Encrypt\AesAdapter;
+namespace FOF40\Encrypt\AesAdapter;
 
 // Protect from unauthorized access
 use FOF40\Utils\Phpfunc;
@@ -20,7 +20,7 @@ interface AdapterInterface
 	/**
 	 * Sets the AES encryption mode.
 	 *
-	 * @param   string  $mode      Choose between CBC (recommended) or ECB
+	 * @param string $mode Choose between CBC (recommended) or ECB
 	 *
 	 * @return  void
 	 */
@@ -32,9 +32,9 @@ interface AdapterInterface
 	 * WARNING: The plaintext is zero-padded to the algorithm's block size. You are advised to store the size of the
 	 * plaintext and trim the string to that length upon decryption.
 	 *
-	 * @param   string       $plainText  The plaintext to encrypt
-	 * @param   string       $key        The raw binary key (will be zero-padded or chopped if its size is different than the block size)
-	 * @param   null|string  $iv         The initialization vector (for CBC mode algorithms)
+	 * @param string      $plainText The plaintext to encrypt
+	 * @param string      $key       The raw binary key (will be zero-padded or chopped if its size is different than the block size)
+	 * @param null|string $iv        The initialization vector (for CBC mode algorithms)
 	 *
 	 * @return  string  The raw encrypted binary string.
 	 */
@@ -51,8 +51,8 @@ interface AdapterInterface
 	 * appealing it's NOT the correct approach for binary data (zero bytes may actually be part of your plaintext, not
 	 * just padding!).
 	 *
-	 * @param   string  $cipherText  The ciphertext to encrypt
-	 * @param   string  $key         The raw binary key (will be zero-padded or chopped if its size is different than the block size)
+	 * @param string $cipherText The ciphertext to encrypt
+	 * @param string $key        The raw binary key (will be zero-padded or chopped if its size is different than the block size)
 	 *
 	 * @return  string  The raw unencrypted binary string.
 	 */

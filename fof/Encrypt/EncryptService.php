@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Encrypt;
+namespace FOF40\Encrypt;
 
 use FOF40\Container\Container;
 use FOF40\Utils\Phpfunc;
@@ -63,8 +63,8 @@ class EncryptService
 	/**
 	 * EncryptService constructor.
 	 *
-	 * @param   Container  $c        The FOF component container
-	 * @param   Phpfunc    $phpFunc  For use in unit tests
+	 * @param Container $c       The FOF component container
+	 * @param Phpfunc   $phpFunc For use in unit tests
 	 *
 	 * @since   3.3.2
 	 */
@@ -77,7 +77,7 @@ class EncryptService
 	/**
 	 * Encrypt the plaintext $data and return the ciphertext prefixed by ###AES128###
 	 *
-	 * @param   string  $data  The plaintext data
+	 * @param string $data The plaintext data
 	 *
 	 * @return  string  The ciphertext, prefixed by ###AES128###
 	 *
@@ -98,7 +98,7 @@ class EncryptService
 	/**
 	 * Decrypt the ciphertext, prefixed by ###AES128###, and return the plaintext.
 	 *
-	 * @param   string  $data  The ciphertext, prefixed by ###AES128###
+	 * @param string $data The ciphertext, prefixed by ###AES128###
 	 *
 	 * @return  string  The plaintext data
 	 *
@@ -127,11 +127,11 @@ class EncryptService
 	/**
 	 * Initialize the AES cryptography object
 	 *
-	 * @param   Phpfunc  $phpFunc  used for testing
-	 *
-	 * @since   3.3.2
+	 * @param Phpfunc $phpFunc used for testing
 	 *
 	 * @return  void
+	 * @since   3.3.2
+	 *
 	 */
 	private function initialize(Phpfunc $phpFunc = null): void
 	{
@@ -149,7 +149,7 @@ class EncryptService
 
 		if (is_null($phpFunc))
 		{
-			$phpFunc   = new Phpfunc();
+			$phpFunc = new Phpfunc();
 		}
 
 		$this->aes = new Aes('cbc', $phpFunc);

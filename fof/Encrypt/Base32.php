@@ -5,7 +5,9 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Encrypt;
+namespace FOF40\Encrypt;
+
+use InvalidArgumentException;
 
 defined('_JEXEC') or die;
 
@@ -25,7 +27,7 @@ class Base32
 	/**
 	 * Converts any ascii string to a binary string
 	 *
-	 * @param   string  $str  The string you want to convert
+	 * @param string $str The string you want to convert
 	 *
 	 * @return  string  String of 0's and 1's
 	 */
@@ -39,22 +41,22 @@ class Base32
 	/**
 	 * Converts a binary string to an ascii string
 	 *
-	 * @param   string  $str  The string of 0's and 1's you want to convert
+	 * @param string $str The string of 0's and 1's you want to convert
 	 *
 	 * @return  string  The ascii output
 	 *
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 */
 	private function bin2str(string $str): string
 	{
 		if (strlen($str) % 8 > 0)
 		{
-			throw new \InvalidArgumentException('Length must be divisible by 8');
+			throw new InvalidArgumentException('Length must be divisible by 8');
 		}
 
 		if (!preg_match('/^[01]+$/', $str))
 		{
-			throw new \InvalidArgumentException('Only 0\'s and 1\'s are permitted');
+			throw new InvalidArgumentException('Only 0\'s and 1\'s are permitted');
 		}
 
 		preg_match_all('/.{8}/', $str, $chrs);
@@ -69,22 +71,22 @@ class Base32
 	/**
 	 * Converts a correct binary string to base32
 	 *
-	 * @param   string  $str  The string of 0's and 1's you want to convert
+	 * @param string $str The string of 0's and 1's you want to convert
 	 *
 	 * @return  string  String encoded as base32
 	 *
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 */
 	private function fromBin(string $str): string
 	{
 		if (strlen($str) % 8 > 0)
 		{
-			throw new \InvalidArgumentException('Length must be divisible by 8');
+			throw new InvalidArgumentException('Length must be divisible by 8');
 		}
 
 		if (!preg_match('/^[01]+$/', $str))
 		{
-			throw new \InvalidArgumentException('Only 0\'s and 1\'s are permitted');
+			throw new InvalidArgumentException('Only 0\'s and 1\'s are permitted');
 		}
 
 		// Base32 works on the first 5 bits of a byte, so we insert blanks to pad it out
@@ -92,18 +94,18 @@ class Base32
 
 		// We need a string divisible by 5
 		$length = strlen($str);
-		$rbits = $length & 7;
+		$rbits  = $length & 7;
 
 		if ($rbits > 0)
 		{
 			// Excessive bits need to be padded
 			$ebits = substr($str, $length - $rbits);
-			$str = substr($str, 0, $length - $rbits);
-			$str .= "000$ebits" . str_repeat('0', 5 - strlen($ebits));
+			$str   = substr($str, 0, $length - $rbits);
+			$str   .= "000$ebits" . str_repeat('0', 5 - strlen($ebits));
 		}
 
 		preg_match_all('/.{8}/', $str, $chrs);
-		$chrs = array_map(array($this, 'mapCharset'), $chrs[0]);
+		$chrs = array_map([$this, 'mapCharset'], $chrs[0]);
 
 		return join('', $chrs);
 	}
@@ -111,28 +113,28 @@ class Base32
 	/**
 	 * Accepts a base32 string and returns an ascii binary string
 	 *
-	 * @param   string  $str  The base32 string to convert
+	 * @param string $str The base32 string to convert
 	 *
 	 * @return  string  Ascii binary string
 	 *
-	 * @throws  \InvalidArgumentException
+	 * @throws  InvalidArgumentException
 	 */
 	private function toBin(string $str): string
 	{
 		if (!preg_match('/^[' . self::CSRFC3548 . ']+$/', $str))
 		{
-			throw new \InvalidArgumentException('Base64 string must match character set');
+			throw new InvalidArgumentException('Base64 string must match character set');
 		}
 
 		// Convert the base32 string back to a binary string
-		$str = join('', array_map(array($this, 'mapBin'), str_split($str)));
+		$str = join('', array_map([$this, 'mapBin'], str_split($str)));
 
 		// Remove the extra 0's we added
 		$str = preg_replace('/000(.{5})/', '$1', $str);
 
 		// Unpad if nessicary
 		$length = strlen($str);
-		$rbits = $length & 7;
+		$rbits  = $length & 7;
 
 		if ($rbits > 0)
 		{
@@ -146,7 +148,7 @@ class Base32
 	 * Convert any string to a base32 string
 	 * This should be binary safe...
 	 *
-	 * @param   string  $str  The string to convert
+	 * @param string $str The string to convert
 	 *
 	 * @return  string  The converted base32 string
 	 */
@@ -159,7 +161,7 @@ class Base32
 	 * Convert any base32 string to a normal sctring
 	 * This should be binary safe...
 	 *
-	 * @param   string  $str  The base32 string to convert
+	 * @param string $str The base32 string to convert
 	 *
 	 * @return  string  The normal string
 	 */
@@ -174,7 +176,7 @@ class Base32
 	 * Used with array_map to map the bits from a binary string
 	 * directly into a base32 character set
 	 *
-	 * @param   string  $str  The string of 0's and 1's you want to convert
+	 * @param string $str The string of 0's and 1's you want to convert
 	 *
 	 * @return  string  Resulting base32 character
 	 *
@@ -192,7 +194,7 @@ class Base32
 	 * Used with array_map to map the characters from a base32
 	 * character set directly into a binary string
 	 *
-	 * @param   string  $chr  The caracter to map
+	 * @param string $chr The caracter to map
 	 *
 	 * @return  string  String of 0's and 1's
 	 *
