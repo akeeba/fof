@@ -9,7 +9,7 @@
     [X] Download
     [X] Encrypt
     [X] Event
-    [-] Factory
+    [X] Factory
     [ ] Hal
     [ ] Inflector
     [ ] Input
