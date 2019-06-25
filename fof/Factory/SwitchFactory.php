@@ -5,9 +5,9 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory;
+namespace FOF40\Factory;
 
-use FOF40\Container\Container;
+use Exception;
 use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Dispatcher;
 use FOF40\Factory\Exception\ControllerNotFound;
@@ -20,6 +20,7 @@ use FOF40\Model\Model;
 use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
 use FOF40\View\View;
+use FOF40\View\ViewTemplateFinder;
 
 defined('_JEXEC') or die;
 
@@ -35,12 +36,12 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Create a new Controller object
 	 *
-	 * @param   string  $viewName  The name of the view we're getting a Controller for.
-	 * @param   array   $config    Optional MVC configuration values for the Controller object.
+	 * @param string $viewName The name of the view we're getting a Controller for.
+	 * @param array  $config   Optional MVC configuration values for the Controller object.
 	 *
 	 * @return  Controller
 	 */
-	public function controller($viewName, array $config = array())
+	public function controller(string $viewName, array $config = []): Controller
 	{
 		try
 		{
@@ -68,12 +69,12 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Create a new Model object
 	 *
-	 * @param   string  $viewName  The name of the view we're getting a Model for.
-	 * @param   array   $config    Optional MVC configuration values for the Model object.
+	 * @param string $viewName The name of the view we're getting a Model for.
+	 * @param array  $config   Optional MVC configuration values for the Model object.
 	 *
 	 * @return  Model
 	 */
-	public function model($viewName, array $config = array())
+	public function model(string $viewName, array $config = []): Model
 	{
 		try
 		{
@@ -100,13 +101,13 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Create a new View object
 	 *
-	 * @param   string  $viewName  The name of the view we're getting a View object for.
-	 * @param   string  $viewType  The type of the View object. By default it's "html".
-	 * @param   array   $config    Optional MVC configuration values for the View object.
+	 * @param string $viewName The name of the view we're getting a View object for.
+	 * @param string $viewType The type of the View object. By default it's "html".
+	 * @param array  $config   Optional MVC configuration values for the View object.
 	 *
 	 * @return  View
 	 */
-	public function view($viewName, $viewType = 'html', array $config = array())
+	public function view(string $viewName, $viewType = 'html', array $config = []): View
 	{
 		try
 		{
@@ -133,11 +134,11 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new Dispatcher
 	 *
-	 * @param   array  $config  The configuration values for the Dispatcher object
+	 * @param array $config The configuration values for the Dispatcher object
 	 *
 	 * @return  Dispatcher
 	 */
-	public function dispatcher(array $config = array())
+	public function dispatcher(array $config = []): Dispatcher
 	{
 		$dispatcherClass = $this->container->getNamespacePrefix($this->getSection()) . 'Dispatcher\\Dispatcher';
 
@@ -166,11 +167,11 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new Toolbar
 	 *
-	 * @param   array  $config  The configuration values for the Toolbar object
+	 * @param array $config The configuration values for the Toolbar object
 	 *
 	 * @return  Toolbar
 	 */
-    public function toolbar(array $config = array())
+	public function toolbar(array $config = []): Toolbar
 	{
 		$toolbarClass = $this->container->getNamespacePrefix($this->getSection()) . 'Toolbar\\Toolbar';
 
@@ -200,11 +201,11 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new TransparentAuthentication
 	 *
-	 * @param   array  $config  The configuration values for the TransparentAuthentication object
+	 * @param array $config The configuration values for the TransparentAuthentication object
 	 *
 	 * @return  TransparentAuthentication
 	 */
-    public function transparentAuthentication(array $config = array())
+	public function transparentAuthentication(array $config = []): TransparentAuthentication
 	{
 		$toolbarClass = $this->container->getNamespacePrefix($this->getSection()) . 'TransparentAuthentication\\TransparentAuthentication';
 
@@ -238,23 +239,25 @@ class SwitchFactory extends BasicFactory implements FactoryInterface
 	 * look for both pluralised and singular views; fall back to the default layout without subtemplate;
 	 * look for templates in both site and admin
 	 *
-	 * @param   View  $view   The view this view template finder will be attached to
-	 * @param   array $config Configuration variables for the object
+	 * @param View  $view   The view this view template finder will be attached to
+	 * @param array $config Configuration variables for the object
 	 *
 	 * @return  mixed
+	 *
+	 * @throws Exception
 	 */
-    public function viewFinder(View $view, array $config = array())
+	public function viewFinder(View $view, array $config = []): ViewTemplateFinder
 	{
 		// Initialise the configuration with the default values
-		$defaultConfig = array(
-			'extensions'    => array('.php', '.blade.php'),
+		$defaultConfig = [
+			'extensions'    => ['.php', '.blade.php'],
 			'defaultLayout' => 'default',
 			'defaultTpl'    => '',
 			'strictView'    => false,
 			'strictTpl'     => false,
 			'strictLayout'  => false,
-			'sidePrefix'    => 'any'
-		);
+			'sidePrefix'    => 'any',
+		];
 
 		$config = array_merge($defaultConfig, $config);
 

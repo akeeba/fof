@@ -5,10 +5,10 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory\Magic;
+namespace FOF40\Factory\Magic;
 
-use FOF40\Model\DataModel;
 use FOF40\Factory\Exception\ModelNotFound;
+use FOF40\Model\DataModel;
 use FOF40\Model\TreeModel;
 
 defined('_JEXEC') or die;
@@ -21,12 +21,12 @@ class ModelFactory extends BaseFactory
 	/**
 	 * Create a new object instance
 	 *
-	 * @param   string  $name    The name of the class we're making
-	 * @param   array   $config  The config parameters which override the fof.xml information
+	 * @param string $name   The name of the class we're making
+	 * @param array  $config The config parameters which override the fof.xml information
 	 *
 	 * @return  TreeModel|DataModel  A new TreeModel or DataModel object
 	 */
-	public function make($name = null, array $config = array())
+	public function make(string $name = null, array $config = []): DataModel
 	{
 		if (empty($name))
 		{
@@ -34,9 +34,9 @@ class ModelFactory extends BaseFactory
 		}
 
 		$appConfig = $this->container->appConfig;
-		$name = ucfirst($name);
+		$name      = ucfirst($name);
 
-		$defaultConfig = array(
+		$defaultConfig = [
 			'name'             => $name,
 			'use_populate'     => $appConfig->get("models.$name.config.use_populate"),
 			'ignore_request'   => $appConfig->get("models.$name.config.ignore_request"),
@@ -45,13 +45,13 @@ class ModelFactory extends BaseFactory
 			'knownFields'      => $appConfig->get("models.$name.config.knownFields", null),
 			'autoChecks'       => $appConfig->get("models.$name.config.autoChecks"),
 			'contentType'      => $appConfig->get("models.$name.config.contentType"),
-			'fieldsSkipChecks' => $appConfig->get("models.$name.config.fieldsSkipChecks", array()),
-			'aliasFields'      => $appConfig->get("models.$name.field", array()),
-			'behaviours'       => $appConfig->get("models.$name.behaviors", array()),
-			'fillable_fields'  => $appConfig->get("models.$name.config.fillable_fields", array()),
-			'guarded_fields'   => $appConfig->get("models.$name.config.guarded_fields", array()),
-			'relations'        => $appConfig->get("models.$name.relations", array()),
-		);
+			'fieldsSkipChecks' => $appConfig->get("models.$name.config.fieldsSkipChecks", []),
+			'aliasFields'      => $appConfig->get("models.$name.field", []),
+			'behaviours'       => $appConfig->get("models.$name.behaviors", []),
+			'fillable_fields'  => $appConfig->get("models.$name.config.fillable_fields", []),
+			'guarded_fields'   => $appConfig->get("models.$name.config.guarded_fields", []),
+			'relations'        => $appConfig->get("models.$name.relations", []),
+		];
 
 		$config = array_merge($defaultConfig, $config);
 

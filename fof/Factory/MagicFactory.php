@@ -5,9 +5,10 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory;
+namespace FOF40\Factory;
 
 use FOF40\Controller\Controller;
+use FOF40\Dispatcher\Dispatcher;
 use FOF40\Factory\Exception\ControllerNotFound;
 use FOF40\Factory\Exception\DispatcherNotFound;
 use FOF40\Factory\Exception\ModelNotFound;
@@ -34,12 +35,12 @@ class MagicFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Create a new Controller object
 	 *
-	 * @param   string  $viewName  The name of the view we're getting a Controller for.
-	 * @param   array   $config    Optional MVC configuration values for the Controller object.
+	 * @param string $viewName The name of the view we're getting a Controller for.
+	 * @param array  $config   Optional MVC configuration values for the Controller object.
 	 *
 	 * @return  Controller
 	 */
-	public function controller($viewName, array $config = array())
+	public function controller(string $viewName, array $config = []): Controller
 	{
 		try
 		{
@@ -56,12 +57,12 @@ class MagicFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Create a new Model object
 	 *
-	 * @param   string  $viewName  The name of the view we're getting a Model for.
-	 * @param   array   $config    Optional MVC configuration values for the Model object.
+	 * @param string $viewName The name of the view we're getting a Model for.
+	 * @param array  $config   Optional MVC configuration values for the Model object.
 	 *
 	 * @return  Model
 	 */
-	public function model($viewName, array $config = array())
+	public function model(string $viewName, array $config = []): Model
 	{
 		try
 		{
@@ -78,13 +79,13 @@ class MagicFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Create a new View object
 	 *
-	 * @param   string  $viewName  The name of the view we're getting a View object for.
-	 * @param   string  $viewType  The type of the View object. By default it's "html".
-	 * @param   array   $config    Optional MVC configuration values for the View object.
+	 * @param string $viewName The name of the view we're getting a View object for.
+	 * @param string $viewType The type of the View object. By default it's "html".
+	 * @param array  $config   Optional MVC configuration values for the View object.
 	 *
 	 * @return  View
 	 */
-	public function view($viewName, $viewType = 'html', array $config = array())
+	public function view(string $viewName, $viewType = 'html', array $config = []): View
 	{
 		try
 		{
@@ -101,26 +102,30 @@ class MagicFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new Toolbar
 	 *
-	 * @param   array  $config  The configuration values for the Toolbar object
+	 * @param array $config The configuration values for the Toolbar object
 	 *
 	 * @return  Toolbar
 	 */
-	public function toolbar(array $config = array())
+	public function toolbar(array $config = []): Toolbar
 	{
 		$appConfig = $this->container->appConfig;
 
-		$defaultConfig = array(
-			'useConfigurationFile'  => true,
-			'renderFrontendButtons' => in_array($appConfig->get("views.*.config.renderFrontendButtons"), array(true, 'true', 'yes', 'on', 1)),
-			'renderFrontendSubmenu' => in_array($appConfig->get("views.*.config.renderFrontendSubmenu"), array(true, 'true', 'yes', 'on', 1)),
-		);
+		$defaultConfig = [
+			'useConfigurationFile' => true,
+			'renderFrontendButtons' => in_array($appConfig->get("views.*.config.renderFrontendButtons"), [
+				true, 'true', 'yes', 'on', 1,
+			]),
+			'renderFrontendSubmenu' => in_array($appConfig->get("views.*.config.renderFrontendSubmenu"), [
+				true, 'true', 'yes', 'on', 1,
+			]),
+		];
 
 		$config = array_merge($defaultConfig, $config);
 
 		return parent::toolbar($config);
 	}
 
-    public function dispatcher(array $config = array())
+	public function dispatcher(array $config = []): Dispatcher
 	{
 		$dispatcherClass = $this->container->getNamespacePrefix() . 'Dispatcher\\Dispatcher';
 
@@ -140,11 +145,11 @@ class MagicFactory extends BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new TransparentAuthentication handler
 	 *
-	 * @param   array $config The configuration values for the TransparentAuthentication object
+	 * @param array $config The configuration values for the TransparentAuthentication object
 	 *
 	 * @return  TransparentAuthentication
 	 */
-    public function transparentAuthentication(array $config = array())
+	public function transparentAuthentication(array $config = []): TransparentAuthentication
 	{
 		$authClass = $this->container->getNamespacePrefix() . 'TransparentAuthentication\\TransparentAuthentication';
 

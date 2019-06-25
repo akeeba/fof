@@ -7,12 +7,12 @@
 
 namespace FOF40\Factory;
 
+use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Dispatcher;
 use FOF40\Factory\Exception\ControllerNotFound;
 use FOF40\Factory\Exception\DispatcherNotFound;
-use FOF40\Factory\Exception\FormNotFound;
 use FOF40\Factory\Exception\ModelNotFound;
 use FOF40\Factory\Exception\ToolbarNotFound;
 use FOF40\Factory\Exception\TransparentAuthenticationNotFound;
@@ -22,6 +22,7 @@ use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
 use FOF40\View\View;
 use FOF40\View\ViewTemplateFinder;
+use RuntimeException;
 
 defined('_JEXEC') or die;
 
@@ -46,7 +47,7 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Public constructor for the factory object
 	 *
-	 * @param \FOF40\Container\Container $container The container we belong to
+	 * @param Container $container The container we belong to
 	 */
 	public function __construct(Container $container)
 	{
@@ -61,7 +62,7 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Controller
 	 */
-	public function controller($viewName, array $config = [])
+	public function controller(string $viewName, array $config = []): Controller
 	{
 		$controllerClass = $this->container->getNamespacePrefix($this->getSection()) . 'Controller\\' . ucfirst($viewName);
 
@@ -88,7 +89,7 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Model
 	 */
-	public function model($viewName, array $config = [])
+	public function model(string $viewName, array $config = []): Model
 	{
 		$modelClass = $this->container->getNamespacePrefix($this->getSection()) . 'Model\\' . ucfirst($viewName);
 
@@ -116,7 +117,7 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  View
 	 */
-	public function view($viewName, $viewType = 'html', array $config = [])
+	public function view(string $viewName, $viewType = 'html', array $config = []): View
 	{
 		$container = $this->container;
 		$prefix    = $this->container->getNamespacePrefix($this->getSection());
@@ -145,7 +146,7 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Dispatcher
 	 */
-	public function dispatcher(array $config = [])
+	public function dispatcher(array $config = []): Dispatcher
 	{
 		$dispatcherClass = $this->container->getNamespacePrefix($this->getSection()) . 'Dispatcher\\Dispatcher';
 
@@ -167,7 +168,7 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Toolbar
 	 */
-	public function toolbar(array $config = [])
+	public function toolbar(array $config = []): Toolbar
 	{
 		$toolbarClass = $this->container->getNamespacePrefix($this->getSection()) . 'Toolbar\\Toolbar';
 
@@ -189,7 +190,7 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  TransparentAuthentication
 	 */
-	public function transparentAuthentication(array $config = [])
+	public function transparentAuthentication(array $config = []): TransparentAuthentication
 	{
 		$authClass = $this->container->getNamespacePrefix($this->getSection()) . 'TransparentAuthentication\\TransparentAuthentication';
 
@@ -217,9 +218,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  ViewTemplateFinder
 	 *
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function viewFinder(View $view, array $config = [])
+	public function viewFinder(View $view, array $config = []): ViewTemplateFinder
 	{
 		// Initialise the configuration with the default values
 		$defaultConfig = [
@@ -255,7 +256,7 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * @return string
 	 */
-	public function getSection()
+	public function getSection(): string
 	{
 		return $this->section;
 	}
@@ -263,7 +264,7 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * @param string $section
 	 */
-	public function setSection($section)
+	public function setSection(string $section): void
 	{
 		$this->section = $section;
 	}
@@ -276,9 +277,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Controller
 	 *
-	 * @throws  \RuntimeException  If the $controllerClass does not exist
+	 * @throws  RuntimeException  If the $controllerClass does not exist
 	 */
-	protected function createController($controllerClass, array $config = [])
+	protected function createController(string $controllerClass, array $config = []): Controller
 	{
 		if (!class_exists($controllerClass))
 		{
@@ -296,9 +297,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Model
 	 *
-	 * @throws  \RuntimeException  If the $modelClass does not exist
+	 * @throws  RuntimeException  If the $modelClass does not exist
 	 */
-	protected function createModel($modelClass, array $config = [])
+	protected function createModel(string $modelClass, array $config = []): Model
 	{
 		if (!class_exists($modelClass))
 		{
@@ -316,9 +317,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  View
 	 *
-	 * @throws  \RuntimeException  If the $viewClass does not exist
+	 * @throws  RuntimeException  If the $viewClass does not exist
 	 */
-	protected function createView($viewClass, array $config = [])
+	protected function createView(string $viewClass, array $config = []): View
 	{
 		if (!class_exists($viewClass))
 		{
@@ -336,9 +337,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Toolbar
 	 *
-	 * @throws  \RuntimeException  If the $toolbarClass does not exist
+	 * @throws  RuntimeException  If the $toolbarClass does not exist
 	 */
-	protected function createToolbar($toolbarClass, array $config = [])
+	protected function createToolbar(string $toolbarClass, array $config = []): Toolbar
 	{
 		if (!class_exists($toolbarClass))
 		{
@@ -349,27 +350,6 @@ class BasicFactory implements FactoryInterface
 	}
 
 	/**
-	 * Creates a Form object
-	 *
-	 * @param string $formClass The fully qualified class name for the Form
-	 * @param string $name      The name of the form
-	 * @param array  $options   The options values for the Form object
-	 *
-	 * @return  Toolbar
-	 *
-	 * @throws  FormNotFound    If the $formClass does not exist
-	 */
-	protected function createForm($formClass, $name, array $options = [])
-	{
-		if (!class_exists($formClass))
-		{
-			throw new FormNotFound($formClass);
-		}
-
-		return new $formClass($this->container, $name, $options);
-	}
-
-	/**
 	 * Creates a Dispatcher object
 	 *
 	 * @param string $dispatcherClass The fully qualified class name for the Dispatcher
@@ -377,9 +357,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  Dispatcher
 	 *
-	 * @throws  \RuntimeException  If the $dispatcherClass does not exist
+	 * @throws  RuntimeException  If the $dispatcherClass does not exist
 	 */
-	protected function createDispatcher($dispatcherClass, array $config = [])
+	protected function createDispatcher(string $dispatcherClass, array $config = []): Dispatcher
 	{
 		if (!class_exists($dispatcherClass))
 		{
@@ -397,9 +377,9 @@ class BasicFactory implements FactoryInterface
 	 *
 	 * @return  TransparentAuthentication
 	 *
-	 * @throws  \RuntimeException  If the $authClass does not exist
+	 * @throws  RuntimeException  If the $authClass does not exist
 	 */
-	protected function createTransparentAuthentication($authClass, $config)
+	protected function createTransparentAuthentication(string $authClass, array $config): TransparentAuthentication
 	{
 		if (!class_exists($authClass))
 		{

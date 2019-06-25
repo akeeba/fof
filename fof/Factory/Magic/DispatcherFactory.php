@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory\Magic;
+namespace FOF40\Factory\Magic;
 
 use FOF40\Dispatcher\Dispatcher;
 
@@ -19,15 +19,15 @@ class DispatcherFactory extends BaseFactory
 	/**
 	 * Create a new object instance
 	 *
-	 * @param   array   $config    The config parameters which override the fof.xml information
+	 * @param array $config The config parameters which override the fof.xml information
 	 *
 	 * @return  Dispatcher  A new Dispatcher object
 	 */
-	public function make(array $config = array())
+	public function make(array $config = []): Dispatcher
 	{
-		$appConfig = $this->container->appConfig;
+		$appConfig     = $this->container->appConfig;
 		$defaultConfig = $appConfig->get('dispatcher.*');
-		$config = array_merge($defaultConfig, $config);
+		$config        = array_merge($defaultConfig, $config);
 
 		$className = $this->container->getNamespacePrefix($this->getSection()) . 'Dispatcher\\DefaultDispatcher';
 

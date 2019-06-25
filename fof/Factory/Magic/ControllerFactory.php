@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory\Magic;
+namespace FOF40\Factory\Magic;
 
 use FOF40\Controller\DataController;
 use FOF40\Factory\Exception\ControllerNotFound;
@@ -20,12 +20,12 @@ class ControllerFactory extends BaseFactory
 	/**
 	 * Create a new object instance
 	 *
-	 * @param   string $name   The name of the class we're making
-	 * @param   array  $config The config parameters which override the fof.xml information
+	 * @param string $name   The name of the class we're making
+	 * @param array  $config The config parameters which override the fof.xml information
 	 *
 	 * @return  DataController  A new DataController object
 	 */
-	public function make($name = null, array $config = array())
+	public function make(string $name = null, array $config = []): DataController
 	{
 		if (empty($name))
 		{
@@ -35,7 +35,7 @@ class ControllerFactory extends BaseFactory
 		$appConfig = $this->container->appConfig;
 		$name      = ucfirst($name);
 
-		$defaultConfig = array(
+		$defaultConfig = [
 			'name'           => $name,
 			'default_task'   => $appConfig->get("views.$name.config.default_task", 'main'),
 			'autoRouting'    => $appConfig->get("views.$name.config.autoRouting", 1),
@@ -43,12 +43,12 @@ class ControllerFactory extends BaseFactory
 			'viewName'       => $appConfig->get("views.$name.config.viewName", null),
 			'modelName'      => $appConfig->get("views.$name.config.modelName", null),
 			'taskPrivileges' => $appConfig->get("views.$name.acl"),
-			'cacheableTasks' => $appConfig->get("views.$name.config.cacheableTasks", array(
+			'cacheableTasks' => $appConfig->get("views.$name.config.cacheableTasks", [
 				'browse',
-				'read'
-			)),
+				'read',
+			]),
 			'taskMap'        => $appConfig->get("views.$name.taskmap"),
-		);
+		];
 
 		$config = array_merge($defaultConfig, $config);
 

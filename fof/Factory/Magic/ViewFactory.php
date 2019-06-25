@@ -5,10 +5,11 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory\Magic;
+namespace FOF40\Factory\Magic;
 
 use FOF40\Factory\Exception\ViewNotFound;
 use FOF40\View\DataView\DataViewInterface;
+use FOF40\View\View;
 
 defined('_JEXEC') or die;
 
@@ -20,13 +21,13 @@ class ViewFactory extends BaseFactory
 	/**
 	 * Create a new object instance
 	 *
-	 * @param   string  $name      The name of the class we're making
-	 * @param   string  $viewType  The view type, default html, possible values html, form, raw, json, csv
-	 * @param   array   $config    The config parameters which override the fof.xml information
+	 * @param string $name     The name of the class we're making
+	 * @param string $viewType The view type, default html, possible values html, form, raw, json, csv
+	 * @param array  $config   The config parameters which override the fof.xml information
 	 *
-	 * @return  DataViewInterface  A new TreeModel or DataModel object
+	 * @return  View  A DataViewInterface view
 	 */
-	public function make($name = null, $viewType = 'html', array $config = array())
+	public function make(string $name = null, string $viewType = 'html', array $config = []): View
 	{
 		if (empty($name))
 		{
@@ -34,15 +35,15 @@ class ViewFactory extends BaseFactory
 		}
 
 		$appConfig = $this->container->appConfig;
-		$name = ucfirst($name);
+		$name      = ucfirst($name);
 
-		$defaultConfig = array(
+		$defaultConfig = [
 			'name'          => $name,
 			'template_path' => $appConfig->get("views.$name.config.template_path"),
 			'layout'        => $appConfig->get("views.$name.config.layout"),
 			// You can pass something like .php => Class1, .foo.bar => Class 2
 			'viewEngineMap' => $appConfig->get("views.$name.config.viewEngineMap"),
-		);
+		];
 
 		$config = array_merge($defaultConfig, $config);
 

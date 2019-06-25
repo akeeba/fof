@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Factory\Magic;
+namespace FOF40\Factory\Magic;
 
 use FOF40\Container\Container;
 
@@ -18,37 +18,37 @@ abstract class BaseFactory
 	 */
 	protected $container = null;
 
-    /**
-     * Section used to build the namespace prefix. We have to pass it since in CLI we need
-     * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for valid values
-     *
-     * @var   string
-     */
-    protected $section = 'auto';
+	/**
+	 * Section used to build the namespace prefix. We have to pass it since in CLI we need
+	 * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for valid values
+	 *
+	 * @var   string
+	 */
+	protected $section = 'auto';
 
 	/**
 	 * Public constructor
 	 *
-	 * @param   Container  $container  The container we belong to
+	 * @param Container $container The container we belong to
 	 */
 	public function __construct(Container $container)
 	{
 		$this->container = $container;
 	}
 
-    /**
-     * @return string
-     */
-    public function getSection()
-    {
-        return $this->section;
-    }
+	/**
+	 * @return string
+	 */
+	public function getSection(): string
+	{
+		return $this->section;
+	}
 
-    /**
-     * @param string $section
-     */
-    public function setSection($section)
-    {
-        $this->section = $section;
-    }
+	/**
+	 * @param string $section
+	 */
+	public function setSection(string $section): void
+	{
+		$this->section = $section;
+	}
 }
