@@ -16,7 +16,7 @@
     [X] Params
     [X] Platform
     [X] Render
-    [ ] Template
+    [X] Template
     [ ] Timer
     [ ] Toolbar
     [ ] TransparentAuthentication
