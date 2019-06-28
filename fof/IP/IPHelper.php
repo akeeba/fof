@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\IP;
+namespace FOF40\IP;
 
 defined('_JEXEC') or die;
 
@@ -44,9 +44,9 @@ class IPHelper
 	/**
 	 * Set the $useFirstIpInChain flag. See above.
 	 *
-	 * @param   bool  $value
+	 * @param bool $value
 	 */
-	public static function setUseFirstIpInChain($value = true)
+	public static function setUseFirstIpInChain(bool $value = true): void
 	{
 		self::$useFirstIpInChain = $value;
 	}
@@ -56,7 +56,7 @@ class IPHelper
 	 *
 	 * @return string
 	 */
-	public static function getIp()
+	public static function getIp(): string
 	{
 		if (is_null(static::$ip))
 		{
@@ -81,11 +81,11 @@ class IPHelper
 	/**
 	 * Set the IP address of the current visitor
 	 *
-	 * @param   string  $ip
+	 * @param string $ip
 	 *
 	 * @return  void
 	 */
-	public static function setIp($ip)
+	public static function setIp(string $ip): void
 	{
 		static::$ip = $ip;
 	}
@@ -93,11 +93,11 @@ class IPHelper
 	/**
 	 * Is it an IPv6 IP address?
 	 *
-	 * @param   string   $ip  An IPv4 or IPv6 address
+	 * @param string $ip An IPv4 or IPv6 address
 	 *
 	 * @return  boolean  True if it's IPv6
 	 */
-	protected static function isIPv6($ip)
+	protected static function isIPv6(string $ip): bool
 	{
 		if (strstr($ip, ':'))
 		{
@@ -110,12 +110,12 @@ class IPHelper
 	/**
 	 * Checks if an IP is contained in a list of IPs or IP expressions
 	 *
-	 * @param   string        $ip       The IPv4/IPv6 address to check
-	 * @param   array|string  $ipTable  An IP expression (or a comma-separated or array list of IP expressions) to check against
+	 * @param string       $ip      The IPv4/IPv6 address to check
+	 * @param array|string $ipTable An IP expression (or a comma-separated or array list of IP expressions) to check against
 	 *
-	 * @return  null|boolean  True if it's in the list
+	 * @return  boolean  True if it's in the list
 	 */
-	public static function IPinList($ip, $ipTable = '')
+	public static function IPinList(string $ip, $ipTable = ''): bool
 	{
 		// No point proceeding with an empty IP list
 		if (empty($ipTable))
@@ -129,12 +129,14 @@ class IPHelper
 			if (strpos($ipTable, ',') !== false)
 			{
 				$ipTable = explode(',', $ipTable);
-				$ipTable = array_map(function($x) { return trim($x); }, $ipTable);
+				$ipTable = array_map(function ($x) {
+					return trim($x);
+				}, $ipTable);
 			}
 			else
 			{
 				$ipTable = trim($ipTable);
-				$ipTable = array($ipTable);
+				$ipTable = [$ipTable];
 			}
 		}
 
@@ -188,7 +190,7 @@ class IPHelper
 				}
 
 				$from = @inet_pton(trim($from));
-				$to = @inet_pton(trim($to));
+				$to   = @inet_pton(trim($to));
 
 				// Sanity check
 				if (($from === false) || ($to === false))
@@ -199,7 +201,7 @@ class IPHelper
 				// Swap from/to if they're in the wrong order
 				if ($from > $to)
 				{
-					list($from, $to) = array($to, $from);
+					list($from, $to) = [$to, $from];
 				}
 
 				if (($myIP >= $from) && ($myIP <= $to))
@@ -237,8 +239,8 @@ class IPHelper
 				elseif (!$ipv6 && strstr($maskbits, '.'))
 				{
 					// Convert IPv4 netmask to CIDR
-					$long = ip2long($maskbits);
-					$base = ip2long('255.255.255.255');
+					$long     = ip2long($maskbits);
+					$base     = ip2long('255.255.255.255');
 					$maskbits = 32 - log(($long ^ $base) + 1, 2);
 				}
 
@@ -252,13 +254,13 @@ class IPHelper
 				}
 
 				// Get the network's binary representation
-				$binarynet = self::inet_to_bits($net);
+				$binarynet            = self::inet_to_bits($net);
 				$expectedNumberOfBits = $ipv6 ? 128 : 24;
-				$binarynet = str_pad($binarynet, $expectedNumberOfBits, '0', STR_PAD_RIGHT);
+				$binarynet            = str_pad($binarynet, $expectedNumberOfBits, '0', STR_PAD_RIGHT);
 
 				// Check the corresponding bits of the IP and the network
 				$ip_net_bits = substr($binaryip, 0, $maskbits);
-				$net_bits = substr($binarynet, 0, $maskbits);
+				$net_bits    = substr($binarynet, 0, $maskbits);
 
 				if ($ip_net_bits == $net_bits)
 				{
@@ -308,17 +310,17 @@ class IPHelper
 						switch ($dots)
 						{
 							case 1:
-								$netmask = '255.0.0.0';
+								$netmask      = '255.0.0.0';
 								$ipExpression .= '0.0.0';
 								break;
 
 							case 2:
-								$netmask = '255.255.0.0';
+								$netmask      = '255.255.0.0';
 								$ipExpression .= '0.0';
 								break;
 
 							case 3:
-								$netmask = '255.255.255.0';
+								$netmask      = '255.255.255.0';
 								$ipExpression .= '0';
 								break;
 
@@ -331,8 +333,8 @@ class IPHelper
 							$binaryip = self::inet_to_bits($myIP);
 
 							// Convert netmask to CIDR
-							$long = ip2long($netmask);
-							$base = ip2long('255.255.255.255');
+							$long     = ip2long($netmask);
+							$base     = ip2long('255.255.255.255');
 							$maskbits = 32 - log(($long ^ $base) + 1, 2);
 
 							$net = @inet_pton($ipExpression);
@@ -344,13 +346,13 @@ class IPHelper
 							}
 
 							// Get the network's binary representation
-							$binarynet = self::inet_to_bits($net);
+							$binarynet            = self::inet_to_bits($net);
 							$expectedNumberOfBits = $ipv6 ? 128 : 24;
-							$binarynet = str_pad($binarynet, $expectedNumberOfBits, '0', STR_PAD_RIGHT);
+							$binarynet            = str_pad($binarynet, $expectedNumberOfBits, '0', STR_PAD_RIGHT);
 
 							// Check the corresponding bits of the IP and the network
 							$ip_net_bits = substr($binaryip, 0, $maskbits);
-							$net_bits = substr($binarynet, 0, $maskbits);
+							$net_bits    = substr($binarynet, 0, $maskbits);
 
 							if ($ip_net_bits == $net_bits)
 							{
@@ -376,7 +378,7 @@ class IPHelper
 	/**
 	 * Works around the REMOTE_ADDR not containing the user's IP
 	 */
-	public static function workaroundIPIssues()
+	public static function workaroundIPIssues(): void
 	{
 		$ip = self::getIp();
 
@@ -403,11 +405,11 @@ class IPHelper
 	/**
 	 * Should I allow the remote client's IP to be overridden by an X-Forwarded-For or Client-Ip HTTP header?
 	 *
-	 * @param   bool  $newState  True to allow the override
+	 * @param bool $newState True to allow the override
 	 *
 	 * @return  void
 	 */
-	public static function setAllowIpOverrides($newState)
+	public static function setAllowIpOverrides(bool $newState): void
 	{
 		self::$allowIpOverrides = $newState ? true : false;
 	}
@@ -421,16 +423,16 @@ class IPHelper
 	 *
 	 * @return  string
 	 */
-	protected static function detectAndCleanIP()
+	protected static function detectAndCleanIP(): string
 	{
 		$ip = static::detectIP();
 
 		if ((strstr($ip, ',') !== false) || (strstr($ip, ' ') !== false))
 		{
-			$ip = str_replace(' ', ',', $ip);
-			$ip = str_replace(',,', ',', $ip);
+			$ip  = str_replace(' ', ',', $ip);
+			$ip  = str_replace(',,', ',', $ip);
 			$ips = explode(',', $ip);
-			$ip = '';
+			$ip  = '';
 
 			// Loop until we're running out of parts or we have a hit
 			while ($ips)
@@ -448,7 +450,7 @@ class IPHelper
 		return self::cleanIP($ip);
 	}
 
-	protected static function cleanIP($ip)
+	protected static function cleanIP(string $ip): string
 	{
 		$ip = trim($ip);
 		$ip = strtoupper($ip);
@@ -476,8 +478,8 @@ class IPHelper
 			$ip = substr($ip, strpos($ip, ':FFFF:') + 6);
 			// Convert each 16-bit WORD to decimal
 			list($word1, $word2) = explode(':', $ip);
-			$word1 = hexdec($word1);
-			$word2 = hexdec($word2);
+			$word1  = hexdec($word1);
+			$word2  = hexdec($word2);
 			$longIp = $word1 * 65536 + $word2;
 
 			return long2ip($longIp);
@@ -491,7 +493,7 @@ class IPHelper
 	 *
 	 * @return  string
 	 */
-	protected static function detectIP()
+	protected static function detectIP(): string
 	{
 		// Normally the $_SERVER superglobal is set
 		if (isset($_SERVER))
@@ -575,11 +577,11 @@ class IPHelper
 	/**
 	 * Converts inet_pton output to bits string
 	 *
-	 * @param   string $inet The in_addr representation of an IPv4 or IPv6 address
+	 * @param string $inet The in_addr representation of an IPv4 or IPv6 address
 	 *
 	 * @return  string
 	 */
-	protected static function inet_to_bits($inet)
+	protected static function inet_to_bits(string $inet): string
 	{
 		if (strlen($inet) == 4)
 		{
@@ -603,22 +605,22 @@ class IPHelper
 	/**
 	 * Checks if an IPv6 address $ip is part of the IPv6 CIDR block $cidrnet
 	 *
-	 * @param   string  $ip       The IPv6 address to check, e.g. 21DA:00D3:0000:2F3B:02AC:00FF:FE28:9C5A
-	 * @param   string  $cidrnet  The IPv6 CIDR block, e.g. 21DA:00D3:0000:2F3B::/64
+	 * @param string $ip      The IPv6 address to check, e.g. 21DA:00D3:0000:2F3B:02AC:00FF:FE28:9C5A
+	 * @param string $cidrnet The IPv6 CIDR block, e.g. 21DA:00D3:0000:2F3B::/64
 	 *
 	 * @return  bool
 	 */
-	protected static function checkIPv6CIDR($ip, $cidrnet)
+	protected static function checkIPv6CIDR(string $ip, string $cidrnet): bool
 	{
-		$ip = inet_pton($ip);
-		$binaryip=self::inet_to_bits($ip);
+		$ip       = inet_pton($ip);
+		$binaryip = self::inet_to_bits($ip);
 
-		list($net,$maskbits)=explode('/',$cidrnet);
-		$net=inet_pton($net);
-		$binarynet=self::inet_to_bits($net);
+		list($net, $maskbits) = explode('/', $cidrnet);
+		$net       = inet_pton($net);
+		$binarynet = self::inet_to_bits($net);
 
-		$ip_net_bits=substr($binaryip,0,$maskbits);
-		$net_bits   =substr($binarynet,0,$maskbits);
+		$ip_net_bits = substr($binaryip, 0, $maskbits);
+		$net_bits    = substr($binarynet, 0, $maskbits);
 
 		return $ip_net_bits === $net_bits;
 	}

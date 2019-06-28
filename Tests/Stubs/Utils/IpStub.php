@@ -14,7 +14,7 @@ class IpStub extends IpHelper
 {
 	public static $fakeIP = null;
 
-	protected static function detectIP()
+	protected static function detectIP(): string
 	{
 		if (!is_null(static::$fakeIP))
 		{
@@ -24,7 +24,7 @@ class IpStub extends IpHelper
 		return parent::detectIP();
 	}
 
-	public static function detectAndCleanIP()
+	public static function detectAndCleanIP(): string
 	{
 		return parent::detectAndCleanIP();
 	}
