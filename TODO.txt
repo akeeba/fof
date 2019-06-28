@@ -25,7 +25,7 @@
     [X] Date::TimezoneWrangler
     [X] JoomlaAbstraction
     [X] Html
-    [ ] InstallScript
+    [X] InstallScript
     [ ] IP
     [ ] Controller
     [ ] View
