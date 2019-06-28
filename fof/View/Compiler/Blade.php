@@ -888,7 +888,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSortgrid($expression)
 	{
-		return "<?php echo FOF40\Utils\FEFHelper\BrowseView::sortGrid{$expression} ?>";
+		return "<?php echo FOF40\Html\FEFHelper\BrowseView::sortGrid{$expression} ?>";
 	}
 
 	/**
@@ -901,7 +901,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileFieldtitle($expression)
 	{
-		return "<?php echo FOF40\Utils\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
+		return "<?php echo FOF40\Html\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
 	}
 
 	/**
@@ -914,7 +914,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileModelfilter($expression)
 	{
-		return "<?php echo \FOF40\Utils\FEFHelper\BrowseView::modelFilter{$expression} ?>";
+		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::modelFilter{$expression} ?>";
 	}
 
 	/**
@@ -927,7 +927,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSelectfilter($expression)
 	{
-		return "<?php echo \FOF40\Utils\FEFHelper\BrowseView::selectFilter{$expression} ?>";
+		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::selectFilter{$expression} ?>";
 	}
 
 	/**
@@ -940,7 +940,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSearchfilter($expression)
 	{
-		return "<?php echo \FOF40\Utils\FEFHelper\BrowseView::searchFilter{$expression} ?>";
+		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::searchFilter{$expression} ?>";
 	}
 
 	/**

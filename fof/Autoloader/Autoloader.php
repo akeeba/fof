@@ -225,6 +225,8 @@ class Autoloader
 
 			return true;
 		}
+
+		return null;
 	}
 
 	/**
@@ -272,7 +274,33 @@ class Autoloader
 				return $file;
 			}
 		}
+
+		return false;
 	}
+}
+
+// Add class aliases
+foreach ([
+	         'FOF40\Utils\CacheCleaner'                => 'FOF40\JoomlaAbstraction\CacheCleaner',
+	         'FOF40\Utils\ComponentVersion'            => 'FOF40\Utils\ComponentVersion',
+	         'FOF40\Utils\DynamicGroups'               => 'FOF40\JoomlaAbstraction\DynamicGroups',
+	         'FOF40\Utils\FEFHelper\BrowseView'        => 'FOF40\Html\FEFHelper\BrowseView',
+	         'FOF40\Utils\InstallScript\BaseInstaller' => 'FOF40\InstallScript\BaseInstaller',
+	         'FOF40\Utils\InstallScript\Component'     => 'FOF40\InstallScript\Component',
+	         'FOF40\Utils\InstallScript\Module'        => 'FOF40\InstallScript\Module',
+	         'FOF40\Utils\InstallScript\Plugin'        => 'FOF40\InstallScript\Plugin',
+	         'FOF40\Utils\InstallScript'               => 'FOF40\InstallScript\Component',
+	         'FOF40\Utils\Ip'                          => 'FOF40\IP\IPHelper',
+	         'FOF40\Utils\SelectOptions'               => 'FOF40\Html\SelectOptions',
+	         'FOF40\Utils\TimezoneWrangler'            => 'FOF40\Date\TimezoneWrangler',
+         ] as $oldClass => $newClass)
+{
+	if (class_exists($oldClass, false))
+	{
+		continue;
+	}
+
+	class_alias($oldClass, $newClass, true);
 }
 
 // Register the current namespace with the autoloader

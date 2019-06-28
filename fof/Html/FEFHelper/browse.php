@@ -7,7 +7,7 @@
 
 use FOF40\Model\DataModel;
 use FOF40\Utils\ArrayHelper;
-use FOF40\Utils\FEFHelper\BrowseView;
+use FOF40\Html\FEFHelper\BrowseView;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\DataView\Raw as DataViewRaw;
 use Joomla\CMS\Factory as JoomlaFactory;

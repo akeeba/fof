@@ -8,7 +8,7 @@
 namespace FOF40\Params;
 
 use FOF40\Container\Container;
-use FOF40\Utils\CacheCleaner;
+use FOF40\JoomlaAbstraction\CacheCleaner;
 
 defined('_JEXEC') or die;
 

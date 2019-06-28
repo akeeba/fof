@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils\InstallScript;
+namespace  FOF40\InstallScript;
 
 use DirectoryIterator;
 use Exception;

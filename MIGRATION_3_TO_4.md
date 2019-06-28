@@ -30,6 +30,45 @@ if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/inclu
 }
 ```
 
+## The Utils package has been refactored and partially deprecated
+
+The Utils package has grown over the lifetime of FOF 3 into an unwieldy mess of unrelated features. In an attempt to
+restore sanity the Utils package is being refactored to only include helper classes used internally by FOF. The 
+remaining, very useful features are being refactored into their own, semantically coherent packages.
+
+The following classes did NOT move:
+
+* FOF40\Utils\ArrayHelper
+* FOF40\Utils\Buffer
+* FOF40\Utils\Collection
+* FOF40\Utils\FilesCheck
+* FOF40\Utils\ModelTypeHints
+* FOF40\Utils\PhpFunc
+* FOF40\Utils\StringHelper
+
+The following classes have been moved out of the Utils package and into existing or new packages. The following table
+helps you understand what moved where.
+
+| From | To |
+| ---- | ---- |
+| FOF40\Utils\CacheCleaner | FOF40\JoomlaAbstraction\CacheCleaner |
+| FOF40\Utils\ComponentVersion | FOF40\JoomlaAbstraction\ComponentVersion |
+| FOF40\Utils\DynamicGroups | FOF40\JoomlaAbstraction\DynamicGroups |
+| FOF40\Utils\FEFHelper\BrowseView | FOF40\Html\FEFHelper\BrowseView |
+| FOF40\Utils\FEFHelper\Html | (removed) |
+| FOF40\Utils\InstallScript\BaseInstaller | FOF40\InstallScript\BaseInstaller |
+| FOF40\Utils\InstallScript\Component | FOF40\InstallScript\Component |
+| FOF40\Utils\InstallScript\Module | FOF40\InstallScript\Module |
+| FOF40\Utils\InstallScript\Plugin | FOF40\InstallScript\Plugin |
+| FOF40\Utils\InstallScript | FOF40\InstallScript\Component |
+| FOF40\Utils\Ip | FOF40\IP\IPHelper |
+| FOF40\Utils\SelectOptions | FOF40\Html\SelectOptions |
+| FOF40\Utils\TimezoneWrangler | FOF40\Date\TimezoneWrangler |
+
+The FOF Autoloader adds class aliases for the moved classes. The aliases are a temporary measure and **WILL** be removed
+in FOF 5. You are strongly recommended to refactor your code using the new class names (in the "To" column) to ensure
+future compatibility.
+
 ## Installation and dependencies
 
 Use the [`InstallScript` class](https://github.com/akeeba/fof/wiki/The-InstallScript-class) shipped with FOF 4. During

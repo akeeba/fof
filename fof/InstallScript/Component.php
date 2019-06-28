@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils\InstallScript;
+namespace  FOF40\InstallScript;
 
 use FOF40\Database\Installer as DatabaseInstaller;
 use Exception;
@@ -21,7 +21,7 @@ use Joomla\CMS\Table\Table;
 defined('_JEXEC') or die;
 
 // In case FOF's autoloader is not present yet, e.g. new installation
-if (!class_exists('FOF40\\Utils\\InstallScript\\BaseInstaller', true))
+if (!class_exists('FOF40\\InstallScript\\BaseInstaller', true))
 {
 	require_once __DIR__ . '/BaseInstaller.php';
 }

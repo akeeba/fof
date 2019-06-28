@@ -5,14 +5,14 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils\FEFHelper;
+namespace  FOF40\Html\FEFHelper;
 
 defined('_JEXEC') or die;
 
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
 use FOF40\Utils\ArrayHelper;
-use FOF40\Utils\SelectOptions;
+use FOF40\Html\SelectOptions;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use Joomla\CMS\HTML\HTMLHelper;

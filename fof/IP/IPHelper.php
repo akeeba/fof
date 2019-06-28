@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils;
+namespace  FOF40\IP;
 
 defined('_JEXEC') or die;
 
@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * Makes sure that we get the real IP of the user
  */
-class Ip
+class IPHelper
 {
 	/**
 	 * The IP address of the current visitor

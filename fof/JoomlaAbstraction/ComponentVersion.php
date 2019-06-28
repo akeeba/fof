@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils;
+namespace  FOF40\JoomlaAbstraction;
 
 use Exception;
 use Joomla\CMS\Factory as JoomlaFactory;

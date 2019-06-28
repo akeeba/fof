@@ -32,7 +32,7 @@
  * @var \FOF40\View\DataView\Raw $this
  */
 
-use FOF40\Utils\FEFHelper\BrowseView;
+use FOF40\Html\FEFHelper\BrowseView;
 
 defined('_JEXEC') or die;
 
