@@ -29,6 +29,26 @@ class Autoloader
 	private static $instance;
 
 	/**
+	 * Class aliases. Maps an old, obsolete class name to the new one.
+	 *
+	 * @var array
+	 */
+	protected static $aliases = [
+		'FOF40\Utils\CacheCleaner'                => 'FOF40\JoomlaAbstraction\CacheCleaner',
+		'FOF40\Utils\ComponentVersion'            => 'FOF40\Utils\ComponentVersion',
+		'FOF40\Utils\DynamicGroups'               => 'FOF40\JoomlaAbstraction\DynamicGroups',
+		'FOF40\Utils\FEFHelper\BrowseView'        => 'FOF40\Html\FEFHelper\BrowseView',
+		'FOF40\Utils\InstallScript\BaseInstaller' => 'FOF40\InstallScript\BaseInstaller',
+		'FOF40\Utils\InstallScript\Component'     => 'FOF40\InstallScript\Component',
+		'FOF40\Utils\InstallScript\Module'        => 'FOF40\InstallScript\Module',
+		'FOF40\Utils\InstallScript\Plugin'        => 'FOF40\InstallScript\Plugin',
+		'FOF40\Utils\InstallScript'               => 'FOF40\InstallScript\Component',
+		'FOF40\Utils\Ip'                          => 'FOF40\IP\IPHelper',
+		'FOF40\Utils\SelectOptions'               => 'FOF40\Html\SelectOptions',
+		'FOF40\Utils\TimezoneWrangler'            => 'FOF40\Date\TimezoneWrangler',
+	];
+
+	/**
 	 * @return Autoloader
 	 */
 	public static function getInstance(): self
@@ -219,11 +239,29 @@ class Autoloader
 	 */
 	public function loadClass($class)
 	{
+		if (class_exists($class, false))
+		{
+			return null;
+		}
+
 		if ($file = $this->findFile($class))
 		{
 			include $file;
 
 			return true;
+		}
+
+		if (array_key_exists($class, self::$aliases))
+		{
+			$newClass          = self::$aliases[$class];
+			$foundAliasedClass = $this->loadClass($newClass);
+
+			if ($foundAliasedClass === true)
+			{
+				class_alias($newClass, $class);
+
+				return true;
+			}
 		}
 
 		return null;
@@ -277,30 +315,6 @@ class Autoloader
 
 		return false;
 	}
-}
-
-// Add class aliases
-foreach ([
-	         'FOF40\Utils\CacheCleaner'                => 'FOF40\JoomlaAbstraction\CacheCleaner',
-	         'FOF40\Utils\ComponentVersion'            => 'FOF40\Utils\ComponentVersion',
-	         'FOF40\Utils\DynamicGroups'               => 'FOF40\JoomlaAbstraction\DynamicGroups',
-	         'FOF40\Utils\FEFHelper\BrowseView'        => 'FOF40\Html\FEFHelper\BrowseView',
-	         'FOF40\Utils\InstallScript\BaseInstaller' => 'FOF40\InstallScript\BaseInstaller',
-	         'FOF40\Utils\InstallScript\Component'     => 'FOF40\InstallScript\Component',
-	         'FOF40\Utils\InstallScript\Module'        => 'FOF40\InstallScript\Module',
-	         'FOF40\Utils\InstallScript\Plugin'        => 'FOF40\InstallScript\Plugin',
-	         'FOF40\Utils\InstallScript'               => 'FOF40\InstallScript\Component',
-	         'FOF40\Utils\Ip'                          => 'FOF40\IP\IPHelper',
-	         'FOF40\Utils\SelectOptions'               => 'FOF40\Html\SelectOptions',
-	         'FOF40\Utils\TimezoneWrangler'            => 'FOF40\Date\TimezoneWrangler',
-         ] as $oldClass => $newClass)
-{
-	if (class_exists($oldClass, false))
-	{
-		continue;
-	}
-
-	class_alias($oldClass, $newClass, true);
 }
 
 // Register the current namespace with the autoloader

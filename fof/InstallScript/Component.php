@@ -1171,7 +1171,7 @@ class Component extends BaseInstaller
 		if (is_null($rootItemId))
 		{
 			// I quit. Your site is broken.
-			return false;
+			return;
 		}
 
 		$table->rebuild($rootItemId);
@@ -1270,7 +1270,7 @@ class Component extends BaseInstaller
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentMenuRecord(JDatabaseDriver $db): void 
+	private function deleteComponentMenuRecord(JDatabaseDriver $db): void
 	{
 		$query = $db->getQuery(true);
 		$query->select('id')
