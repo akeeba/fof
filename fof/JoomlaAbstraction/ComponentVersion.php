@@ -38,7 +38,7 @@ abstract class ComponentVersion
 	 *
 	 * @since   3.1.5
 	 */
-	public static function getFor($component)
+	public static function getFor(string $component): string
 	{
 		if (!isset(self::$version[$component]))
 		{
@@ -72,7 +72,7 @@ abstract class ComponentVersion
 	 *
 	 * @since   3.1.5
 	 */
-	private static function getVersionFromDatabase($component)
+	private static function getVersionFromDatabase(string $component): string
 	{
 		$db      = JoomlaFactory::getDbo();
 		$query   = $db->getQuery(true)
@@ -120,7 +120,7 @@ abstract class ComponentVersion
 	 *
 	 * @since   1.2.0
 	 */
-	private static function getVersionFromManifest($component)
+	private static function getVersionFromManifest(string $component): ?string
 	{
 		$bareComponent = str_replace('com_', '', $component);
 		$file = JPATH_ADMINISTRATOR . '/components/' . $component . '/' . $bareComponent . '.xml';

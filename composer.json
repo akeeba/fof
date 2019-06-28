@@ -8,7 +8,8 @@
       "ext-simplexml": "*",
       "ext-json": "*",
       "ext-openssl": "*",
-      "ext-mbstring": "*"
+      "ext-mbstring": "*",
+      "ext-libxml": "*"
     },
 	"keywords": ["framework","joomla","mvc","rad"],
 	"homepage": "https://github.com/akeeba/fof",

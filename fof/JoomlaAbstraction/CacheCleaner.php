@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\JoomlaAbstraction;
+namespace FOF40\JoomlaAbstraction;
 
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -23,7 +23,7 @@ class CacheCleaner
 	 *
 	 * @return  void
 	 */
-	public static function clearPluginsAndModulesCache()
+	public static function clearPluginsAndModulesCache(): void
 	{
 		self::clearPluginsCache();
 		self::clearModulesCache();
@@ -35,9 +35,9 @@ class CacheCleaner
 	 *
 	 * @return  void
 	 */
-	public static function clearPluginsCache()
+	public static function clearPluginsCache(): void
 	{
-		self::clearCacheGroups(array('com_plugins'), array(0,1));
+		self::clearCacheGroups(['com_plugins'], [0, 1]);
 	}
 
 	/**
@@ -46,22 +46,22 @@ class CacheCleaner
 	 *
 	 * @return  void
 	 */
-	public static function clearModulesCache()
+	public static function clearModulesCache(): void
 	{
-		self::clearCacheGroups(array('com_modules'), array(0,1));
+		self::clearCacheGroups(['com_modules'], [0, 1]);
 	}
 
 	/**
 	 * Clears the specified cache groups.
 	 *
-	 * @param   array $clearGroups    Which cache groups to clear. Usually this is com_yourcomponent to clear your
+	 * @param array $clearGroups      Which cache groups to clear. Usually this is com_yourcomponent to clear your
 	 *                                component's cache.
-	 * @param   array   $cacheClients Which cache clients to clear. 0 is the back-end, 1 is the front-end. If you do not
+	 * @param array $cacheClients     Which cache clients to clear. 0 is the back-end, 1 is the front-end. If you do not
 	 *                                specify anything, both cache clients will be cleared.
 	 *
 	 * @return  void
 	 */
-	public static function clearCacheGroups(array $clearGroups, array $cacheClients = array(0, 1))
+	public static function clearCacheGroups(array $clearGroups, array $cacheClients = [0, 1]): void
 	{
 		$conf = JoomlaFactory::getConfig();
 
@@ -71,10 +71,10 @@ class CacheCleaner
 			{
 				try
 				{
-					$options = array(
+					$options = [
 						'defaultgroup' => $group,
-						'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache')
-					);
+						'cachebase'    => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'),
+					];
 
 					$cache = Cache::getInstance('callback', $options);
 					$cache->clean();

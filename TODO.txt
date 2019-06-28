@@ -23,7 +23,7 @@
     [X] Update
     [X] Utils
     [X] Date::TimezoneWrangler
-    [ ] JoomlaAbstraction
+    [X] JoomlaAbstraction
     [ ] Html
     [ ] InstallScript
     [ ] IP

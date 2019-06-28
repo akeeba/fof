@@ -27,7 +27,7 @@ class DynamicGroups
 	 *
 	 * @return  void
 	 */
-	public static function addGroup($groupID)
+	public static function addGroup(int $groupID): void
 	{
 		self::addRemoveGroup($groupID, true);
 		self::cleanUpUserObjectCache();
@@ -40,7 +40,7 @@ class DynamicGroups
 	 *
 	 * @return  void
 	 */
-	public static function removeGroup($groupID)
+	public static function removeGroup(int $groupID): void
 	{
 		self::addRemoveGroup($groupID, false);
 		self::cleanUpUserObjectCache();
@@ -54,7 +54,7 @@ class DynamicGroups
 	 *
 	 * @return  void
 	 */
-	protected static function addRemoveGroup($groupID, $add)
+	protected static function addRemoveGroup(int $groupID, bool $add): void
 	{
 		// Get a fake container (we need it for its platform interface)
 		$container = Container::getInstance('com_FOOBAR');
@@ -167,7 +167,7 @@ class DynamicGroups
 	 *
 	 * @return  void
 	 */
-	protected static function cleanUpUserObjectCache()
+	protected static function cleanUpUserObjectCache(): void
 	{
 		// Get a fake container (we need it for its platform interface)
 		$container = Container::getInstance('com_FOOBAR');
