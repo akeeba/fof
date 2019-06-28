@@ -45,7 +45,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function fieldLabelKey($fieldName)
+	public static function fieldLabelKey(string $fieldName): string
 	{
 		$view = self::getViewFromBacktrace();
 
@@ -86,7 +86,7 @@ abstract class BrowseView
 	 *
 	 * @return string
 	 */
-	public static function fieldLabel($fieldName)
+	public static function fieldLabel(string $fieldName): string
 	{
 		return Text::_(self::fieldLabelKey($fieldName));
 	}
@@ -97,9 +97,9 @@ abstract class BrowseView
 	 * @param   string       $field    The name of the field
 	 * @param   string|null  $langKey  (optional) The language key for the header to be displayed
 	 *
-	 * @return  mixed
+	 * @return  string
 	 */
-	public static function sortgrid($field, $langKey = null)
+	public static function sortgrid(string $field, ?string $langKey = null): string
 	{
 		/** @var DataViewInterface $view */
 		$view = self::getViewFromBacktrace();
@@ -125,7 +125,8 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function modelFilter($localField, $modelTitleField = 'title', $modelName = null, $placeholder = null, array $params = [])
+	public static function modelFilter(string $localField, string $modelTitleField = 'title', ?string $modelName = null,
+	                                   ?string $placeholder = null, array $params = []): string
 	{
 		/** @var DataModel $model */
 		$model = self::getViewFromBacktrace()->getModel();
@@ -161,7 +162,8 @@ abstract class BrowseView
 	 *
 	 * @since   3.3.0
 	 */
-	public static function searchFilter($localField, $searchField = null, $placeholder = null, array $attributes = [])
+	public static function searchFilter(string $localField, ?string $searchField = null, ?string $placeholder = null,
+	                                    array $attributes = []): string
 	{
 		/** @var DataModel $model */
 		$view                      = self::getViewFromBacktrace();
@@ -197,7 +199,8 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function selectFilter($localField, array $options, $placeholder = null, array $params = [])
+	public static function selectFilter(string $localField, array $options, ?string $placeholder = null,
+	                                    array $params = []): string
 	{
 		/** @var DataModel $model */
 		$model = self::getViewFromBacktrace()->getModel();
@@ -226,7 +229,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function accessFilter($localField, $placeholder = null, array $params = [])
+	public static function accessFilter(string $localField, ?string $placeholder = null, array $params = []): string
 	{
 		return self::selectFilter($localField, SelectOptions::getOptions('access', $params), $placeholder, $params);
 	}
@@ -242,7 +245,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function publishedFilter($localField, $placeholder = null, array $params = [])
+	public static function publishedFilter(string $localField, ?string $placeholder = null, array $params = []): string
 	{
 		return self::selectFilter($localField, SelectOptions::getOptions('published', $params), $placeholder, $params);
 	}
@@ -265,7 +268,8 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function modelSelect($name, $modelName, $currentValue, array $params = [], array $modelState = [], array $options = [])
+	public static function modelSelect(string $name, string $modelName, string $currentValue, array $params = [],
+	                                   array $modelState = [], array $options = []): string
 	{
 		$params = array_merge([
 			'fof.autosubmit' => true,
@@ -294,7 +298,8 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function modelOptionName($value, $modelName = null, array $params = [], array $modelState = [], array $options = [])
+	public static function modelOptionName(string $value, ?string $modelName = null, array $params = [],
+	                                       array $modelState = [], array $options = []): string
 	{
 		if (!isset($params['cache']))
 		{
@@ -322,7 +327,8 @@ abstract class BrowseView
 	 *
 	 * @return  mixed   The label of the currently selected option
 	 */
-	public static function getOptionName($selected = null, $data, $optKey = 'value', $optText = 'text', $selectFirst = true)
+	public static function getOptionName($selected, array $data, string $optKey = 'value', string $optText = 'text',
+	                                     bool $selectFirst = true): string
 	{
 		$ret = null;
 
@@ -397,7 +403,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function genericSelect($name, array $options, $currentValue, array $params = [])
+	public static function genericSelect(string $name, array $options, string $currentValue, array $params = []): string
 	{
 		$params = array_merge([
 			'format.depth'   => 0,
@@ -504,7 +510,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function parseFieldTags($text, DataModel $item)
+	public static function parseFieldTags(string $text, DataModel $item): string
 	{
 		$ret = $text;
 
@@ -563,7 +569,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	private static function getOptionsFromSource(array $attribs = [])
+	private static function getOptionsFromSource(array $attribs = []): array
 	{
 		$options = [];
 
@@ -660,7 +666,8 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	private static function getOptionsFromModel($modelName, array $params = [], array $modelState = [], array $options = [])
+	private static function getOptionsFromModel(string $modelName, array $params = [], array $modelState = [],
+	                                            array $options = []): array
 	{
 		// Let's find the FOF DI container from the call stack
 		$container = self::getContainerFromBacktrace();
@@ -789,7 +796,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	private static function getContainerFromBacktrace()
+	private static function getContainerFromBacktrace(): Container
 	{
 		// In case we are on a braindead host
 		if (!function_exists('debug_backtrace'))
@@ -852,7 +859,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function getViewFromBacktrace()
+	public static function getViewFromBacktrace(): View
 	{
 		// In case we are on a braindead host
 		if (!function_exists('debug_backtrace'))

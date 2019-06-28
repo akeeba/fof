@@ -5,9 +5,9 @@
  * @license     GNU GPL version 3 or later
  */
 
+use FOF40\Html\FEFHelper\BrowseView;
 use FOF40\Model\DataModel;
 use FOF40\Utils\ArrayHelper;
-use FOF40\Html\FEFHelper\BrowseView;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\DataView\Raw as DataViewRaw;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -28,24 +28,26 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns an action button on the browse view's table
 	 *
-	 * @param   integer      $i              The row index
-	 * @param   string       $task           The task to fire when the button is clicked
-	 * @param   string|array $prefix         An optional task prefix or an array of options
-	 * @param   string       $active_title   An optional active tooltip to display if $enable is true
-	 * @param   string       $inactive_title An optional inactive tooltip to display if $enable is true
-	 * @param   boolean      $tip            An optional setting for tooltip
-	 * @param   string       $active_class   An optional active HTML class
-	 * @param   string       $inactive_class An optional inactive HTML class
-	 * @param   boolean      $enabled        An optional setting for access control on the action.
-	 * @param   boolean      $translate      An optional setting for translation.
-	 * @param   string       $checkbox       An optional prefix for checkboxes.
+	 * @param integer      $i              The row index
+	 * @param string       $task           The task to fire when the button is clicked
+	 * @param string|array $prefix         An optional task prefix or an array of options
+	 * @param string       $active_title   An optional active tooltip to display if $enable is true
+	 * @param string       $inactive_title An optional inactive tooltip to display if $enable is true
+	 * @param boolean      $tip            An optional setting for tooltip
+	 * @param string       $active_class   An optional active HTML class
+	 * @param string       $inactive_class An optional inactive HTML class
+	 * @param boolean      $enabled        An optional setting for access control on the action.
+	 * @param boolean      $translate      An optional setting for translation.
+	 * @param string       $checkbox       An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
 	 * @since   3.3.0
 	 */
-	public static function action($i, $task, $prefix = '', $active_title = '', $inactive_title = '', $tip = false, $active_class = '',
-	                              $inactive_class = '', $enabled = true, $translate = true, $checkbox = 'cb')
+	public static function action(int $i, string $task, $prefix = '', string $active_title = '',
+	                              string $inactive_title = '', bool $tip = false,
+	                              string $active_class = '', string $inactive_class = '',
+	                              bool $enabled = true, bool $translate = true, string $checkbox = 'cb'): string
 	{
 		if (is_array($prefix))
 		{
@@ -114,23 +116,24 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns a state change button on the browse view's table
 	 *
-	 * @param   array        $states      array of value/state. Each state is an array of the form
+	 * @param array        $states        array of value/state. Each state is an array of the form
 	 *                                    (task, text, active title, inactive title, tip (boolean), HTML active class, HTML inactive class)
 	 *                                    or ('task'=>task, 'text'=>text, 'active_title'=>active title,
 	 *                                    'inactive_title'=>inactive title, 'tip'=>boolean, 'active_class'=>html active class,
 	 *                                    'inactive_class'=>html inactive class)
-	 * @param   integer      $value       The state value.
-	 * @param   integer      $i           The row index
-	 * @param   string|array $prefix      An optional task prefix or an array of options
-	 * @param   boolean      $enabled     An optional setting for access control on the action.
-	 * @param   boolean      $translate   An optional setting for translation.
-	 * @param   string       $checkbox    An optional prefix for checkboxes.
+	 * @param integer      $value         The state value.
+	 * @param integer      $i             The row index
+	 * @param string|array $prefix        An optional task prefix or an array of options
+	 * @param boolean      $enabled       An optional setting for access control on the action.
+	 * @param boolean      $translate     An optional setting for translation.
+	 * @param string       $checkbox      An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
 	 * @since   3.3.0
 	 */
-	public static function state($states, $value, $i, $prefix = '', $enabled = true, $translate = true, $checkbox = 'cb')
+	public static function state(array $states, int $value, int $i, $prefix = '', bool $enabled = true,
+	                             bool $translate = true, string $checkbox = 'cb'): string
 	{
 		if (is_array($prefix))
 		{
@@ -159,13 +162,13 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns a published state on the browse view's table
 	 *
-	 * @param   integer      $value        The state value.
-	 * @param   integer      $i            The row index
-	 * @param   string|array $prefix       An optional task prefix or an array of options
-	 * @param   boolean      $enabled      An optional setting for access control on the action.
-	 * @param   string       $checkbox     An optional prefix for checkboxes.
-	 * @param   string       $publish_up   An optional start publishing date.
-	 * @param   string       $publish_down An optional finish publishing date.
+	 * @param integer      $value        The state value.
+	 * @param integer      $i            The row index
+	 * @param string|array $prefix       An optional task prefix or an array of options
+	 * @param boolean      $enabled      An optional setting for access control on the action.
+	 * @param string       $checkbox     An optional prefix for checkboxes.
+	 * @param string       $publish_up   An optional start publishing date.
+	 * @param string       $publish_down An optional finish publishing date.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -173,7 +176,8 @@ abstract class FEFHelperBrowse
 	 *
 	 * @since   3.3.0
 	 */
-	public static function published($value, $i, $prefix = '', $enabled = true, $checkbox = 'cb', $publish_up = null, $publish_down = null)
+	public static function published(int $value, int $i, $prefix = '', bool $enabled = true, string $checkbox = 'cb',
+	                                 ?string $publish_up = null, ?string $publish_down = null): string
 	{
 		if (is_array($prefix))
 		{
@@ -273,18 +277,18 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns an isDefault state on the browse view's table
 	 *
-	 * @param   integer      $value    The state value.
-	 * @param   integer      $i        The row index
-	 * @param   string|array $prefix   An optional task prefix or an array of options
-	 * @param   boolean      $enabled  An optional setting for access control on the action.
-	 * @param   string       $checkbox An optional prefix for checkboxes.
+	 * @param integer      $value    The state value.
+	 * @param integer      $i        The row index
+	 * @param string|array $prefix   An optional task prefix or an array of options
+	 * @param boolean      $enabled  An optional setting for access control on the action.
+	 * @param string       $checkbox An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
 	 * @see     self::state()
 	 * @since   3.3.0
 	 */
-	public static function isdefault($value, $i, $prefix = '', $enabled = true, $checkbox = 'cb')
+	public static function isdefault(int $value, int $i, $prefix = '', bool $enabled = true, string $checkbox = 'cb'): string
 	{
 		if (is_array($prefix))
 		{
@@ -308,18 +312,19 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns a checked-out icon
 	 *
-	 * @param   integer      $i          The row index.
-	 * @param   string       $editorName The name of the editor.
-	 * @param   string       $time       The time that the object was checked out.
-	 * @param   string|array $prefix     An optional task prefix or an array of options
-	 * @param   boolean      $enabled    True to enable the action.
-	 * @param   string       $checkbox   An optional prefix for checkboxes.
+	 * @param integer      $i          The row index.
+	 * @param string       $editorName The name of the editor.
+	 * @param string       $time       The time that the object was checked out.
+	 * @param string|array $prefix     An optional task prefix or an array of options
+	 * @param boolean      $enabled    True to enable the action.
+	 * @param string       $checkbox   An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
 	 * @since   3.3.0
 	 */
-	public static function checkedout($i, $editorName, $time, $prefix = '', $enabled = false, $checkbox = 'cb')
+	public static function checkedout(int $i, string $editorName, string $time, $prefix = '', bool $enabled = false,
+	                                  string $checkbox = 'cb'): string
 	{
 		HTMLHelper::_('bootstrap.tooltip');
 
@@ -353,7 +358,10 @@ abstract class FEFHelperBrowse
 	 *
 	 * @return string
 	 */
-	public static function order($orderingField, $order, $class = 'input-sm', $icon = 'akion-android-more-vertical', $inactiveIcon = 'akion-android-more-vertical', DataViewInterface $view = null)
+	public static function order(string $orderingField, string $order, string $class = 'input-sm',
+	                             string $icon = 'akion-android-more-vertical',
+	                             string $inactiveIcon = 'akion-android-more-vertical',
+	                             DataViewInterface $view = null): string
 	{
 		/** @var \FOF40\View\DataView\Html $view */
 		if (is_null($view))
@@ -405,14 +413,14 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns the drag'n'drop reordering table header for Browse views
 	 *
-	 * @param string            $orderingField The name of the field you're ordering by
-	 * @param string            $icon          CSS class for the d'n'd handle icon
+	 * @param string $orderingField The name of the field you're ordering by
+	 * @param string $icon          CSS class for the d'n'd handle icon
 	 *
 	 * @return string
 	 */
-	public static function orderfield($orderingField = 'ordering', $icon = 'akion-stats-bars')
+	public static function orderfield(string $orderingField = 'ordering', string $icon = 'akion-stats-bars'): string
 	{
-		$title = Text::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN');
+		$title         = Text::_('JGLOBAL_CLICK_TO_SORT_THIS_COLUMN');
 		$orderingLabel = Text::_('JFIELD_ORDERING_LABEL');
 
 		return <<< HTML
@@ -433,18 +441,19 @@ HTML;
 	/**
 	 * Creates an order-up action icon.
 	 *
-	 * @param   integer      $i        The row index.
-	 * @param   string       $task     An optional task to fire.
-	 * @param   string|array $prefix   An optional task prefix or an array of options
-	 * @param   string       $text     An optional text to display
-	 * @param   boolean      $enabled  An optional setting for access control on the action.
-	 * @param   string       $checkbox An optional prefix for checkboxes.
+	 * @param integer      $i        The row index.
+	 * @param string       $task     An optional task to fire.
+	 * @param string|array $prefix   An optional task prefix or an array of options
+	 * @param string       $text     An optional text to display
+	 * @param boolean      $enabled  An optional setting for access control on the action.
+	 * @param string       $checkbox An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
 	 * @since   3.3.0
 	 */
-	public static function orderUp($i, $task = 'orderup', $prefix = '', $text = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb')
+	public static function orderUp(int $i, string $task = 'orderup', $prefix = '', string $text = 'JLIB_HTML_MOVE_UP',
+	                               bool $enabled = true, string $checkbox = 'cb'): string
 	{
 		if (is_array($prefix))
 		{
@@ -461,18 +470,20 @@ HTML;
 	/**
 	 * Creates an order-down action icon.
 	 *
-	 * @param   integer      $i        The row index.
-	 * @param   string       $task     An optional task to fire.
-	 * @param   string|array $prefix   An optional task prefix or an array of options
-	 * @param   string       $text     An optional text to display
-	 * @param   boolean      $enabled  An optional setting for access control on the action.
-	 * @param   string       $checkbox An optional prefix for checkboxes.
+	 * @param integer      $i        The row index.
+	 * @param string       $task     An optional task to fire.
+	 * @param string|array $prefix   An optional task prefix or an array of options
+	 * @param string       $text     An optional text to display
+	 * @param boolean      $enabled  An optional setting for access control on the action.
+	 * @param string       $checkbox An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
 	 * @since   3.3.0
 	 */
-	public static function orderDown($i, $task = 'orderdown', $prefix = '', $text = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb')
+	public static function orderDown(int $i, string $task = 'orderdown', string $prefix = '',
+	                                 string $text = 'JLIB_HTML_MOVE_DOWN', bool $enabled = true,
+	                                 string $checkbox = 'cb'): string
 	{
 		if (is_array($prefix))
 		{
@@ -489,20 +500,22 @@ HTML;
 	/**
 	 * Table header for a field which changes the sort order when clicked
 	 *
-	 * @param   string $title         The link title
-	 * @param   string $order         The order field for the column
-	 * @param   string $direction     The current direction
-	 * @param   string $selected      The selected ordering
-	 * @param   string $task          An optional task override
-	 * @param   string $new_direction An optional direction for the new column
-	 * @param   string $tip           An optional text shown as tooltip title instead of $title
-	 * @param   string $form          An optional form selector
+	 * @param string $title         The link title
+	 * @param string $order         The order field for the column
+	 * @param string $direction     The current direction
+	 * @param string $selected      The selected ordering
+	 * @param string $task          An optional task override
+	 * @param string $new_direction An optional direction for the new column
+	 * @param string $tip           An optional text shown as tooltip title instead of $title
+	 * @param string $form          An optional form selector
 	 *
 	 * @return  string
 	 *
 	 * @since   3.3.0
 	 */
-	public static function sort($title, $order, $direction = 'asc', $selected = '', $task = null, $new_direction = 'asc', $tip = '', $form = null)
+	public static function sort(string $title, string $order, string $direction = 'asc', string $selected = '',
+	                            ?string $task = null, string $new_direction = 'asc', string $tip = '',
+	                            ?string $form = null): string
 	{
 		HTMLHelper::_('behavior.core');
 		HTMLHelper::_('bootstrap.popover');
@@ -551,15 +564,16 @@ HTML;
 	/**
 	 * Method to check all checkboxes on the browse view's table
 	 *
-	 * @param   string $name   The name of the form element
-	 * @param   string $tip    The text shown as tooltip title instead of $tip
-	 * @param   string $action The action to perform on clicking the checkbox
+	 * @param string $name   The name of the form element
+	 * @param string $tip    The text shown as tooltip title instead of $tip
+	 * @param string $action The action to perform on clicking the checkbox
 	 *
 	 * @return  string
 	 *
 	 * @since   3.3.0
 	 */
-	public static function checkall($name = 'checkall-toggle', $tip = 'JGLOBAL_CHECK_ALL', $action = 'Joomla.checkAll(this)')
+	public static function checkall(string $name = 'checkall-toggle', string $tip = 'JGLOBAL_CHECK_ALL',
+	                                string $action = 'Joomla.checkAll(this)'): string
 	{
 		HTMLHelper::_('behavior.core');
 		HTMLHelper::_('bootstrap.tooltip');
@@ -571,17 +585,18 @@ HTML;
 	/**
 	 * Method to create a checkbox for a grid row.
 	 *
-	 * @param   integer $rowNum     The row index
-	 * @param   integer $recId      The record id
-	 * @param   boolean $checkedOut True if item is checked out
-	 * @param   string  $name       The name of the form element
-	 * @param   string  $stub       The name of stub identifier
+	 * @param integer $rowNum     The row index
+	 * @param integer $recId      The record id
+	 * @param boolean $checkedOut True if item is checked out
+	 * @param string  $name       The name of the form element
+	 * @param string  $stub       The name of stub identifier
 	 *
-	 * @return  mixed    String of html with a checkbox if item is not checked out, null if checked out.
+	 * @return  mixed    String of html with a checkbox if item is not checked out, empty if checked out.
 	 *
 	 * @since   3.3.0
 	 */
-	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid', $stub = 'cb')
+	public static function id(int $rowNum, int $recId, bool $checkedOut = false, string $name = 'cid',
+	                          string $stub = 'cb'): string
 	{
 		return $checkedOut ? '' : '<input type="checkbox" id="' . $stub . $rowNum . '" name="' . $name . '[]" value="' . $recId
 			. '" onclick="Joomla.isChecked(this.checked);" />';
@@ -590,12 +605,12 @@ HTML;
 	/**
 	 * Include the necessary JavaScript for the browse view's table order feature
 	 *
-	 * @param   string $orderBy Filed by which we are currently sorting the table.
-	 * @param   bool   $return  Should I return the JS? Default: false (= add to the page's head)
+	 * @param string $orderBy Filed by which we are currently sorting the table.
+	 * @param bool   $return  Should I return the JS? Default: false (= add to the page's head)
 	 *
 	 * @return string
 	 */
-	public static function orderjs($orderBy, $return = false)
+	public static function orderjs(string $orderBy, bool $return = false): string
 	{
 		$js = <<< JS
 
@@ -637,17 +652,18 @@ JS;
 	 * Returns the table ordering / pagination header for a browse view: number of records to display, order direction,
 	 * order by field.
 	 *
-	 * @param   DataViewRaw $view       The view you're rendering against. If not provided we will guess it using MAGIC.
-	 * @param   array       $sortFields Array of field name => description for the ordering fields in the dropdown. If not provided we will use all the fields available in the model.
-	 * @param   Pagination $pagination The Joomla pagination object. If not provided we fetch it from the view.
-	 * @param   string      $sortBy     Order by field name. If not provided we fetch it from the view.
-	 * @param   string      $order_Dir  Order direction. If not provided we fetch it from the view.
+	 * @param DataViewRaw $view       The view you're rendering against. If not provided we will guess it using MAGIC.
+	 * @param array       $sortFields Array of field name => description for the ordering fields in the dropdown. If not provided we will use all the fields available in the model.
+	 * @param Pagination  $pagination The Joomla pagination object. If not provided we fetch it from the view.
+	 * @param string      $sortBy     Order by field name. If not provided we fetch it from the view.
+	 * @param string      $order_Dir  Order direction. If not provided we fetch it from the view.
 	 *
 	 * @return  string
 	 *
 	 * @since   3.3.0
 	 */
-	public static function orderheader(DataViewRaw $view = null, array $sortFields = [], Pagination $pagination = null, $sortBy = null, $order_Dir = null)
+	public static function orderheader(DataViewRaw $view = null, array $sortFields = [], Pagination $pagination = null,
+	                                   ?string $sortBy = null, ?string $order_Dir = null): string
 	{
 		if (is_null($view))
 		{
@@ -746,13 +762,13 @@ HTML;
 	 * Get the default sort fields from a model. It creates a hash array where the keys are the model's field names and
 	 * the values are the translation keys for their names, following FOF's naming conventions.
 	 *
-	 * @param   DataModel $model The model for which we get the sort fields
+	 * @param DataModel $model The model for which we get the sort fields
 	 *
 	 * @return  array
 	 *
 	 * @since   3.3.0
 	 */
-	private static function getSortFields(DataModel $model)
+	private static function getSortFields(DataModel $model): array
 	{
 		$sortFields         = [];
 		$idField            = $model->getIdFieldName() ?: 'id';

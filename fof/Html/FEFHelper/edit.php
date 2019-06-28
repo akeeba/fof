@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
  */
 abstract class FEFHelperEdit
 {
-	public static function editor($fieldName, $value, array $params = [])
+	public static function editor(string $fieldName, string $value, array $params = []): string
 	{
 		$params = array_merge([
 			'id'         => null,

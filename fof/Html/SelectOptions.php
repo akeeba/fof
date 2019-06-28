@@ -59,7 +59,7 @@ class SelectOptions
 	 *
 	 * @return  \stdClass[]
 	 */
-	public static function getOptions($type, array $params = [])
+	public static function getOptions(string $type, array $params = [])
 	{
 		if ((substr($type, 0, 1) == '_') || !method_exists(__CLASS__, $type))
 		{
@@ -270,7 +270,7 @@ class SelectOptions
 	 *
 	 * @return  \stdClass  Languages for the specifed client
 	 */
-	private static function languages($params)
+	private static function languages(array $params)
 	{
 		$db = JoomlaFactory::getDbo();
 
@@ -407,7 +407,7 @@ class SelectOptions
 	 *
 	 * @see administrator/com_installer/models/extension.php
 	 */
-	private static function _translateComponentName($item)
+	private static function _translateComponentName($item): string
 	{
 		// Map the manifest cache to $item. This is needed to get the name from the
 		// manifest_cache and NOT from the name column, else some Text::_() translations fails.
