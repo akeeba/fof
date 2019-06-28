@@ -5,11 +5,12 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\TransparentAuthentication;
+namespace FOF40\TransparentAuthentication;
 
 use FOF40\Container\Container;
 use FOF40\Encrypt\Aes;
 use FOF40\Encrypt\Totp;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -43,7 +44,7 @@ class TransparentAuthentication
 	private $cryptoKey = '';
 
 	/** @var array Enabled authentication methods, see the class constants */
-	protected $authenticationMethods = array(3, 4, 5);
+	protected $authenticationMethods = [3, 4, 5];
 
 	/** @var string The username required for the Auth_HTTPBasicAuth_TOTP method */
 	protected $basicAuthUsername = '_fof_auth';
@@ -73,15 +74,15 @@ class TransparentAuthentication
 	 * @param \FOF40\Container\Container $container
 	 * @param array                      $config
 	 */
-	function __construct(Container $container, array $config = array())
+	function __construct(Container $container, array $config = [])
 	{
 		$this->container = $container;
 
 		// Initialise from the $config array
-		$knownKeys = array(
-			'timeStep', 'totpKey', 'cryptoKey', 'basicAuthUsername', 'queryParam',  'queryParamUsername',
-			'queryParamPassword', 'logoutOnExit'
-		);
+		$knownKeys = [
+			'timeStep', 'totpKey', 'cryptoKey', 'basicAuthUsername', 'queryParam', 'queryParamUsername',
+			'queryParamPassword', 'logoutOnExit',
+		];
 
 		foreach ($knownKeys as $key)
 		{
@@ -100,23 +101,28 @@ class TransparentAuthentication
 	/**
 	 * Set the enabled authentication methods
 	 *
-	 * @param   array  $authenticationMethods
+	 * @param int[] $authenticationMethods
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setAuthenticationMethods($authenticationMethods)
+	public function setAuthenticationMethods(array $authenticationMethods): void
 	{
-		$this->authenticationMethods = $authenticationMethods;
+		$this->authenticationMethods = [];
+
+		foreach ($authenticationMethods as $method)
+		{
+			$this->addAuthenticationMethod($method);
+		}
 	}
 
 	/**
 	 * Get the enabled authentication methods
 	 *
-	 * @return   array
+	 * @return   int[]
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getAuthenticationMethods()
+	public function getAuthenticationMethods(): array
 	{
 		return $this->authenticationMethods;
 	}
@@ -124,10 +130,19 @@ class TransparentAuthentication
 	/**
 	 * Enable an authentication method
 	 *
-	 * @param   integer  $method
+	 * @param integer $method
 	 */
-	public function addAuthenticationMethod($method)
+	public function addAuthenticationMethod(int $method): void
 	{
+		$validMethods = [self::Auth_HTTPBasicAuth_Plaintext, self::Auth_HTTPBasicAuth_TOTP,
+			self::Auth_QueryString_Plaintext, self::Auth_QueryString_TOTP,
+			self::Auth_SplitQueryString_Plaintext];
+
+		if (!in_array($method, $validMethods))
+		{
+			throw new \InvalidArgumentException(Text::sprintf('LIB_FOF40_TRANSPARENTAUTHENTICATION_INVALIDAUTHMETHOD', $method));
+		}
+
 		if (!in_array($method, $this->authenticationMethods))
 		{
 			$this->authenticationMethods[] = $method;
@@ -137,9 +152,9 @@ class TransparentAuthentication
 	/**
 	 * Disable an authentication method
 	 *
-	 * @param   integer  $method
+	 * @param integer $method
 	 */
-	public function removeAuthenticationMethod($method)
+	public function removeAuthenticationMethod(int $method): void
 	{
 		if (in_array($method, $this->authenticationMethods))
 		{
@@ -155,7 +170,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setBasicAuthUsername($basicAuthUsername)
+	public function setBasicAuthUsername(string $basicAuthUsername): void
 	{
 		$this->basicAuthUsername = $basicAuthUsername;
 	}
@@ -167,7 +182,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getBasicAuthUsername()
+	public function getBasicAuthUsername(): string
 	{
 		return $this->basicAuthUsername;
 	}
@@ -179,7 +194,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setQueryParam($queryParam)
+	public function setQueryParam(string $queryParam): void
 	{
 		$this->queryParam = $queryParam;
 	}
@@ -191,7 +206,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getQueryParam()
+	public function getQueryParam(): string
 	{
 		return $this->queryParam;
 	}
@@ -203,7 +218,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setQueryParamPassword($queryParamPassword)
+	public function setQueryParamPassword(string $queryParamPassword): void
 	{
 		$this->queryParamPassword = $queryParamPassword;
 	}
@@ -215,7 +230,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getQueryParamPassword()
+	public function getQueryParamPassword(): string
 	{
 		return $this->queryParamPassword;
 	}
@@ -227,7 +242,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setQueryParamUsername($queryParamUsername)
+	public function setQueryParamUsername(string $queryParamUsername): void
 	{
 		$this->queryParamUsername = $queryParamUsername;
 	}
@@ -239,7 +254,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getQueryParamUsername()
+	public function getQueryParamUsername(): string
 	{
 		return $this->queryParamUsername;
 	}
@@ -251,9 +266,9 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setTimeStep($timeStep)
+	public function setTimeStep(int $timeStep): void
 	{
-		$this->timeStep = (int)$timeStep;
+		$this->timeStep = $timeStep;
 	}
 
 	/**
@@ -263,7 +278,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getTimeStep()
+	public function getTimeStep(): int
 	{
 		return $this->timeStep;
 	}
@@ -275,7 +290,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setTotpKey($totpKey)
+	public function setTotpKey(string $totpKey): void
 	{
 		$this->totpKey = $totpKey;
 	}
@@ -287,7 +302,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getTotpKey()
+	public function getTotpKey(): string
 	{
 		return $this->totpKey;
 	}
@@ -299,7 +314,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getLogoutOnExit()
+	public function getLogoutOnExit(): bool
 	{
 		return $this->logoutOnExit;
 	}
@@ -311,7 +326,7 @@ class TransparentAuthentication
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setLogoutOnExit($logoutOnExit)
+	public function setLogoutOnExit(bool $logoutOnExit): void
 	{
 		$this->logoutOnExit = $logoutOnExit;
 	}
@@ -321,7 +336,7 @@ class TransparentAuthentication
 	 *
 	 * @return  array|null
 	 */
-	public function getTransparentAuthenticationCredentials()
+	public function getTransparentAuthenticationCredentials(): ?array
 	{
 		$return = null;
 
@@ -402,10 +417,10 @@ class TransparentAuthentication
 						continue 2;
 					}
 
-					return array(
-						'username'	 => $_SERVER['PHP_AUTH_USER'],
-						'password'	 => $_SERVER['PHP_AUTH_PW']
-					);
+					return [
+						'username' => $_SERVER['PHP_AUTH_USER'],
+						'password' => $_SERVER['PHP_AUTH_PW'],
+					];
 
 					break;
 
@@ -462,10 +477,10 @@ class TransparentAuthentication
 						continue 2;
 					}
 
-					return array(
-						'username'	=> $username,
-						'password'	=> $password
-					);
+					return [
+						'username' => $username,
+						'password' => $password,
+					];
 
 					break;
 			}
@@ -477,11 +492,11 @@ class TransparentAuthentication
 	/**
 	 * Decrypts a transparent authentication message using a TOTP
 	 *
-	 * @param   string  $encryptedData  The encrypted data
+	 * @param string $encryptedData The encrypted data
 	 *
-	 * @return  array  The decrypted data
+	 * @return  array|null  The decrypted data
 	 */
-	private function decryptWithTOTP($encryptedData)
+	private function decryptWithTOTP(string $encryptedData): ?array
 	{
 		if (empty($this->totpKey))
 		{
@@ -490,14 +505,14 @@ class TransparentAuthentication
 			return null;
 		}
 
-		$totp = new Totp($this->timeStep);
+		$totp   = new Totp($this->timeStep);
 		$period = $totp->getPeriod();
 		$period--;
 
 		for ($i = 0; $i <= 2; $i++)
 		{
-			$time = ($period + $i) * $this->timeStep;
-			$otp = $totp->getCode($this->totpKey, $time);
+			$time            = ($period + $i) * $this->timeStep;
+			$otp             = $totp->getCode($this->totpKey, $time);
 			$this->cryptoKey = hash('sha256', $this->totpKey . $otp);
 
 			$aes = new Aes($this->cryptoKey);
@@ -542,15 +557,15 @@ class TransparentAuthentication
 	 * Parses a list of transparent authentication methods (array or comma separated list of integers or method names)
 	 * and converts it into an array of integers this class understands.
 	 *
-	 * @param $methods
+	 * @param string|int[]|string[] $methods
 	 *
-	 * @return array
+	 * @return int[]
 	 */
-	protected function parseAuthenticationMethods($methods)
+	protected function parseAuthenticationMethods($methods): array
 	{
 		if (empty($methods))
 		{
-			return array();
+			return [];
 		}
 
 		if (!is_array($methods))
@@ -558,7 +573,7 @@ class TransparentAuthentication
 			$methods = explode(',', $methods);
 		}
 
-		$return = array();
+		$return = [];
 
 		foreach ($methods as $method)
 		{

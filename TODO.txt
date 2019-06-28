@@ -19,14 +19,12 @@
     [X] Template
     [X] Timer
     [X] Toolbar
-    [ ] TransparentAuthentication
+    [X] TransparentAuthentication
     [ ] Update
-    [ ] Utils
+    [ ] Utils --> Move to separate packages
     [ ] Controller
     [ ] View
     [ ] Model
-    [ ] ViewTemplates
-
 
 
 [ ] Test ViewTemplateFinder

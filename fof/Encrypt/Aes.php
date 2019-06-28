@@ -157,13 +157,19 @@ class Aes
 
 		// Extract IV
 		$iv_size = $this->adapter->getBlockSize();
-		$iv      = substr($stringToDecrypt, 0, $iv_size);
-		$key     = $this->getExpandedKey($iv_size, $iv);
+		$strLen  = function_exists('mb_strlen') ? mb_strlen($stringToDecrypt, 'ASCII') : strlen($stringToDecrypt);
 
-		// Decrypt the data
-		$plainText = $this->adapter->decrypt($stringToDecrypt, $key);
+		// If the string is not big enough to have an Intialization Vector in front then, clearly, it is not encrypted.
+		if ($strLen < $iv_size)
+		{
+			return '';
+		}
 
-		return $plainText;
+		// Get the IV, the key and decrypt the string
+		$iv  = substr($stringToDecrypt, 0, $iv_size);
+		$key = $this->getExpandedKey($iv_size, $iv);
+		
+		return $this->adapter->decrypt($stringToDecrypt, $key);
 	}
 
 	/**
