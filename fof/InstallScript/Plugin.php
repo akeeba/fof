@@ -89,7 +89,7 @@ class Plugin extends BaseInstaller
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
-	public function preflight($type, $parent)
+	public function preflight(string $type, PluginAdapter $parent): bool
 	{
 		// Check the minimum PHP version
 		if (!$this->checkPHPVersion())
@@ -121,7 +121,7 @@ class Plugin extends BaseInstaller
 	 *
 	 * @return  void
 	 */
-	public function postflight($type, $parent)
+	public function postflight(string $type, PluginAdapter $parent): void
 	{
 		/**
 		 * We are not doing dependency tracking for modules and plugins because of the way Joomla package uninstallation
@@ -156,7 +156,7 @@ class Plugin extends BaseInstaller
 	 *
 	 * @param   PluginAdapter  $parent The parent object
 	 */
-	public function uninstall($parent)
+	public function uninstall(PluginAdapter $parent): void
 	{
 		// Uninstall database
 		$schemaPath  = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
@@ -192,7 +192,7 @@ class Plugin extends BaseInstaller
 	 *
 	 * @param   PluginAdapter  $parent
 	 */
-	protected function bugfixFilesNotCopiedOnUpdate($parent)
+	protected function bugfixFilesNotCopiedOnUpdate(PluginAdapter $parent): void
 	{
 		Log::add("Joomla! extension update workaround for $this->pluginFolder plugin $this->pluginName", Log::INFO, 'fof4_extension_installation');
 
@@ -230,7 +230,7 @@ class Plugin extends BaseInstaller
 	 *
 	 * @return  string
 	 */
-	protected function getDependencyName()
+	protected function getDependencyName(): string
 	{
 		return 'plg_' . strtolower($this->pluginFolder) . '_' . $this->pluginName;
 	}

@@ -59,7 +59,7 @@ class BaseInstaller
 	 *
 	 * @return  void
 	 */
-	protected function recursiveConditionalCopy($source, $dest, $ignored = array())
+	protected function recursiveConditionalCopy(string $source, string $dest, array $ignored = array()): void
 	{
 		// Make sure source and destination exist
 		if (!@is_dir($source))
@@ -158,7 +158,7 @@ class BaseInstaller
 	 *
 	 * @return  void
 	 */
-	protected function log($message, $error = false, $category = 'jerror')
+	protected function log(string $message, bool $error = false, string $category = 'jerror'): void
 	{
 		// Just in case...
 		if (!class_exists('\Joomla\CMS\Log\Log', true))
@@ -183,7 +183,7 @@ class BaseInstaller
 	 *
 	 * @return  bool
 	 */
-	protected function checkPHPVersion()
+	protected function checkPHPVersion(): bool
 	{
 		if (!empty($this->minimumPHPVersion))
 		{
@@ -218,7 +218,7 @@ class BaseInstaller
 	 *
 	 * @return  bool
 	 */
-	protected function checkJoomlaVersion()
+	protected function checkJoomlaVersion(): bool
 	{
 		if (!empty($this->minimumJoomlaVersion) && !version_compare(JVERSION, $this->minimumJoomlaVersion, 'ge'))
 		{
@@ -247,7 +247,7 @@ class BaseInstaller
 	 *
 	 * @return  void
 	 */
-	protected function clearOpcodeCaches()
+	protected function clearOpcodeCaches(): void
 	{
 		// Always reset the OPcache if it's enabled. Otherwise there's a good chance the server will not know we are
 		// replacing .php scripts. This is a major concern since PHP 5.5 included and enabled OPcache by default.
@@ -269,7 +269,7 @@ class BaseInstaller
 	 *
 	 * @return  array  The dependencies
 	 */
-	protected function getDependencies($package)
+	protected function getDependencies(string $package): array
 	{
 		$db = JoomlaFactory::getDbo();
 
@@ -302,7 +302,7 @@ class BaseInstaller
 	 * @param   string $package      The package
 	 * @param   array  $dependencies The dependencies list
 	 */
-	protected function setDependencies($package, array $dependencies)
+	protected function setDependencies(string $package, array $dependencies): void
 	{
 		$db = JoomlaFactory::getDbo();
 
@@ -340,7 +340,7 @@ class BaseInstaller
 	 * @param   string $package    The package
 	 * @param   string $dependency The dependency to add
 	 */
-	protected function addDependency($package, $dependency)
+	protected function addDependency(string $package, string $dependency): void
 	{
 		$dependencies = $this->getDependencies($package);
 
@@ -358,7 +358,7 @@ class BaseInstaller
 	 * @param   string $package    The package
 	 * @param   string $dependency The dependency to remove
 	 */
-	protected function removeDependency($package, $dependency)
+	protected function removeDependency(string $package, string $dependency): void
 	{
 		$dependencies = $this->getDependencies($package);
 
@@ -379,7 +379,7 @@ class BaseInstaller
 	 *
 	 * @return bool
 	 */
-	protected function hasDependency($package, $dependency)
+	protected function hasDependency(string $package, string $dependency): bool
 	{
 		$dependencies = $this->getDependencies($package);
 
@@ -456,7 +456,7 @@ class BaseInstaller
 	 *
 	 * @throws Exception
 	 */
-	protected function addPostInstallationMessage(array $options)
+	protected function addPostInstallationMessage(array $options): void
 	{
 		// Make sure there are options set
 		if (!is_array($options))
@@ -649,7 +649,7 @@ class BaseInstaller
 	 *
 	 * @return  void
 	 */
-	protected function _applyPostInstallationMessages()
+	protected function _applyPostInstallationMessages(): void
 	{
 		// Make sure it's Joomla! 3.2.0 or later
 		if (!version_compare(JVERSION, '3.2.0', 'ge'))
@@ -700,7 +700,7 @@ class BaseInstaller
 	 *
 	 * @return  void
 	 */
-	protected function uninstallPostInstallationMessages()
+	protected function uninstallPostInstallationMessages(): void
 	{
 		// Make sure it's Joomla! 3.2.0 or later
 		if (!version_compare(JVERSION, '3.2.0', 'ge'))

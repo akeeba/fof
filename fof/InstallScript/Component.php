@@ -9,6 +9,7 @@ namespace  FOF40\InstallScript;
 
 use FOF40\Database\Installer as DatabaseInstaller;
 use Exception;
+use JDatabaseDriver;
 use JFile;
 use JFolder;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -169,7 +170,7 @@ class Component extends BaseInstaller
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
-	public function preflight($type, $parent)
+	public function preflight(string $type, ComponentAdapter $parent): bool
 	{
 		// Check the minimum PHP version
 		if (!$this->checkPHPVersion())
@@ -213,7 +214,7 @@ class Component extends BaseInstaller
 	 *
 	 * @return  void
 	 */
-	public function postflight($type, $parent)
+	public function postflight(string $type, ComponentAdapter $parent): void
 	{
 		// Add ourselves to the list of extensions depending on FOF40
 		$this->addDependency('fof40', $this->componentName);
@@ -319,7 +320,7 @@ class Component extends BaseInstaller
 	 *
 	 * @param   ComponentAdapter  $parent The parent object
 	 */
-	public function uninstall($parent)
+	public function uninstall(ComponentAdapter $parent): void
 	{
 		// Uninstall database
 		$dbInstaller = new DatabaseInstaller(JoomlaFactory::getDbo(),
@@ -349,7 +350,7 @@ class Component extends BaseInstaller
 	 *
 	 * @param   ComponentAdapter  $parent
 	 */
-	protected function copyCliFiles($parent)
+	protected function copyCliFiles(ComponentAdapter $parent): void
 	{
 		$src = $parent->getParent()->getPath('source');
 
@@ -378,7 +379,7 @@ class Component extends BaseInstaller
 	 *
 	 * @param   ComponentAdapter  $parent
 	 */
-	protected function bugfixFilesNotCopiedOnUpdate($parent)
+	protected function bugfixFilesNotCopiedOnUpdate(ComponentAdapter $parent): void
 	{
 		Log::add("Joomla! extension update workaround for component $this->componentName", Log::INFO, 'fof4_extension_installation');
 
@@ -416,7 +417,7 @@ class Component extends BaseInstaller
 	 *
 	 * @param  ComponentAdapter  $parent Parent class calling us
 	 */
-	protected function renderPostInstallation($parent)
+	protected function renderPostInstallation(ComponentAdapter $parent): void
 	{
 		echo "<h3>$this->componentName has been installed</h3>";
 	}
@@ -426,7 +427,7 @@ class Component extends BaseInstaller
 	 *
 	 * @param  ComponentAdapter  $parent Parent class calling us
 	 */
-	protected function renderPostUninstallation($parent)
+	protected function renderPostUninstallation(ComponentAdapter $parent): void
 	{
 		echo "<h3>$this->componentName has been uninstalled</h3>";
 	}
@@ -434,7 +435,7 @@ class Component extends BaseInstaller
 	/**
 	 * Bugfix for "DB function returned no error"
 	 */
-	protected function bugfixDBFunctionReturnedNoError()
+	protected function bugfixDBFunctionReturnedNoError(): void
 	{
 		$db = JoomlaFactory::getDbo();
 
@@ -468,7 +469,7 @@ class Component extends BaseInstaller
 	/**
 	 * Joomla! 1.6+ bugfix for "Can not build admin menus"
 	 */
-	protected function bugfixCantBuildAdminMenus()
+	protected function bugfixCantBuildAdminMenus(): void
 	{
 		$db = JoomlaFactory::getDbo();
 
@@ -620,7 +621,7 @@ class Component extends BaseInstaller
 	 *
 	 * @param   array $removeList The files and directories to remove
 	 */
-	protected function removeFilesAndFolders($removeList)
+	protected function removeFilesAndFolders(array $removeList): void
 	{
 		// Remove files
 		if (isset($removeList['files']) && !empty($removeList['files']))
@@ -662,7 +663,7 @@ class Component extends BaseInstaller
 	 *
 	 * @return  \stdClass The subextension uninstallation status
 	 */
-	protected function uninstallObsoleteSubextensions($parent)
+	protected function uninstallObsoleteSubextensions(ComponentAdapter $parent)
 	{
 		$db = JoomlaFactory::getDBO();
 
@@ -746,7 +747,7 @@ class Component extends BaseInstaller
 	 *
 	 * @throws Exception When the Joomla! menu is FUBAR
 	 */
-	private function _createAdminMenus($parent)
+	private function _createAdminMenus(ComponentAdapter $parent): bool
 	{
 		$db = $parent->getParent()->getDbo();
 		/** @var Menu $table */
@@ -1080,7 +1081,7 @@ class Component extends BaseInstaller
 	 *
 	 * @return bool
 	 */
-	private function _reallyPublishAdminMenuItems($parent)
+	private function _reallyPublishAdminMenuItems(ComponentAdapter $parent): bool
 	{
 		$db     = $parent->getParent()->getDbo();
 		$option = $parent->get('element');
@@ -1110,7 +1111,7 @@ class Component extends BaseInstaller
 	 * Tells Joomla! to rebuild its menu structure to make triple-sure that the Components menu items really do exist
 	 * in the correct place and can really be rendered.
 	 */
-	private function _rebuildMenu()
+	private function _rebuildMenu(): void
 	{
 		$table = new Menu(JoomlaFactory::getDbo());
 		$db    = $table->getDbo();
@@ -1179,13 +1180,13 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the assets table records for the component
 	 *
-	 * @param   \JDatabaseDriver $db
+	 * @param   JDatabaseDriver $db
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentAssetRecords($db)
+	private function deleteComponentAssetRecords(JDatabaseDriver $db): void
 	{
 		$query = $db->getQuery(true);
 		$query->select('id')
@@ -1221,13 +1222,13 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the extensions table records for the component
 	 *
-	 * @param   \JDatabaseDriver $db
+	 * @param   JDatabaseDriver $db
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentExtensionRecord($db)
+	private function deleteComponentExtensionRecord(JDatabaseDriver $db): void
 	{
 		$query = $db->getQuery(true);
 		$query->select('extension_id')
@@ -1263,13 +1264,13 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the menu table records for the component
 	 *
-	 * @param   \JDatabaseDriver $db
+	 * @param   JDatabaseDriver $db
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentMenuRecord($db)
+	private function deleteComponentMenuRecord(JDatabaseDriver $db): void 
 	{
 		$query = $db->getQuery(true);
 		$query->select('id')
