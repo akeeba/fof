@@ -21,7 +21,12 @@
     [X] Toolbar
     [X] TransparentAuthentication
     [X] Update
-    [ ] Utils --> Move to separate packages
+    [X] Utils
+    [ ] Date::TimezoneWrangler
+    [ ] JoomlaAbstraction
+    [ ] Html
+    [ ] InstallScript
+    [ ] IP
     [ ] Controller
     [ ] View
     [ ] Model

@@ -6,7 +6,7 @@
  */
 
 
-namespace FOF40\Tests\Utils;
+namespace FOF40\Tests\IP;
 
 use FOF40\Tests\Helpers\FOFTestCase;
 use FOF40\Tests\Stubs\Utils\IpStub;
@@ -14,14 +14,14 @@ use FOF40\Tests\Stubs\Utils\IpStub;
 require_once 'IpDataprovider.php';
 
 /**
- * @covers  \FOF40\Utils\Ip::<protected>
- * @covers  \FOF40\Utils\Ip::<private>
+ * @covers  \FOF40\IP\IPHelper::<protected>
+ * @covers  \FOF40\IP\IPHelper::<private>
  */
-class IpTest extends FOFTestCase
+class IPHelperTest extends FOFTestCase
 {
 	/**
 	 * @group            Ip
-	 * @dataProvider     IpDataprovider::getDetectAndCleanIP
+	 * @dataProvider     \FOF40\Tests\IP\IpDataprovider::getDetectAndCleanIP
 	 */
 	public function testDetectAndCleanIP($test, $check)
 	{

@@ -12,7 +12,14 @@ use FOF40\Model\DataModel;
 defined('_JEXEC') or die;
 
 /**
- * Generate phpDoc type hints for the magic fields of your DataModels
+ * Generate phpDoc type hints for the magic properties and methods of your DataModels.
+ *
+ * Usage:
+ * $typeHinter = new ModelTypeHints($instanceOfYourFOFDataModel);
+ * var_dump($typeHinter->getHints());
+ *
+ * This will dump the type hints you should add to the DocBlock of your DataModel class to allow IDEs such as phpStorm
+ * to provide smart type hinting for magic property and method access.
  *
  * @package FOF40\Utils
  */
@@ -35,7 +42,7 @@ class ModelTypeHints
     /**
      * @param string $className
      */
-    public function setClassName($className)
+    public function setClassName(string $className): void
     {
         $this->className = $className;
     }
@@ -58,7 +65,7 @@ class ModelTypeHints
 	 *
 	 * @throws  \FOF40\Model\DataModel\Relation\Exception\RelationNotFound
 	 */
-	public function getRawHints()
+	public function getRawHints(): array
 	{
 		$model = $this->model;
 
@@ -123,7 +130,7 @@ class ModelTypeHints
 	 *
 	 * @return  string
 	 */
-	public function getHints()
+	public function getHints(): string
 	{
 		$modelName = $this->className;
 
@@ -212,7 +219,7 @@ class ModelTypeHints
 	 *
 	 * @return  string  The PHP base type
 	 */
-	public static function getFieldType($type)
+	public static function getFieldType(string $type): string
 	{
 		// Remove parentheses, indicating field options / size (they don't matter in type detection)
 		if (!empty($type))

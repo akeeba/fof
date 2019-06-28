@@ -6,16 +6,16 @@
  */
 
 
-namespace FOF40\Tests\Utils;
+namespace FOF40\Tests\Date;
 
 use FOF40\Tests\Helpers\FOFTestCase;
-use FOF40\Utils\TimezoneWrangler;
+use FOF40\Date\TimezoneWrangler;
 use Joomla\CMS\Factory as JoomlaFactory;
 
 
 /**
- * @covers  FOF40\Utils\TimezoneWrangler::<protected>
- * @covers  FOF40\Utils\TimezoneWrangler::<private>
+ * @covers  \FOF40\Date\TimezoneWrangler::<protected>
+ * @covers  \FOF40\Date\TimezoneWrangler::<private>
  */
 class TimezoneWranglerTest extends FOFTestCase
 {
@@ -139,7 +139,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	}
 
 	/**
-	 * @dataProvider FOF40\Tests\Utils\TimezoneWranglerProvider::getTestGetApplicableTimezone()
+	 * @dataProvider \FOF40\Tests\Date\TimezoneWranglerProvider::getTestGetApplicableTimezone()
 	 */
 	public function testGetApplicableTimezone($userID, $forced, $expected, $message)
 	{
@@ -168,7 +168,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	}
 
 	/**
-	 * @dataProvider FOF40\Tests\Utils\TimezoneWranglerProvider::getTestGetLocalDateTime
+	 * @dataProvider \FOF40\Tests\Date\TimezoneWranglerProvider::getTestGetLocalDateTime
 	 */
 	public function testGetLocalDateTime($sourceTime, $timezone, $expected, $message)
 	{
@@ -185,7 +185,7 @@ class TimezoneWranglerTest extends FOFTestCase
 	}
 
 	/**
-	 * @dataProvider FOF40\Tests\Utils\TimezoneWranglerProvider::getTestGetGMTDateTime
+	 * @dataProvider \FOF40\Tests\Date\TimezoneWranglerProvider::getTestGetGMTDateTime
 	 */
 	public function testGetGMTDateTime($localTime, $timezone, $gmtTime, $message, $negativeTest = false)
 	{

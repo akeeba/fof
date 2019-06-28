@@ -42,7 +42,7 @@ class Buffer
 	 *
 	 * @return  bool  True if the stream wrapper can be registered
 	 */
-	public static function canRegisterWrapper()
+	public static function canRegisterWrapper(): bool
 	{
 		if (is_null(static::$canRegisterWrapper))
 		{
@@ -135,7 +135,7 @@ class Buffer
 	 *
 	 * @see     streamWrapper::stream_open
 	 */
-	public function stream_open($path, $mode, $options, &$opened_path)
+	public function stream_open(string $path, string $mode, ?int $options, ?string &$opened_path): bool
 	{
 		$url            = parse_url($path);
 		$this->name     = $url['host'] . $url['path'];
@@ -149,7 +149,7 @@ class Buffer
 		return true;
 	}
 
-	public function unlink($path)
+	public function unlink(string $path): void
 	{
 		$url  = parse_url($path);
 		$name = $url['host'];
@@ -160,7 +160,7 @@ class Buffer
 		}
 	}
 
-	public function stream_stat()
+	public function stream_stat(): array
 	{
 		return array(
 			'dev'     => 0,
@@ -191,7 +191,7 @@ class Buffer
 	 * @see     streamWrapper::stream_read
 	 * @since   11.1
 	 */
-	public function stream_read($count)
+	public function stream_read(int $count): ?string
 	{
 		$ret = substr(static::$buffers[ $this->name ], $this->position, $count);
 		$this->position += strlen($ret);
@@ -209,7 +209,7 @@ class Buffer
 	 * @see     streamWrapper::stream_write
 	 * @since   11.1
 	 */
-	public function stream_write($data)
+	public function stream_write(string $data): int
 	{
 		$left                           = substr(static::$buffers[ $this->name ], 0, $this->position);
 		$right                          = substr(static::$buffers[ $this->name ], $this->position + strlen($data));
@@ -227,7 +227,7 @@ class Buffer
 	 * @see     streamWrapper::stream_tell
 	 * @since   11.1
 	 */
-	public function stream_tell()
+	public function stream_tell(): int
 	{
 		return $this->position;
 	}
@@ -240,7 +240,7 @@ class Buffer
 	 * @see     streamWrapper::stream_eof
 	 * @since   11.1
 	 */
-	public function stream_eof()
+	public function stream_eof(): bool
 	{
 		return $this->position >= strlen(static::$buffers[ $this->name ]);
 	}
@@ -257,7 +257,7 @@ class Buffer
 	 * @see     streamWrapper::stream_seek
 	 * @since   11.1
 	 */
-	public function stream_seek($offset, $whence)
+	public function stream_seek(int $offset, int $whence): bool
 	{
 		switch ($whence)
 		{

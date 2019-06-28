@@ -36,6 +36,8 @@ The Utils package has grown over the lifetime of FOF 3 into an unwieldy mess of 
 restore sanity the Utils package is being refactored to only include helper classes used internally by FOF. The 
 remaining, very useful features are being refactored into their own, semantically coherent packages.
 
+### Not changed
+
 The following classes did NOT move:
 
 * FOF40\Utils\ArrayHelper
@@ -44,7 +46,16 @@ The following classes did NOT move:
 * FOF40\Utils\FilesCheck
 * FOF40\Utils\ModelTypeHints
 * FOF40\Utils\PhpFunc
-* FOF40\Utils\StringHelper
+
+### Removed classes
+
+The following classes have been removed from the Utils package.
+
+* FOF40\Utils\StringHelper. Use the function fofStringToBool() instead of StringHelper::toBool().
+* FOF40\Utils\FEFHelper\Html. Use FOF40\Html\FEFHelper\BrowseView instead (your code might need rewritting).
+* FOF40\Utils\InstallScript. Use FOF40\InstallScript\Component instead.
+
+### Moved classes
 
 The following classes have been moved out of the Utils package and into existing or new packages. The following table
 helps you understand what moved where.

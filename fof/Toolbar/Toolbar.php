@@ -11,7 +11,6 @@ use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Toolbar\Exception\MissingAttribute;
 use FOF40\Toolbar\Exception\UnknownButtonType;
-use FOF40\Utils\StringHelper;
 use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -876,7 +875,7 @@ class Toolbar
 				$iconOver   = isset($attributes['icon_over']) ? $attributes['icon_over'] : '';
 				$alt        = isset($attributes['alt']) ? $attributes['alt'] : '';
 				$listSelect = isset($attributes['list_select']) ?
-					StringHelper::toBool($attributes['list_select']) : true;
+					fofStringToBool($attributes['list_select']) : true;
 
 				JoomlaToolbarHelper::custom($task, $icon, $iconOver, $alt, $listSelect);
 				break;
@@ -884,7 +883,7 @@ class Toolbar
 			case 'preview':
 				$url            = isset($attributes['url']) ? $attributes['url'] : '';
 				$update_editors = isset($attributes['update_editors']) ?
-					StringHelper::toBool($attributes['update_editors']) : false;
+					fofStringToBool($attributes['update_editors']) : false;
 
 				JoomlaToolbarHelper::preview($url, $update_editors);
 				break;
@@ -896,7 +895,7 @@ class Toolbar
 				}
 
 				$ref       = $attributes['help'];
-				$com       = isset($attributes['com']) ? StringHelper::toBool($attributes['com']) : false;
+				$com       = isset($attributes['com']) ? fofStringToBool($attributes['com']) : false;
 				$override  = isset($attributes['override']) ? $attributes['override'] : null;
 				$component = isset($attributes['component']) ? $attributes['component'] : null;
 
@@ -933,7 +932,7 @@ class Toolbar
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'add';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_NEW';
 					$check = isset($attributes['check']) ?
-						StringHelper::toBool($attributes['check']) : false;
+						fofStringToBool($attributes['check']) : false;
 
 					JoomlaToolbarHelper::addNew($task, $alt, $check);
 				}
@@ -963,7 +962,7 @@ class Toolbar
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'publish';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
 					$check = isset($attributes['check']) ?
-						StringHelper::toBool($attributes['check']) : false;
+						fofStringToBool($attributes['check']) : false;
 
 					JoomlaToolbarHelper::publish($task, $alt, $check);
 				}
@@ -991,7 +990,7 @@ class Toolbar
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'unpublish';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
 					$check = isset($attributes['check']) ?
-						StringHelper::toBool($attributes['check']) : false;
+						fofStringToBool($attributes['check']) : false;
 
 					JoomlaToolbarHelper::unpublish($task, $alt, $check);
 				}
@@ -1088,7 +1087,7 @@ class Toolbar
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'trash';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_TRASH';
 					$check = isset($attributes['check']) ?
-						StringHelper::toBool($attributes['check']) : true;
+						fofStringToBool($attributes['check']) : true;
 
 					JoomlaToolbarHelper::trash($task, $alt, $check);
 				}
@@ -1135,7 +1134,7 @@ class Toolbar
 				$task  = isset($attributes['task']) ? $attributes['task'] : 'checkin';
 				$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_CHECKIN';
 				$check = isset($attributes['check']) ?
-					StringHelper::toBool($attributes['check']) : true;
+					fofStringToBool($attributes['check']) : true;
 
 				JoomlaToolbarHelper::checkin($task, $alt, $check);
 				break;

@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils;
+namespace FOF40\Utils;
 
 use FOF40\Timer\Timer;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -48,10 +48,10 @@ class FilesCheck
 	protected $date = null;
 
 	/** @var array List of files to check as filepath => (filesize, md5, sha1) */
-	protected $fileList = array();
+	protected $fileList = [];
 
 	/** @var array List of directories to check that exist */
-	protected $dirList = array();
+	protected $dirList = [];
 
 	/** @var bool Is the reported component version different than the version of the #__extensions table? */
 	protected $wrongComponentVersion = false;
@@ -62,20 +62,20 @@ class FilesCheck
 	/**
 	 * Create and initialise the object
 	 *
-	 * @param string $option Component name, e.g. com_foobar
-	 * @param string $version The current component version, as reported by the component
-	 * @param string $date The current component release date, as reported by the component
+	 * @param string $componentName Component name, e.g. com_foobar
+	 * @param string $version       The current component version, as reported by the component
+	 * @param string $date          The current component release date, as reported by the component
 	 */
-	public function __construct($option, $version, $date)
+	public function __construct(string $componentName, string $version, string $date)
 	{
 		// Initialise from parameters
-		$this->option = $option;
+		$this->option  = $componentName;
 		$this->version = $version;
-		$this->date = $date;
+		$this->date    = $date;
 
 		// Retrieve the date and version from the #__extensions table
-		$db = JoomlaFactory::getDbo();
-		$query = $db->getQuery(true)->select('*')->from($db->qn('#__extensions'))
+		$db        = JoomlaFactory::getDbo();
+		$query     = $db->getQuery(true)->select('*')->from($db->qn('#__extensions'))
 			->where($db->qn('element') . ' = ' . $db->q($this->option))
 			->where($db->qn('type') . ' = ' . $db->q('component'));
 		$extension = $db->setQuery($query)->loadObject();
@@ -135,7 +135,7 @@ class FilesCheck
 
 		// Initialise the files and directories lists
 		$this->fileList = $phpFileChecker['files'];
-		$this->dirList = $phpFileChecker['directories'];
+		$this->dirList  = $phpFileChecker['directories'];
 	}
 
 	/**
@@ -143,7 +143,7 @@ class FilesCheck
 	 *
 	 * @return boolean
 	 */
-	public function isWrongComponentVersion()
+	public function isWrongComponentVersion(): bool
 	{
 		return $this->wrongComponentVersion;
 	}
@@ -153,7 +153,7 @@ class FilesCheck
 	 *
 	 * @return boolean
 	 */
-	public function isWrongFilesVersion()
+	public function isWrongFilesVersion(): bool
 	{
 		return $this->wrongFilesVersion;
 	}
@@ -164,7 +164,7 @@ class FilesCheck
 	 *
 	 * @return bool False when there are mismatched files and directories
 	 */
-	public function fastCheck()
+	public function fastCheck(): bool
 	{
 		// Check that all directories exist
 		foreach ($this->dirList as $directory)
@@ -205,18 +205,18 @@ class FilesCheck
 	 *
 	 * @return array Progress report
 	 */
-	public function slowCheck($idx = 0)
+	public function slowCheck(int $idx = 0): array
 	{
-		$ret = array(
-			'done'	=> false,
-			'files'	=> array(),
-			'folders'	=> array(),
-			'idx'	=> $idx
-		);
+		$ret = [
+			'done'    => false,
+			'files'   => [],
+			'folders' => [],
+			'idx'     => $idx,
+		];
 
-		$totalFiles = count($this->fileList);
+		$totalFiles   = count($this->fileList);
 		$totalFolders = count($this->dirList);
-		$fileKeys = array_keys($this->fileList);
+		$fileKeys     = array_keys($this->fileList);
 
 		$timer = new Timer(3.0, 75.0);
 
@@ -234,7 +234,7 @@ class FilesCheck
 
 			if ($idx < $totalFiles)
 			{
-				$fileKey = $fileKeys[$idx];
+				$fileKey  = $fileKeys[$idx];
 				$filePath = JPATH_ROOT . '/' . $fileKey;
 				$fileData = $this->fileList[$fileKey];
 

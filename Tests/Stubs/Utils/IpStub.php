@@ -8,9 +8,9 @@
 
 namespace FOF40\Tests\Stubs\Utils;
 
-use FOF40\Utils\Ip;
+use FOF40\IP\IPHelper;
 
-class IpStub extends Ip
+class IpStub extends IpHelper
 {
 	public static $fakeIP = null;
 

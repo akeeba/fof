@@ -6,7 +6,7 @@
  */
 
 
-namespace FOF40\Tests\Utils;
+namespace FOF40\Tests\Date;
 
 class TimezoneWranglerProvider
 {

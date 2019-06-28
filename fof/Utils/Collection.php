@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Utils;
+namespace FOF40\Utils;
 
 use ArrayAccess;
 use ArrayIterator;
@@ -24,26 +24,28 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @var array
 	 */
-	protected $items = array();
+	protected $items = [];
 
 	/**
 	 * Create a new collection.
 	 *
-	 * @param  array $items
+	 * @param array $items
 	 */
-	public function __construct(array $items = array())
+	public function __construct(array $items = [])
 	{
 		$this->items = $items;
 	}
 
 	/**
-	 * Create a new collection instance if the value isn't one already.
+	 * Create a new collection instance if the value isn't one already. If given an array then the array is wrapped in
+	 * a Collection. Otherwise we return a Collection with only one item, whatever was passed in $items. If you pass
+	 * null you get an empty Collection.
 	 *
-	 * @param  mixed $items
+	 * @param array|mixed $items
 	 *
 	 * @return static
 	 */
-	public static function make($items)
+	public static function make($items): Collection
 	{
 		if (is_null($items))
 		{
@@ -55,7 +57,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 			return $items;
 		}
 
-		return new static(is_array($items) ? $items : array($items));
+		return new static(is_array($items) ? $items : [$items]);
 	}
 
 	/**
@@ -63,19 +65,22 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return array
 	 */
-	public function all()
+	public function all(): array
 	{
 		return $this->items;
 	}
 
 	/**
-	 * Collapse the collection items into a single array.
+	 * Collapse the collection items into a single array. This assumes that the Collection is composed of arrays. We
+	 * are essentially merging all of these arrays and creting a new Collection out of them.
+	 *
+	 * If $this->items = [ ['a','b'], ['c','d'], ['e'] ] after collapse it becomes [ 'a','b','c','d','e' ]
 	 *
 	 * @return Collection
 	 */
-	public function collapse()
+	public function collapse(): Collection
 	{
-		$results = array();
+		$results = [];
 
 		foreach ($this->items as $values)
 		{
@@ -88,11 +93,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Diff the collection with the given items.
 	 *
-	 * @param  Collection|array $items
+	 * @param Collection|array $items
 	 *
 	 * @return Collection
 	 */
-	public function diff($items)
+	public function diff($items): Collection
 	{
 		return new static(array_diff($this->items, $this->getArrayableItems($items)));
 	}
@@ -100,11 +105,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Execute a callback over each item.
 	 *
-	 * @param  Closure $callback
+	 * @param Closure $callback
 	 *
 	 * @return Collection
 	 */
-	public function each(Closure $callback)
+	public function each(Closure $callback): Collection
 	{
 		array_map($callback, $this->items);
 
@@ -114,11 +119,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Fetch a nested element of the collection.
 	 *
-	 * @param  string $key
+	 * @param string $key
 	 *
 	 * @return Collection
 	 */
-	public function fetch($key)
+	public function fetch(string $key): Collection
 	{
 		return new static(array_fetch($this->items, $key));
 	}
@@ -126,11 +131,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Run a filter over each of the items.
 	 *
-	 * @param  Closure $callback
+	 * @param Closure $callback
 	 *
 	 * @return Collection
 	 */
-	public function filter(Closure $callback)
+	public function filter(Closure $callback): Collection
 	{
 		return new static(array_filter($this->items, $callback));
 	}
@@ -138,8 +143,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get the first item from the collection.
 	 *
-	 * @param  \Closure $callback
-	 * @param  mixed    $default
+	 * @param \Closure $callback
+	 * @param mixed    $default
 	 *
 	 * @return mixed|null
 	 */
@@ -158,9 +163,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get a flattened array of the items in the collection.
 	 *
-	 * @return array
+	 * @return Collection
 	 */
-	public function flatten()
+	public function flatten(): Collection
 	{
 		return new static(array_flatten($this->items));
 	}
@@ -168,11 +173,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Remove an item from the collection by key.
 	 *
-	 * @param  mixed $key
+	 * @param mixed $key
 	 *
 	 * @return void
 	 */
-	public function forget($key)
+	public function forget(string $key): void
 	{
 		unset($this->items[$key]);
 	}
@@ -180,12 +185,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get an item from the collection by key.
 	 *
-	 * @param  mixed $key
-	 * @param  mixed $default
+	 * @param mixed $key
+	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	public function get($key, $default = null)
+	public function get(string $key, $default = null)
 	{
 		if (array_key_exists($key, $this->items))
 		{
@@ -198,13 +203,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Group an associative array by a field or Closure value.
 	 *
-	 * @param  callable|string $groupBy
+	 * @param callable|string $groupBy
 	 *
 	 * @return Collection
 	 */
-	public function groupBy($groupBy)
+	public function groupBy($groupBy): Collection
 	{
-		$results = array();
+		$results = [];
 
 		foreach ($this->items as $key => $value)
 		{
@@ -219,11 +224,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Determine if an item exists in the collection by key.
 	 *
-	 * @param  mixed $key
+	 * @param string $key
 	 *
 	 * @return bool
 	 */
-	public function has($key)
+	public function has(string $key): bool
 	{
 		return array_key_exists($key, $this->items);
 	}
@@ -231,12 +236,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Concatenate values of a given key as a string.
 	 *
-	 * @param  string $value
-	 * @param  string $glue
+	 * @param string      $value
+	 * @param string|null $glue
 	 *
 	 * @return string
 	 */
-	public function implode($value, $glue = null)
+	public function implode(string $value, ?string $glue = null): string
 	{
 		if (is_null($glue))
 		{
@@ -249,11 +254,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Intersect the collection with the given items.
 	 *
-	 * @param  Collection|array $items
+	 * @param Collection|array $items
 	 *
 	 * @return Collection
 	 */
-	public function intersect($items)
+	public function intersect($items): Collection
 	{
 		return new static(array_intersect($this->items, $this->getArrayableItems($items)));
 	}
@@ -263,7 +268,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return bool
 	 */
-	public function isEmpty()
+	public function isEmpty(): bool
 	{
 		return empty($this->items);
 	}
@@ -281,12 +286,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get an array with the values of a given key.
 	 *
-	 * @param  string $value
-	 * @param  string $key
+	 * @param string      $value
+	 * @param string|null $key
 	 *
 	 * @return array
 	 */
-	public function lists($value, $key = null)
+	public function lists(string $value, ?string $key = null)
 	{
 		return array_pluck($this->items, $value, $key);
 	}
@@ -294,11 +299,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Run a map over each of the items.
 	 *
-	 * @param  Closure $callback
+	 * @param Closure $callback
 	 *
 	 * @return Collection
 	 */
-	public function map(Closure $callback)
+	public function map(Closure $callback): Collection
 	{
 		return new static(array_map($callback, $this->items, array_keys($this->items)));
 	}
@@ -306,11 +311,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Merge the collection with the given items.
 	 *
-	 * @param  Collection|array $items
+	 * @param Collection|array $items
 	 *
 	 * @return Collection
 	 */
-	public function merge($items)
+	public function merge($items): Collection
 	{
 		return new static(array_merge($this->items, $this->getArrayableItems($items)));
 	}
@@ -328,11 +333,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Push an item onto the beginning of the collection.
 	 *
-	 * @param  mixed $value
+	 * @param mixed $value
 	 *
 	 * @return void
 	 */
-	public function prepend($value)
+	public function prepend($value): void
 	{
 		array_unshift($this->items, $value);
 	}
@@ -340,11 +345,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Push an item onto the end of the collection.
 	 *
-	 * @param  mixed $value
+	 * @param mixed $value
 	 *
 	 * @return void
 	 */
-	public function push($value)
+	public function push($value): void
 	{
 		$this->items[] = $value;
 	}
@@ -352,12 +357,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Put an item in the collection by key.
 	 *
-	 * @param  mixed $key
-	 * @param  mixed $value
+	 * @param string $key
+	 * @param mixed  $value
 	 *
 	 * @return void
 	 */
-	public function put($key, $value)
+	public function put(string $key, $value): void
 	{
 		$this->items[$key] = $value;
 	}
@@ -365,12 +370,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Reduce the collection to a single value.
 	 *
-	 * @param  callable $callback
-	 * @param  mixed    $initial
+	 * @param callable $callback
+	 * @param mixed    $initial
 	 *
 	 * @return mixed
 	 */
-	public function reduce($callback, $initial = null)
+	public function reduce(callable $callback, $initial = null)
 	{
 		return array_reduce($this->items, $callback, $initial);
 	}
@@ -378,11 +383,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get one or more items randomly from the collection.
 	 *
-	 * @param  int $amount
+	 * @param int $amount
 	 *
 	 * @return mixed
 	 */
-	public function random($amount = 1)
+	public function random(int $amount = 1)
 	{
 		$keys = array_rand($this->items, $amount);
 
@@ -394,7 +399,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return Collection
 	 */
-	public function reverse()
+	public function reverse(): Collection
 	{
 		return new static(array_reverse($this->items));
 	}
@@ -412,13 +417,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Slice the underlying collection array.
 	 *
-	 * @param  int  $offset
-	 * @param  int  $length
-	 * @param  bool $preserveKeys
+	 * @param int      $offset
+	 * @param int|null $length
+	 * @param bool     $preserveKeys
 	 *
 	 * @return Collection
 	 */
-	public function slice($offset, $length = null, $preserveKeys = false)
+	public function slice(int $offset, ?int $length = null, bool $preserveKeys = false): Collection
 	{
 		return new static(array_slice($this->items, $offset, $length, $preserveKeys));
 	}
@@ -426,11 +431,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Sort through each item with a callback.
 	 *
-	 * @param  Closure $callback
+	 * @param Closure $callback
 	 *
 	 * @return Collection
 	 */
-	public function sort(Closure $callback)
+	public function sort(Closure $callback): Collection
 	{
 		uasort($this->items, $callback);
 
@@ -440,15 +445,15 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Sort the collection using the given Closure.
 	 *
-	 * @param  \Closure|string $callback
-	 * @param  int             $options
-	 * @param  bool            $descending
+	 * @param \Closure|string $callback
+	 * @param int             $options
+	 * @param bool            $descending
 	 *
 	 * @return Collection
 	 */
-	public function sortBy($callback, $options = SORT_REGULAR, $descending = false)
+	public function sortBy($callback, int $options = SORT_REGULAR, bool $descending = false): Collection
 	{
-		$results = array();
+		$results = [];
 
 		if (is_string($callback))
 		{
@@ -483,12 +488,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Sort the collection in descending order using the given Closure.
 	 *
-	 * @param  \Closure|string $callback
-	 * @param  int             $options
+	 * @param \Closure|string $callback
+	 * @param int             $options
 	 *
 	 * @return Collection
 	 */
-	public function sortByDesc($callback, $options = SORT_REGULAR)
+	public function sortByDesc($callback, int $options = SORT_REGULAR): Collection
 	{
 		return $this->sortBy($callback, $options, true);
 	}
@@ -496,13 +501,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Splice portion of the underlying collection array.
 	 *
-	 * @param  int   $offset
-	 * @param  int   $length
-	 * @param  mixed $replacement
+	 * @param int   $offset
+	 * @param int   $length
+	 * @param mixed $replacement
 	 *
 	 * @return Collection
 	 */
-	public function splice($offset, $length = 0, $replacement = array())
+	public function splice(int $offset, int $length = 0, $replacement = []): Collection
 	{
 		return new static(array_splice($this->items, $offset, $length, $replacement));
 	}
@@ -510,7 +515,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get the sum of the given values.
 	 *
-	 * @param  \Closure|string $callback
+	 * @param \Closure|string $callback
 	 *
 	 * @return mixed
 	 */
@@ -521,8 +526,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 			$callback = $this->valueRetriever($callback);
 		}
 
-		return $this->reduce(function ($result, $item) use ($callback)
-		{
+		return $this->reduce(function ($result, $item) use ($callback) {
 			return $result += $callback($item);
 
 		}, 0);
@@ -531,11 +535,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Take the first or last {$limit} items.
 	 *
-	 * @param  int $limit
+	 * @param int|null $limit
 	 *
 	 * @return Collection
 	 */
-	public function take($limit = null)
+	public function take(?int $limit = null): Collection
 	{
 		if ($limit < 0)
 		{
@@ -550,9 +554,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return  Collection
 	 */
-	public function reset()
+	public function reset(): Collection
 	{
-		$this->items = array();
+		$this->items = [];
 
 		return $this;
 	}
@@ -560,11 +564,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Transform each item in the collection using a callback.
 	 *
-	 * @param  callable $callback
+	 * @param callable $callback
 	 *
 	 * @return Collection
 	 */
-	public function transform($callback)
+	public function transform(callable $callback): Collection
 	{
 		$this->items = array_map($callback, $this->items);
 
@@ -576,7 +580,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return Collection
 	 */
-	public function unique()
+	public function unique(): Collection
 	{
 		return new static(array_unique($this->items));
 	}
@@ -586,7 +590,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return Collection
 	 */
-	public function values()
+	public function values(): Collection
 	{
 		$this->items = array_values($this->items);
 
@@ -596,14 +600,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get a value retrieving callback.
 	 *
-	 * @param  string $value
+	 * @param string $value
 	 *
 	 * @return \Closure
 	 */
-	protected function valueRetriever($value)
+	protected function valueRetriever(string $value): callable
 	{
-		return function ($item) use ($value)
-		{
+		return function ($item) use ($value) {
 			return is_object($item) ? $item->{$value} : array_get($item, $value);
 		};
 	}
@@ -613,10 +616,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return array
 	 */
-	public function toArray()
+	public function toArray(): array
 	{
-		return array_map(function ($value)
-		{
+		return array_map(function ($value) {
 			return (is_object($value) && method_exists($value, 'toArray')) ? $value->toArray() : $value;
 
 		}, $this->items);
@@ -627,7 +629,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return array
 	 */
-	public function jsonSerialize()
+	public function jsonSerialize(): array
 	{
 		return $this->toArray();
 	}
@@ -635,11 +637,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get the collection of items as JSON.
 	 *
-	 * @param  int $options
+	 * @param int $options
 	 *
 	 * @return string
 	 */
-	public function toJson($options = 0)
+	public function toJson(int $options = 0): string
 	{
 		return json_encode($this->toArray(), $options);
 	}
@@ -649,7 +651,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return ArrayIterator
 	 */
-	public function getIterator()
+	public function getIterator(): ArrayIterator
 	{
 		return new ArrayIterator($this->items);
 	}
@@ -657,11 +659,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get a CachingIterator instance.
 	 *
-	 * @param  integer  $flags  Caching iterator flags
+	 * @param integer $flags Caching iterator flags
 	 *
 	 * @return \CachingIterator
 	 */
-	public function getCachingIterator($flags = CachingIterator::CALL_TOSTRING)
+	public function getCachingIterator(int $flags = CachingIterator::CALL_TOSTRING): CachingIterator
 	{
 		return new \CachingIterator($this->getIterator(), $flags);
 	}
@@ -671,7 +673,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return int
 	 */
-	public function count()
+	public function count(): int
 	{
 		return count($this->items);
 	}
@@ -679,11 +681,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Determine if an item exists at an offset.
 	 *
-	 * @param  mixed $key
+	 * @param mixed $key
 	 *
 	 * @return bool
 	 */
-	public function offsetExists($key)
+	public function offsetExists($key): bool
 	{
 		return array_key_exists($key, $this->items);
 	}
@@ -691,7 +693,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Get an item at a given offset.
 	 *
-	 * @param  mixed $key
+	 * @param mixed $key
 	 *
 	 * @return mixed
 	 */
@@ -703,8 +705,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Set the item at a given offset.
 	 *
-	 * @param  mixed $key
-	 * @param  mixed $value
+	 * @param mixed $key
+	 * @param mixed $value
 	 *
 	 * @return void
 	 */
@@ -723,7 +725,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Unset the item at a given offset.
 	 *
-	 * @param  string $key
+	 * @param string $key
 	 *
 	 * @return void
 	 */
@@ -737,7 +739,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return string
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->toJson();
 	}
@@ -745,11 +747,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	/**
 	 * Results array of items from Collection.
 	 *
-	 * @param  Collection|array $items
+	 * @param Collection|array $items
 	 *
 	 * @return array
 	 */
-	private function getArrayableItems($items)
+	private function getArrayableItems($items): array
 	{
 		if ($items instanceof Collection)
 		{

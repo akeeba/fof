@@ -79,10 +79,10 @@ class CollectionTest extends FOFTestCase
 		$c = $this->getMockBuilder('FOF40\Utils\Collection')
 			->setMethods(['toArray'])
 			->getMock();
-		$c->expects($this->once())->method('toArray')->will($this->returnValue('foo'));
+		$c->expects($this->once())->method('toArray')->will($this->returnValue(['foo']));
 		$results = $c->toJson();
 
-		$this->assertEquals(json_encode('foo'), $results);
+		$this->assertEquals(json_encode(['foo']), $results);
 	}
 
 	public function testCastingToStringJsonEncodesTheToArrayResult()
@@ -91,9 +91,9 @@ class CollectionTest extends FOFTestCase
 			->setMethods(['toArray'])
 			->getMock();
 
-		$c->expects($this->once())->method('toArray')->will($this->returnValue('foo'));
+		$c->expects($this->once())->method('toArray')->will($this->returnValue(['foo']));
 
-		$this->assertEquals(json_encode('foo'), (string) $c);
+		$this->assertEquals(json_encode(['foo']), (string) $c);
 	}
 
 	public function testOffsetAccess()
