@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Platform\Joomla;
+namespace FOF40\Platform\Joomla;
 
 use DateTime;
 use DateTimeZone;
@@ -113,8 +113,8 @@ class Platform extends BasePlatform
 	/**
 	 * Raises an error, using the logic requested by the CMS (PHP Exception or dedicated class)
 	 *
-	 * @param   integer  $code
-	 * @param   string   $message
+	 * @param integer $code
+	 * @param string  $message
 	 *
 	 * @return  void
 	 *
@@ -142,7 +142,7 @@ class Platform extends BasePlatform
 			{
 				if (is_null(JoomlaFactory::$application))
 				{
-					static::$isCLI = true;
+					static::$isCLI   = true;
 					static::$isAdmin = false;
 
 					return [static::$isCLI, static::$isAdmin, static::$isApi];
@@ -201,15 +201,15 @@ class Platform extends BasePlatform
 	 */
 	public function getPlatformBaseDirs(): array
 	{
-		return array(
+		return [
 			'root'   => JPATH_ROOT,
 			'public' => JPATH_SITE,
 			'media'  => JPATH_SITE . '/media',
 			'admin'  => JPATH_ADMINISTRATOR,
 			'api'    => defined('JPATH_API') ? JPATH_API : (JPATH_ROOT . '/api'),
 			'tmp'    => JoomlaFactory::getConfig()->get('tmp_path'),
-			'log'    => JoomlaFactory::getConfig()->get('log_path')
-		);
+			'log'    => JoomlaFactory::getConfig()->get('log_path'),
+		];
 	}
 
 	/**
@@ -217,15 +217,15 @@ class Platform extends BasePlatform
 	 * which is running inside our main application (CMS, web app).
 	 *
 	 * The return is a table with the following keys:
-	 * * main	The normal location of component files. For a back-end Joomla!
+	 * * main    The normal location of component files. For a back-end Joomla!
 	 *          component this is the administrator/components/com_example
 	 *          directory.
-	 * * alt	The alternate location of component files. For a back-end
+	 * * alt    The alternate location of component files. For a back-end
 	 *          Joomla! component this is the front-end directory, e.g.
 	 *          components/com_example
-	 * * site	The location of the component files serving the public part of
+	 * * site    The location of the component files serving the public part of
 	 *          the application.
-	 * * admin	The location of the component files serving the administrative
+	 * * admin    The location of the component files serving the administrative
 	 *          part of the application.
 	 * * api    The location of the component files serving the API part of the application
 	 *
@@ -234,7 +234,7 @@ class Platform extends BasePlatform
 	 * or when the component does not provide both a public and private part.
 	 * All of the directories MUST be defined and non-empty.
 	 *
-	 * @param   string  $component  The name of the component. For Joomla! this
+	 * @param string $component     The name of the component. For Joomla! this
 	 *                              is something like "com_example"
 	 *
 	 * @return  array  A hash array with keys main, alt, site and admin.
@@ -244,27 +244,27 @@ class Platform extends BasePlatform
 		if (!$this->isBackend())
 		{
 			$mainPath = JPATH_SITE . '/components/' . $component;
-			$altPath = JPATH_ADMINISTRATOR . '/components/' . $component;
+			$altPath  = JPATH_ADMINISTRATOR . '/components/' . $component;
 		}
 		else
 		{
 			$mainPath = JPATH_ADMINISTRATOR . '/components/' . $component;
-			$altPath = JPATH_SITE . '/components/' . $component;
+			$altPath  = JPATH_SITE . '/components/' . $component;
 		}
 
-		return array(
+		return [
 			'main'  => $mainPath,
 			'alt'   => $altPath,
 			'site'  => JPATH_SITE . '/components/' . $component,
 			'admin' => JPATH_ADMINISTRATOR . '/components/' . $component,
 			'api'   => (defined('JPATH_API') ? JPATH_API : (JPATH_ROOT . '/api')) . '/components/' . $component,
-		);
+		];
 	}
 
 	/**
 	 * Returns the application's template name
 	 *
-	 * @param   null|array  $params  An optional associative array of configuration settings
+	 * @param null|array $params An optional associative array of configuration settings
 	 *
 	 * @return  string  The template name. "system" is the fallback.
 	 */
@@ -288,13 +288,13 @@ class Platform extends BasePlatform
 	 */
 	public function getTemplateSuffixes(): array
 	{
-		$jversion = new JoomlaVersion;
+		$jversion     = new JoomlaVersion;
 		$versionParts = explode('.', $jversion->getShortVersion());
 		$majorVersion = array_shift($versionParts);
-		$suffixes = array(
+		$suffixes     = [
 			'.j' . str_replace('.', '', $jversion->getHelpVersion()),
 			'.j' . $majorVersion,
-		);
+		];
 
 		return $suffixes;
 	}
@@ -305,8 +305,8 @@ class Platform extends BasePlatform
 	 * files instead of the regular component directories. If the application
 	 * does not have such a thing as template overrides return an empty string.
 	 *
-	 * @param   string  $component  The name of the component for which to fetch the overrides
-	 * @param   bool    $absolute   Should I return an absolute or relative path?
+	 * @param string $component The name of the component for which to fetch the overrides
+	 * @param bool   $absolute  Should I return an absolute or relative path?
 	 *
 	 * @return  string  The path to the template overrides directory
 	 */
@@ -346,7 +346,7 @@ class Platform extends BasePlatform
 	/**
 	 * Load the translation files for a given component.
 	 *
-	 * @param   string  $component  The name of the component, e.g. "com_example"
+	 * @param string $component The name of the component, e.g. "com_example"
 	 *
 	 * @return  void
 	 */
@@ -354,11 +354,11 @@ class Platform extends BasePlatform
 	{
 		if ($this->isBackend())
 		{
-			$paths = array(JPATH_ROOT, JPATH_ADMINISTRATOR);
+			$paths = [JPATH_ROOT, JPATH_ADMINISTRATOR];
 		}
 		else
 		{
-			$paths = array(JPATH_ADMINISTRATOR, JPATH_ROOT);
+			$paths = [JPATH_ADMINISTRATOR, JPATH_ROOT];
 		}
 
 		$jlang = $this->getLanguage();
@@ -375,7 +375,7 @@ class Platform extends BasePlatform
 	 * Dispatcher. This method MUST implement this authorisation check. If you
 	 * do not need this in your platform, please always return true.
 	 *
-	 * @param   string  $component  The name of the component.
+	 * @param string $component The name of the component.
 	 *
 	 * @return  bool  True to allow loading the component, false to halt loading
 	 */
@@ -400,7 +400,7 @@ class Platform extends BasePlatform
 	/**
 	 * Returns a user object.
 	 *
-	 * @param   integer  $id  The user ID to load. Skip or use null to retrieve
+	 * @param integer $id     The user ID to load. Skip or use null to retrieve
 	 *                        the object for the currently logged in user.
 	 *
 	 * @return  User  The User object for the specified user
@@ -455,9 +455,9 @@ class Platform extends BasePlatform
 	/**
 	 * Returns an object to handle dates
 	 *
-	 * @param   mixed                     $time       The initial time
-	 * @param   DateTimeZone|string|null  $tzOffest   The timezone offset
-	 * @param   bool                      $locale     Should I try to load a specific class for current language?
+	 * @param mixed                    $time     The initial time
+	 * @param DateTimeZone|string|null $tzOffest The timezone offset
+	 * @param bool                     $locale   Should I try to load a specific class for current language?
 	 *
 	 * @return  Date object
 	 */
@@ -513,12 +513,12 @@ class Platform extends BasePlatform
 	 * value will be used. If $setUserState is set to true, the retrieved
 	 * variable will be stored in the user session.
 	 *
-	 * @param   string    $key           The user state key for the variable
-	 * @param   string    $request       The request variable name for the variable
-	 * @param   Input     $input         The Input object with the request (input) data
-	 * @param   mixed     $default       The default value. Default: null
-	 * @param   string    $type          The filter type for the variable data. Default: none (no filtering)
-	 * @param   bool      $setUserState  Should I set the user state with the fetched value?
+	 * @param string $key          The user state key for the variable
+	 * @param string $request      The request variable name for the variable
+	 * @param Input  $input        The Input object with the request (input) data
+	 * @param mixed  $default      The default value. Default: null
+	 * @param string $type         The filter type for the variable data. Default: none (no filtering)
+	 * @param bool   $setUserState Should I set the user state with the fetched value?
 	 *
 	 * @return  mixed  The value of the variable
 	 */
@@ -581,13 +581,13 @@ class Platform extends BasePlatform
 	 * Load plugins of a specific type. Obviously this seems to only be required
 	 * in the Joomla! CMS.
 	 *
-	 * @param   string $type The type of the plugins to be loaded
-	 *
-	 * @see PlatformInterface::importPlugin()
+	 * @param string $type The type of the plugins to be loaded
 	 *
 	 * @return void
 	 *
 	 * @codeCoverageIgnore
+	 * @see PlatformInterface::importPlugin()
+	 *
 	 */
 	public function importPlugin(string $type): void
 	{
@@ -604,8 +604,8 @@ class Platform extends BasePlatform
 	 * Execute plugins (system-level triggers) and fetch back an array with
 	 * their return values.
 	 *
-	 * @param   string  $event  The event (trigger) name, e.g. onBeforeScratchMyEar
-	 * @param   array   $data   A hash array of data sent to the plugins as part of the trigger
+	 * @param string $event The event (trigger) name, e.g. onBeforeScratchMyEar
+	 * @param array  $data  A hash array of data sent to the plugins as part of the trigger
 	 *
 	 * @return  array  A simple array containing the results of the plugins triggered
 	 */
@@ -629,14 +629,14 @@ class Platform extends BasePlatform
 			catch (Exception $e)
 			{
 				// If I can't get JApplication I cannot run the plugins.
-				return array();
+				return [];
 			}
 
 			return $app->triggerEvent($event, $data);
 		}
 		else
 		{
-			return array();
+			return [];
 		}
 	}
 
@@ -646,8 +646,8 @@ class Platform extends BasePlatform
 	 * If your platform uses different conventions you'll have to override the
 	 * FOF defaults using fof.xml or by specialising the controller.
 	 *
-	 * @param   string       $action     The ACL privilege to check, e.g. core.edit
-	 * @param   string|null  $assetname  The asset name to check, typically the component's name
+	 * @param string      $action    The ACL privilege to check, e.g. core.edit
+	 * @param string|null $assetname The asset name to check, typically the component's name
 	 *
 	 * @return  bool  True if the user is allowed this action
 	 */
@@ -679,7 +679,7 @@ class Platform extends BasePlatform
 	/**
 	 * Is this the public section of the component?
 	 *
-	 * @param   bool  $strict  True to only confirm if we're under the 'site' client. False to confirm if we're under
+	 * @param bool $strict     True to only confirm if we're under the 'site' client. False to confirm if we're under
 	 *                         either 'site' or 'api' client (both are front-end access). The default is false which
 	 *                         causes the method to return true when the application is either 'client' (HTML frontend)
 	 *                         or 'api' (JSON frontend).
@@ -736,8 +736,8 @@ class Platform extends BasePlatform
 	 * Saves something to the cache. This is supposed to be used for system-wide
 	 * FOF data, not application data.
 	 *
-	 * @param   string  $key      The key of the data to save
-	 * @param   string  $content  The actual data to save
+	 * @param string $key     The key of the data to save
+	 * @param string $content The actual data to save
 	 *
 	 * @return  bool  True on success
 	 */
@@ -754,8 +754,8 @@ class Platform extends BasePlatform
 	 * Retrieves data from the cache. This is supposed to be used for system-side
 	 * FOF data, not application data.
 	 *
-	 * @param   string       $key      The key of the data to retrieve
-	 * @param   string|null  $default  The default value to return if the key is not found or the cache is not populated
+	 * @param string      $key     The key of the data to retrieve
+	 * @param string|null $default The default value to return if the key is not found or the cache is not populated
 	 *
 	 * @return  string|null  The cached value
 	 */
@@ -770,7 +770,7 @@ class Platform extends BasePlatform
 	 * Gets a reference to the cache object, loading it from the disk if
 	 * needed.
 	 *
-	 * @param   bool  $force  Should I forcibly reload the registry?
+	 * @param bool $force Should I forcibly reload the registry?
 	 *
 	 * @return  Registry
 	 */
@@ -780,7 +780,7 @@ class Platform extends BasePlatform
 		if (is_null($this->_cache) || $force)
 		{
 			// Try to get data from Joomla!'s cache
-			$cache = JoomlaFactory::getCache('fof', '');
+			$cache        = JoomlaFactory::getCache('fof', '');
 			$this->_cache = $cache->get('cache', 'fof');
 
 			$isRegistry = is_object($this->_cache);
@@ -847,15 +847,15 @@ class Platform extends BasePlatform
 	/**
 	 * logs in a user
 	 *
-	 * @param   array  $authInfo  Authentication information
+	 * @param array $authInfo Authentication information
 	 *
 	 * @return  bool  True on success
 	 */
 	public function loginUser(array $authInfo): bool
 	{
-		$options = array('remember' => false);
+		$options      = ['remember' => false];
 		$authenticate = Authentication::getInstance();
-		$response = $authenticate->authenticate($authInfo, $options);
+		$response     = $authenticate->authenticate($authInfo, $options);
 
 		// User failed to authenticate: maybe he enabled two factor authentication?
 		// Let's try again "manually", skipping the check vs two factor auth
@@ -863,8 +863,8 @@ class Platform extends BasePlatform
 		// if we're in Joomla 2.5.18+ or 3.2.1+
 		if ($response->status != \JAuthentication::STATUS_SUCCESS && method_exists('\Joomla\CMS\User\UserHelper', 'verifyPassword'))
 		{
-			$db = JoomlaFactory::getDbo();
-			$query = $db->getQuery(true)
+			$db     = JoomlaFactory::getDbo();
+			$query  = $db->getQuery(true)
 				->select('id, password')
 				->from('#__users')
 				->where('username=' . $db->quote($authInfo['username']));
@@ -877,8 +877,8 @@ class Platform extends BasePlatform
 				if ($match === true)
 				{
 					// Bring this in line with the rest of the system
-					$user = User::getInstance($result->id);
-					$response->email = $user->email;
+					$user               = User::getInstance($result->id);
+					$response->email    = $user->email;
 					$response->fullname = $user->name;
 
 					if ($this->isBackend())
@@ -890,7 +890,7 @@ class Platform extends BasePlatform
 						$response->language = $user->getParam('language');
 					}
 
-					$response->status = \JAuthentication::STATUS_SUCCESS;
+					$response->status        = \JAuthentication::STATUS_SUCCESS;
 					$response->error_message = '';
 				}
 			}
@@ -899,12 +899,12 @@ class Platform extends BasePlatform
 		if ($response->status == \JAuthentication::STATUS_SUCCESS)
 		{
 			$this->importPlugin('user');
-			$results = $this->runPlugins('onLoginUser', array((array)$response, $options));
+			$results = $this->runPlugins('onLoginUser', [(array) $response, $options]);
 
 			unset($results); // Just to make phpStorm happy
 
 			$userid = UserHelper::getUserId($response->username);
-			$user = $this->getUser($userid);
+			$user   = $this->getUser($userid);
 
 			$session = $this->container->session;
 			$session->set('user', $user);
@@ -931,12 +931,12 @@ class Platform extends BasePlatform
 			return false;
 		}
 
-		$user = $this->getUser();
-		$options = array('remember' => false);
-		$parameters = array(
+		$user       = $this->getUser();
+		$options    = ['remember' => false];
+		$parameters = [
 			'username' => $user->username,
-			'id' => $user->id
-		);
+			'id'       => $user->id,
+		];
 
 		// Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
 		if (!$app->get('shared_session', '0'))
@@ -944,7 +944,7 @@ class Platform extends BasePlatform
 			$options['clientid'] = $app->getClientId();
 		}
 
-		$ret = $app->triggerEvent('onUserLogout', array($parameters, $options));
+		$ret = $app->triggerEvent('onUserLogout', [$parameters, $options]);
 
 		return !in_array(false, $ret, true);
 	}
@@ -952,20 +952,20 @@ class Platform extends BasePlatform
 	/**
 	 * Add a log file for FOF
 	 *
-	 * @param   string  $file
+	 * @param string $file
 	 *
 	 * @return  void
 	 */
 	public function logAddLogger($file): void
 	{
-		Log::addLogger(array('text_file' => $file), Log::ALL, array('fof'));
+		Log::addLogger(['text_file' => $file], Log::ALL, ['fof']);
 	}
 
 	/**
 	 * Logs a deprecated practice. In Joomla! this results in the $message being output in the
 	 * deprecated log file, found in your site's log directory.
 	 *
-	 * @param   string  $message  The deprecated practice log message
+	 * @param string $message The deprecated practice log message
 	 *
 	 * @return  void
 	 */
@@ -977,7 +977,7 @@ class Platform extends BasePlatform
 	/**
 	 * Adds a message to the application's debug log
 	 *
-	 * @param   string  $message
+	 * @param string $message
 	 *
 	 * @return  void
 	 *
@@ -991,9 +991,9 @@ class Platform extends BasePlatform
 	/**
 	 * Adds a message
 	 *
-	 * @param   string|array  $title      A title, or an array of additional fields to add to the log entry
-	 * @param   string        $logText    The translation key to the log text
-	 * @param   string        $extension  The name of the extension logging this entry
+	 * @param string|array $title     A title, or an array of additional fields to add to the log entry
+	 * @param string       $logText   The translation key to the log text
+	 * @param string       $extension The name of the extension logging this entry
 	 *
 	 * @return  void
 	 */
@@ -1035,11 +1035,11 @@ class Platform extends BasePlatform
 			return;
 		}
 
-		$message = array(
-			'title'    	  => $title,
-			'username' 	  => $user->username,
-			'accountlink' => 'index.php?option=com_users&task=user.edit&id=' . $user->id
-		);
+		$message = [
+			'title'       => $title,
+			'username'    => $user->username,
+			'accountlink' => 'index.php?option=com_users&task=user.edit&id=' . $user->id,
+		];
 
 		if (is_array($title))
 		{
@@ -1048,11 +1048,11 @@ class Platform extends BasePlatform
 			$message = array_merge($message, $title);
 		}
 
-		/** @var \ActionlogsModelActionlog $model **/
+		/** @var \ActionlogsModelActionlog $model * */
 		try
 		{
 			$model = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
-			$model->addLog(array($message), $logText, $extension, $user->id);
+			$model->addLog([$message], $logText, $extension, $user->id);
 		}
 		catch (Exception $e)
 		{
@@ -1063,8 +1063,8 @@ class Platform extends BasePlatform
 	/**
 	 * Returns the root URI for the request.
 	 *
-	 * @param   bool         $pathonly  If false, prepend the scheme, host and port information. Default is false.
-	 * @param   string|null  $path      The path
+	 * @param bool        $pathonly If false, prepend the scheme, host and port information. Default is false.
+	 * @param string|null $path     The path
 	 *
 	 * @return  string  The root URI string.
 	 *
@@ -1078,7 +1078,7 @@ class Platform extends BasePlatform
 	/**
 	 * Returns the base URI for the request.
 	 *
-	 * @param   bool  $pathonly  If false, prepend the scheme, host and port information. Default is false.
+	 * @param bool $pathonly If false, prepend the scheme, host and port information. Default is false.
 	 *
 	 * @return  string  The base URI string
 	 */
@@ -1091,9 +1091,9 @@ class Platform extends BasePlatform
 	 * Method to set a response header.  If the replace flag is set then all headers
 	 * with the given name will be replaced by the new one (only if the current platform supports header caching)
 	 *
-	 * @param   string   $name     The name of the header to set.
-	 * @param   string   $value    The value of the header to set.
-	 * @param   bool     $replace  True to replace any headers with the same name.
+	 * @param string $name    The name of the header to set.
+	 * @param string $value   The value of the header to set.
+	 * @param bool   $replace True to replace any headers with the same name.
 	 *
 	 * @return  void
 	 *
@@ -1133,7 +1133,7 @@ class Platform extends BasePlatform
 	/**
 	 * Immediately terminate the containing application's execution
 	 *
-	 * @param   int  $code  The result code which should be returned by the application
+	 * @param int $code The result code which should be returned by the application
 	 *
 	 * @return  void
 	 */
@@ -1155,10 +1155,10 @@ class Platform extends BasePlatform
 	/**
 	 * Perform a redirection to a different page, optionally enqueuing a message for the user.
 	 *
-	 * @param   string  $url     The URL to redirect to
-	 * @param   int     $status  (optional) The HTTP redirection status code, default 303 (See Other)
-	 * @param   string  $msg     (optional) A message to enqueue
-	 * @param   string  $type    (optional) The message type, e.g. 'message' (default), 'warning' or 'error'.
+	 * @param string $url    The URL to redirect to
+	 * @param int    $status (optional) The HTTP redirection status code, default 303 (See Other)
+	 * @param string $msg    (optional) A message to enqueue
+	 * @param string $type   (optional) The message type, e.g. 'message' (default), 'warning' or 'error'.
 	 *
 	 * @return  void
 	 */
@@ -1206,7 +1206,7 @@ class Platform extends BasePlatform
 	 * Joomla! 3.7 which results in error pages leading to white pages because Joomla's System - Page Cache plugin is
 	 * broken.
 	 *
-	 * @param   Exception  $exception  The exception to handle
+	 * @param Exception $exception The exception to handle
 	 *
 	 * @throws  Exception  We rethrow the exception
 	 */
@@ -1221,9 +1221,9 @@ class Platform extends BasePlatform
 	/**
 	 * Set a variable in the user session
 	 *
-	 * @param   string       $name       The name of the variable to set
-	 * @param   string|null  $value      (optional) The value to set it to, default is null
-	 * @param   string       $namespace  (optional) The variable's namespace e.g. the component name. Default: 'default'
+	 * @param string      $name      The name of the variable to set
+	 * @param string|null $value     (optional) The value to set it to, default is null
+	 * @param string      $namespace (optional) The variable's namespace e.g. the component name. Default: 'default'
 	 *
 	 * @return  void
 	 */
@@ -1242,9 +1242,9 @@ class Platform extends BasePlatform
 	/**
 	 * Get a variable from the user session
 	 *
-	 * @param   string  $name       The name of the variable to set
-	 * @param   string  $default    (optional) The default value to return if the variable does not exit, default: null
-	 * @param   string  $namespace  (optional) The variable's namespace e.g. the component name. Default: 'default'
+	 * @param string $name      The name of the variable to set
+	 * @param string $default   (optional) The default value to return if the variable does not exit, default: null
+	 * @param string $namespace (optional) The variable's namespace e.g. the component name. Default: 'default'
 	 *
 	 * @return  mixed
 	 */
@@ -1261,8 +1261,8 @@ class Platform extends BasePlatform
 	/**
 	 * Unset a variable from the user session
 	 *
-	 * @param   string  $name       The name of the variable to unset
-	 * @param   string  $namespace  (optional) The variable's namespace e.g. the component name. Default: 'default'
+	 * @param string $name      The name of the variable to unset
+	 * @param string $namespace (optional) The variable's namespace e.g. the component name. Default: 'default'
 	 *
 	 * @return  void
 	 */
@@ -1280,8 +1280,8 @@ class Platform extends BasePlatform
 	 * Form token ($formToken == true): A secure hash of the user ID with the session token. Both the session and the
 	 *   user are fetched from the application container.
 	 *
-	 * @param   bool  $formToken  Should I return a form token?
-	 * @param   bool  $forceNew   Should I force the creation of a new token?
+	 * @param bool $formToken Should I return a form token?
+	 * @param bool $forceNew  Should I force the creation of a new token?
 	 *
 	 * @return  mixed
 	 */
@@ -1343,11 +1343,11 @@ class Platform extends BasePlatform
 		}
 
 		// Forcibly uncache the current request
-		$options = array(
+		$options = [
 			'defaultgroup' => 'page',
 			'browsercache' => false,
 			'caching'      => false,
-		);
+		];
 
 		$cache_key = Uri::getInstance()->toString();
 		Cache::getInstance('page', $options)->cache->remove($cache_key, 'page');

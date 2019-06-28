@@ -215,9 +215,9 @@ class Dispatcher
 	/**
 	 * Returns a reference to the Controller object currently in use by the dispatcher
 	 *
-	 * @return Controller
+	 * @return Controller|null
 	 */
-	public function &getController(): Controller
+	public function &getController(): ?Controller
 	{
 		return $this->controller;
 	}

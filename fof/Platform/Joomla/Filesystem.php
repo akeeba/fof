@@ -7,7 +7,6 @@
 
 namespace FOF40\Platform\Joomla;
 
-use FOF40\Container\Container;
 use FOF40\Platform\Base\Filesystem as BaseFilesystem;
 
 defined('_JEXEC') or die;

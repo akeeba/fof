@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Toolbar\Exception;
+namespace FOF40\Toolbar\Exception;
 
 use Exception;
 use Joomla\CMS\Language\Text;
@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 
 class MissingAttribute extends \InvalidArgumentException
 {
-	public function __construct($missingArgument, $buttonType, $code = 500, Exception $previous = null)
+	public function __construct(string $missingArgument, string $buttonType, int $code = 500, Exception $previous = null)
 	{
 		$message = Text::sprintf('LIB_FOF40_TOOLBAR_ERR_MISSINGARGUMENT', $missingArgument, $buttonType);
 

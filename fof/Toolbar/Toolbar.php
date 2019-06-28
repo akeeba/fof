@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Toolbar;
+namespace FOF40\Toolbar;
 
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
@@ -16,8 +16,8 @@ use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper as JoomlaToolbarHelper;
 use Joomla\Utilities\ArrayHelper;
-use \Joomla\CMS\Toolbar\ToolbarHelper as JoomlaToolbarHelper;
 
 defined('_JEXEC') or die;
 
@@ -33,10 +33,10 @@ class Toolbar
 	protected $container = null;
 
 	/** @var   array   Permissions map, see the __construct method for more information */
-	public $perms = array();
+	public $perms = [];
 
 	/** @var   array   The links to be rendered in the toolbar */
-	protected $linkbar = array();
+	protected $linkbar = [];
 
 	/** @var   bool   Should I render the submenu in the front-end? */
 	protected $renderFrontendSubmenu = false;
@@ -55,30 +55,30 @@ class Toolbar
 	 *
 	 * The $config array can contain the following optional values:
 	 *
-	 * renderFrontendButtons	bool	Should I render buttons in the front-end of the component?
-	 * renderFrontendSubmenu	bool	Should I render the submenu in the front-end of the component?
-	 * useConfigurationFile		bool	Should we use the configuration file (fof.xml) of the component?
+	 * renderFrontendButtons    bool    Should I render buttons in the front-end of the component?
+	 * renderFrontendSubmenu    bool    Should I render the submenu in the front-end of the component?
+	 * useConfigurationFile        bool    Should we use the configuration file (fof.xml) of the component?
 	 *
-	 * @param   Container  $c       The container for the component
-	 * @param   array      $config  The configuration overrides, see above
+	 * @param Container $c      The container for the component
+	 * @param array     $config The configuration overrides, see above
 	 */
-	public function __construct(Container $c, array $config = array())
+	public function __construct(Container $c, array $config = [])
 	{
 		// Store the container reference in this object
 		$this->container = $c;
 
 		// Get a reference to some useful objects
-		$input = $this->container->input;
+		$input    = $this->container->input;
 		$platform = $this->container->platform;
 
 		// Get default permissions (can be overriden by the view)
-		$perms = (object)array(
+		$perms = (object) [
 			'manage'    => $this->container->platform->authorise('core.manage', $input->getCmd('option', 'com_foobar')),
 			'create'    => $this->container->platform->authorise('core.create', $input->getCmd('option', 'com_foobar')),
 			'edit'      => $this->container->platform->authorise('core.edit', $input->getCmd('option', 'com_foobar')),
 			'editstate' => $this->container->platform->authorise('core.edit.state', $input->getCmd('option', 'com_foobar')),
 			'delete'    => $this->container->platform->authorise('core.delete', $input->getCmd('option', 'com_foobar')),
-		);
+		];
 
 		// Save front-end toolbar and submenu rendering flags if present in the config
 		if (array_key_exists('renderFrontendButtons', $config))
@@ -98,7 +98,7 @@ class Toolbar
 			if (!class_exists('\Joomla\CMS\Toolbar\Toolbar'))
 			{
 				$platformDirs = $platform->getPlatformBaseDirs();
-				$path = $platformDirs['root'] . '/administrator/includes/toolbar.php';
+				$path         = $platformDirs['root'] . '/administrator/includes/toolbar.php';
 				require_once $path;
 			}
 
@@ -125,12 +125,12 @@ class Toolbar
 	/**
 	 * Renders the toolbar for the current view and task
 	 *
-	 * @param   string   $view  The view of the component
-	 * @param   string   $task  The exact task of the view
+	 * @param string|null $view The view of the component
+	 * @param string|null $task The exact task of the view
 	 *
 	 * @return  void
 	 */
-	public function renderToolbar($view = null, $task = null)
+	public function renderToolbar(?string $view = null, ?string $task = null): void
 	{
 		$input = $this->container->input;
 
@@ -153,7 +153,7 @@ class Toolbar
 		}
 
 		// Get the view and task
-		$controller = $this->container->dispatcher->getController();
+		$controller       = $this->container->dispatcher->getController();
 		$autoDetectedView = 'cpanel';
 		$autoDetectedTask = 'main';
 
@@ -174,16 +174,16 @@ class Toolbar
 		}
 
 		// If there is a fof.xml toolbar configuration use it and return
-		$view = $this->container->inflector->pluralize($view);
+		$view          = $this->container->inflector->pluralize($view);
 		$toolbarConfig = $this->container->appConfig->get('views.' . ucfirst($view) . '.toolbar.' . $task);
 
-		$oldValues = array(
+		$oldValues = [
 			'renderFrontendButtons' => $this->renderFrontendButtons,
 			'renderFrontendSubmenu' => $this->renderFrontendSubmenu,
 			'useConfigurationFile'  => $this->useConfigurationFile,
-		);
+		];
 
-		$newValues = array(
+		$newValues = [
 			'renderFrontendButtons' => $this->container->appConfig->get(
 				'views.' . ucfirst($view) . '.config.renderFrontendButtons',
 				$oldValues['renderFrontendButtons']
@@ -196,7 +196,7 @@ class Toolbar
 				'views.' . ucfirst($view) . '.config.useConfigurationFile',
 				$oldValues['useConfigurationFile']
 			),
-		);
+		];
 
 		foreach ($newValues as $k => $v)
 		{
@@ -246,7 +246,7 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function onCpanelsBrowse()
+	public function onCpanelsBrowse(): void
 	{
 		if ($this->container->platform->isBackend() || $this->renderFrontendSubmenu)
 		{
@@ -275,7 +275,7 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function onBrowse()
+	public function onBrowse(): void
 	{
 		// On frontend, buttons must be added specifically
 		if ($this->container->platform->isBackend() || $this->renderFrontendSubmenu)
@@ -362,7 +362,7 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function onRead()
+	public function onRead(): void
 	{
 		// On frontend, buttons must be added specifically
 		if ($this->container->platform->isBackend() || $this->renderFrontendSubmenu)
@@ -375,9 +375,9 @@ class Toolbar
 			return;
 		}
 
-		$option = $this->container->componentName;
+		$option        = $this->container->componentName;
 		$componentName = str_replace('com_', '', $option);
-		$view = $this->container->input->getCmd('view', 'cpanel');
+		$view          = $this->container->input->getCmd('view', 'cpanel');
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $view . '_READ');
@@ -397,7 +397,7 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function onAdd()
+	public function onAdd(): void
 	{
 		// On frontend, buttons must be added specifically
 		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
@@ -405,9 +405,9 @@ class Toolbar
 			return;
 		}
 
-		$option = $this->container->componentName;
+		$option        = $this->container->componentName;
 		$componentName = str_replace('com_', '', $option);
-		$view = $this->container->input->getCmd('view', 'cpanel');
+		$view          = $this->container->input->getCmd('view', 'cpanel');
 
 		// Set toolbar title
 		$subtitle_key = strtoupper($option . '_TITLE_' . $this->container->inflector->pluralize($view)) . '_EDIT';
@@ -441,7 +441,7 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function onEdit()
+	public function onEdit(): void
 	{
 		// On frontend, buttons must be added specifically
 		if (!$this->container->platform->isBackend() && !$this->renderFrontendButtons)
@@ -457,9 +457,9 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function clearLinks()
+	public function clearLinks(): void
 	{
-		$this->linkbar = array();
+		$this->linkbar = [];
 	}
 
 	/**
@@ -467,7 +467,7 @@ class Toolbar
 	 *
 	 * @return  array
 	 */
-	public function &getLinks()
+	public function &getLinks(): array
 	{
 		return $this->linkbar;
 	}
@@ -475,22 +475,22 @@ class Toolbar
 	/**
 	 * Append a link to the link bar
 	 *
-	 * @param   string      $name   The text of the link
-	 * @param   string|null $link   The link to render; set to null to render a separator
-	 * @param   boolean     $active True if it's an active link
-	 * @param   string|null $icon   Icon class (used by some renderers, like the Bootstrap renderer)
-	 * @param   string|null $parent The parent element (referenced by name)) Thsi will create a dropdown list
+	 * @param string      $name   The text of the link
+	 * @param string|null $link   The link to render; set to null to render a separator
+	 * @param boolean     $active True if it's an active link
+	 * @param string|null $icon   Icon class (used by some renderers, like the Bootstrap renderer)
+	 * @param string|null $parent The parent element (referenced by name)) Thsi will create a dropdown list
 	 *
 	 * @return  void
 	 */
-	public function appendLink($name, $link = null, $active = false, $icon = null, $parent = '')
+	public function appendLink(string $name, ?string $link = null, bool $active = false, ?string $icon = null, ?string $parent = ''): void
 	{
-		$linkDefinition = array(
+		$linkDefinition = [
 			'name'   => $name,
 			'link'   => $link,
 			'active' => $active,
-			'icon'   => $icon
-		);
+			'icon'   => $icon,
+		];
 
 		if (empty($parent))
 		{
@@ -513,11 +513,11 @@ class Toolbar
 		{
 			if (!array_key_exists($parent, $this->linkbar))
 			{
-				$parentElement = $linkDefinition;
-				$parentElement['name'] = $parent;
-				$parentElement['link'] = null;
+				$parentElement          = $linkDefinition;
+				$parentElement['name']  = $parent;
+				$parentElement['link']  = null;
 				$this->linkbar[$parent] = $parentElement;
-				$parentElement['items'] = array();
+				$parentElement['items'] = [];
 			}
 			else
 			{
@@ -525,12 +525,12 @@ class Toolbar
 
 				if (!array_key_exists('dropdown', $parentElement) && !empty($parentElement['link']))
 				{
-					$newSubElement = $parentElement;
-					$parentElement['items'] = array($newSubElement);
+					$newSubElement          = $parentElement;
+					$parentElement['items'] = [$newSubElement];
 				}
 			}
 
-			$parentElement['items'][] = $linkDefinition;
+			$parentElement['items'][]  = $linkDefinition;
 			$parentElement['dropdown'] = true;
 
 			if ($active)
@@ -545,21 +545,21 @@ class Toolbar
 	/**
 	 * Prefixes (some people erroneously call this "prepend" – there is no such word) a link to the link bar
 	 *
-	 * @param   string      $name   The text of the link
-	 * @param   string|null $link   The link to render; set to null to render a separator
-	 * @param   boolean     $active True if it's an active link
-	 * @param   string|null $icon   Icon class (used by some renderers, like the Bootstrap renderer)
+	 * @param string      $name   The text of the link
+	 * @param string|null $link   The link to render; set to null to render a separator
+	 * @param boolean     $active True if it's an active link
+	 * @param string|null $icon   Icon class (used by some renderers, like the Bootstrap renderer)
 	 *
 	 * @return  void
 	 */
-	public function prefixLink($name, $link = null, $active = false, $icon = null)
+	public function prefixLink(string $name, ?string $link = null, bool $active = false, ?string $icon = null): void
 	{
-		$linkDefinition = array(
+		$linkDefinition = [
 			'name'   => $name,
 			'link'   => $link,
 			'active' => $active,
-			'icon'   => $icon
-		);
+			'icon'   => $icon,
+		];
 		array_unshift($this->linkbar, $linkDefinition);
 	}
 
@@ -568,7 +568,7 @@ class Toolbar
 	 *
 	 * @return  void
 	 */
-	public function renderSubmenu()
+	public function renderSubmenu(): void
 	{
 		$views = $this->getMyViews();
 
@@ -588,7 +588,7 @@ class Toolbar
 			if (strtoupper(Text::_($key)) == $key)
 			{
 				$altview = $this->container->inflector->isPlural($view) ? $this->container->inflector->singularize($view) : $this->container->inflector->pluralize($view);
-				$key2 = strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($altview);
+				$key2    = strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($altview);
 
 				// Maybe we have for the alternative view?
 				if (strtoupper(Text::_($key2)) == $key2)
@@ -617,16 +617,16 @@ class Toolbar
 	/**
 	 * Automatically detects all views of the component
 	 *
-	 * @return  array  A list of all views, in the order to be displayed in the toolbar submenu
+	 * @return  string[]  A list of all views, in the order to be displayed in the toolbar submenu
 	 */
-	protected function getMyViews()
+	protected function getMyViews(): array
 	{
-		$t_views = array();
+		$t_views    = [];
 		$using_meta = false;
 
 		$componentPaths = $this->container->platform->getComponentBaseDirs($this->container->componentName);
-		$searchPath = $componentPaths['main'] . '/View';
-		$filesystem = $this->container->filesystem;
+		$searchPath     = $componentPaths['main'] . '/View';
+		$filesystem     = $this->container->filesystem;
 
 		$allFolders = $filesystem->folderFolders($searchPath);
 
@@ -668,8 +668,8 @@ class Toolbar
 				if (!empty($meta))
 				{
 					$using_meta = true;
-					$xml = simplexml_load_file($searchPath . '/' . $view . '/' . $meta[0]);
-					$order = (int)$xml->foflib->ordering;
+					$xml        = simplexml_load_file($searchPath . '/' . $view . '/' . $meta[0]);
+					$order      = (int) $xml->foflib->ordering;
 				}
 				else
 				{
@@ -677,7 +677,7 @@ class Toolbar
 
 					if (!isset($to_order))
 					{
-						$to_order = array();
+						$to_order = [];
 					}
 
 					$order = count($to_order);
@@ -685,16 +685,16 @@ class Toolbar
 
 				$view = $this->container->inflector->pluralize($view);
 
-				$t_view = new \stdClass;
+				$t_view           = new \stdClass;
 				$t_view->ordering = $order;
-				$t_view->view = $view;
+				$t_view->view     = $view;
 
 				$to_order[] = $t_view;
-				$t_views[] = $view;
+				$t_views[]  = $view;
 			}
 		}
 
-		$views = array();
+		$views = [];
 
 		if (!empty($to_order))
 		{
@@ -731,7 +731,7 @@ class Toolbar
 	 *
 	 * @return  boolean
 	 */
-	public function getRenderFrontendButtons()
+	public function getRenderFrontendButtons(): bool
 	{
 		return $this->renderFrontendButtons;
 	}
@@ -739,7 +739,7 @@ class Toolbar
 	/**
 	 * @param boolean $renderFrontendButtons
 	 */
-	public function setRenderFrontendButtons($renderFrontendButtons)
+	public function setRenderFrontendButtons(bool $renderFrontendButtons): void
 	{
 		$this->renderFrontendButtons = $renderFrontendButtons;
 	}
@@ -749,7 +749,7 @@ class Toolbar
 	 *
 	 * @return  boolean
 	 */
-	public function getRenderFrontendSubmenu()
+	public function getRenderFrontendSubmenu(): bool
 	{
 		return $this->renderFrontendSubmenu;
 	}
@@ -757,7 +757,7 @@ class Toolbar
 	/**
 	 * @param boolean $renderFrontendSubmenu
 	 */
-	public function setRenderFrontendSubmenu($renderFrontendSubmenu)
+	public function setRenderFrontendSubmenu(bool $renderFrontendSubmenu): void
 	{
 		$this->renderFrontendSubmenu = $renderFrontendSubmenu;
 	}
@@ -767,13 +767,13 @@ class Toolbar
 	 *
 	 * @return  bool
 	 */
-	public function isDataView()
+	public function isDataView(): bool
 	{
 		if (is_null($this->isDataView))
 		{
 			$this->isDataView = false;
-			$controller = $this->container->dispatcher->getController();
-			$view = null;
+			$controller       = $this->container->dispatcher->getController();
+			$view             = null;
 
 			if (is_object($controller) && ($controller instanceof Controller))
 			{
@@ -792,11 +792,11 @@ class Toolbar
 	/**
 	 * Render the toolbar from the configuration.
 	 *
-	 * @param   array  $toolbar  The toolbar definition
+	 * @param array $toolbar The toolbar definition
 	 *
 	 * @return  void
 	 */
-	private function renderFromConfig(array $toolbar)
+	private function renderFromConfig(array $toolbar): void
 	{
 		$isBackend = $this->container->platform->isBackend();
 
@@ -818,7 +818,7 @@ class Toolbar
 		// Render each element
 		foreach ($toolbar as $elementType => $elementAttributes)
 		{
-			$value = isset($elementAttributes['value']) ? $elementAttributes['value'] : null;
+			$value = isset($elementAttributes['value']) ? (string)($elementAttributes['value']) : null;
 			$this->renderToolbarElement($elementType, $value, $elementAttributes);
 		}
 
@@ -826,37 +826,38 @@ class Toolbar
 	}
 
 	/**
-	* Simplified default rendering without any attributes.
-	*
-	* @access	protected
-	* @param	array	$tasks	Array of tasks.
-	*
-	* @return	void
-	*/
-	protected function renderToolbarElements($tasks)
+	 * Simplified default rendering without any attributes.
+	 *
+	 * @param array $tasks Array of tasks.
+	 *
+	 * @return  void
+	 */
+	protected function renderToolbarElements(array $tasks): void
 	{
-		foreach($tasks as $task)
+		foreach ($tasks as $task)
+		{
 			$this->renderToolbarElement($task);
+		}
 	}
 
 	/**
 	 * Render a toolbar element.
 	 *
-	 * @param   string  $type        The element type.
-	 * @param   mixed   $value       The element value.
-	 * @param   array   $attributes  The element attributes.
+	 * @param string  $type       The element type.
+	 * @param ?string $value      The title translation string for a 'title' element.
+	 * @param array   $attributes The element attributes.
 	 *
 	 * @return  void
 	 *
 	 * @codeCoverageIgnore
 	 * @throws  \InvalidArgumentException
 	 */
-	private function renderToolbarElement($type, $value = null, array $attributes = array())
+	private function renderToolbarElement(string $type, $value = null, array $attributes = []): void
 	{
 		switch ($type)
 		{
 			case 'title':
-				$icon  = isset($attributes['icon']) ? $attributes['icon'] : 'generic.png';
+				$icon = isset($attributes['icon']) ? $attributes['icon'] : 'generic.png';
 				if (isset($attributes['translate']))
 				{
 					$value = Text::_($value);
@@ -870,10 +871,10 @@ class Toolbar
 				break;
 
 			case 'custom':
-				$task = isset($attributes['task']) ? $attributes['task'] : '';
-				$icon = isset($attributes['icon']) ? $attributes['icon'] : '';
-				$iconOver = isset($attributes['icon_over']) ? $attributes['icon_over'] : '';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : '';
+				$task       = isset($attributes['task']) ? $attributes['task'] : '';
+				$icon       = isset($attributes['icon']) ? $attributes['icon'] : '';
+				$iconOver   = isset($attributes['icon_over']) ? $attributes['icon_over'] : '';
+				$alt        = isset($attributes['alt']) ? $attributes['alt'] : '';
 				$listSelect = isset($attributes['list_select']) ?
 					StringHelper::toBool($attributes['list_select']) : true;
 
@@ -881,7 +882,7 @@ class Toolbar
 				break;
 
 			case 'preview':
-				$url = isset($attributes['url']) ? $attributes['url'] : '';
+				$url            = isset($attributes['url']) ? $attributes['url'] : '';
 				$update_editors = isset($attributes['update_editors']) ?
 					StringHelper::toBool($attributes['update_editors']) : false;
 
@@ -894,16 +895,16 @@ class Toolbar
 					throw new MissingAttribute('help', 'help');
 				}
 
-				$ref = $attributes['help'];
-				$com = isset($attributes['com']) ? StringHelper::toBool($attributes['com']) : false;
-				$override = isset($attributes['override']) ? $attributes['override'] : null;
+				$ref       = $attributes['help'];
+				$com       = isset($attributes['com']) ? StringHelper::toBool($attributes['com']) : false;
+				$override  = isset($attributes['override']) ? $attributes['override'] : null;
 				$component = isset($attributes['component']) ? $attributes['component'] : null;
 
 				JoomlaToolbarHelper::help($ref, $com, $override, $component);
 				break;
 
 			case 'back':
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_BACK';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_BACK';
 				$href = isset($attributes['href']) ? $attributes['href'] : 'javascript:history.back();';
 
 				JoomlaToolbarHelper::back($alt, $href);
@@ -911,14 +912,14 @@ class Toolbar
 
 			case 'media_manager':
 				$directory = isset($attributes['directory']) ? $attributes['directory'] : '';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UPLOAD';
+				$alt       = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UPLOAD';
 
 				JoomlaToolbarHelper::media_manager($directory, $alt);
 				break;
 
 			case 'assign':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'assign';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_ASSIGN';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_ASSIGN';
 
 				JoomlaToolbarHelper::assign($task, $alt);
 				break;
@@ -929,8 +930,8 @@ class Toolbar
 
 				if ($this->checkACL($area))
 				{
-					$task = isset($attributes['task']) ? $attributes['task'] : 'add';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_NEW';
+					$task  = isset($attributes['task']) ? $attributes['task'] : 'add';
+					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_NEW';
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : false;
 
@@ -944,9 +945,9 @@ class Toolbar
 
 				if ($this->checkACL($area))
 				{
-					$task = isset($attributes['task']) ? $attributes['task'] : 'copy';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JLIB_HTML_BATCH_COPY';
-					$icon = isset($attributes['icon']) ? $attributes['icon'] : 'copy.png';
+					$task     = isset($attributes['task']) ? $attributes['task'] : 'copy';
+					$alt      = isset($attributes['alt']) ? $attributes['alt'] : 'JLIB_HTML_BATCH_COPY';
+					$icon     = isset($attributes['icon']) ? $attributes['icon'] : 'copy.png';
 					$iconOver = isset($attributes['iconOver']) ? $attributes['iconOver'] : 'copy_f2.png';
 
 					JoomlaToolbarHelper::custom($task, $icon, $iconOver, $alt, false);
@@ -959,8 +960,8 @@ class Toolbar
 
 				if ($this->checkACL($area))
 				{
-					$task = isset($attributes['task']) ? $attributes['task'] : 'publish';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
+					$task  = isset($attributes['task']) ? $attributes['task'] : 'publish';
+					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : false;
 
@@ -975,7 +976,7 @@ class Toolbar
 				if ($this->checkACL($area))
 				{
 					$task = isset($attributes['task']) ? $attributes['task'] : 'publish';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
+					$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
 
 					JoomlaToolbarHelper::publishList($task, $alt);
 				}
@@ -987,8 +988,8 @@ class Toolbar
 
 				if ($this->checkACL($area))
 				{
-					$task = isset($attributes['task']) ? $attributes['task'] : 'unpublish';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
+					$task  = isset($attributes['task']) ? $attributes['task'] : 'unpublish';
+					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : false;
 
@@ -1003,7 +1004,7 @@ class Toolbar
 				if ($this->checkACL($area))
 				{
 					$task = isset($attributes['task']) ? $attributes['task'] : 'unpublish';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
+					$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
 
 					JoomlaToolbarHelper::unpublishList($task, $alt);
 				}
@@ -1016,7 +1017,7 @@ class Toolbar
 				if ($this->checkACL($area))
 				{
 					$task = isset($attributes['task']) ? $attributes['task'] : 'archive';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_ARCHIVE';
+					$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_ARCHIVE';
 
 					JoomlaToolbarHelper::archiveList($task, $alt);
 				}
@@ -1029,7 +1030,7 @@ class Toolbar
 				if ($this->checkACL($area))
 				{
 					$task = isset($attributes['task']) ? $attributes['task'] : 'unarchive';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNARCHIVE';
+					$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNARCHIVE';
 
 					JoomlaToolbarHelper::unarchiveList($task, $alt);
 				}
@@ -1043,7 +1044,7 @@ class Toolbar
 				if ($this->checkACL($area))
 				{
 					$task = isset($attributes['task']) ? $attributes['task'] : 'edit';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT';
+					$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT';
 
 					JoomlaToolbarHelper::editList($task, $alt);
 				}
@@ -1052,14 +1053,14 @@ class Toolbar
 
 			case 'editHtml':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'edit_source';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT_HTML';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT_HTML';
 
 				JoomlaToolbarHelper::editHtml($task, $alt);
 				break;
 
 			case 'editCss':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'edit_css';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT_CSS';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_EDIT_CSS';
 
 				JoomlaToolbarHelper::editCss($task, $alt);
 				break;
@@ -1070,9 +1071,9 @@ class Toolbar
 
 				if ($this->checkACL($area))
 				{
-					$msg = isset($attributes['msg']) ? $attributes['msg'] : '';
+					$msg  = isset($attributes['msg']) ? $attributes['msg'] : '';
 					$task = isset($attributes['task']) ? $attributes['task'] : 'remove';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_DELETE';
+					$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_DELETE';
 
 					JoomlaToolbarHelper::deleteList($msg, $task, $alt);
 				}
@@ -1084,8 +1085,8 @@ class Toolbar
 
 				if ($this->checkACL($area))
 				{
-					$task = isset($attributes['task']) ? $attributes['task'] : 'trash';
-					$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_TRASH';
+					$task  = isset($attributes['task']) ? $attributes['task'] : 'trash';
+					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_TRASH';
 					$check = isset($attributes['check']) ?
 						StringHelper::toBool($attributes['check']) : true;
 
@@ -1096,22 +1097,22 @@ class Toolbar
 
 			case 'apply':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'apply';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_APPLY';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_APPLY';
 
 				JoomlaToolbarHelper::apply($task, $alt);
 				break;
 
 			case 'save':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'save';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE';
 
 				JoomlaToolbarHelper::save($task, $alt);
 				break;
 
 			case 'savenew':
-				$task = isset($attributes['task']) ? $attributes['task'] : 'savenew';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AND_NEW';
-				$icon = isset($attributes['icon']) ? $attributes['icon'] : 'save-new.png';
+				$task     = isset($attributes['task']) ? $attributes['task'] : 'savenew';
+				$alt      = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AND_NEW';
+				$icon     = isset($attributes['icon']) ? $attributes['icon'] : 'save-new.png';
 				$iconOver = isset($attributes['iconOver']) ? $attributes['iconOver'] : 'save-new_f2.png';
 
 				JoomlaToolbarHelper::custom($task, $icon, $iconOver, $alt, false);
@@ -1119,20 +1120,20 @@ class Toolbar
 
 			case 'save2new':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'save2new';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AND_NEW';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AND_NEW';
 
 				JoomlaToolbarHelper::save2new($task, $alt);
 				break;
 
 			case 'save2copy':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'save2copy';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AS_COPY';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_SAVE_AS_COPY';
 				JoomlaToolbarHelper::save2copy($task, $alt);
 				break;
 
 			case 'checkin':
-				$task = isset($attributes['task']) ? $attributes['task'] : 'checkin';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] :'JTOOLBAR_CHECKIN';
+				$task  = isset($attributes['task']) ? $attributes['task'] : 'checkin';
+				$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_CHECKIN';
 				$check = isset($attributes['check']) ?
 					StringHelper::toBool($attributes['check']) : true;
 
@@ -1141,7 +1142,7 @@ class Toolbar
 
 			case 'cancel':
 				$task = isset($attributes['task']) ? $attributes['task'] : 'cancel';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_CANCEL';
+				$alt  = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_CANCEL';
 
 				JoomlaToolbarHelper::cancel($task, $alt);
 				break;
@@ -1153,10 +1154,10 @@ class Toolbar
 				}
 
 				$component = $attributes['component'];
-				$height = isset($attributes['height']) ? $attributes['height'] : '550';
-				$width = isset($attributes['width']) ? $attributes['width'] : '875';
-				$alt = isset($attributes['alt']) ? $attributes['alt'] : 'JToolbar_Options';
-				$path = isset($attributes['path']) ? $attributes['path'] : '';
+				$height    = isset($attributes['height']) ? $attributes['height'] : '550';
+				$width     = isset($attributes['width']) ? $attributes['width'] : '875';
+				$alt       = isset($attributes['alt']) ? $attributes['alt'] : 'JToolbar_Options';
+				$path      = isset($attributes['path']) ? $attributes['path'] : '';
 
 				JoomlaToolbarHelper::preferences($component, $height, $width, $alt, $path);
 				break;
@@ -1169,33 +1170,33 @@ class Toolbar
 	/**
 	 * Checks if the current user has enough privileges for the requested ACL privilege of a custom toolbar button.
 	 *
-	 * @param   string  $area  The ACL privilege as set up in the $this->perms object
+	 * @param string $area The ACL privilege as set up in the $this->perms object
 	 *
 	 * @return  boolean  True if the user has the ACL privilege specified
 	 */
-	protected function checkACL($area)
+	protected function checkACL(string $area): bool
 	{
 		if (is_bool($area))
 		{
 			return $area;
 		}
 
-		if (in_array(strtolower($area), array('false','0','no','403')))
+		if (in_array(strtolower($area), ['false', '0', 'no', '403']))
 		{
 			return false;
 		}
 
-		if (in_array(strtolower($area), array('true','1','yes')))
+		if (in_array(strtolower($area), ['true', '1', 'yes']))
 		{
 			return true;
 		}
 
-		if (in_array(strtolower($area), array('guest')))
+		if (in_array(strtolower($area), ['guest']))
 		{
 			return $this->container->platform->getUser()->guest;
 		}
 
-		if (in_array(strtolower($area), array('user')))
+		if (in_array(strtolower($area), ['user']))
 		{
 			return !$this->container->platform->getUser()->guest;
 		}

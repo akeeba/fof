@@ -18,7 +18,7 @@
     [X] Render
     [X] Template
     [X] Timer
-    [ ] Toolbar
+    [X] Toolbar
     [ ] TransparentAuthentication
     [ ] Update
     [ ] Utils

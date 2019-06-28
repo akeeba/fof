@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Platform;
+namespace FOF40\Platform;
 
 use DateTimeZone;
 use Exception;
@@ -31,7 +31,7 @@ interface PlatformInterface
 	/**
 	 * Public constructor.
 	 *
-	 * @param   \FOF40\Container\Container  $c  The component container
+	 * @param \FOF40\Container\Container $c The component container
 	 */
 	public function __construct(Container $c);
 
@@ -45,8 +45,8 @@ interface PlatformInterface
 	/**
 	 * Raises an error, using the logic requested by the CMS (PHP Exception or dedicated class)
 	 *
-	 * @param   integer  $code
-	 * @param   string   $message
+	 * @param integer $code
+	 * @param string  $message
 	 *
 	 * @return  void
 	 *
@@ -82,15 +82,15 @@ interface PlatformInterface
 	 * which is running inside our main application (CMS, web app).
 	 *
 	 * The return is a table with the following keys:
-	 * * main	The normal location of component files. For a back-end Joomla!
+	 * * main    The normal location of component files. For a back-end Joomla!
 	 *          component this is the administrator/components/com_example
 	 *          directory.
-	 * * alt	The alternate location of component files. For a back-end
+	 * * alt    The alternate location of component files. For a back-end
 	 *          Joomla! component this is the front-end directory, e.g.
 	 *          components/com_example
-	 * * site	The location of the component files serving the public part of
+	 * * site    The location of the component files serving the public part of
 	 *          the application.
-	 * * admin	The location of the component files serving the administrative
+	 * * admin    The location of the component files serving the administrative
 	 *          part of the application.
 	 *
 	 * All paths MUST be absolute. All four paths MAY be the same if the
@@ -98,7 +98,7 @@ interface PlatformInterface
 	 * or when the component does not provide both a public and private part.
 	 * All of the directories MUST be defined and non-empty.
 	 *
-	 * @param   string  $component  The name of the component. For Joomla! this
+	 * @param string $component     The name of the component. For Joomla! this
 	 *                              is something like "com_example"
 	 *
 	 * @return  array  A hash array with keys main, alt, site and admin.
@@ -108,7 +108,7 @@ interface PlatformInterface
 	/**
 	 * Returns the application's template name
 	 *
-	 * @param   null|array  $params  An optional associative array of configuration settings
+	 * @param null|array $params An optional associative array of configuration settings
 	 *
 	 * @return  string  The template name. "system" is the fallback.
 	 */
@@ -128,8 +128,8 @@ interface PlatformInterface
 	 * files instead of the regular component directories. If the application
 	 * does not have such a thing as template overrides return an empty string.
 	 *
-	 * @param   string  $component  The name of the component for which to fetch the overrides
-	 * @param   bool    $absolute   Should I return an absolute or relative path?
+	 * @param string $component The name of the component for which to fetch the overrides
+	 * @param bool   $absolute  Should I return an absolute or relative path?
 	 *
 	 * @return  string  The path to the template overrides directory
 	 */
@@ -138,7 +138,7 @@ interface PlatformInterface
 	/**
 	 * Load the translation files for a given component.
 	 *
-	 * @param   string  $component  The name of the component, e.g. "com_example"
+	 * @param string $component The name of the component, e.g. "com_example"
 	 *
 	 * @return  void
 	 */
@@ -151,7 +151,7 @@ interface PlatformInterface
 	 * Dispatcher. This method MUST implement this authorisation check. If you
 	 * do not need this in your platform, please always return true.
 	 *
-	 * @param   string  $component  The name of the component.
+	 * @param string $component The name of the component.
 	 *
 	 * @return  bool  True to allow loading the component, false to halt loading
 	 */
@@ -164,12 +164,12 @@ interface PlatformInterface
 	 * value will be used. If $setUserState is set to true, the retrieved
 	 * variable will be stored in the user session.
 	 *
-	 * @param   string    $key           The user state key for the variable
-	 * @param   string    $request       The request variable name for the variable
-	 * @param   Input     $input         The Input object with the request (input) data
-	 * @param   mixed     $default       The default value. Default: null
-	 * @param   string    $type          The filter type for the variable data. Default: none (no filtering)
-	 * @param   bool      $setUserState  Should I set the user state with the fetched value?
+	 * @param string $key          The user state key for the variable
+	 * @param string $request      The request variable name for the variable
+	 * @param Input  $input        The Input object with the request (input) data
+	 * @param mixed  $default      The default value. Default: null
+	 * @param string $type         The filter type for the variable data. Default: none (no filtering)
+	 * @param bool   $setUserState Should I set the user state with the fetched value?
 	 *
 	 * @return  mixed  The value of the variable
 	 */
@@ -179,7 +179,7 @@ interface PlatformInterface
 	 * Load plugins of a specific type. Obviously this seems to only be required
 	 * in the Joomla! CMS itself.
 	 *
-	 * @param   string  $type  The type of the plugins to be loaded
+	 * @param string $type The type of the plugins to be loaded
 	 *
 	 * @return  void
 	 */
@@ -189,8 +189,8 @@ interface PlatformInterface
 	 * Execute plugins (system-level triggers) and fetch back an array with
 	 * their return values.
 	 *
-	 * @param   string  $event  The event (trigger) name, e.g. onBeforeScratchMyEar
-	 * @param   array   $data   A hash array of data sent to the plugins as part of the trigger
+	 * @param string $event The event (trigger) name, e.g. onBeforeScratchMyEar
+	 * @param array  $data  A hash array of data sent to the plugins as part of the trigger
 	 *
 	 * @return  array  A simple array containing the results of the plugins triggered
 	 */
@@ -202,8 +202,8 @@ interface PlatformInterface
 	 * If your platform uses different conventions you'll have to override the
 	 * FOF defaults using fof.xml or by specialising the controller.
 	 *
-	 * @param   string       $action     The ACL privilege to check, e.g. core.edit
-	 * @param   string|null  $assetname  The asset name to check, typically the component's name
+	 * @param string      $action    The ACL privilege to check, e.g. core.edit
+	 * @param string|null $assetname The asset name to check, typically the component's name
 	 *
 	 * @return  bool  True if the user is allowed this action
 	 */
@@ -212,7 +212,7 @@ interface PlatformInterface
 	/**
 	 * Returns a user object.
 	 *
-	 * @param   integer  $id  The user ID to load. Skip or use null to retrieve
+	 * @param integer $id     The user ID to load. Skip or use null to retrieve
 	 *                        the object for the currently logged in user.
 	 *
 	 * @return  User  The User object for the specified user
@@ -233,9 +233,9 @@ interface PlatformInterface
 	/**
 	 * Returns an object to handle dates
 	 *
-	 * @param   mixed                     $time       The initial time
-	 * @param   DateTimeZone|string|null  $tzOffest   The timezone offset
-	 * @param   bool                      $locale     Should I try to load a specific class for current language?
+	 * @param mixed                    $time     The initial time
+	 * @param DateTimeZone|string|null $tzOffest The timezone offset
+	 * @param bool                     $locale   Should I try to load a specific class for current language?
 	 *
 	 * @return  Date object
 	 */
@@ -265,7 +265,7 @@ interface PlatformInterface
 	/**
 	 * Is this the public section of the component?
 	 *
-	 * @param   bool  $strict  True to only confirm if we're under the 'site' client. False to confirm if we're under
+	 * @param bool $strict     True to only confirm if we're under the 'site' client. False to confirm if we're under
 	 *                         either 'site' or 'api' client (both are front-end access). The default is false which
 	 *                         causes the method to return true when the application is either 'client' (HTML frontend)
 	 *                         or 'api' (JSON frontend).
@@ -292,8 +292,8 @@ interface PlatformInterface
 	 * Saves something to the cache. This is supposed to be used for system-wide
 	 * FOF data, not application data.
 	 *
-	 * @param   string  $key      The key of the data to save
-	 * @param   string  $content  The actual data to save
+	 * @param string $key     The key of the data to save
+	 * @param string $content The actual data to save
 	 *
 	 * @return  bool  True on success
 	 */
@@ -303,8 +303,8 @@ interface PlatformInterface
 	 * Retrieves data from the cache. This is supposed to be used for system-side
 	 * FOF data, not application data.
 	 *
-	 * @param   string       $key      The key of the data to retrieve
-	 * @param   string|null  $default  The default value to return if the key is not found or the cache is not populated
+	 * @param string      $key     The key of the data to retrieve
+	 * @param string|null $default The default value to return if the key is not found or the cache is not populated
 	 *
 	 * @return  string|null  The cached value
 	 */
@@ -338,7 +338,7 @@ interface PlatformInterface
 	/**
 	 * logs in a user
 	 *
-	 * @param   array  $authInfo  Authentication information
+	 * @param array $authInfo Authentication information
 	 *
 	 * @return  bool  True on success
 	 */
@@ -354,7 +354,7 @@ interface PlatformInterface
 	/**
 	 * Add a log file for FOF
 	 *
-	 * @param   string  $file
+	 * @param string $file
 	 *
 	 * @return  void
 	 */
@@ -364,7 +364,7 @@ interface PlatformInterface
 	 * Logs a deprecated practice. In Joomla! this results in the $message being output in the
 	 * deprecated log file, found in your site's log directory.
 	 *
-	 * @param   string  $message  The deprecated practice log message
+	 * @param string $message The deprecated practice log message
 	 *
 	 * @return  void
 	 */
@@ -373,7 +373,7 @@ interface PlatformInterface
 	/**
 	 * Adds a message to the application's debug log
 	 *
-	 * @param   string  $message
+	 * @param string $message
 	 *
 	 * @return  void
 	 */
@@ -382,9 +382,9 @@ interface PlatformInterface
 	/**
 	 * Adds a message
 	 *
-	 * @param   string|array  $title      A title, or an array of additional fields to add to the log entry
-	 * @param   string        $logText    The translation key to the log text
-	 * @param   string        $extension  The name of the extension logging this entry
+	 * @param string|array $title     A title, or an array of additional fields to add to the log entry
+	 * @param string       $logText   The translation key to the log text
+	 * @param string       $extension The name of the extension logging this entry
 	 *
 	 * @return  void
 	 */
@@ -393,8 +393,8 @@ interface PlatformInterface
 	/**
 	 * Returns the root URI for the request.
 	 *
-	 * @param   bool         $pathonly  If false, prepend the scheme, host and port information. Default is false.
-	 * @param   string|null  $path      The path
+	 * @param bool        $pathonly If false, prepend the scheme, host and port information. Default is false.
+	 * @param string|null $path     The path
 	 *
 	 * @return  string  The root URI string.
 	 */
@@ -403,7 +403,7 @@ interface PlatformInterface
 	/**
 	 * Returns the base URI for the request.
 	 *
-	 * @param   bool  $pathonly  If false, prepend the scheme, host and port information. Default is false.
+	 * @param bool $pathonly If false, prepend the scheme, host and port information. Default is false.
 	 *
 	 * @return  string  The base URI string
 	 */
@@ -413,9 +413,9 @@ interface PlatformInterface
 	 * Method to set a response header.  If the replace flag is set then all headers
 	 * with the given name will be replaced by the new one (only if the current platform supports header caching)
 	 *
-	 * @param   string   $name     The name of the header to set.
-	 * @param   string   $value    The value of the header to set.
-	 * @param   bool     $replace  True to replace any headers with the same name.
+	 * @param string $name    The name of the header to set.
+	 * @param string $value   The value of the header to set.
+	 * @param bool   $replace True to replace any headers with the same name.
 	 *
 	 * @return  void
 	 */
@@ -431,7 +431,7 @@ interface PlatformInterface
 	/**
 	 * Immediately terminate the containing application's execution
 	 *
-	 * @param   int  $code  The result code which should be returned by the application
+	 * @param int $code The result code which should be returned by the application
 	 *
 	 * @return  void
 	 */
@@ -440,10 +440,10 @@ interface PlatformInterface
 	/**
 	 * Perform a redirection to a different page, optionally enqueuing a message for the user.
 	 *
-	 * @param   string  $url     The URL to redirect to
-	 * @param   int     $status  (optional) The HTTP redirection status code, default 301
-	 * @param   string  $msg     (optional) A message to enqueue
-	 * @param   string  $type    (optional) The message type, e.g. 'message' (default), 'warning' or 'error'.
+	 * @param string $url    The URL to redirect to
+	 * @param int    $status (optional) The HTTP redirection status code, default 301
+	 * @param string $msg    (optional) A message to enqueue
+	 * @param string $type   (optional) The message type, e.g. 'message' (default), 'warning' or 'error'.
 	 *
 	 * @return  void
 	 */
@@ -452,7 +452,7 @@ interface PlatformInterface
 	/**
 	 * Handle an exception in a way that results to an error page.
 	 *
-	 * @param   Exception  $exception  The exception to handle
+	 * @param Exception $exception The exception to handle
 	 *
 	 * @throws  Exception  Possibly rethrown exception
 	 */
@@ -461,9 +461,9 @@ interface PlatformInterface
 	/**
 	 * Set a variable in the user session
 	 *
-	 * @param   string       $name       The name of the variable to set
-	 * @param   string|null  $value      (optional) The value to set it to, default is null
-	 * @param   string       $namespace  (optional) The variable's namespace e.g. the component name. Default: 'default'
+	 * @param string      $name      The name of the variable to set
+	 * @param string|null $value     (optional) The value to set it to, default is null
+	 * @param string      $namespace (optional) The variable's namespace e.g. the component name. Default: 'default'
 	 *
 	 * @return  void
 	 */
@@ -472,9 +472,9 @@ interface PlatformInterface
 	/**
 	 * Get a variable from the user session
 	 *
-	 * @param   string  $name       The name of the variable to set
-	 * @param   string  $default    (optional) The default value to return if the variable does not exit, default: null
-	 * @param   string  $namespace  (optional) The variable's namespace e.g. the component name. Default: 'default'
+	 * @param string $name      The name of the variable to set
+	 * @param string $default   (optional) The default value to return if the variable does not exit, default: null
+	 * @param string $namespace (optional) The variable's namespace e.g. the component name. Default: 'default'
 	 *
 	 * @return  mixed
 	 */
@@ -483,8 +483,8 @@ interface PlatformInterface
 	/**
 	 * Unset a variable from the user session
 	 *
-	 * @param   string  $name       The name of the variable to unset
-	 * @param   string  $namespace  (optional) The variable's namespace e.g. the component name. Default: 'default'
+	 * @param string $name      The name of the variable to unset
+	 * @param string $namespace (optional) The variable's namespace e.g. the component name. Default: 'default'
 	 *
 	 * @return  void
 	 */
@@ -499,8 +499,8 @@ interface PlatformInterface
 	 * Form token ($formToken == true): A secure hash of the user ID with the session token. Both the session and the
 	 *   user are fetched from the application container.
 	 *
-	 * @param   bool  $formToken  Should I return a form token?
-	 * @param   bool  $forceNew   Should I force the creation of a new token?
+	 * @param bool $formToken Should I return a form token?
+	 * @param bool $forceNew  Should I force the creation of a new token?
 	 *
 	 * @return  mixed
 	 */
@@ -516,7 +516,7 @@ interface PlatformInterface
 	/**
 	 * Set whether plugins are allowed to run in CLI mode
 	 *
-	 * @param   bool  $allowPluginsInCli
+	 * @param bool $allowPluginsInCli
 	 */
 	public function setAllowPluginsInCli(bool $allowPluginsInCli): void;
 }

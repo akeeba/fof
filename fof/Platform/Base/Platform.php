@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Platform\Base;
+namespace FOF40\Platform\Base;
 
 use Exception;
 use FOF40\Container\Container;
@@ -45,15 +45,15 @@ abstract class Platform implements PlatformInterface
 	 * which is running inside our main application (CMS, web app).
 	 *
 	 * The return is a table with the following keys:
-	 * * main	The normal location of component files. For a back-end Joomla!
+	 * * main    The normal location of component files. For a back-end Joomla!
 	 *          component this is the administrator/components/com_example
 	 *          directory.
-	 * * alt	The alternate location of component files. For a back-end
+	 * * alt    The alternate location of component files. For a back-end
 	 *          Joomla! component this is the front-end directory, e.g.
 	 *          components/com_example
-	 * * site	The location of the component files serving the public part of
+	 * * site    The location of the component files serving the public part of
 	 *          the application.
-	 * * admin	The location of the component files serving the administrative
+	 * * admin    The location of the component files serving the administrative
 	 *          part of the application.
 	 *
 	 * All paths MUST be absolute. All four paths MAY be the same if the
@@ -61,25 +61,25 @@ abstract class Platform implements PlatformInterface
 	 * or when the component does not provide both a public and private part.
 	 * All of the directories MUST be defined and non-empty.
 	 *
-	 * @param   string  $component  The name of the component. For Joomla! this
+	 * @param string $component     The name of the component. For Joomla! this
 	 *                              is something like "com_example"
 	 *
 	 * @return  array  A hash array with keys main, alt, site and admin.
 	 */
 	public function getComponentBaseDirs(string $component): array
 	{
-		return array(
-			'main'	=> '',
-			'alt'	=> '',
-			'site'	=> '',
-			'admin'	=> '',
-		);
+		return [
+			'main'  => '',
+			'alt'   => '',
+			'site'  => '',
+			'admin' => '',
+		];
 	}
 
 	/**
 	 * Returns the application's template name
 	 *
-	 * @param   null|array  $params  An optional associative array of configuration settings
+	 * @param null|array $params An optional associative array of configuration settings
 	 *
 	 * @return  string  The template name. System is the fallback.
 	 */
@@ -96,7 +96,7 @@ abstract class Platform implements PlatformInterface
 	 */
 	public function getTemplateSuffixes(): array
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -105,8 +105,8 @@ abstract class Platform implements PlatformInterface
 	 * files instead of the regular component directories. If the application
 	 * does not have such a thing as template overrides return an empty string.
 	 *
-	 * @param   string  $component  The name of the component for which to fetch the overrides
-	 * @param   bool    $absolute   Should I return an absolute or relative path?
+	 * @param string $component The name of the component for which to fetch the overrides
+	 * @param bool   $absolute  Should I return an absolute or relative path?
 	 *
 	 * @return  string  The path to the template overrides directory
 	 */
@@ -118,7 +118,7 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * Load the translation files for a given component.
 	 *
-	 * @param   string  $component  The name of the component. For Joomla! this
+	 * @param string $component     The name of the component. For Joomla! this
 	 *                              is something like "com_example"
 	 *
 	 * @return  void
@@ -135,7 +135,7 @@ abstract class Platform implements PlatformInterface
 	 * Dispatcher. This method MUST implement this authorisation check. If you
 	 * do not need this in your platform, please always return true.
 	 *
-	 * @param   string  $component  The name of the component.
+	 * @param string $component The name of the component.
 	 *
 	 * @return  bool  True to allow loading the component, false to halt loading
 	 */
@@ -147,7 +147,7 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * Returns a user object.
 	 *
-	 * @param   integer  $id  The user ID to load. Skip or use null to retrieve
+	 * @param integer $id     The user ID to load. Skip or use null to retrieve
 	 *                        the object for the currently logged in user.
 	 *
 	 * @return  User  The User object for the specified user
@@ -179,12 +179,12 @@ abstract class Platform implements PlatformInterface
 	 * value will be used. If $setUserState is set to true, the retrieved
 	 * variable will be stored in the user session.
 	 *
-	 * @param   string    $key           The user state key for the variable
-	 * @param   string    $request       The request variable name for the variable
-	 * @param   Input     $input         The Input object with the request (input) data
-	 * @param   mixed     $default       The default value. Default: null
-	 * @param   string    $type          The filter type for the variable data. Default: none (no filtering)
-	 * @param   bool      $setUserState  Should I set the user state with the fetched value?
+	 * @param string $key          The user state key for the variable
+	 * @param string $request      The request variable name for the variable
+	 * @param Input  $input        The Input object with the request (input) data
+	 * @param mixed  $default      The default value. Default: null
+	 * @param string $type         The filter type for the variable data. Default: none (no filtering)
+	 * @param bool   $setUserState Should I set the user state with the fetched value?
 	 *
 	 * @return  mixed  The value of the variable
 	 */
@@ -197,7 +197,7 @@ abstract class Platform implements PlatformInterface
 	 * Load plugins of a specific type. Obviously this seems to only be required
 	 * in the Joomla! CMS itself.
 	 *
-	 * @param   string  $type  The type of the plugins to be loaded
+	 * @param string $type The type of the plugins to be loaded
 	 *
 	 * @return  void
 	 */
@@ -209,14 +209,14 @@ abstract class Platform implements PlatformInterface
 	 * Execute plugins (system-level triggers) and fetch back an array with
 	 * their return values.
 	 *
-	 * @param   string  $event  The event (trigger) name, e.g. onBeforeScratchMyEar
-	 * @param   array   $data   A hash array of data sent to the plugins as part of the trigger
+	 * @param string $event The event (trigger) name, e.g. onBeforeScratchMyEar
+	 * @param array  $data  A hash array of data sent to the plugins as part of the trigger
 	 *
 	 * @return  array  A simple array containing the results of the plugins triggered
 	 */
 	public function runPlugins(string $event, array $data = []): array
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -225,8 +225,8 @@ abstract class Platform implements PlatformInterface
 	 * If your platform uses different conventions you'll have to override the
 	 * FOF defaults using fof.xml or by specialising the controller.
 	 *
-	 * @param   string       $action     The ACL privilege to check, e.g. core.edit
-	 * @param   string|null  $assetname  The asset name to check, typically the component's name
+	 * @param string      $action    The ACL privilege to check, e.g. core.edit
+	 * @param string|null $assetname The asset name to check, typically the component's name
 	 *
 	 * @return  bool  True if the user is allowed this action
 	 */
@@ -248,7 +248,7 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * Is this the public section of the component?
 	 *
-	 * @param   bool  $strict  True to only confirm if we're under the 'site' client. False to confirm if we're under
+	 * @param bool $strict     True to only confirm if we're under the 'site' client. False to confirm if we're under
 	 *                         either 'site' or 'api' client (both are front-end access). The default is false which
 	 *                         causes the method to return true when the application is either 'client' (HTML frontend)
 	 *                         or 'api' (JSON frontend).
@@ -284,8 +284,8 @@ abstract class Platform implements PlatformInterface
 	 * Saves something to the cache. This is supposed to be used for system-wide
 	 * FOF data, not application data.
 	 *
-	 * @param   string  $key      The key of the data to save
-	 * @param   string  $content  The actual data to save
+	 * @param string $key     The key of the data to save
+	 * @param string $content The actual data to save
 	 *
 	 * @return  bool  True on success
 	 */
@@ -298,8 +298,8 @@ abstract class Platform implements PlatformInterface
 	 * Retrieves data from the cache. This is supposed to be used for system-side
 	 * FOF data, not application data.
 	 *
-	 * @param   string       $key      The key of the data to retrieve
-	 * @param   string|null  $default  The default value to return if the key is not found or the cache is not populated
+	 * @param string      $key     The key of the data to retrieve
+	 * @param string|null $default The default value to return if the key is not found or the cache is not populated
 	 *
 	 * @return  string|null  The cached value
 	 */
@@ -335,7 +335,7 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * logs in a user
 	 *
-	 * @param   array  $authInfo  Authentication information
+	 * @param array $authInfo Authentication information
 	 *
 	 * @return  bool  True on success
 	 */
@@ -358,7 +358,7 @@ abstract class Platform implements PlatformInterface
 	 * Logs a deprecated practice. In Joomla! this results in the $message being output in the
 	 * deprecated log file, found in your site's log directory.
 	 *
-	 * @param   string  $message  The deprecated practice log message
+	 * @param string $message The deprecated practice log message
 	 *
 	 * @return  void
 	 */
@@ -370,9 +370,9 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * Adds a message
 	 *
-	 * @param   string|array  $title      A title, or an array of additional fields to add to the log entry
-	 * @param   string        $logText    The translation key to the log text
-	 * @param   string        $extension  The name of the extension logging this entry
+	 * @param string|array $title     A title, or an array of additional fields to add to the log entry
+	 * @param string       $logText   The translation key to the log text
+	 * @param string       $extension The name of the extension logging this entry
 	 *
 	 * @return  void
 	 */
@@ -396,7 +396,7 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * Handle an exception in a way that results to an error page.
 	 *
-	 * @param   Exception  $exception  The exception to handle
+	 * @param Exception $exception The exception to handle
 	 *
 	 * @throws  Exception  Possibly rethrown exception
 	 */
@@ -418,7 +418,7 @@ abstract class Platform implements PlatformInterface
 	/**
 	 * Set whether plugins are allowed to run in CLI mode
 	 *
-	 * @param   bool  $allowPluginsInCli
+	 * @param bool $allowPluginsInCli
 	 */
 	public function setAllowPluginsInCli(bool $allowPluginsInCli): void
 	{
