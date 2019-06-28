@@ -22,7 +22,7 @@
     [X] TransparentAuthentication
     [X] Update
     [X] Utils
-    [ ] Date::TimezoneWrangler
+    [X] Date::TimezoneWrangler
     [ ] JoomlaAbstraction
     [ ] Html
     [ ] InstallScript

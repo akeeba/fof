@@ -62,7 +62,7 @@ class TimezoneWrangler
 	 *
 	 * @return  string
 	 */
-	public function getDefaultFormat()
+	public function getDefaultFormat(): string
 	{
 		return $this->defaultFormat;
 	}
@@ -74,7 +74,7 @@ class TimezoneWrangler
 	 *
 	 * @return  void
 	 */
-	public function setDefaultFormat($defaultFormat)
+	public function setDefaultFormat(string $defaultFormat): void
 	{
 		$this->defaultFormat = $defaultFormat;
 	}
@@ -84,7 +84,7 @@ class TimezoneWrangler
 	 *
 	 * @return  DateTimeZone
 	 */
-	public function getForcedTimezone()
+	public function getForcedTimezone(): DateTimeZone
 	{
 		return $this->forcedTimezone;
 	}
@@ -97,7 +97,7 @@ class TimezoneWrangler
 	 *
 	 * @return  void
 	 */
-	public function setForcedTimezone($forcedTimezone)
+	public function setForcedTimezone($forcedTimezone): void
 	{
 		// Are we unsetting the forced TZ?
 		if (empty($forcedTimezone))
@@ -134,7 +134,7 @@ class TimezoneWrangler
 	/**
 	 * Reset the user to timezone cache. This is done automatically every time you change the forced timezone.
 	 */
-	public function resetCache()
+	public function resetCache(): void
 	{
 		$this->userToTimezone = [];
 	}
@@ -153,7 +153,7 @@ class TimezoneWrangler
 	 *
 	 * @return  DateTimeZone
 	 */
-	public function getApplicableTimezone($user = null)
+	public function getApplicableTimezone(?User $user = null): DateTimeZone
 	{
 		// If we have a forced timezone use it instead of trying to figure anything out.
 		if (is_object($this->forcedTimezone))
@@ -222,7 +222,7 @@ class TimezoneWrangler
 	 *
 	 * @return  Date
 	 */
-	public function getLocalDateTime($user, $time = null)
+	public function getLocalDateTime(?User $user, $time = null): Date
 	{
 		$time = empty($time) ? 'now' : $time;
 		$date = new Date($time);
@@ -245,7 +245,7 @@ class TimezoneWrangler
 	 *
 	 * @return  Date
 	 */
-	public function getGMTDateTime($user, $time)
+	public function getGMTDateTime(?User $user, $time): Date
 	{
 		$time        = empty($time) ? 'now' : $time;
 		$tz          = $this->getApplicableTimezone($user);
@@ -277,7 +277,7 @@ class TimezoneWrangler
 	 *
 	 * @return  string
 	 */
-	public function getLocalTimeStamp($format = null, $user = null, $time = null, $translate = false)
+	public function getLocalTimeStamp(?string $format = null, ?User $user = null, $time = null, bool $translate = false): string
 	{
 		$date   = $this->getLocalDateTime($user, $time);
 		$format = empty($format) ? $this->defaultFormat : $format;
@@ -306,7 +306,7 @@ class TimezoneWrangler
 	 *
 	 * @return  string
 	 */
-	public function getGMTTimeStamp($format = null, $user = null, $time = null, $translate = false)
+	public function getGMTTimeStamp(?string $format = null, ?User $user = null, $time = null, bool $translate = false): string
 	{
 		$date   = $this->localToGMT($user, $time);
 		$format = empty($format) ? $this->defaultFormat : $format;
@@ -324,7 +324,7 @@ class TimezoneWrangler
 	 *
 	 * @return  Date
 	 */
-	public function localToGMT($time, $user = null)
+	public function localToGMT($time, ?User $user = null): Date
 	{
 		return $this->getGMTDateTime($user, $time);
 	}
@@ -339,7 +339,7 @@ class TimezoneWrangler
 	 *
 	 * @return  Date
 	 */
-	public function GMTToLocal($time, $user = null)
+	public function GMTToLocal($time, ?User $user = null): Date
 	{
 		return $this->getLocalDateTime($user, $time);
 	}
