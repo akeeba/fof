@@ -5,11 +5,11 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Update;
+namespace FOF40\Update;
 
+use Exception;
 use FOF40\Container\Container;
 use FOF40\Download\Download;
-use Exception;
 use SimpleXMLElement;
 
 defined('_JEXEC') or die;
@@ -28,25 +28,25 @@ class Extension
 	 * $extension = new F0FUtilsUpdateExtension();
 	 * $updates = $extension->getUpdatesFromExtension($extensionUpdateURL);
 	 *
-	 * @param   string  $url  The extension XML update source URL to read from
+	 * @param string $url The extension XML update source URL to read from
 	 *
 	 * @return  array  An array of update entries
 	 */
-	public function getUpdatesFromExtension($url)
+	public function getUpdatesFromExtension(string $url): array
 	{
 		// Initialise
-		$ret = array();
+		$ret = [];
 
 		// Get and parse the XML source
-		$container = Container::getInstance('com_FOOBAR');
+		$container  = Container::getInstance('com_FOOBAR');
 		$downloader = new Download($container);
-		$xmlSource = $downloader->getFromURL($url);
+		$xmlSource  = $downloader->getFromURL($url);
 
 		try
 		{
 			$xml = new SimpleXMLElement($xmlSource, LIBXML_NONET);
 		}
-		catch(Exception $e)
+		catch (Exception $e)
 		{
 			return $ret;
 		}
@@ -69,12 +69,12 @@ class Extension
 				continue;
 			}
 
-			$entry = array(
-				'infourl'			=> array('title' => '', 'url' => ''),
-				'downloads'			=> array(),
-				'tags'				=> array(),
-				'targetplatform'	=> array(),
-			);
+			$entry = [
+				'infourl'        => ['title' => '', 'url' => ''],
+				'downloads'      => [],
+				'tags'           => [],
+				'targetplatform' => [],
+			];
 
 			$properties = get_object_vars($update);
 
@@ -94,35 +94,35 @@ class Extension
 				}
 			}
 
-			$infourlNode = $update->xpath('infourl');
-			$entry['infourl']['title'] = (string)$infourlNode[0]['title'];
-			$entry['infourl']['url'] = (string)$infourlNode[0];
+			$infourlNode               = $update->xpath('infourl');
+			$entry['infourl']['title'] = (string) $infourlNode[0]['title'];
+			$entry['infourl']['url']   = (string) $infourlNode[0];
 
 			$downloadNodes = $update->xpath('downloads/downloadurl');
 			foreach ($downloadNodes as $downloadNode)
 			{
-				$entry['downloads'][] = array(
-					'type'		=> (string)$downloadNode['type'],
-					'format'	=> (string)$downloadNode['format'],
-					'url'		=> (string)$downloadNode,
-				);
+				$entry['downloads'][] = [
+					'type'   => (string) $downloadNode['type'],
+					'format' => (string) $downloadNode['format'],
+					'url'    => (string) $downloadNode,
+				];
 			}
 
 			$tagNodes = $update->xpath('tags/tag');
 			foreach ($tagNodes as $tagNode)
 			{
-				$entry['tags'][] = (string)$tagNode;
+				$entry['tags'][] = (string) $tagNode;
 			}
 
 			/** @var SimpleXMLElement[] $targetPlatformNode */
 			$targetPlatformNode = $update->xpath('targetplatform');
 
-			$entry['targetplatform']['name'] = (string)$targetPlatformNode[0]['name'];
-			$entry['targetplatform']['version'] = (string)$targetPlatformNode[0]['version'];
-			$client = $targetPlatformNode[0]->xpath('client');
-			$entry['targetplatform']['client'] = (is_array($client) && count($client)) ? (string)$client[0] : '';
-			$folder = $targetPlatformNode[0]->xpath('folder');
-			$entry['targetplatform']['folder'] = is_array($folder) && count($folder) ? (string)$folder[0] : '';
+			$entry['targetplatform']['name']    = (string) $targetPlatformNode[0]['name'];
+			$entry['targetplatform']['version'] = (string) $targetPlatformNode[0]['version'];
+			$client                             = $targetPlatformNode[0]->xpath('client');
+			$entry['targetplatform']['client']  = (is_array($client) && count($client)) ? (string) $client[0] : '';
+			$folder                             = $targetPlatformNode[0]->xpath('folder');
+			$entry['targetplatform']['folder']  = is_array($folder) && count($folder) ? (string) $folder[0] : '';
 
 			$ret[] = $entry;
 		}

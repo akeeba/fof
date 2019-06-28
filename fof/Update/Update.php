@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Update;
+namespace FOF40\Update;
 
 use FOF40\Container\Container;
 use FOF40\Model\Model;
@@ -42,15 +42,15 @@ class Update extends Model
 
 	/**
 	 * Public constructor. Initialises the protected members as well. Useful $config keys:
-	 * update_component		The component name, e.g. com_foobar
-	 * update_version		The default version if the manifest cache is unreadable
-	 * update_site			The URL to the component's update XML stream
-	 * update_extraquery	The extra query to append to (commercial) components' download URLs
-	 * update_sitename		The update site's name (description)
+	 * update_component        The component name, e.g. com_foobar
+	 * update_version        The default version if the manifest cache is unreadable
+	 * update_site            The URL to the component's update XML stream
+	 * update_extraquery    The extra query to append to (commercial) components' download URLs
+	 * update_sitename        The update site's name (description)
 	 *
 	 * @param array $config
 	 */
-	public function __construct($config = array())
+	public function __construct(array $config = [])
 	{
 		$container = Container::getInstance('com_FOOBAR');
 
@@ -116,24 +116,24 @@ class Update extends Model
 	/**
 	 * Retrieves the update information of the component, returning an array with the following keys:
 	 *
-	 * hasUpdate	True if an update is available
-	 * version		The version of the available update
-	 * infoURL		The URL to the download page of the update
+	 * hasUpdate    True if an update is available
+	 * version        The version of the available update
+	 * infoURL        The URL to the download page of the update
 	 *
-	 * @param   bool  $force  Set to true if you want to forcibly reload the update information
+	 * @param bool $force Set to true if you want to forcibly reload the update information
 	 *
 	 * @return  array  See the method description for more information
 	 */
-	public function getUpdates($force = false)
+	public function getUpdates(bool $force = false): array
 	{
 		$db = $this->container->db;
 
 		// Default response (no update)
-		$updateResponse = array(
+		$updateResponse = [
 			'hasUpdate' => false,
 			'version'   => '',
-			'infoURL'   => ''
-		);
+			'infoURL'   => '',
+		];
 
 		if (empty($this->extension_id))
 		{
@@ -160,43 +160,43 @@ class Update extends Model
 
 			// Set the last_check_timestamp to 0
 			$query = $db->getQuery(true)
-			            ->update($db->qn('#__update_sites'))
-			            ->set($db->qn('last_check_timestamp') . ' = ' . $db->q('0'))
-			            ->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
+				->update($db->qn('#__update_sites'))
+				->set($db->qn('last_check_timestamp') . ' = ' . $db->q('0'))
+				->where($db->qn('update_site_id') . ' IN (' . implode(', ', $updateSiteIds) . ')');
 			$db->setQuery($query);
 			$db->execute();
 
 			// Remove cached component update info from #__updates
 			$query = $db->getQuery(true)
-			            ->delete($db->qn('#__updates'))
-			            ->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
+				->delete($db->qn('#__updates'))
+				->where($db->qn('update_site_id') . ' IN (' . implode(', ', $updateSiteIds) . ')');
 			$db->setQuery($query);
 			$db->execute();
 		}
 
 		// Use the update cache timeout specified in com_installer
 		$comInstallerParams = ComponentHelper::getParams('com_installer', false);
-		$timeout = 3600 * $comInstallerParams->get('cachetimeout', '6');
+		$timeout            = 3600 * $comInstallerParams->get('cachetimeout', '6');
 
 		// Load any updates from the network into the #__updates table
 		$this->updater->findUpdates($this->extension_id, $timeout);
 
 		// Get the update record from the database
 		$query = $db->getQuery(true)
-		            ->select('*')
-		            ->from($db->qn('#__updates'))
-		            ->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
+			->select('*')
+			->from($db->qn('#__updates'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
 		$db->setQuery($query);
 		$updateRecord = $db->loadObject();
 
 		// If we have an update record in the database return the information found there
 		if (is_object($updateRecord))
 		{
-			$updateResponse = array(
+			$updateResponse = [
 				'hasUpdate' => true,
 				'version'   => $updateRecord->version,
 				'infoURL'   => $updateRecord->infourl,
-			);
+			];
 		}
 
 		return $updateResponse;
@@ -205,15 +205,15 @@ class Update extends Model
 	/**
 	 * Gets the update site Ids for our extension.
 	 *
-	 * @return 	mixed	An array of Ids or null if the query failed.
+	 * @return    array|null    An array of Ids or null if the query failed.
 	 */
-	public function getUpdateSiteIds()
+	public function getUpdateSiteIds(): ?array
 	{
-		$db = $this->container->db;
+		$db    = $this->container->db;
 		$query = $db->getQuery(true)
-		            ->select($db->qn('update_site_id'))
-		            ->from($db->qn('#__update_sites_extensions'))
-		            ->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
+			->select($db->qn('update_site_id'))
+			->from($db->qn('#__update_sites_extensions'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
 		$db->setQuery($query);
 		$updateSiteIds = $db->loadColumn(0);
 
@@ -225,7 +225,7 @@ class Update extends Model
 	 *
 	 * @return  string
 	 */
-	public function getVersion()
+	public function getVersion(): string
 	{
 		return $this->version;
 	}
@@ -233,9 +233,9 @@ class Update extends Model
 	/**
 	 * Override the currently installed version as reported by the #__extensions table
 	 *
-	 * @param  string  $version
+	 * @param string $version
 	 */
-	public function setVersion($version)
+	public function setVersion(string $version): void
 	{
 		$this->version = $version;
 	}
@@ -245,7 +245,7 @@ class Update extends Model
 	 *
 	 * @return  void
 	 */
-	public function refreshUpdateSite()
+	public function refreshUpdateSite(): void
 	{
 		if (empty($this->extension_id))
 		{
@@ -253,14 +253,14 @@ class Update extends Model
 		}
 
 		// Create the update site definition we want to store to the database
-		$update_site = array(
-			'name'		=> $this->updateSiteName,
-			'type'		=> 'extension',
-			'location'	=> $this->updateSite,
-			'enabled'	=> 1,
-			'last_check_timestamp'	=> 0,
-			'extra_query'	=> $this->extraQuery
-		);
+		$update_site = [
+			'name'                 => $this->updateSiteName,
+			'type'                 => 'extension',
+			'location'             => $this->updateSite,
+			'enabled'              => 1,
+			'last_check_timestamp' => 0,
+			'extra_query'          => $this->extraQuery,
+		];
 
 		// Get a reference to the db driver
 		$db = $this->container->db;
@@ -278,22 +278,22 @@ class Update extends Model
 
 		if (empty($updateSiteIds))
 		{
-			$updateSiteIds = array();
+			$updateSiteIds = [];
 		}
 
 		/** @var boolean $needNewUpdateSite Do I need to create a new update site? */
 		$needNewUpdateSite = true;
 
 		/** @var int[] $deleteOldSites Old Site IDs to delete */
-		$deleteOldSites = array();
+		$deleteOldSites = [];
 
 		// Loop through all update sites
 		foreach ($updateSiteIds as $id)
 		{
 			$query = $db->getQuery(true)
-						->select('*')
-						->from($db->qn('#__update_sites'))
-						->where($db->qn('update_site_id') . ' = ' . $db->q($id));
+				->select('*')
+				->from($db->qn('#__update_sites'))
+				->where($db->qn('update_site_id') . ' = ' . $db->q($id));
 			$db->setQuery($query);
 			$aSite = $db->loadObject();
 
@@ -307,12 +307,12 @@ class Update extends Model
 			if ($needNewUpdateSite && ($aSite->name == $update_site['name']) && ($aSite->location == $update_site['location']))
 			{
 				$needNewUpdateSite = false;
-				$mustUpdate = false;
+				$mustUpdate        = false;
 
 				// Is it enabled? If not, enable it.
 				if (!$aSite->enabled)
 				{
-					$mustUpdate = true;
+					$mustUpdate     = true;
 					$aSite->enabled = 1;
 				}
 
@@ -320,7 +320,7 @@ class Update extends Model
 				if (property_exists($aSite, 'extra_query') && isset($update_site['extra_query'])
 					&& ($aSite->extra_query != $update_site['extra_query']))
 				{
-					$mustUpdate = true;
+					$mustUpdate         = true;
 					$aSite->extra_query = $update_site['extra_query'];
 				}
 
@@ -341,18 +341,18 @@ class Update extends Model
 		{
 			try
 			{
-				$obsoleteIDsQuoted = array_map(array($db, 'quote'), $deleteOldSites);
+				$obsoleteIDsQuoted = array_map([$db, 'quote'], $deleteOldSites);
 
 				// Delete update sites
 				$query = $db->getQuery(true)
-							->delete('#__update_sites')
-							->where($db->qn('update_site_id') . ' IN (' . implode(',', $obsoleteIDsQuoted) . ')');
+					->delete('#__update_sites')
+					->where($db->qn('update_site_id') . ' IN (' . implode(',', $obsoleteIDsQuoted) . ')');
 				$db->setQuery($query)->execute();
 
 				// Delete update sites to extension ID records
 				$query = $db->getQuery(true)
-							->delete('#__update_sites_extensions')
-							->where($db->qn('update_site_id') . ' IN (' . implode(',', $obsoleteIDsQuoted) . ')');
+					->delete('#__update_sites_extensions')
+					->where($db->qn('update_site_id') . ' IN (' . implode(',', $obsoleteIDsQuoted) . ')');
 				$db->setQuery($query)->execute();
 			}
 			catch (\Exception $e)
@@ -367,14 +367,14 @@ class Update extends Model
 		if ($needNewUpdateSite)
 		{
 			// No update sites defined. Create a new one.
-			$newSite = (object)$update_site;
+			$newSite = (object) $update_site;
 			$db->insertObject('#__update_sites', $newSite);
 
 			$id                  = $db->insertid();
-			$updateSiteExtension = (object)array(
+			$updateSiteExtension = (object) [
 				'update_site_id' => $id,
 				'extension_id'   => $this->extension_id,
-			);
+			];
 			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
 		}
 	}
@@ -383,7 +383,7 @@ class Update extends Model
 	 * Removes any update sites which go by the same name or the same location as our update site but do not match the
 	 * extension ID.
 	 */
-	public function removeObsoleteUpdateSites()
+	public function removeObsoleteUpdateSites(): void
 	{
 		$db = $this->container->db;
 
@@ -401,7 +401,7 @@ class Update extends Model
 
 		if (!empty($updateSiteIDs))
 		{
-			$updateSitesQuoted = array_map(array($db, 'quote'), $updateSiteIDs);
+			$updateSitesQuoted = array_map([$db, 'quote'], $updateSiteIDs);
 			$query->where($db->qn('update_site_id') . ' NOT IN (' . implode(',', $updateSitesQuoted) . ')');
 		}
 
@@ -411,7 +411,7 @@ class Update extends Model
 
 			if (!empty($ids))
 			{
-				$obsoleteIDsQuoted = array_map(array($db, 'quote'), $ids);
+				$obsoleteIDsQuoted = array_map([$db, 'quote'], $ids);
 
 				// Delete update sites
 				$query = $db->getQuery(true)
@@ -421,8 +421,8 @@ class Update extends Model
 
 				// Delete update sites to extension ID records
 				$query = $db->getQuery(true)
-							->delete('#__update_sites_extensions')
-							->where($db->qn('update_site_id') . ' IN (' . implode(',', $obsoleteIDsQuoted) . ')');
+					->delete('#__update_sites_extensions')
+					->where($db->qn('update_site_id') . ' IN (' . implode(',', $obsoleteIDsQuoted) . ')');
 				$db->setQuery($query)->execute();
 			}
 		}
@@ -441,7 +441,7 @@ class Update extends Model
 	 *
 	 * @since   3.1.2
 	 */
-	public function updatedCachedVersionNumber()
+	public function updatedCachedVersionNumber(): bool
 	{
 		$extension = $this->getExtensionObject();
 
@@ -467,13 +467,14 @@ class Update extends Model
 		$data['version']           = $this->version;
 		$extension->manifest_cache = json_encode($data);
 		$db                        = $this->container->db;
+
 		return $db->updateObject('#__extensions', $extension, ['extension_id']);
 	}
 
 	/**
 	 * Returns an object with the #__extensions table record for the current extension.
 	 *
-	 * @return  mixed
+	 * @return  object
 	 */
 	private function getExtensionObject()
 	{

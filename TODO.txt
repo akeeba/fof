@@ -20,7 +20,7 @@
     [X] Timer
     [X] Toolbar
     [X] TransparentAuthentication
-    [ ] Update
+    [X] Update
     [ ] Utils --> Move to separate packages
     [ ] Controller
     [ ] View
