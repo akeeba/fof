@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 use InvalidArgumentException;
 
 /**
- * Exception thrown when we can't find a suitable method to handle the requested task
+ * Exception thrown when the provided View does not implement DataViewInterface
  */
-class TaskNotFound extends InvalidArgumentException
+class NotADataView extends InvalidArgumentException
 {
 }

@@ -5,11 +5,15 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Controller\Exception;
+namespace FOF40\Controller\Exception;
 
 defined('_JEXEC') or die;
+
+use RuntimeException;
 
 /**
  * Exception thrown when we can't get a Controller's name
  */
-class CannotGetName extends \RuntimeException {}
+class CannotGetName extends RuntimeException
+{
+}

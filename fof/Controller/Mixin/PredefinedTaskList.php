@@ -5,7 +5,7 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Controller\Mixin;
+namespace FOF40\Controller\Mixin;
 
 use FOF40\Controller\Controller;
 
@@ -29,16 +29,16 @@ trait PredefinedTaskList
 	 *
 	 * @var array
 	 */
-	protected $predefinedTaskList = array();
+	protected $predefinedTaskList = [];
 
 	/**
 	 * Overrides the execute method to implement the predefined task list feature
 	 *
-	 * @param   string  $task  The task to execute
+	 * @param string $task The task to execute
 	 *
 	 * @return  mixed   The controller task result
 	 */
-	public function execute($task)
+	public function execute(string $task)
 	{
 		if (!in_array($task, $this->predefinedTaskList))
 		{
@@ -51,11 +51,11 @@ trait PredefinedTaskList
 	/**
 	 * Sets the predefined task list and registers the first task in the list as the Controller's default task
 	 *
-	 * @param   array  $taskList  The task list to register
+	 * @param array $taskList The task list to register
 	 *
 	 * @return  void
 	 */
-	public function setPredefinedTaskList(array $taskList)
+	public function setPredefinedTaskList(array $taskList): void
 	{
 		/** @var Controller $this */
 

@@ -27,7 +27,7 @@
     [X] Html
     [X] InstallScript
     [X] IP
-    [ ] Controller
+    [X] Controller
     [ ] View
     [ ] Model
 

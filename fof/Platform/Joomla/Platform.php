@@ -1227,7 +1227,7 @@ class Platform extends BasePlatform
 	 *
 	 * @return  void
 	 */
-	public function setSessionVar(string $name, ?string $value = null, string $namespace = 'default'): void
+	public function setSessionVar(string $name, $value = null, string $namespace = 'default'): void
 	{
 		if ($this->isCli())
 		{
@@ -1248,7 +1248,7 @@ class Platform extends BasePlatform
 	 *
 	 * @return  mixed
 	 */
-	public function getSessionVar(string $name, ?string $default = null, $namespace = 'default')
+	public function getSessionVar(string $name, $default = null, $namespace = 'default')
 	{
 		if ($this->isCli())
 		{

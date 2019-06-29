@@ -57,7 +57,7 @@ class ControllerStub extends Controller
 	 *
 	 * @return string
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		if (isset($this->mockedMethods['getName']))
 		{

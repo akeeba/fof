@@ -5,8 +5,9 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Controller;
+namespace FOF40\Controller;
 
+use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\CannotGetName;
 use FOF40\Controller\Exception\TaskNotFound;
@@ -27,7 +28,7 @@ defined('_JEXEC') or die;
  *
  * A generic MVC controller implementation
  *
- * @property-read  \FOF40\Input\Input  $input  The input object (magic __get returns the Input from the Container)
+ * @property-read  \FOF40\Input\Input $input  The input object (magic __get returns the Input from the Container)
  */
 class Controller
 {
@@ -154,7 +155,7 @@ class Controller
 	 *
 	 * @var array
 	 */
-	protected $config = array();
+	protected $config = [];
 
 	/**
 	 * Overrides the name of the view's default model
@@ -175,14 +176,14 @@ class Controller
 	 *
 	 * @var   array[Model]
 	 */
-	protected $modelInstances = array();
+	protected $modelInstances = [];
 
 	/**
 	 * An array of View instances known to this Controller
 	 *
 	 * @var   array[View]
 	 */
-	protected $viewInstances = array();
+	protected $viewInstances = [];
 
 	/**
 	 * The container attached to this Controller
@@ -196,7 +197,7 @@ class Controller
 	 *
 	 * @var array
 	 */
-	protected $cacheableTasks = array();
+	protected $cacheableTasks = [];
 
 	/**
 	 * How user group membership affects caching. The values are:
@@ -223,15 +224,15 @@ class Controller
 	 *
 	 * @var array
 	 */
-	protected $taskPrivileges = array();
+	protected $taskPrivileges = [];
 
 	/**
 	 * Enable CSRF protection on selected tasks. The possible values are:
 	 *
-	 * 0	Disabled; no token checks are performed
-	 * 1	Enabled; token checks are always performed
-	 * 2	Only on HTML requests and backend; token checks are always performed in the back-end and in the front-end only when format is 'html'
-	 * 3	Only on back-end; token checks are performed only in the back-end
+	 * 0    Disabled; no token checks are performed
+	 * 1    Enabled; token checks are always performed
+	 * 2    Only on HTML requests and backend; token checks are always performed in the back-end and in the front-end only when format is 'html'
+	 * 3    Only on back-end; token checks are performed only in the back-end
 	 *
 	 * @var    integer
 	 */
@@ -248,20 +249,20 @@ class Controller
 	 * viewConfig      array   The configuration overrides for the View.
 	 * modelConfig     array   The configuration overrides for the Model.
 	 *
-	 * @param   Container  $container  The application container
-	 * @param   array      $config     The configuration array
+	 * @param Container $container The application container
+	 * @param array     $config    The configuration array
 	 *
 	 * @return  Controller
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		// Initialise
-		$this->methods     = array();
+		$this->methods     = [];
 		$this->message     = null;
 		$this->messageType = 'message';
-		$this->paths       = array();
+		$this->paths       = [];
 		$this->redirect    = null;
-		$this->taskMap     = array();
+		$this->taskMap     = [];
 
 		// Get a local copy of the container
 		$this->container = $container;
@@ -350,11 +351,11 @@ class Controller
 	 * Magic get method. Handles magic properties:
 	 * $this->input  mapped to $this->container->input
 	 *
-	 * @param   string  $name  The property to fetch
+	 * @param string $name The property to fetch
 	 *
 	 * @return  mixed|null
 	 */
-	public function __get($name)
+	public function __get(string $name)
 	{
 		// Handle $this->input
 		if ($name == 'input')
@@ -377,13 +378,13 @@ class Controller
 	 * Executes a given controller task. The onBefore<task> and onAfter<task>
 	 * methods are called automatically if they exist.
 	 *
-	 * @param   string $task The task to execute, e.g. "browse"
+	 * @param string $task The task to execute, e.g. "browse"
 	 *
-	 * @return  null|bool  False on execution failure
+	 * @return  mixed|bool  False on execution failure
 	 *
 	 * @throws  TaskNotFound  When the task is not found
 	 */
-	public function execute($task)
+	public function execute(string $task)
 	{
 		$this->task = $task;
 
@@ -392,7 +393,7 @@ class Controller
 			throw new TaskNotFound(Text::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
 		}
 
-		$result = $this->triggerEvent('onBeforeExecute', array(&$task));
+		$result = $this->triggerEvent('onBeforeExecute', [&$task]);
 
 		if ($result === false)
 		{
@@ -400,7 +401,7 @@ class Controller
 		}
 
 		$eventName = 'onBefore' . ucfirst($task);
-		$result = $this->triggerEvent($eventName);
+		$result    = $this->triggerEvent($eventName);
 
 		if ($result === false)
 		{
@@ -427,14 +428,14 @@ class Controller
 		$ret = $this->$doTask();
 
 		$eventName = 'onAfter' . ucfirst($task);
-		$result = $this->triggerEvent($eventName);
+		$result    = $this->triggerEvent($eventName);
 
 		if ($result === false)
 		{
 			return false;
 		}
 
-		$result = $this->triggerEvent('onAfterExecute', array($task));
+		$result = $this->triggerEvent('onAfterExecute', [$task]);
 
 		if ($result === false)
 		{
@@ -451,13 +452,15 @@ class Controller
 	 * YOU MUST NOT USE THIS TASK DIRECTLY IN A URL. It is supposed to be
 	 * used ONLY inside your code. In the URL, use task=browse instead.
 	 *
-	 * @param   bool    $cachable   Is this view cacheable?
-	 * @param   bool    $urlparams  Add your safe URL parameters (see further down in the code)
-	 * @param   string  $tpl        The name of the template file to parse
+	 * @param bool   $cachable  Is this view cacheable?
+	 * @param bool   $urlparams Add your safe URL parameters (see further down in the code)
+	 * @param string $tpl       The name of the template file to parse
 	 *
 	 * @return  void
+	 *
+	 * @throws Exception
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null)
+	public function display(bool $cachable = false, bool $urlparams = false, ?string $tpl = null): void
 	{
 		$document = $this->container->platform->getDocument();
 
@@ -499,7 +502,7 @@ class Controller
 
 			if ($user->guest)
 			{
-				$groups = array();
+				$groups = [];
 			}
 			else
 			{
@@ -522,19 +525,19 @@ class Controller
 					break;
 			}
 
-			$importantParameters = array();
+			$importantParameters = [];
 
 			// Set up safe URL parameters
 			if (!is_array($urlparams))
 			{
-				$urlparams = array(
-					'option'		=> 'CMD',
-					'view'			=> 'CMD',
-					'task'			=> 'CMD',
-					'format'		=> 'CMD',
-					'layout'		=> 'CMD',
-					'id'			=> 'INT',
-				);
+				$urlparams = [
+					'option' => 'CMD',
+					'view'   => 'CMD',
+					'task'   => 'CMD',
+					'format' => 'CMD',
+					'layout' => 'CMD',
+					'id'     => 'INT',
+				];
 			}
 
 			if (is_array($urlparams))
@@ -566,7 +569,9 @@ class Controller
 			}
 
 			// Create the cache ID after setting the registered URL params, as they are used to generate the ID
-			$cacheId = md5(serialize(array(Cache::makeId(), $view->getName(), $this->doTask, $groups, $userId, $importantParameters)));
+			$cacheId = md5(serialize([
+				Cache::makeId(), $view->getName(), $this->doTask, $groups, $userId, $importantParameters,
+			]));
 
 			// Get the cached view or cache the current view
 			try
@@ -592,6 +597,8 @@ class Controller
 	 * Alias to the display() task
 	 *
 	 * @codeCoverageIgnore
+	 *
+	 * @throws Exception
 	 */
 	public function main()
 	{
@@ -601,15 +608,15 @@ class Controller
 	/**
 	 * Returns a named Model object
 	 *
-	 * @param   string $name     The Model name. If null we'll use the modelName
+	 * @param string $name       The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param   array  $config   Configuration parameters to the Model. If skipped
+	 * @param array  $config     Configuration parameters to the Model. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  Model  The instance of the Model known to this Controller
 	 */
-	public function getModel($name = null, $config = array())
+	public function getModel(?string $name = null, array $config = [])
 	{
 		if (!empty($name))
 		{
@@ -624,34 +631,36 @@ class Controller
 			$modelName = $this->view;
 		}
 
-		if (!array_key_exists($modelName, $this->modelInstances))
+		// Do we already have an instance of that model cached?
+		if (array_key_exists($modelName, $this->modelInstances))
 		{
-			if (empty($config) && isset($this->config['modelConfig']))
-			{
-				$config = $this->config['modelConfig'];
-			}
-
-			if (empty($name))
-			{
-				$config['modelTemporaryInstance'] = true;
-				$controllerName                   = $this->getName();
-
-				if ($controllerName != $modelName)
-				{
-					$config['hash_view'] = $controllerName;
-				}
-
-			}
-			else
-			{
-				// Other classes are loaded with persistent state disabled and their state/input blanked out
-				$config['modelTemporaryInstance'] = false;
-				$config['modelClearState']        = true;
-				$config['modelClearInput']        = true;
-			}
-
-			$this->modelInstances[$modelName] = $this->container->factory->model(ucfirst($modelName), $config);
+			return $this->modelInstances[$modelName];
 		}
+
+		if (empty($config) && isset($this->config['modelConfig']))
+		{
+			$config = $this->config['modelConfig'];
+		}
+
+		if (empty($name))
+		{
+			$config['modelTemporaryInstance'] = true;
+			$controllerName                   = $this->getName();
+
+			if ($controllerName != $modelName)
+			{
+				$config['hash_view'] = $controllerName;
+			}
+		}
+		else
+		{
+			// Other classes are loaded with persistent state disabled and their state/input blanked out
+			$config['modelTemporaryInstance'] = false;
+			$config['modelClearState']        = true;
+			$config['modelClearInput']        = true;
+		}
+
+		$this->modelInstances[$modelName] = $this->container->factory->model(ucfirst($modelName), $config);
 
 		return $this->modelInstances[$modelName];
 	}
@@ -659,15 +668,15 @@ class Controller
 	/**
 	 * Returns a named View object
 	 *
-	 * @param   string $name     The Model name. If null we'll use the modelName
+	 * @param string $name       The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param   array  $config   Configuration parameters to the Model. If skipped
+	 * @param array  $config     Configuration parameters to the Model. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  View  The instance of the Model known to this Controller
 	 */
-	public function getView($name = null, $config = array())
+	public function getView(?string $name = null, array $config = [])
 	{
 		if (!empty($name))
 		{
@@ -701,11 +710,11 @@ class Controller
 	/**
 	 * Set the name of the view to be used by this Controller
 	 *
-	 * @param   string $viewName The name of the view
+	 * @param string $viewName The name of the view
 	 *
 	 * @return  void
 	 */
-	public function setViewName($viewName)
+	public function setViewName(string $viewName): void
 	{
 		$this->viewName = $viewName;
 	}
@@ -713,11 +722,11 @@ class Controller
 	/**
 	 * Set the name of the model to be used by this Controller
 	 *
-	 * @param   string $modelName The name of the model
+	 * @param string $modelName The name of the model
 	 *
 	 * @return  void
 	 */
-	public function setModelName($modelName)
+	public function setModelName(string $modelName): void
 	{
 		$this->modelName = $modelName;
 	}
@@ -725,12 +734,12 @@ class Controller
 	/**
 	 * Pushes a named model to the Controller
 	 *
-	 * @param   string $modelName The name of the Model
-	 * @param   Model  $model     The actual Model object to push
+	 * @param string $modelName The name of the Model
+	 * @param Model  $model     The actual Model object to push
 	 *
 	 * @return  void
 	 */
-	public function setModel($modelName, Model &$model)
+	public function setModel(string $modelName, Model &$model): void
 	{
 		$this->modelInstances[$modelName] = $model;
 	}
@@ -738,12 +747,12 @@ class Controller
 	/**
 	 * Pushes a named view to the Controller
 	 *
-	 * @param   string $viewName The name of the View
-	 * @param   View   $view     The actual View object to push
+	 * @param string $viewName The name of the View
+	 * @param View   $view     The actual View object to push
 	 *
 	 * @return  void
 	 */
-	public function setView($viewName, View &$view)
+	public function setView(string $viewName, View &$view): void
 	{
 		$this->viewInstances[$viewName] = $view;
 	}
@@ -758,7 +767,7 @@ class Controller
 	 *
 	 * @throws  CannotGetName  If it's impossible to determine the name and it's not set
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		if (empty($this->name))
 		{
@@ -780,7 +789,7 @@ class Controller
 	 *
 	 * @return  string  The task that is being performed or was most recently performed.
 	 */
-	public function getTask()
+	public function getTask(): string
 	{
 		return $this->task;
 	}
@@ -788,9 +797,9 @@ class Controller
 	/**
 	 * Gets the available tasks in the controller.
 	 *
-	 * @return  array  Array[i] of task names.
+	 * @return  string[]  Array of task names.
 	 */
-	public function getTasks()
+	public function getTasks(): array
 	{
 		return $this->methods;
 	}
@@ -800,7 +809,7 @@ class Controller
 	 *
 	 * @return  boolean  False if no redirect exists.
 	 */
-	public function redirect()
+	public function redirect(): bool
 	{
 		if ($this->redirect)
 		{
@@ -815,11 +824,11 @@ class Controller
 	/**
 	 * Register the default task to perform if a mapping is not found.
 	 *
-	 * @param   string $method The name of the method in the derived class to perform if a named task is not found.
+	 * @param string $method The name of the method in the derived class to perform if a named task is not found.
 	 *
 	 * @return  Controller  This object to support chaining.
 	 */
-	public function registerDefaultTask($method)
+	public function registerDefaultTask(string $method): Controller
 	{
 		$this->registerTask('__default', $method);
 
@@ -829,12 +838,12 @@ class Controller
 	/**
 	 * Register (map) a task to a method in the class.
 	 *
-	 * @param   string $task   The task.
-	 * @param   string $method The name of the method in the derived class to perform for this task.
+	 * @param string $task   The task.
+	 * @param string $method The name of the method in the derived class to perform for this task.
 	 *
 	 * @return  Controller  This object to support chaining.
 	 */
-	public function registerTask($task, $method)
+	public function registerTask(string $task, string $method): Controller
 	{
 		if (in_array($method, $this->methods))
 		{
@@ -847,11 +856,11 @@ class Controller
 	/**
 	 * Unregister (unmap) a task in the class.
 	 *
-	 * @param   string $task The task.
+	 * @param string $task The task.
 	 *
 	 * @return  Controller  This object to support chaining.
 	 */
-	public function unregisterTask($task)
+	public function unregisterTask(string $task): Controller
 	{
 		unset($this->taskMap[$task]);
 
@@ -861,15 +870,15 @@ class Controller
 	/**
 	 * Sets the internal message that is passed with a redirect
 	 *
-	 * @param   string $text Message to display on redirect.
-	 * @param   string $type Message type. Optional, defaults to 'message'.
+	 * @param string $text Message to display on redirect.
+	 * @param string $type Message type. Optional, defaults to 'message'.
 	 *
-	 * @return  string  Previous message
+	 * @return  string|null  Previous message
 	 */
-	public function setMessage($text, $type = 'message')
+	public function setMessage(string $text, string $type = 'message'): ?string
 	{
-		$previous = $this->message;
-		$this->message = $text;
+		$previous          = $this->message;
+		$this->message     = $text;
 		$this->messageType = $type;
 
 		return $previous;
@@ -878,19 +887,19 @@ class Controller
 	/**
 	 * Set a URL for browser redirection.
 	 *
-	 * @param   string $url  URL to redirect to.
-	 * @param   string $msg  Message to display on redirect. Optional, defaults to value set internally by controller, if any.
-	 * @param   string $type Message type. Optional, defaults to 'message' or the type set by a previous call to setMessage.
+	 * @param string $url  URL to redirect to.
+	 * @param string $msg  Message to display on redirect. Optional, defaults to value set internally by controller, if any.
+	 * @param string $type Message type. Optional, defaults to 'message' or the type set by a previous call to setMessage.
 	 *
 	 * @return  Controller   This object to support chaining.
 	 */
-	public function setRedirect($url, $msg = null, $type = null)
+	public function setRedirect(string $url, ?string $msg = null, ?string $type = null): Controller
 	{
 		// If we're parsing a non-SEF URL decide whether to use Route or not
 		if (strpos($url, 'index.php') === 0)
 		{
 			$isAdmin = $this->container->platform->isBackend();
-			$auto = false;
+			$auto    = false;
 
 			if (($this->autoRouting == 2 || $this->autoRouting == 3) && $isAdmin)
 			{
@@ -938,9 +947,9 @@ class Controller
 	 *
 	 * @return  bool
 	 *
-	 * @throws  \Exception
+	 * @throws  Exception
 	 */
-	protected function csrfProtection()
+	protected function csrfProtection(): bool
 	{
 		static $isCli = null, $isAdmin = null;
 
@@ -1046,12 +1055,12 @@ class Controller
 	 * 2. $this->checkACL('@something') if there is no onBeforeSomething and the event starts with onBefore
 	 * 3. Joomla! plugin event onComFoobarControllerItemBeforeSomething($this, 123, 456)
 	 *
-	 * @param   string  $event      The name of the event, typically named onPredicateVerb e.g. onBeforeKick
-	 * @param   array   $arguments  The arguments to pass to the event handlers
+	 * @param string $event     The name of the event, typically named onPredicateVerb e.g. onBeforeKick
+	 * @param array  $arguments The arguments to pass to the event handlers
 	 *
 	 * @return  bool
 	 */
-	protected function triggerEvent($event, array $arguments = array())
+	protected function triggerEvent(string $event, array $arguments = []): bool
 	{
 		$result = true;
 
@@ -1079,14 +1088,14 @@ class Controller
 					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
 					break;
 				default:
-					$result = call_user_func_array(array($this, $event), $arguments);
+					$result = call_user_func_array([$this, $event], $arguments);
 					break;
 			}
 		}
 		// If there is no handler method perform a simple ACL check
 		elseif (substr($event, 0, 8) == 'onBefore')
 		{
-			$task = substr($event, 8);
+			$task   = substr($event, 8);
 			$result = $this->checkACL('@' . $task);
 		}
 
@@ -1105,7 +1114,7 @@ class Controller
 		if (substr($event, 0, 2) == 'on')
 		{
 			$prefix = 'on';
-			$event = substr($event, 2);
+			$event  = substr($event, 2);
 		}
 
 		// Get the component/model prefix for the event
@@ -1135,11 +1144,11 @@ class Controller
 	/**
 	 * Checks if the current user has enough privileges for the requested ACL area.
 	 *
-	 * @param   string  $area  The ACL area, e.g. core.manage.
+	 * @param string $area The ACL area, e.g. core.manage.
 	 *
 	 * @return  boolean  True if the user has the ACL privilege specified
 	 */
-	protected function checkACL($area)
+	protected function checkACL(string $area): bool
 	{
 		$area = $this->getACLRuleFor($area);
 
@@ -1148,22 +1157,22 @@ class Controller
 			return $area;
 		}
 
-		if (in_array(strtolower($area), array('false','0','no','403')))
+		if (in_array(strtolower($area), ['false', '0', 'no', '403']))
 		{
 			return false;
 		}
 
-		if (in_array(strtolower($area), array('true','1','yes')))
+		if (in_array(strtolower($area), ['true', '1', 'yes']))
 		{
 			return true;
 		}
 
-		if (in_array(strtolower($area), array('guest')))
+		if (in_array(strtolower($area), ['guest']))
 		{
 			return $this->container->platform->getUser()->guest;
 		}
 
-		if (in_array(strtolower($area), array('user')))
+		if (in_array(strtolower($area), ['user']))
 		{
 			return !$this->container->platform->getUser()->guest;
 		}
@@ -1179,18 +1188,18 @@ class Controller
 	/**
 	 * Resolves @task and &callback notations for ACL privileges
 	 *
-	 * @param   string  $area      The task notation to resolve
-	 * @param   array   $oldAreas  Areas we've already been redirected from, used to detect circular references
+	 * @param string $area     The task notation to resolve
+	 * @param array  $oldAreas Areas we've already been redirected from, used to detect circular references
 	 *
-	 * @return  mixed  The resolved ACL privilege
+	 * @return  string|bool  The resolved ACL privilege
 	 */
-	protected function getACLRuleFor($area, $oldAreas = array())
+	protected function getACLRuleFor(string $area, array $oldAreas = [])
 	{
 		// If it's a &notation return the callback result
 		if (substr($area, 0, 1) == '&')
 		{
 			$oldAreas[] = $area;
-			$method = substr($area, 1);
+			$method     = substr($area, 1);
 
 			// Method not found? Assume true.
 			if (!method_exists($this, $method))
@@ -1249,7 +1258,7 @@ class Controller
 	 *
 	 * @return  boolean
 	 */
-	public function hasRedirect()
+	public function hasRedirect(): bool
 	{
 		return !empty($this->redirect);
 	}

@@ -5,11 +5,16 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Controller\Exception;
+namespace FOF40\Controller\Exception;
 
 defined('_JEXEC') or die;
+
+use RuntimeException;
 
 /**
  * Exception thrown when we can't find the requested item in a read task
  */
-class ItemNotFound extends \RuntimeException {}
+class ItemNotFound extends RuntimeException
+{
+
+}

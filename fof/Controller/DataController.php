@@ -5,14 +5,17 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Controller;
+namespace FOF40\Controller;
 
+use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\ItemNotFound;
 use FOF40\Controller\Exception\LockedRecord;
 use FOF40\Controller\Exception\NotADataModel;
+use FOF40\Controller\Exception\NotADataView;
 use FOF40\Controller\Exception\TaskNotFound;
 use FOF40\Model\DataModel;
+use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
@@ -22,17 +25,17 @@ defined('_JEXEC') or die;
 /**
  * Database-aware Controller
  *
- * @property-read  \FOF40\Input\Input  $input  The input object (magic __get returns the Input from the Container)
+ * @property-read  \FOF40\Input\Input $input  The input object (magic __get returns the Input from the Container)
  */
 class DataController extends Controller
 {
-    /**
-     * Variables that should be taken in account while working with the cache. You can set them in Controller constructor
-     * or inside onBefore* methods
-     *
-     * @var false|array
-     */
-    protected $cacheParams = false;
+	/**
+	 * Variables that should be taken in account while working with the cache. You can set them in Controller constructor
+	 * or inside onBefore* methods
+	 *
+	 * @var false|array
+	 */
+	protected $cacheParams = false;
 
 	/**
 	 * An associative array for required ACL privileges per task. For example:
@@ -48,28 +51,28 @@ class DataController extends Controller
 	 *
 	 * @var array
 	 */
-	protected $taskPrivileges = array(
+	protected $taskPrivileges = [
 		// Special privileges
-		'*editown' => 'core.edit.own', // Privilege required to edit own record
+		'*editown'    => 'core.edit.own', // Privilege required to edit own record
 		// Standard tasks
-		'add' => 'core.create',
-		'apply' => '&getACLForApplySave', // Apply task: call the getACLForApplySave method
-		'archive' => 'core.edit.state',
-		'cancel' => 'core.edit.state',
-		'copy' => '@add', // Maps copy ACLs to the add task
-		'edit' => 'core.edit',
+		'add'         => 'core.create',
+		'apply'       => '&getACLForApplySave', // Apply task: call the getACLForApplySave method
+		'archive'     => 'core.edit.state',
+		'cancel'      => 'core.edit.state',
+		'copy'        => '@add', // Maps copy ACLs to the add task
+		'edit'        => 'core.edit',
 		'loadhistory' => '@edit', // Maps loadhistory ACLs to the edit task
-		'orderup' => 'core.edit.state',
-		'orderdown' => 'core.edit.state',
-		'publish' => 'core.edit.state',
-		'remove' => 'core.delete',
+		'orderup'     => 'core.edit.state',
+		'orderdown'   => 'core.edit.state',
+		'publish'     => 'core.edit.state',
+		'remove'      => 'core.delete',
 		'forceRemove' => 'core.delete',
-		'save' => '&getACLForApplySave', // Save task: call the getACLForApplySave method
-		'savenew' => 'core.create',
-		'saveorder' => 'core.edit.state',
-		'trash' => 'core.edit.state',
-		'unpublish' => 'core.edit.state',
-	);
+		'save'        => '&getACLForApplySave', // Save task: call the getACLForApplySave method
+		'savenew'     => 'core.create',
+		'saveorder'   => 'core.edit.state',
+		'trash'       => 'core.edit.state',
+		'unpublish'   => 'core.edit.state',
+	];
 
 	/**
 	 * An indexed array of default values for the add task. Since the add task resets the model you can't set these
@@ -78,7 +81,7 @@ class DataController extends Controller
 	 *
 	 * @var  array
 	 */
-	protected $defaultsForAdd = array();
+	protected $defaultsForAdd = [];
 
 	/**
 	 * Public constructor of the Controller class. You can pass the following variables in the $config array,
@@ -87,10 +90,10 @@ class DataController extends Controller
 	 * taskPrivileges       array   ACL privileges for each task
 	 * cacheableTasks       array   The cache-enabled tasks
 	 *
-	 * @param   Container  $container  The application container
-	 * @param   array      $config     The configuration array
+	 * @param Container $container The application container
+	 * @param array     $config    The configuration array
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		parent::__construct($container, $config);
 
@@ -111,7 +114,7 @@ class DataController extends Controller
 			if (!is_array($config['cacheableTasks']))
 			{
 				$config['cacheableTasks'] = explode(',', $config['cacheableTasks']);
-                $config['cacheableTasks'] = array_map('trim', $config['cacheableTasks']);
+				$config['cacheableTasks'] = array_map('trim', $config['cacheableTasks']);
 			}
 
 			$this->cacheableTasks = $config['cacheableTasks'];
@@ -138,13 +141,13 @@ class DataController extends Controller
 	 * If $task == 'default' we will determine the CRUD task to use based on the view name and HTTP verb in the request,
 	 * overriding the routing.
 	 *
-	 * @param   string $task The task to execute, e.g. "browse"
+	 * @param string $task The task to execute, e.g. "browse"
 	 *
 	 * @return  null|bool  False on execution failure
 	 *
 	 * @throws  TaskNotFound  When the task is not found
 	 */
-	public function execute($task)
+	public function execute(string $task)
 	{
 		if ($task == 'default')
 		{
@@ -156,10 +159,14 @@ class DataController extends Controller
 
 	/**
 	 * Deal with JSON format: no redirects needed
-	 * @param  string $task The task being executed
-	 * @return boolean      True if everything went well
+	 *
+	 * @param string $task The task being executed
+	 *
+	 * @return bool True if everything went well
+	 *
+	 * @throws Exception
 	 */
-	protected function onAfterExecute($task)
+	protected function onAfterExecute(string $task): bool
 	{
 		// JSON shouldn't have redirects
 		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') == 'json')
@@ -176,13 +183,12 @@ class DataController extends Controller
 
 				return true;
 			}
-			else
-			{
-				// Not an error, avoid redirect and display the record(s)
-				$this->redirect = false;
 
-				return $this->display();
-			}
+			// Not an error, avoid redirect and display the record(s)
+			$this->redirect = false;
+			$this->display();
+
+			return true;
 		}
 
 		return true;
@@ -193,7 +199,7 @@ class DataController extends Controller
 	 *
 	 * @return  string  The CRUD task (browse, read, edit, delete)
 	 */
-	protected function getCrudTask()
+	protected function getCrudTask(): string
 	{
 		// By default, a plural view means 'browse' and a singular view means 'edit'
 		$view = $this->input->getCmd('view', null);
@@ -210,7 +216,7 @@ class DataController extends Controller
 
 		if ($id == 0)
 		{
-			$ids = $this->input->get('ids', array(), 'array');
+			$ids = $this->input->get('ids', [], 'array');
 
 			if (!empty($ids))
 			{
@@ -261,11 +267,11 @@ class DataController extends Controller
 	 * Checks if the current user has enough privileges for the requested ACL area. This overridden method supports
 	 * asset tracking as well.
 	 *
-	 * @param   string  $area  The ACL area, e.g. core.manage
+	 * @param string $area The ACL area, e.g. core.manage
 	 *
 	 * @return  boolean  True if the user has the ACL privilege specified
 	 */
-	protected function checkACL($area)
+	protected function checkACL(string $area): bool
 	{
 		$area = $this->getACLRuleFor($area);
 
@@ -294,10 +300,10 @@ class DataController extends Controller
 		// Asset tracking
 		if (!is_array($ids))
 		{
-			$ids = array($ids);
+			$ids = [$ids];
 		}
 
-		$resource = $this->container->inflector->singularize($this->view);
+		$resource    = $this->container->inflector->singularize($this->view);
 		$isEditState = ($area == 'core.edit.state');
 
 		foreach ($ids as $id)
@@ -307,7 +313,7 @@ class DataController extends Controller
 			// Dedicated permission found, check it!
 			$platform = $this->container->platform;
 
-			if ($platform->authorise($area, $asset) )
+			if ($platform->authorise($area, $asset))
 			{
 				return true;
 			}
@@ -345,15 +351,17 @@ class DataController extends Controller
 	/**
 	 * Returns a named View object
 	 *
-	 * @param   string $name     The Model name. If null we'll use the modelName
+	 * @param string $name       The View name. If null we'll use the viewName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param   array  $config   Configuration parameters to the Model. If skipped
+	 * @param array  $config     Configuration parameters to the View. If skipped
 	 *                           we will use $this->config
 	 *
-	 * @return  View  The instance of the Model known to this Controller
+	 * @return  View|DataViewInterface The instance of the View known to this Controller
+	 *
+	 * @throws NotADataView If the View found does not implement the DataViewInterface
 	 */
-	public function getView($name = null, $config = array())
+	public function getView(?string $name = null, array $config = [])
 	{
 		if (!empty($name))
 		{
@@ -381,6 +389,11 @@ class DataController extends Controller
 			$this->viewInstances[$viewName] = $this->container->factory->view($viewName, $viewType, $config);
 		}
 
+		if (($this->viewInstances[$viewName] instanceof View) && !($this->viewInstances[$viewName] instanceof DataViewInterface))
+		{
+			throw new NotADataView();
+		}
+
 		return $this->viewInstances[$viewName];
 	}
 
@@ -389,8 +402,9 @@ class DataController extends Controller
 	 * them to the browser.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function browse()
+	public function browse(): void
 	{
 		// Initialise the savestate
 		$saveState = $this->input->get('savestate', -999, 'int');
@@ -413,8 +427,9 @@ class DataController extends Controller
 	 * @return  void
 	 *
 	 * @throws ItemNotFound When the item is not found
+	 * @throws Exception
 	 */
-	public function read()
+	public function read(): void
 	{
 		// Load the model
 		/** @var DataModel $model */
@@ -450,8 +465,9 @@ class DataController extends Controller
 	 * Single record add. The form layout is used to present a blank page.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function add()
+	public function add(): void
 	{
 		// Load and reset the model
 		$model = $this->getModel()->savestate(false);
@@ -474,7 +490,7 @@ class DataController extends Controller
 
 		// Get temporary data from the session, set if the save failed and we're redirected back here
 		$sessionKey = $this->viewName . '.savedata';
-		$itemData = $this->container->platform->getSessionVar($sessionKey, null, $this->container->componentName);
+		$itemData   = $this->container->platform->getSessionVar($sessionKey, null, $this->container->componentName);
 		$this->container->platform->setSessionVar($sessionKey, null, $this->container->componentName);
 
 		if (!empty($itemData))
@@ -491,8 +507,9 @@ class DataController extends Controller
 	 * then the form layout is used to edit the result.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function edit()
+	public function edit(): void
 	{
 		// Load the model
 		/** @var DataModel $model */
@@ -514,7 +531,7 @@ class DataController extends Controller
 
 			$model->lock();
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			// Redirect on error
 			if ($customURL = $this->input->getBase64('returnurl', ''))
@@ -522,7 +539,7 @@ class DataController extends Controller
 				$customURL = base64_decode($customURL);
 			}
 
-			$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName.'&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+			$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 			$this->setRedirect($url, $e->getMessage(), 'error');
 
 			return;
@@ -540,7 +557,7 @@ class DataController extends Controller
 
 		// Get temporary data from the session, set if the save failed and we're redirected back here
 		$sessionKey = $this->viewName . '.savedata';
-		$itemData = $this->container->platform->getSessionVar($sessionKey, null, $this->container->componentName);
+		$itemData   = $this->container->platform->getSessionVar($sessionKey, null, $this->container->componentName);
 		$this->container->platform->setSessionVar($sessionKey, null, $this->container->componentName);
 
 		if (!empty($itemData))
@@ -556,8 +573,9 @@ class DataController extends Controller
 	 * Save the incoming data and then return to the Edit task
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function apply()
+	public function apply(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -568,7 +586,7 @@ class DataController extends Controller
 			return;
 		}
 
-		$id = $this->input->get('id', 0, 'int');
+		$id      = $this->input->get('id', 0, 'int');
 		$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_SAVED');
 
 		if ($customURL = $this->input->getBase64('returnurl', ''))
@@ -584,8 +602,9 @@ class DataController extends Controller
 	 * Duplicates selected items
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function copy()
+	public function copy(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -606,10 +625,10 @@ class DataController extends Controller
 				$model->copy();
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
-			$error = $e->getMessage();
+			$error  = $e->getMessage();
 		}
 
 		// Redirect
@@ -635,8 +654,9 @@ class DataController extends Controller
 	 * Save the incoming data and then return to the Browse task
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function save()
+	public function save(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -661,15 +681,16 @@ class DataController extends Controller
 	 * Save the incoming data and then return to the Add task
 	 *
 	 * @return  bool
+	 * @throws Exception
 	 */
-	public function savenew()
+	public function savenew(): bool
 	{
 		// CSRF prevention
 		$this->csrfProtection();
 
 		if (!$this->applySave())
 		{
-			return;
+			return false;
 		}
 
 		$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_SAVED');
@@ -681,67 +702,70 @@ class DataController extends Controller
 
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->singularize($this->view) . '&task=add' . $this->getItemidURLSuffix();
 		$this->setRedirect($url, Text::_($textKey));
+
+		return true;
 	}
 
-    /**
-     * Save the incoming data as a copy of the given model and then redirect to the copied object edit view
-     *
-     * @return  bool
-     */
-    public function save2copy()
-    {
-        // CSRF prevention
-        $this->csrfProtection();
+	/**
+	 * Save the incoming data as a copy of the given model and then redirect to the copied object edit view
+	 *
+	 * @return  bool
+	 * @throws Exception
+	 */
+	public function save2copy(): bool
+	{
+		// CSRF prevention
+		$this->csrfProtection();
 
-        $model = $this->getModel()->savestate(false);
-        $ids = $this->getIDsFromRequest($model, true);
-        $data   = $this->input->getData();
+		$model = $this->getModel()->savestate(false);
+		$ids   = $this->getIDsFromRequest($model, true);
+		$data  = $this->input->getData();
 
-        unset($data[$model->getIdFieldName()]);
+		unset($data[$model->getIdFieldName()]);
 
-        $error = null;
+		$error = null;
 
-        try
-        {
-            $status = true;
+		try
+		{
+			$status = true;
 
-            foreach ($ids as $id)
-            {
-                $model->find($id);
-                $model = $model->copy($data);
-            }
-        }
-        catch (\Exception $e)
-        {
-            $status = false;
-            $error = $e->getMessage();
-        }
+			foreach ($ids as $id)
+			{
+				$model->find($id);
+				$model = $model->copy($data);
+			}
+		}
+		catch (Exception $e)
+		{
+			$status = false;
+			$error  = $e->getMessage();
+		}
 
-        // Redirect
-        if ($customURL = $this->input->getBase64('returnurl', ''))
-        {
-            $customURL = base64_decode($customURL);
-        }
+		// Redirect
+		if ($customURL = $this->input->getBase64('returnurl', ''))
+		{
+			$customURL = base64_decode($customURL);
+		}
 
-        $url = !empty($customURL) ? $customURL : $url = 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=edit&id=' . $model->getId() . $this->getItemidURLSuffix();
+		$url = !empty($customURL) ? $customURL : $url = 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=edit&id=' . $model->getId() . $this->getItemidURLSuffix();
 
-        if (!$status)
-        {
-            $this->setRedirect($url, $error, 'error');
-        }
-        else
-        {
-            $textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_COPIED');
-            $this->setRedirect($url, Text::_($textKey));
-        }
-    }
+		if (!$status)
+		{
+			$this->setRedirect($url, $error, 'error');
+		}
+		else
+		{
+			$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_COPIED');
+			$this->setRedirect($url, Text::_($textKey));
+		}
+	}
 
 	/**
 	 * Cancel the edit, check in the record and return to the Browse task
 	 *
 	 * @return  void
 	 */
-	public function cancel()
+	public function cancel(): void
 	{
 		$model = $this->getModel()->tmpInstance()->savestate(false);
 
@@ -794,8 +818,9 @@ class DataController extends Controller
 	 * Publish (set enabled = 1) an item.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function publish()
+	public function publish(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -822,7 +847,7 @@ class DataController extends Controller
 				$model->publish();
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
 			$error  = $e->getMessage();
@@ -850,8 +875,9 @@ class DataController extends Controller
 	 * Unpublish (set enabled = 0) an item.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function unpublish()
+	public function unpublish(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -878,7 +904,7 @@ class DataController extends Controller
 				$model->unpublish();
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
 			$error  = $e->getMessage();
@@ -906,8 +932,9 @@ class DataController extends Controller
 	 * Archive (set enabled = 2) an item.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function archive()
+	public function archive(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -934,7 +961,7 @@ class DataController extends Controller
 				$model->archive();
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
 			$error  = $e->getMessage();
@@ -962,8 +989,9 @@ class DataController extends Controller
 	 * Trash (set enabled = -2) an item.
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function trash()
+	public function trash(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -990,7 +1018,7 @@ class DataController extends Controller
 				$model->trash();
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
 			$error  = $e->getMessage();
@@ -1018,8 +1046,9 @@ class DataController extends Controller
 	 * Check in (unlock) items
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function checkin()
+	public function checkin(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -1038,7 +1067,7 @@ class DataController extends Controller
 				$model->checkIn();
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
 			$error  = $e->getMessage();
@@ -1066,8 +1095,9 @@ class DataController extends Controller
 	 * Saves the order of the items
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function saveorder()
+	public function saveorder(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -1076,10 +1106,10 @@ class DataController extends Controller
 		$msg    = null;
 		$model  = $this->getModel()->savestate(false);
 		$ids    = $this->getIDsFromRequest($model, false);
-		$orders = $this->input->get('order', array(), 'array');
+		$orders = $this->input->get('order', [], 'array');
 
 		// Before saving the order, I have to check I the table really supports the ordering feature
-		if(!$model->hasField('ordering'))
+		if (!$model->hasField('ordering'))
 		{
 			$msg  = sprintf('%s does not support ordering.', $model->getTableName());
 			$type = 'error';
@@ -1096,7 +1126,7 @@ class DataController extends Controller
 					for ($i = 0; $i < $n; $i++)
 					{
 						$item     = $model->find($ids[$i]);
-						$neworder = (int)$orders[$i];
+						$neworder = (int) $orders[$i];
 
 						if (!($item instanceof DataModel))
 						{
@@ -1121,7 +1151,7 @@ class DataController extends Controller
 
 				$model->reorder();
 			}
-			catch(\Exception $e)
+			catch (Exception $e)
 			{
 				$msg  = $e->getMessage();
 				$type = 'error';
@@ -1134,7 +1164,7 @@ class DataController extends Controller
 			$customURL = base64_decode($customURL);
 		}
 
-		$url    = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 
 		$this->setRedirect($url, $msg, $type);
 	}
@@ -1143,8 +1173,9 @@ class DataController extends Controller
 	 * Moves selected items one position down the ordering list
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function orderdown()
+	public function orderdown(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -1170,10 +1201,10 @@ class DataController extends Controller
 			$model->move(1);
 			$status = true;
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
-			$error = $e->getMessage();
+			$error  = $e->getMessage();
 		}
 
 		// Redirect
@@ -1198,8 +1229,9 @@ class DataController extends Controller
 	 * Moves selected items one position up the ordering list
 	 *
 	 * @return  void
+	 * @throws Exception
 	 */
-	public function orderup()
+	public function orderup(): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
@@ -1225,10 +1257,10 @@ class DataController extends Controller
 			$model->move(-1);
 			$status = true;
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
-			$error = $e->getMessage();
+			$error  = $e->getMessage();
 		}
 
 		// Redirect
@@ -1255,7 +1287,7 @@ class DataController extends Controller
 	 *
 	 * @return  void
 	 */
-	public function remove()
+	public function remove(): void
 	{
 		$this->deleteOrTrash(false);
 	}
@@ -1266,18 +1298,25 @@ class DataController extends Controller
 	 *
 	 * @return  void
 	 */
-	public function forceRemove()
+	public function forceRemove(): void
 	{
 		$this->deleteOrTrash(true);
 	}
 
-	protected function deleteOrTrash($forceDelete = false)
+	/**
+	 * Automatically decides whether to trash or delete a record based in the $forceDelete parameter
+	 *
+	 * @param bool $forceDelete Should I delete the record? If false, the record will be trashed instead.
+	 *
+	 * @throws Exception
+	 */
+	protected function deleteOrTrash(bool $forceDelete = false): void
 	{
 		// CSRF prevention
 		$this->csrfProtection();
 
 		$model = $this->getModel()->savestate(false);
-		$ids = $this->getIDsFromRequest($model, false);
+		$ids   = $this->getIDsFromRequest($model, false);
 		$error = null;
 
 		try
@@ -1305,10 +1344,10 @@ class DataController extends Controller
 				}
 			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
-			$error = $e->getMessage();
+			$error  = $e->getMessage();
 		}
 
 		// Redirect
@@ -1335,7 +1374,7 @@ class DataController extends Controller
 	 *
 	 * @return  bool True on success
 	 */
-	protected function applySave()
+	protected function applySave(): bool
 	{
 		// Load the model
 		$model = $this->getModel()->savestate(false);
@@ -1364,7 +1403,7 @@ class DataController extends Controller
 				}
 
 				$eventName = 'onAfterApplySaveError';
-				$result = $this->triggerEvent($eventName, array(&$data, $id, $e));
+				$result    = $this->triggerEvent($eventName, [&$data, $id, $e]);
 
 				$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 				$this->setRedirect($url, $e->getMessage(), 'error');
@@ -1381,12 +1420,12 @@ class DataController extends Controller
 
 		// Save the data
 		$status = true;
-		$error = null;
+		$error  = null;
 
 		try
 		{
 			$eventName = 'onBeforeApplySave';
-			$result = $this->triggerEvent($eventName, array(&$data));
+			$result    = $this->triggerEvent($eventName, [&$data]);
 
 			if ($id != 0)
 			{
@@ -1398,17 +1437,17 @@ class DataController extends Controller
 			$model->save($data);
 
 			$eventName = 'onAfterApplySave';
-			$result = $this->triggerEvent($eventName, array(&$data, $model->getId()));
+			$result    = $this->triggerEvent($eventName, [&$data, $model->getId()]);
 
 			$this->input->set('id', $model->getId());
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$status = false;
-			$error = $e->getMessage();
+			$error  = $e->getMessage();
 
 			$eventName = 'onAfterApplySaveError';
-			$result = $this->triggerEvent($eventName, array(&$data, $model->getId(), $e));
+			$result    = $this->triggerEvent($eventName, [&$data, $model->getId(), $e]);
 		}
 
 		if (!$status)
@@ -1455,17 +1494,17 @@ class DataController extends Controller
 	 * Returns a named Model object. Makes sure that the Model is a database-aware model, throwing an exception
 	 * otherwise, when $name is null.
 	 *
-	 * @param   string $name     The Model name. If null we'll use the modelName
+	 * @param string $name       The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param   array  $config   Configuration parameters to the Model. If skipped
+	 * @param array  $config     Configuration parameters to the Model. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  DataModel  The instance of the Model known to this Controller
 	 *
 	 * @throws  NotADataModel  When the model type doesn't match our expectations
 	 */
-	public function getModel($name = null, $config = array())
+	public function getModel(?string $name = null, array $config = [])
 	{
 		$model = parent::getModel($name, $config);
 
@@ -1483,16 +1522,16 @@ class DataController extends Controller
 	 * @param DataModel $model      The model where the record will be loaded
 	 * @param bool      $loadRecord When true, the record matching the *first* ID found will be loaded into $model
 	 *
-	 * @return array
+	 * @return int[]
 	 */
-	public function getIDsFromRequest(DataModel &$model, $loadRecord = true)
+	public function getIDsFromRequest(DataModel &$model, bool $loadRecord = true): array
 	{
 		// Get the ID or list of IDs from the request or the configuration
-		$cid = $this->input->get('cid', array(), 'array');
-		$id = $this->input->getInt('id', 0);
+		$cid = $this->input->get('cid', [], 'array');
+		$id  = $this->input->getInt('id', 0);
 		$kid = $this->input->getInt($model->getIdFieldName(), 0);
 
-		$ids = array();
+		$ids = [];
 
 		if (is_array($cid) && !empty($cid))
 		{
@@ -1502,21 +1541,21 @@ class DataController extends Controller
 		{
 			if (empty($id))
 			{
-				if(!empty($kid))
+				if (!empty($kid))
 				{
-					$ids = array($kid);
+					$ids = [$kid];
 				}
 			}
 			else
 			{
-				$ids = array($id);
+				$ids = [$id];
 			}
 		}
 
 		if ($loadRecord && !empty($ids))
 		{
 			$id = reset($ids);
-			$model->find(array('id' => $id));
+			$model->find(['id' => $id]);
 		}
 
 		return $ids;
@@ -1529,33 +1568,33 @@ class DataController extends Controller
 	 *
 	 * @since   2.2
 	 */
-	public function loadhistory()
+	public function loadhistory(): bool
 	{
 		$model = $this->getModel();
 		$model->lock();
 
-        $historyId = $this->input->get('version_id', null, 'integer');
+		$historyId = $this->input->get('version_id', null, 'integer');
 		$alias     = $this->container->componentName . '.' . $this->view;
-        $returnUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+		$returnUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 
-        if ($customURL = $this->input->getBase64('returnurl', ''))
-        {
-            $customURL = base64_decode($customURL);
-        }
+		if ($customURL = $this->input->getBase64('returnurl', ''))
+		{
+			$customURL = base64_decode($customURL);
+		}
 
-        if(!empty($customURL))
-        {
-            $returnUrl = $customURL;
-        }
+		if (!empty($customURL))
+		{
+			$returnUrl = $customURL;
+		}
 
 		try
 		{
 			$model->loadhistory($historyId, $alias);
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$this->setRedirect($returnUrl, $e->getMessage(), 'error');
-            $model->unlock();
+			$model->unlock();
 
 			return false;
 		}
@@ -1581,7 +1620,7 @@ class DataController extends Controller
 	 *
 	 * @return  string  The &Itemid=123 URL suffix, or an empty string if Itemid is not applicable
 	 */
-	public function getItemidURLSuffix()
+	public function getItemidURLSuffix(): string
 	{
 		if ($this->container->platform->isFrontend() && ($this->input->getCmd('Itemid', 0) != 0))
 		{
@@ -1624,7 +1663,7 @@ class DataController extends Controller
 		}
 
 		$user = $this->container->platform->getUser();
-		$uid = 0;
+		$uid  = 0;
 
 		if ($model->hasField('user_id'))
 		{

@@ -5,19 +5,20 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\Controller\Exception;
+namespace FOF40\Controller\Exception;
 
 use Exception;
 use Joomla\CMS\Language\Text;
+use RuntimeException;
 
 defined('_JEXEC') or die;
 
 /**
  * Exception thrown when the provided Model is locked for writing by another user
  */
-class LockedRecord extends \RuntimeException
+class LockedRecord extends RuntimeException
 {
-	public function __construct($message = "", $code = 403, Exception $previous = null)
+	public function __construct(string $message = "", int $code = 403, Exception $previous = null)
 	{
 		if (empty($message))
 		{
