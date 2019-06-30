@@ -29,6 +29,12 @@
     [X] IP
     [X] Controller
     [ ] View
+        [ ] Exception/
+        [ ] Engine/
+        [ ] Compiler/
+        [ ] DataView/
+        [ ] View
+        [ ] ViewTemplateFinder
     [ ] Model
 
 
