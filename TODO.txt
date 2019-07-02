@@ -29,7 +29,7 @@
     [X] IP
     [X] Controller
     [ ] View
-        [ ] Exception/
+        [X] Exception/
         [ ] Engine/
         [ ] Compiler/
         [ ] DataView/

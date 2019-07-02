@@ -500,7 +500,7 @@ class View
 
 		if (!array_key_exists($modelName, $this->modelInstances))
 		{
-			throw new ModelNotFound($modelName, $this->name);
+			throw new ModelNotFound($modelName ?? '', $this->name ?? '');
 		}
 
 		return $this->modelInstances[$modelName];

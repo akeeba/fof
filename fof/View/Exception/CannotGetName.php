@@ -5,19 +5,20 @@
  * @license     GNU GPL version 3 or later
  */
 
-namespace  FOF40\View\Exception;
+namespace FOF40\View\Exception;
 
 use Exception;
 use Joomla\CMS\Language\Text;
+use RuntimeException;
 
 defined('_JEXEC') or die;
 
 /**
  * Exception thrown when we can't get a Controller's name
  */
-class CannotGetName extends \RuntimeException
+class CannotGetName extends RuntimeException
 {
-	public function __construct($message = "", $code = 500, Exception $previous = null)
+	public function __construct(string $message = "", int $code = 500, Exception $previous = null)
 	{
 		if (empty($message))
 		{

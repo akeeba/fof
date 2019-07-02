@@ -8,6 +8,7 @@
 namespace  FOF40\View\Exception;
 
 use Exception;
+use InvalidArgumentException;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -15,9 +16,9 @@ defined('_JEXEC') or die;
 /**
  * Exception thrown when we can't figure out which engine to use for a view template
  */
-class UnrecognisedExtension extends \InvalidArgumentException
+class UnrecognisedExtension extends InvalidArgumentException
 {
-	public function __construct($path, $code = 500, Exception $previous = null)
+	public function __construct(string $path, int $code = 500, Exception $previous = null)
 	{
 		$message = Text::sprintf('LIB_FOF40_VIEW_UNRECOGNISEDEXTENSION', $path);
 
