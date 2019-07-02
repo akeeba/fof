@@ -30,8 +30,8 @@
     [X] Controller
     [ ] View
         [X] Exception/
+        [X] Compiler/
         [ ] Engine/
-        [ ] Compiler/
         [ ] DataView/
         [ ] View
         [ ] ViewTemplateFinder
