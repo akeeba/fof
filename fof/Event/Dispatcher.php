@@ -209,7 +209,7 @@ class Dispatcher implements Observable
 			}
 
 			// Call the event handler and add its output to the return value.
-			$result[] = call_user_func_array([$observer, $event], $args);
+			$result[] = fof4_call_user_func_array([$observer, $event], $args);
 		}
 
 		// Return the observers' result in an array
@@ -254,7 +254,7 @@ class Dispatcher implements Observable
 			}
 
 			// Call the event handler and add its output to the return value.
-			$result = call_user_func_array([$observer, $event], $args);
+			$result = fof4_call_user_func_array([$observer, $event], $args);
 
 			if (!is_null($result))
 			{

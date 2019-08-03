@@ -244,7 +244,7 @@ class Dispatcher
 		// If there is an object method for this event, call it
 		if (method_exists($this, $event))
 		{
-			$result = call_user_func_array([$this, $event], $arguments);
+			$result = fof4_call_user_func_array([$this, $event], $arguments);
 		}
 
 		if ($result === false)
