@@ -53,15 +53,15 @@ abstract class FEFHelperSelect
 	 *
 	 * @see     JFormFieldRadio
 	 */
-	public static function booleanlist(string $name, $attribs = [], ?string $selected = null,
-	                                   string $yes = 'JYES', string $no = 'JNO', $id = false): string
+	public static function booleanlist($name, $attribs = array(), $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
 	{
-		$arr = [
-			HTMLHelper::_('FEFHelper.select.option', '0', Text::_($no)),
-			HTMLHelper::_('FEFHelper.select.option', '1', Text::_($yes)),
+		$options     = [
+			JHtml::_('FEFHelper.select.option', '0', JText::_($no)),
+			JHtml::_('FEFHelper.select.option', '1', JText::_($yes)),
 		];
+		$attribs = array_merge(['forSelect' => 1], $attribs);
 
-		return HTMLHelper::_('FEFHelper.select.radiolist', $arr, $name, $attribs, 'value', 'text', (int) $selected, $id);
+		return JHtml::_('FEFHelper.select.radiolist', $options, $name, $attribs, 'value', 'text', (int) $selected, $id);
 	}
 
 	/**
@@ -660,21 +660,28 @@ abstract class FEFHelperSelect
 	/**
 	 * Generates an HTML radio list.
 	 *
-	 * @param array             $data      An array of objects
-	 * @param string            $name      The value of the HTML name attribute
-	 * @param string|array|null $attribs   Additional HTML attributes for the `<select>` tag
-	 * @param mixed             $optKey    The key that is selected
-	 * @param string            $optText   The name of the object variable for the option value
-	 * @param string            $selected  The name of the object variable for the option text
-	 * @param boolean           $idtag     Value of the field id or null by default
-	 * @param boolean           $translate True if options will be translated
+	 * @param   array    $data       An array of objects
+	 * @param   string   $name       The value of the HTML name attribute
+	 * @param   string   $attribs    Additional HTML attributes for the `<select>` tag
+	 * @param   mixed    $optKey     The key that is selected
+	 * @param   string   $optText    The name of the object variable for the option value
+	 * @param   string   $selected   The name of the object variable for the option text
+	 * @param   boolean  $idtag      Value of the field id or null by default
+	 * @param   boolean  $translate  True if options will be translated
 	 *
 	 * @return  string  HTML for the select list
 	 */
-	public static function radiolist(array $data, string $name, $attribs = null, string $optKey = 'value',
-	                                 string $optText = 'text', ?string $selected = null, $idtag = false,
-	                                 bool $translate = false): string
+	public static function radiolist($data, $name, $attribs = null, $optKey = 'value', $optText = 'text', $selected = null, $idtag = false,
+	                                 $translate = false)
 	{
+
+		$forSelect = false;
+
+		if (isset($attribs['forSelect']))
+		{
+			$forSelect = (bool) ($attribs['forSelect']);
+			unset($attribs['forSelect']);
+		}
 
 		if (is_array($attribs))
 		{
@@ -688,7 +695,7 @@ abstract class FEFHelperSelect
 		foreach ($data as $optionObject)
 		{
 			$optionValue = $optionObject->$optKey;
-			$labelText   = $translate ? Text::_($optionObject->$optText) : $optionObject->$optText;
+			$labelText   = $translate ? JText::_($optionObject->$optText) : $optionObject->$optText;
 			$id          = (isset($optionObject->id) ? $optionObject->id : null);
 
 			$extra = '';
@@ -712,10 +719,20 @@ abstract class FEFHelperSelect
 				$extra .= ((string) $optionValue === (string) $selected ? ' checked="checked" ' : '');
 			}
 
-			$html .= "\n\t" . '<label for="' . $id . '" id="' . $id . '-lbl">';
-			$html .= "\n\t\n\t" . '<input type="radio" name="' . $name . '" id="' . $id . '" value="' . $optionValue . '" ' . $extra
-				. $attribs . ' />' . $labelText;
-			$html .= "\n\t" . '</label>';
+			if ($forSelect)
+			{
+				$html .= "\n\t" . '<input type="radio" name="' . $name . '" id="' . $id . '" value="' . $optionValue . '" ' . $extra
+					. $attribs . ' />';
+				$html .= "\n\t" . '<label for="' . $id . '" id="' . $id . '-lbl">' . $labelText . '</label>';
+			}
+			else
+			{
+				$html .= "\n\t" . '<label for="' . $id . '" id="' . $id . '-lbl">';
+				$html .= "\n\t\n\t" . '<input type="radio" name="' . $name . '" id="' . $id . '" value="' . $optionValue . '" ' . $extra
+					. $attribs . ' />' . $labelText;
+				$html .= "\n\t" . '</label>';
+
+			}
 		}
 
 		$html .= "\n";
