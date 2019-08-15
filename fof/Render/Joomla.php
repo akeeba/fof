@@ -178,12 +178,12 @@ class Joomla extends RenderBase implements RenderInterface
 	 * Renders the submenu (link bar) in F0F's classic style, using a Bootstrapped
 	 * tab bar.
 	 *
-	 * @param string $view The active view name
-	 * @param string $task The current task
+	 * @param   string    $view    The active view name
+	 * @param   string    $task    The current task
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbar_classic(string $view, string $task): void
+	protected function renderLinkbar_classic($view, $task)
 	{
 		$platform = $this->container->platform;
 
@@ -222,7 +222,7 @@ class Joomla extends RenderBase implements RenderInterface
 				if ($dropdown)
 				{
 					echo "<li";
-					$class = 'dropdown';
+					$class = 'nav-item dropdown';
 
 					if ($link['active'])
 					{
@@ -231,7 +231,7 @@ class Joomla extends RenderBase implements RenderInterface
 
 					echo ' class="' . $class . '">';
 
-					echo '<a class="dropdown-toggle" data-toggle="dropdown" href="#">';
+					echo '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">';
 
 					if ($link['icon'])
 					{
@@ -246,14 +246,14 @@ class Joomla extends RenderBase implements RenderInterface
 
 					foreach ($link['items'] as $item)
 					{
-						echo "<li";
+						echo "<li class=\"dropdown-item";
 
 						if ($item['active'])
 						{
-							echo ' class="active"';
+							echo ' active';
 						}
 
-						echo ">";
+						echo "\">";
 
 						if ($item['icon'])
 						{
