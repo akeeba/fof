@@ -11,6 +11,7 @@ composer.lock
 /fof/version.txt
 # Internal language symlinks
 /fof/language/en-GB
+/plugins/user/foftoken/language/**
 
 ### Release packages
 /release/*.zip

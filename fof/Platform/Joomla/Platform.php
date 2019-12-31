@@ -22,6 +22,7 @@ use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Authentication\Authentication;
+use Joomla\CMS\Authentication\AuthenticationResponse;
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -671,7 +672,7 @@ class Platform extends BasePlatform
 	 */
 	public function isBackend(): bool
 	{
-		list($isCli, $isAdmin, $isApi) = $this->isCliAdminApi();
+		[$isCli, $isAdmin, $isApi] = $this->isCliAdminApi();
 
 		return $isAdmin && !$isCli && !$isApi;
 	}
@@ -688,7 +689,7 @@ class Platform extends BasePlatform
 	 */
 	public function isFrontend(bool $strict = false): bool
 	{
-		list($isCli, $isAdmin, $isApi) = $this->isCliAdminApi();
+		[$isCli, $isAdmin, $isApi] = $this->isCliAdminApi();
 
 		if ($strict)
 		{
@@ -705,7 +706,7 @@ class Platform extends BasePlatform
 	 */
 	public function isCli(): bool
 	{
-		list($isCli, $isAdmin, $isApi) = $this->isCliAdminApi();
+		[$isCli, $isAdmin, $isApi] = $this->isCliAdminApi();
 
 		return !$isAdmin && !$isApi && $isCli;
 	}
@@ -717,7 +718,7 @@ class Platform extends BasePlatform
 	 */
 	public function isApi(): bool
 	{
-		list($isCli, $isAdmin, $isApi) = $this->isCliAdminApi();
+		[$isCli, $isAdmin, $isApi] = $this->isCliAdminApi();
 
 		return $isApi && !$isAdmin && !$isCli;
 	}
@@ -853,19 +854,63 @@ class Platform extends BasePlatform
 	 */
 	public function loginUser(array $authInfo): bool
 	{
-		$options      = ['remember' => false];
-		$authenticate = Authentication::getInstance();
-		$response     = $authenticate->authenticate($authInfo, $options);
+		\JLoader::import('joomla.user.authentication');
+
+		$options = ['remember' => false];
+
+		$response         = new AuthenticationResponse();
+		$response->type   = 'fof';
+		$response->status = Authentication::STATUS_FAILURE;
+
+		if (isset($authInfo['username']))
+		{
+			$authenticate = Authentication::getInstance();
+			$response     = $authenticate->authenticate($authInfo, $options);
+		}
+
+		// Use our own authentication handler, onFOFUserAuthenticate, as a fallback
+		if ($response->status != Authentication::STATUS_SUCCESS)
+		{
+			$this->container->platform->importPlugin('user');
+			$this->container->platform->importPlugin('fof');
+			$pluginResults = $this->container->platform->runPlugins('onFOFUserAuthenticate', [$authInfo, $options]);
+
+			/**
+			 * Loop through all plugin results until we find a successful login. On failure we fall back to Joomla's
+			 * previous authentication response.
+			 */
+			foreach ($pluginResults as $result)
+			{
+				if (empty($result))
+				{
+					continue;
+				}
+
+				if (!is_object($result) || !($result instanceof AuthenticationResponse))
+				{
+					continue;
+				}
+
+				if ($result->status != Authentication::STATUS_SUCCESS)
+				{
+					continue;
+				}
+
+				$response = $result;
+
+				break;
+			}
+		}
 
 		// User failed to authenticate: maybe he enabled two factor authentication?
 		// Let's try again "manually", skipping the check vs two factor auth
 		// Due the big mess with encryption algorithms and libraries, we are doing this extra check only
 		// if we're in Joomla 2.5.18+ or 3.2.1+
-		if ($response->status != \JAuthentication::STATUS_SUCCESS && method_exists('\Joomla\CMS\User\UserHelper', 'verifyPassword'))
+		if ($response->status != Authentication::STATUS_SUCCESS && method_exists('\Joomla\CMS\User\UserHelper', 'verifyPassword'))
 		{
 			$db     = JoomlaFactory::getDbo();
 			$query  = $db->getQuery(true)
-				->select('id, password')
+				->select($db->qn(['id', 'password']))
 				->from('#__users')
 				->where('username=' . $db->quote($authInfo['username']));
 			$result = $db->setQuery($query)->loadObject();
@@ -877,7 +922,7 @@ class Platform extends BasePlatform
 				if ($match === true)
 				{
 					// Bring this in line with the rest of the system
-					$user               = User::getInstance($result->id);
+					$user               = $this->getUser($result->id);
 					$response->email    = $user->email;
 					$response->fullname = $user->name;
 
@@ -890,13 +935,13 @@ class Platform extends BasePlatform
 						$response->language = $user->getParam('language');
 					}
 
-					$response->status        = \JAuthentication::STATUS_SUCCESS;
+					$response->status        = Authentication::STATUS_SUCCESS;
 					$response->error_message = '';
 				}
 			}
 		}
 
-		if ($response->status == \JAuthentication::STATUS_SUCCESS)
+		if ($response->status == Authentication::STATUS_SUCCESS)
 		{
 			$this->importPlugin('user');
 			$results = $this->runPlugins('onLoginUser', [(array) $response, $options]);

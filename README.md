@@ -36,96 +36,42 @@ fairly certain FOF will be maintained and developed further.
 
 FOF 4 requires Joomla 3.8 or later and PHP 7.0 or later. It will not work on older Joomla and PHP versions.
 
-## How to contribute
+## FOF 2.x, 3.x, 4.x and Joomla 3
 
-Thank you for your interest in improving FOF! No matter how small or how big your contribution is, it has the potential to make a great positive impact to hundreds of people. In this short how-to we are going to answer your questions on making this positive change.
+Joomla 3 includes a very, **VERY** old version of FOF we have stopped developing in 2015 and declared End of Life in 
+2016. Please don't use that! That's what FOF looked liked in the early 2010's. This repository has a far better, much 
+newer version. And, yes, both versions can run side by side.
 
-### Which code should I be using?
+This warrants an explanation of the extensions you see in the Extensions, Manage page with FOF in their name:
 
-Always use the `development` branch in our [GitHub repository](https://github.com/akeeba/fof).
+* **FOF** (type: Library, version 2.4.3). This is the ancient version of FOF included in Joomla. It's installed in 
+  `libraries/fof`. It cannot and MUST NOT be removed. If you delete it your site will break – this is still used by some
+  core Joomla components, including Two Factor Authentication. 
+* **F0F** (type: Library). Note that this is F-zero-F. That's an old version of FOF 2.x, renamed so it can run next to
+  Joomla's even more outdated version. [It was a rather complicated affair](https://www.akeebabackup.com/news/1558-info-about-fof-and-f0f.html).
+  It's installed in `libraries/f0f` (f-zero-f). It should no longer be necessary but please do check first if you have
+  any very old extension still using it.
+* **file_fof30** (type: File). This is the current version of FOF 3. It's installed in  `libraries/fof30`. Do NOT remove
+  it manually. It will be uninstalled automatically when the last extension using it is removed. 
+* **FOF** (type: Library, version 3.x.y). This was the old package type of FOF 3. We switched to a file package in 2018
+  to address Joomla bricking your sites if it failed to fully update FOF. While we try to remove the leftover entry from
+  Joomla's Extensions, Manage page it's not always possible. If you see this entry please DO NOT try to remove it, you 
+  will break your site.
+* **User - FOF Token Management** (type: Plugin). This will be shipped with our extensions in 2020 to manage token
+  authentication for JSON API calls in Joomla 3. Please do not remove if you're using any Akeeba-branded extension.
+  Also, cool fact: this code has already been contributed to Joomla 4 for its brand new API application, meaning all
+  developers can use it automatically, without having to use FOF for their extensions.
 
-Before starting to fix / improve something make sure it's not already taken care of in this branch. The core value of FOF is having developers use their time productively.
+## FOF and Joomla 4
 
-### Contributing to the documentation
+Joomla 4, thankfully, no longer includes the ancient version of FOF Joomla 3 shipped with. You can use the latest 
+version of FOF 4 with Joomla 4.
 
-[The main documentation of FOF](https://github.com/akeeba/fof/wiki) is located in the [github wiki](https://github.com/akeeba/fof/wiki) in the Git repository.
+**Important!** We only work towards full compatibility with _stable_ versions of Joomla. Using FOF with pre-release
+versions of Joomla (alpha, beta, RC) may result in issues. If you have identified the issue to be coming from FOF and
+not your extensions feel free to file a Pull Request or an issue in this repository. Please be as specific and detailed
+as possible. 
 
-Make sure you read the "How do I submit a Pull Request" section to find out how to contribute your changes to the project.
+## Using FOF for your extensions
 
-### Code, docblocks and code style
-
-First make sure that you have checked out the latest development branch. Changes happen on a daily basis, often many times a day. Checking out the latest development branch will ensure you're not trying to improve something already taken care of.
-
-If you are going to touch docblocks and code style only please, please be careful not to make any accidental code changes. If you're dealing with docblocks it's easy for people with commit access to spot any issues; if they see a change in code lines they will know that they have to skip that when committing. Code style changes are actually much tougher as the committer has to go through the original and modified file line-by-line to make sure nothing got inadvertently changes. In order to help them please do small changes at any one time, ideally up to 100 lines of code or less. If you want to make many changes in many files break your work into smaller chunks. If unsure on what to do, create an issue first.
-
-If you are working on a code change it's always a good idea to first discuss this on the list with Nicholas. He's the lead architect of FOF and he's the most qualified to tell you if your intended change is something that can be included and in which version. Usually changes are included right away, unless there are backwards compatibility issues.
-
-Once you have made your changes please sure you read the "How do I submit a Pull Request" section to find out how to contribute your changes to the project.
-
-#### Unit Testing
-
-Unit Testing is an especially sensitive coding area. We'd recommend to first take a look at the [Unit Testing introductory presentation](http://prezi.com/qqv6dqkoqvl3/php-unit-testing-a-practical-approach/) by FOF contributor Davide Tampellini. It will get you up to speed with how testing works.
-
-All tests are stored in the [Tests](https://github.com/akeeba/fof/tree/development/Tests) directory of the Git repository. As you saw in the presentation the folder structure mirrors that of the fof directory of the Git repository.
-
-Once you have made your changes please sure you read the "How do I submit a Pull Request" section to find out how to contribute your changes to the project.
-
-### How do I submit a Pull Request (PR)?
-
-First things first, you need a GitHub user account. If you don't have one already... what are you waiting for? Just go to github.com, create your free account and log in.
-
-You will need to fork our Git repository. You can do this very easily by going to https://github.com/akeeba/fof and click the Fork button towards the upper right hand corner of the page. This will fork the FOF repository under your GitHub account.
-
-Make sure you clone the repository (the one under *your* account) in your computer. If you're not a heavy Git user don't worry, you can use the GitHub application on your Mac or Windows computer. If you're a Linux user you can just use the command line or your favourite Git client application.
-
-Before making any changes you will need to create a new branch. In the GitHub for Mac application you need to first go into your repository and click the branch name at the bottom right corner of the window. Initially you need to click on "development" to ensure that you are seeing the development, not the master, branch. Then click on it again and type in the name of the new branch, then press Enter. You can now make all of your changes in this branch.
-
-After you're done with your changes you need to publish your branch back to GitHub. Easy peasy! If you're using the GitHub application you need just two steps. First commit all your changed files, which adds them to your local branch. Then click on the Sync Branch button. When it stops spinning everything is uploaded to GitHub and you're ready to finally do your Pull Request!
-
-Now go to github.com, into the forked FOF repository under your user account. Click on the branch dropdown and select your branch. On its left you'll see a green icon with the tooltip "Compare & Review". Click it. Just fill in the title and description –hopefully giving as much information as possible about what you did and why– and your PR is now created! If you need to explain something in greater detail just send a list message.
-
-## Build instructions
-
-### Prerequisites
-
-In order to build the installation package of this library you need to have
-the following tools:
-
-* A command line environment. bash under Linux / Mac OS X works best. On Windows you will need to run most tools using an elevated privileges (administrator) command prompt.
-* The PHP CLI binary in your path
-* Command line Subversion and Git binaries(*)
-* PEAR and Phing installed, with the Net_FTP and VersionControl_SVN PEAR packages installed
-* libxml and libxslt tools if you intend to build the documentation PDF files
-
-You will also need the following path structure on your system:
-* `fof` This repository, a.k.a. MAIN directory
-* `buildfiles` [Akeeba Build Tools](https://github.com/akeeba/buildfiles). The name of the directory is important. This is where the master Phing script, also used by FOF to build packages, is located in.
-
-### Useful Phing tasks
-
-All of the following commands are to be run from the MAIN/build directory. Best used with a bash or zsh shell, you 
-should also be able to use PowerShell on Windows.
-
-You are advised to NOT distribute the library installation packages you have built yourselves with your components. It
-is best to only use the official library packages released by Akeeba Ltd.
-
-1. Creating a dev release installation package
-
-   This creates the installable ZIP packages of the component inside the
-   MAIN/release directory. It also takes care of initializing the repository
-   so you can symlink it to an existing Joomla! installation 
-
-		phing git
-		
-    Please note that the generated ZIP file is written to the `release` directory inside the repository's root.
-
-
-1. Symlink to a Joomla! installation
-
-   This symlinks to fof folder to your site's libraries/fof40 folder, allowing you to test your changes on a Joomla!
-   installation.
-
-		phing relink -Dsite=/path/to/site
-    
-    Where /path/to/site is the full path to your site's root folder. It must be in the same drive (Windows), volume 
-    (macOS) or mount point (Linux, BSD, etc). 
+If you want to use FOF to build your extensions and include it with them please read our Wiki for more information. 
