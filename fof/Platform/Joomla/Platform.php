@@ -1274,7 +1274,7 @@ class Platform extends BasePlatform
 	 */
 	public function setSessionVar(string $name, $value = null, string $namespace = 'default'): void
 	{
-		if ($this->isCli())
+		if ($this->isCli() && !class_exists('FOFApplicationCLI'))
 		{
 			self::$fakeSession->set("$namespace.$name", $value);
 
@@ -1295,7 +1295,7 @@ class Platform extends BasePlatform
 	 */
 	public function getSessionVar(string $name, $default = null, $namespace = 'default')
 	{
-		if ($this->isCli())
+		if ($this->isCli() && !class_exists('FOFApplicationCLI'))
 		{
 			return self::$fakeSession->get("$namespace.$name", $default);
 		}

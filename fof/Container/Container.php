@@ -8,18 +8,25 @@
 namespace FOF40\Container;
 
 use FOF40\Autoloader\Autoloader;
+use FOF40\Configuration\Configuration;
 use FOF40\Container\Exception\NoComponent;
+use FOF40\Dispatcher\Dispatcher;
 use FOF40\Encrypt\EncryptService;
 use FOF40\Factory\FactoryInterface;
 use FOF40\Inflector\Inflector;
 use FOF40\Input\Input as FOFInput;
 use FOF40\Params\Params;
+use FOF40\Platform\FilesystemInterface;
 use FOF40\Platform\Joomla\Filesystem as JoomlaFilesystem;
+use FOF40\Platform\PlatformInterface;
 use FOF40\Render\RenderInterface;
 use FOF40\Template\Template;
+use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication as TransparentAuth;
 use FOF40\View\Compiler\Blade;
+use JDatabaseDriver;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Session\Session;
 use Joomla\Input\Input as JoomlaInput;
 use Joomla\Registry\Registry;
 
@@ -43,37 +50,38 @@ defined('_JEXEC') or die;
  *   </common>
  * </fof>
  *
- * The paths can use the variables %ROOT%, %PUBLIC%, %ADMIN%, %TMP%, %LOG% i.e. all the path keys returned by Platform's
+ * The paths can use the variables %ROOT%, %PUBLIC%, %ADMIN%, %TMP%, %LOG% i.e. all the path keys returned by
+ * Platform's
  * getPlatformBaseDirs() method in uppercase and surrounded by percent signs.
  *
  *
- * @property  string                                   $componentName      The name of the component (com_something)
- * @property  string                                   $bareComponentName  The name of the component without com_ (something)
- * @property  string                                   $componentNamespace The namespace of the component's classes (\Foobar)
- * @property  string                                   $frontEndPath       The absolute path to the front-end files
- * @property  string                                   $backEndPath        The absolute path to the back-end files
- * @property  string                                   $thisPath           The preferred path. Backend for Admin application, frontend otherwise
- * @property  string                                   $rendererClass      The fully qualified class name of the view renderer we'll be using. Must implement FOF40\Render\RenderInterface.
- * @property  string                                   $factoryClass       The fully qualified class name of the MVC Factory object, default is FOF40\Factory\BasicFactory.
- * @property  string                                   $platformClass      The fully qualified class name of the Platform abstraction object, default is FOF40\Platform\Joomla\Platform.
- * @property  string                                   $mediaVersion       A version string for media files in forms. Default: md5 of release version, release date and site secret (if found)
+ * @property  string                   $componentName      The name of the component (com_something)
+ * @property  string                   $bareComponentName  The name of the component without com_ (something)
+ * @property  string                   $componentNamespace The namespace of the component's classes (\Foobar)
+ * @property  string                   $frontEndPath       The absolute path to the front-end files
+ * @property  string                   $backEndPath        The absolute path to the back-end files
+ * @property  string                   $thisPath           The preferred path (e.g. backEndPath for Admin application)
+ * @property  string                   $rendererClass      View renderer classname. Must implement RenderInterface
+ * @property  string                   $factoryClass       MVC Factory classname, default FOF40\Factory\BasicFactory
+ * @property  string                   $platformClass      Platform classname, default FOF40\Platform\Joomla\Platform
+ * @property  string                   $mediaVersion       A version string for media files
  *
- * @property-read  \FOF40\Configuration\Configuration  $appConfig          The application configuration registry
- * @property-read  \FOF40\View\Compiler\Blade          $blade              The Blade view template compiler engine
- * @property-read  \JDatabaseDriver                    $db                 The database connection object
- * @property-read  \FOF40\Dispatcher\Dispatcher        $dispatcher         The component's dispatcher
- * @property-read  \FOF40\Factory\FactoryInterface     $factory            The MVC object factory
- * @property-read  \FOF40\Platform\FilesystemInterface $filesystem         The filesystem abstraction layer object
- * @property-read  \FOF40\Inflector\Inflector          $inflector          The English word inflector (pluralise / singularise words etc)
- * @property-read  \FOF40\Params\Params                $params             The component's params
- * @property-read  FOFInput                            $input              The input object
- * @property-read  \FOF40\Platform\PlatformInterface   $platform           The platform abstraction layer object
- * @property-read  \FOF40\Render\RenderInterface       $renderer           The view renderer
- * @property-read  \Joomla\CMS\Session\Session         $session            Joomla! session storage
- * @property-read  \FOF40\Template\Template            $template           The template helper
- * @property-read  TransparentAuth                     $transparentAuth    Transparent authentication handler
- * @property-read  \FOF40\Toolbar\Toolbar              $toolbar            The component's toolbar
- * @property-read  EncryptService                      $crypto             The component's data encryption service
+ * @property-read  Configuration       $appConfig          The application configuration registry
+ * @property-read  Blade               $blade              The Blade view template compiler engine
+ * @property-read  JDatabaseDriver     $db                 The database connection object
+ * @property-read  Dispatcher          $dispatcher         The component's dispatcher
+ * @property-read  FactoryInterface    $factory            The MVC object factory
+ * @property-read  FilesystemInterface $filesystem         The filesystem abstraction layer object
+ * @property-read  Inflector           $inflector          The English word inflector
+ * @property-read  Params              $params             The component's params
+ * @property-read  FOFInput            $input              The input object
+ * @property-read  PlatformInterface   $platform           The platform abstraction layer object
+ * @property-read  RenderInterface     $renderer           The view renderer
+ * @property-read  Session             $session            Joomla! session storage
+ * @property-read  Template            $template           The template helper
+ * @property-read  TransparentAuth     $transparentAuth    Transparent authentication handler
+ * @property-read  Toolbar             $toolbar            The component's toolbar
+ * @property-read  EncryptService      $crypto             The component's data encryption service
  */
 class Container extends ContainerBase
 {
@@ -613,7 +621,8 @@ END;
 		// Session service
 		if (!isset($this['session']))
 		{
-			$this['session'] = function () {
+			$this['session'] = function (Container $c)
+			{
 				return JoomlaFactory::getSession();
 			};
 		}
