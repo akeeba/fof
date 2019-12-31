@@ -27,4 +27,4 @@ composer.lock
 /Tests/debug.txt
 
 ### Composer dependencies
-/vendor/*
+/vendor/**
