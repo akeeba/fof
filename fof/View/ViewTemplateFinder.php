@@ -281,15 +281,17 @@ class ViewTemplateFinder
 			$paths[] = $templatePath . '/' . $parts['view'];
 		}
 
-		// Add this side of the application
-		$paths[] = ($isAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/ViewTemplates/' . $parts['view'];
-		$paths[] = ($isAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/View/' . $parts['view'] . '/tmpl';
+		// Add the requested side of the application
+		$requestedAdmin = ($parts['admin'] == -1) ? $isAdmin : $parts['admin'];
+
+		$paths[] = ($requestedAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/ViewTemplates/' . $parts['view'];
+		$paths[] = ($requestedAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/View/' . $parts['view'] . '/tmpl';
 
 		// Add the other side of the application for "any:" URIs
 		if ($parts['admin'] == -1)
 		{
-			$paths[] = ($isAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/ViewTemplates/' . $parts['view'];
-			$paths[] = ($isAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/View/' . $parts['view'] . '/tmpl';
+			$paths[] = ($requestedAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/ViewTemplates/' . $parts['view'];
+			$paths[] = ($requestedAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/View/' . $parts['view'] . '/tmpl';
 		}
 
 		// Add extra paths
@@ -308,13 +310,6 @@ class ViewTemplateFinder
 			array_unshift($paths, str_replace($parts['template'], $layoutTemplate, $apath));
 		}
 
-		// Get the Joomla! version template suffixes
-		$jVersionSuffixes = array_merge($this->container->platform->getTemplateSuffixes(), ['']);
-		// Get the renderer name suffixes
-		$rendererNameSuffixes = [
-			'.' . $this->container->renderer->getInformation()->name,
-			''
-		];
 
 		$filesystem = $this->container->filesystem;
 
