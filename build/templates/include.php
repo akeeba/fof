@@ -31,7 +31,4 @@ if (!defined('FOF40_INCLUDED'))
 	{
 		Log::addLogger(array('text_file' => 'fof.log.php'), Log::ALL, array('fof'));
 	}
-
-	// Register the JHtml helpers path for the Akeeba Frontend Framework
-	HTMLHelper::addIncludePath(__DIR__ . '/Utils/FEFHelper');
 }
