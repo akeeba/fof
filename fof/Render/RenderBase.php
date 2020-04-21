@@ -176,7 +176,7 @@ abstract class RenderBase implements RenderInterface
 
 		$addClasses = array_map('trim', $addClasses);
 
-		$customClasses = implode(array_unique(array_merge($classes, $addClasses)), ' ');
+		$customClasses = implode(' ', array_unique(array_merge($classes, $addClasses)));
 
 		echo <<< HTML
 <div class="$customClasses">
@@ -197,7 +197,7 @@ HTML;
 	/**
 	 * Loads the custom CSS files defined in the custom_css renderer option.
 	 */
-	private function loadCustomCss()
+	protected function loadCustomCss()
 	{
 		$custom_css_raw = $this->getOption('custom_css', '');
 		$custom_css_raw = trim($custom_css_raw);
