@@ -8,6 +8,7 @@
 namespace FOF40\Autoloader;
 
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
+use InvalidArgumentException;
 
 /**
  * A PSR-4 class autoloader. This is a modified version of Composer's ClassLoader class
@@ -16,18 +17,6 @@ namespace FOF40\Autoloader;
  */
 class Autoloader
 {
-	/** @var   array  Lengths of PSR-4 prefixes */
-	private $prefixLengths = [];
-
-	/** @var   array  Prefix to directory map */
-	private $prefixDirs = [];
-
-	/** @var   array  Fall-back directories */
-	private $fallbackDirs = [];
-
-	/** @var   Autoloader  The static instance of this autoloader */
-	private static $instance;
-
 	/**
 	 * Class aliases. Maps an old, obsolete class name to the new one.
 	 *
@@ -47,6 +36,14 @@ class Autoloader
 		'FOF40\Utils\SelectOptions'               => 'FOF40\Html\SelectOptions',
 		'FOF40\Utils\TimezoneWrangler'            => 'FOF40\Date\TimezoneWrangler',
 	];
+	/** @var   Autoloader  The static instance of this autoloader */
+	private static $instance;
+	/** @var   array  Lengths of PSR-4 prefixes */
+	private $prefixLengths = [];
+	/** @var   array  Prefix to directory map */
+	private $prefixDirs = [];
+	/** @var   array  Fall-back directories */
+	private $fallbackDirs = [];
 
 	/**
 	 * @return Autoloader
@@ -65,6 +62,8 @@ class Autoloader
 	 * Returns the prefix to directory map
 	 *
 	 * @return  array
+	 *
+	 * @noinspection PhpUnused
 	 */
 	public function getPrefixes(): array
 	{
@@ -75,6 +74,8 @@ class Autoloader
 	 * Returns the list of fall=back directories
 	 *
 	 * @return  array
+	 *
+	 * @noinspection PhpUnused
 	 */
 	public function getFallbackDirs(): array
 	{
@@ -85,19 +86,19 @@ class Autoloader
 	 * Registers a set of PSR-4 directories for a given namespace, either
 	 * appending or prefixing to the ones previously set for this namespace.
 	 *
-	 * @param string       $prefix  The prefix/namespace, with trailing '\\'
-	 * @param array|string $paths   The PSR-0 base directories
-	 * @param boolean      $prepend Whether to prefix the directories
+	 * @param   string        $prefix   The prefix/namespace, with trailing '\\'
+	 * @param   array|string  $paths    The PSR-0 base directories
+	 * @param   boolean       $prepend  Whether to prefix the directories
 	 *
 	 * @return  $this for chaining
 	 *
-	 * @throws  \InvalidArgumentException  When the prefix is invalid
+	 * @throws  InvalidArgumentException  When the prefix is invalid
 	 */
 	public function addMap(string $prefix, $paths, bool $prepend = false): self
 	{
 		if (!is_string($paths) && !is_array($paths))
 		{
-			throw new \InvalidArgumentException(sprintf('%s::%s -- $paths expects a string or array', __CLASS__, __METHOD__));
+			throw new InvalidArgumentException(sprintf('%s::%s -- $paths expects a string or array', __CLASS__, __METHOD__));
 		}
 
 		if ($prefix)
@@ -133,7 +134,7 @@ class Autoloader
 			$length = strlen($prefix);
 			if ('\\' !== $prefix[$length - 1])
 			{
-				throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+				throw new InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
 			}
 			$this->prefixLengths[$prefix[0]][$prefix] = $length;
 			$this->prefixDirs[$prefix]                = (array) $paths;
@@ -165,7 +166,7 @@ class Autoloader
 	/**
 	 * Does the autoloader have a map for the specified prefix?
 	 *
-	 * @param string $prefix
+	 * @param   string  $prefix
 	 *
 	 * @return  bool
 	 */
@@ -178,12 +179,14 @@ class Autoloader
 	 * Registers a set of PSR-4 directories for a given namespace,
 	 * replacing any others previously set for this namespace.
 	 *
-	 * @param string       $prefix The prefix/namespace, with trailing '\\'
-	 * @param array|string $paths  The PSR-4 base directories
+	 * @param   string        $prefix  The prefix/namespace, with trailing '\\'
+	 * @param   array|string  $paths   The PSR-4 base directories
 	 *
 	 * @return  void
 	 *
-	 * @throws  \InvalidArgumentException  When the prefix is invalid
+	 * @throws  InvalidArgumentException  When the prefix is invalid
+	 *
+	 * @noinspection PhpUnused
 	 */
 	public function setMap($prefix, $paths)
 	{
@@ -201,7 +204,7 @@ class Autoloader
 			$length = strlen($prefix);
 			if ('\\' !== $prefix[$length - 1])
 			{
-				throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+				throw new InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
 			}
 			$this->prefixLengths[$prefix[0]][$prefix] = $length;
 			$this->prefixDirs[$prefix]                = (array) $paths;
@@ -211,7 +214,7 @@ class Autoloader
 	/**
 	 * Registers this instance as an autoloader.
 	 *
-	 * @param boolean $prepend Whether to prepend the autoloader or not
+	 * @param   boolean  $prepend  Whether to prepend the autoloader or not
 	 *
 	 * @return  void
 	 */
@@ -233,7 +236,7 @@ class Autoloader
 	/**
 	 * Loads the given class or interface.
 	 *
-	 * @param string $class The name of the class
+	 * @param   string  $class  The name of the class
 	 *
 	 * @return  boolean|null True if loaded, null otherwise
 	 */
@@ -246,6 +249,7 @@ class Autoloader
 
 		if ($file = $this->findFile($class))
 		{
+			/** @noinspection PhpIncludeInspection */
 			include $file;
 
 			return true;
@@ -270,7 +274,7 @@ class Autoloader
 	/**
 	 * Finds the path to the file where the class is defined.
 	 *
-	 * @param string $class The name of the class
+	 * @param   string  $class  The name of the class
 	 *
 	 * @return  string|false  The path if found, false otherwise
 	 */
