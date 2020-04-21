@@ -1,3 +1,9 @@
+FOF 3.5.3
+================================================================================
+~ The custom_css option now applies to all renderers
+~ Optimized the way the default media query is determined
+~ Improve the CacheCleaner helper
+
 FOF 3.5.2
 ================================================================================
 + Blade: bust OPcode cache when writing a compiled template file [gh-687]

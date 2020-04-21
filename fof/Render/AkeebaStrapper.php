@@ -110,7 +110,7 @@ class AkeebaStrapper extends RenderBase implements RenderInterface
 		}
 
 		// Wrap output in divs
-		echo '<div id="akeeba-bootstrap" class="' . implode($classes, ' ') . "\">\n";
+		echo '<div id="akeeba-bootstrap" class="' . implode(' ', $classes) . "\">\n";
 		echo "<div class=\"akeeba-bootstrap\">\n";
 		echo "<div class=\"row-fluid\">\n";
 
@@ -120,6 +120,8 @@ class AkeebaStrapper extends RenderBase implements RenderInterface
 			$this->renderButtons($view, $task);
 			$this->renderLinkbar($view, $task);
 		}
+
+		parent::preRender($view, $task);
 	}
 
 	/**
