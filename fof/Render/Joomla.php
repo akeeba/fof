@@ -112,6 +112,8 @@ class Joomla extends RenderBase implements RenderInterface
 			$this->renderButtons($view, $task);
 			$this->renderLinkbar($view, $task);
 		}
+
+		parent::preRender($view, $task);
 	}
 
 	/**
