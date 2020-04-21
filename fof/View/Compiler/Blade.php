@@ -126,6 +126,11 @@ class Blade implements CompilerInterface
 	 */
 	public function isCacheable(): bool
 	{
+		if (defined('JDEBUG') && JDEBUG)
+		{
+			return false;
+		}
+
 		return $this->isCacheable;
 	}
 
