@@ -23,6 +23,8 @@ use FOF40\Render\RenderInterface;
 use FOF40\Template\Template;
 use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication as TransparentAuth;
+use FOF40\Utils\MediaVersion;
+use FOF40\Utils\Phpfunc;
 use FOF40\View\Compiler\Blade;
 use JDatabaseDriver;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -60,11 +62,15 @@ defined('_JEXEC') or die;
  * @property  string                   $componentNamespace The namespace of the component's classes (\Foobar)
  * @property  string                   $frontEndPath       The absolute path to the front-end files
  * @property  string                   $backEndPath        The absolute path to the back-end files
- * @property  string                   $thisPath           The preferred path (e.g. backEndPath for Admin application)
- * @property  string                   $rendererClass      View renderer classname. Must implement RenderInterface
- * @property  string                   $factoryClass       MVC Factory classname, default FOF40\Factory\BasicFactory
- * @property  string                   $platformClass      Platform classname, default FOF40\Platform\Joomla\Platform
- * @property  string                   $mediaVersion       A version string for media files
+ * @property  string                   $thisPath           The preferred path (e.g. backEndPath for Admin
+ *            application)
+ * @property  string                   $rendererClass      View renderer classname. Must implement
+ *            RenderInterface
+ * @property  string                   $factoryClass       MVC Factory classname, default
+ *            FOF40\Factory\BasicFactory
+ * @property  string                   $platformClass      Platform classname, default
+ *            FOF40\Platform\Joomla\Platform
+ * @property-read  MediaVersion        $mediaVersion       A version string for media files in forms.
  *
  * @property-read  Configuration       $appConfig          The application configuration registry
  * @property-read  Blade               $blade              The Blade view template compiler engine
@@ -124,13 +130,14 @@ END;
 	 * Pass the value 'tempInstance' => true in the $values array to get a temporary instance. Otherwise you will get
 	 * the cached instance of the previously created container.
 	 *
-	 * @param string $component The component you want to get a container for, e.g. com_foobar.
-	 * @param array  $values    Container configuration overrides you want to apply. Optional.
-	 * @param string $section   The application section (site, admin) you want to fetch. Any other value results in auto-detection.
+	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
+	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
+	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in
+	 *                              auto-detection.
 	 *
 	 * @return \FOF40\Container\Container
 	 */
-	public static function &getInstance(string $component, array $values = [], string $section = 'auto'): self
+	public static function &getInstance($component, array $values = [], $section = 'auto')
 	{
 		$tempInstance = false;
 
@@ -158,15 +165,16 @@ END;
 	/**
 	 * Returns a temporary container instance for a specific component.
 	 *
-	 * @param string $component The component you want to get a container for, e.g. com_foobar.
-	 * @param array  $values    Container configuration overrides you want to apply. Optional.
-	 * @param string $section   The application section (site, admin) you want to fetch. Any other value results in auto-detection.
+	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
+	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
+	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in
+	 *                              auto-detection.
 	 *
 	 * @return \FOF40\Container\Container
 	 *
 	 * @throws Exception\NoComponent
 	 */
-	protected static function &makeInstance(string $component, array $values = [], string $section = 'auto'): self
+	protected static function &makeInstance($component, array $values = [], $section = 'auto')
 	{
 		// Try to auto-detect some defaults
 		$tmpConfig    = array_merge($values, ['componentName' => $component]);
@@ -276,11 +284,6 @@ END;
 
 		$mediaVersion = $appConfig->get('container.mediaVersion', null);
 
-		if (!empty($mediaVersion))
-		{
-			$values['mediaVersion'] = $mediaVersion;
-		}
-
 		unset($appConfig);
 		unset($tmpConfig);
 		unset($tmpContainer);
@@ -294,15 +297,20 @@ END;
 			$container = new Container($values);
 		}
 
+		if (!is_null($mediaVersion))
+		{
+			$container->mediaVersion->setMediaVersion($mediaVersion);
+		}
+
 		return $container;
 	}
 
 	/**
 	 * Public constructor. This does NOT go through the fof.xml file. You are advised to use getInstance() instead.
 	 *
-	 * @param array $values Overrides for the container configuration and services
+	 * @param   array  $values  Overrides for the container configuration and services
 	 *
-	 * @throws  NoComponent  If no component name is specified
+	 * @throws  \FOF40\Container\Exception\NoComponent  If no component name is specified
 	 */
 	public function __construct(array $values = [])
 	{
@@ -315,6 +323,15 @@ END;
 		$this->thisPath           = '';
 		$this->factoryClass       = 'FOF40\\Factory\\BasicFactory';
 		$this->platformClass      = 'FOF40\\Platform\\Joomla\\Platform';
+
+		$initMediaVersion = null;
+
+		if (isset($values['mediaVersion']) && !is_object($values['mediaVersion']))
+		{
+			$initMediaVersion = $values['mediaVersion'];
+
+			unset($values['mediaVersion']);
+		}
 
 		// Try to construct this container object
 		parent::__construct($values);
@@ -638,14 +655,21 @@ END;
 		// Media version string
 		if (!isset($this['mediaVersion']))
 		{
-			$this['mediaVersion'] = $this->getDefaultMediaVersion();
+			$this['mediaVersion'] = function (Container $c) {
+				return new MediaVersion($c);
+			};
+
+			if (!is_null($initMediaVersion))
+			{
+				$this['mediaVersion']->setMediaVersion($initMediaVersion);
+			}
 		}
 
 		// Encryption / cryptography service
 		if (!isset($this['crypto']))
 		{
 			$this['crypto'] = function (Container $c) {
-				return new EncryptService($c);
+				return new EncryptService($c, new Phpfunc());
 			};
 		}
 	}
@@ -657,7 +681,7 @@ END;
 	 * site            Frontend
 	 * admin        Backend
 	 *
-	 * @param string $section The section you want to get information for
+	 * @param   string  $section  The section you want to get information for
 	 *
 	 * @return  string  The namespace prefix for the component's classes, e.g. \Foobar\Example\Site\
 	 */
@@ -736,59 +760,5 @@ END;
 		$replace = array_values($platformDirs);
 
 		return str_replace($search, $replace, $path);
-	}
-
-	/**
-	 * Gets the default media version string for the component using the component's version and date, as well as the
-	 * site's secret key.
-	 *
-	 * @return  string
-	 */
-	protected function getDefaultMediaVersion(): string
-	{
-		// Initialise
-		$version = '0.0.0';
-		$date    = '0000-00-00';
-		$secret  = '';
-
-		// Get the version and date of the component from the manifest cache
-		try
-		{
-			$db    = $this->db;
-			$query = $db->getQuery(true)
-				->select([
-					$db->qn('manifest_cache'),
-				])->from($db->qn('#__extensions'))
-				->where($db->qn('type') . ' = ' . $db->q('component'))
-				->where($db->qn('name') . ' = ' . $db->q($this->componentName));
-
-			$db->setQuery($query);
-
-			$json   = $db->loadResult();
-			$params = new Registry($json);
-
-			$version = $params->get('version', $version);
-			$date    = $params->get('creationDate', $date);
-		}
-		catch (\Exception $e)
-		{
-		}
-
-		// Get the site's secret
-		try
-		{
-			$app = JoomlaFactory::getApplication();
-
-			if (method_exists($app, 'get'))
-			{
-				$secret = $app->get('secret');
-			}
-		}
-		catch (\Exception $e)
-		{
-		}
-
-		// Generate the version string
-		return md5($version . $date . $secret);
 	}
 }

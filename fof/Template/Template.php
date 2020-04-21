@@ -71,42 +71,18 @@ class Template
 		$url      = $this->parsePath($uri);
 		$document = $this->container->platform->getDocument();
 
-		// Joomla! 3.7+ uses a single method for everything
-		if (version_compare(JVERSION, '3.6.999', 'ge'))
+		$options = [
+			'version' => is_null($version) ? null : ((string) $version),
+		];
+
+		$attribs['type'] = $type;
+
+		if (!empty($media))
 		{
-			$options = [
-				'version' => $version,
-			];
-
-			$attribs['type'] = $type;
-
-			if (!empty($media))
-			{
-				$attribs['media'] = $media;
-			}
-
-			$document->addStyleSheet($url, $options, $attribs);
-
-			return;
+			$attribs['media'] = $media;
 		}
 
-		// Joomla! 3.6 and lower have separate methods for versioned and non-versioned files
-		$method = 'addStyleSheet' . (!empty($version) ? 'Version' : '');
-
-		if (!method_exists($document, $method))
-		{
-			return;
-		}
-
-
-		if (empty($version))
-		{
-			$document->addStyleSheet($url, $type, $media, $attribs);
-
-			return;
-		}
-
-		$document->addStyleSheetVersion($url, $version, $type, $media, $attribs);
+		$document->addStyleSheet($url, $options, $attribs);
 	}
 
 	/**
@@ -156,43 +132,19 @@ class Template
 			$defer = false;
 		}
 
-		// Joomla! 3.7+ uses a single method for everything
-		if (version_compare(JVERSION, '3.6.999', 'ge'))
+		$options = [
+			'version' => is_null($version) ? null : ((string) $version),
+		];
+
+		$attribs['defer'] = $defer;
+		$attribs['async'] = $async;
+
+		if (!empty($media))
 		{
-			$options = [
-				'version' => $version,
-			];
-
-			$attribs['defer'] = $defer;
-			$attribs['async'] = $async;
-
-			if (!empty($media))
-			{
-				$attribs['mime'] = $type;
-			}
-
-			$document->addScript($url, $options, $attribs);
-
-			return;
+			$attribs['mime'] = $type;
 		}
 
-		// Joomla! 3.6 and lower have separate methods for versioned and non-versioned files
-		$method = 'addScript' . (!empty($version) ? 'Version' : '');
-
-		if (!method_exists($document, $method))
-		{
-			return;
-		}
-
-
-		if (empty($version))
-		{
-			$document->addScript($url, $type, $defer, $async);
-
-			return;
-		}
-
-		$document->addScriptVersion($url, $version, $type, $defer, $async);
+		$document->addScript($url, $options, $attribs);
 	}
 
 	/**

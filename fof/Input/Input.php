@@ -61,7 +61,7 @@ class Input extends JoomlaInput
 		elseif (is_object($source) && ($source instanceof JoomlaInput))
 		{
 			$serialised = $source->serialize();
-			list ($xOptions, $xData, $xInput) = unserialize($serialised);
+			[$xOptions, $xData, $xInput] = unserialize($serialised);
 			unset ($xOptions);
 			unset ($xInput);
 			unset ($source);
@@ -124,9 +124,19 @@ class Input extends JoomlaInput
 	 *
 	 * @return  array
 	 */
-	public function getData()
+	public function getData(): array
 	{
 		return $this->data;
+	}
+
+	/**
+	 * Override all the raw data stored in the class. USE SPARINGLY.
+	 *
+	 * @param   array  $data
+	 */
+	public function setData(array $data): void
+	{
+		$this->data = $data;
 	}
 
 	/**
