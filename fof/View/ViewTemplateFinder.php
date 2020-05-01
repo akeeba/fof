@@ -310,6 +310,13 @@ class ViewTemplateFinder
 			array_unshift($paths, str_replace($parts['template'], $layoutTemplate, $apath));
 		}
 
+		// Get the Joomla! version template suffixes
+		$jVersionSuffixes = array_merge($this->container->platform->getTemplateSuffixes(), ['']);
+		// Get the renderer name suffixes
+		$rendererNameSuffixes = [
+			'.' . $this->container->renderer->getInformation()->name,
+			''
+		];
 
 		$filesystem = $this->container->filesystem;
 
