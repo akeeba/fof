@@ -2,6 +2,7 @@ FOF 3.7.0
 ================================================================================
 + Support akview and aktask as alternatives to view and task [gh-692]
 + Improved support for nullable DATETIME fields
++ 'nullable' condition for the database installer
 # [LOW] DataController: successful copy message when no items were selected
 
 FOF 3.6.2
