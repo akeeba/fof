@@ -377,7 +377,7 @@ class SpecialColumnsDataprovider
 
     public static function getTestUnlock()
     {
-        $data[] = array(
+        $data['Table without locking support'] = array(
             array(
                 'tableid' => 'foftest_bare_id',
                 'table' => '#__foftest_bares',
@@ -388,11 +388,12 @@ class SpecialColumnsDataprovider
                 'after'  => 0,
                 'dispatcher' => 0,
                 'locked_by' => null,
+                'zero_date' => true,
                 'locked_on' => null
             )
         );
 
-        $data[] = array(
+        $data['Table with locking support, user_id passed'] = array(
             array(
                 'tableid' => 'foftest_foobar_id',
                 'table' => '#__foftest_foobars',
@@ -403,11 +404,12 @@ class SpecialColumnsDataprovider
                 'after'  => 1,
                 'dispatcher' => 2,
                 'locked_by' => 0,
+                'zero_date' => true,
                 'locked_on' => true
             )
         );
 
-        $data[] = array(
+        $data['Table with locking support, user_id not passed'] = array(
             array(
                 'tableid' => 'foftest_foobar_id',
                 'table' => '#__foftest_foobars',
@@ -418,11 +420,12 @@ class SpecialColumnsDataprovider
                 'after'  => 1,
                 'dispatcher' => 2,
                 'locked_by' => 0,
+                'zero_date' => true,
                 'locked_on' => true
             )
         );
 
-        $data[] = array(
+        $data['Table with only the locked_by field'] = array(
             array(
                 'tableid' => 'id',
                 'table' => '#__foftest_lockedby',
@@ -433,11 +436,12 @@ class SpecialColumnsDataprovider
                 'after'  => 1,
                 'dispatcher' => 2,
                 'locked_by' => 0,
+                'zero_date' => true,
                 'locked_on' => null
             )
         );
 
-        $data[] = array(
+        $data['Table with only the locked_on field'] = array(
             array(
                 'tableid' => 'id',
                 'table' => '#__foftest_lockedon',
@@ -448,6 +452,7 @@ class SpecialColumnsDataprovider
                 'after'  => 1,
                 'dispatcher' => 2,
                 'locked_by' => null,
+                'zero_date' => false,
                 'locked_on' => true
             )
         );
