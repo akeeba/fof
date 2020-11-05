@@ -4,6 +4,7 @@ FOF 3.7.0
 + Improved support for nullable DATETIME fields
 + 'nullable' condition for the database installer
 # [LOW] DataController: successful copy message when no items were selected
+# [LOW] Accidental optional before required parameter in FOF30\Utils\FEFHelper\BrowseView
 
 FOF 3.6.2
 ================================================================================
