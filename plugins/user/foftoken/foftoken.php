@@ -32,6 +32,11 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
  *
  * Allows users to manage their API access tokens for FOF-powered extensions. The token can be used with FOF's
  * Transparent Authentication.
+ *
+ * The token can be provided in one of three ways:
+ * - Authorization: Bearer <token> HTTP header. The Bearer string is case-sensitive and the space is required.
+ * - X-FOF-Token: <token> HTTP header. Recommended.
+ * - _fofToken GET parameter in the URL. Strongly NOT recommended because it leaks the token in the access log.
  */
 class PlgUserFoftoken extends CMSPlugin
 {
@@ -368,18 +373,40 @@ class PlgUserFoftoken extends CMSPlugin
 	{
 		$token = '';
 
-		// Check for HTTP header "Authentication: Bearer <token>"
-		if (isset($_SERVER['HTTP_AUTHENTICATION']))
-		{
-			$authHeader = $_SERVER['HTTP_AUTHENTICATION'];
+		/**
+		 * First look for an HTTP Authorization header with the following format:
+		 * Authorization: Bearer <token>
+		 * Do keep in mind that Bearer is **case-sensitive**. Whitespace between Bearer and the
+		 * token, as well as any whitespace following the token is discarded.
+		 */
+		$authHeader  = $this->app->input->server->get('HTTP_AUTHORIZATION', '', 'string');
 
-			if (substr($authHeader, 0, 7) == 'Bearer ')
+		// Apache specific fixes. See https://github.com/symfony/symfony/issues/19693
+		if (empty($authHeader) && \PHP_SAPI === 'apache2handler'
+			&& function_exists('apache_request_headers') && apache_request_headers() !== false)
+		{
+			$apacheHeaders = array_change_key_case(apache_request_headers(), CASE_LOWER);
+
+			if (array_key_exists('authorization', $apacheHeaders))
 			{
-				$parts  = explode(' ', $authHeader, 2);
-				$token  = $parts[1];
-				$filter = InputFilter::getInstance();
-				$token  = $filter->clean($token, 'BASE64');
+				$filter = \Joomla\CMS\Filter\InputFilter::getInstance();
+				$authHeader = $filter->clean($apacheHeaders['authorization'], 'STRING');
 			}
+		}
+
+		// Check for HTTP header "Authentication: Bearer <token>"
+		if (!empty($authHeader) && substr($authHeader, 0, 7) == 'Bearer ')
+		{
+			$parts  = explode(' ', $authHeader, 2);
+			$token  = $parts[1];
+			$filter = InputFilter::getInstance();
+			$token  = $filter->clean($token, 'BASE64');
+		}
+
+		// Check for HTTP header "X-FOF-Token: <token>"
+		if (empty($token))
+		{
+			$token = $this->app->input->server->get('HTTP_X_FOF_TOKEN', '', 'string');
 		}
 
 		// Check for _fofToken query param
