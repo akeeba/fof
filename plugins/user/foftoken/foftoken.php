@@ -46,32 +46,38 @@ class PlgUserFoftoken extends CMSPlugin
 	 * @var  JDatabaseDriver
 	 */
 	protected $db;
+
 	/**
 	 * Joomla application object
 	 *
 	 * @var  BaseApplication|CMSApplication|CliApplication
 	 */
 	protected $app;
+
 	/**
 	 * Joomla XML form contexts where we need to inject our token management interface.
 	 *
 	 * @var  array
 	 */
 	private $allowedContexts = [
-		'com_users.profile', 'com_users.user', 'com_users.registration', 'com_admin.profile',
+		'com_users.profile', 'com_users.user', 'com_admin.profile',
+		// 'com_users.registration',
 	];
+
 	/**
 	 * The prefix of the user profile keys, without the dot.
 	 *
 	 * @var  string
 	 */
 	private $profileKeyPrefix = 'foftoken';
+
 	/**
 	 * Token length, in bytes.
 	 *
 	 * @var  int
 	 */
 	private $tokenLength = 32;
+
 	/**
 	 * Allowed HMAC algorithms for the token
 	 *
@@ -158,7 +164,105 @@ class PlgUserFoftoken extends CMSPlugin
 			// We suppress any database error. It means we get no token saved by default.
 		}
 
+		/**
+		 * Modify the data for display in the user profile view page in the frontend.
+		 *
+		 * It's important to note that we deliberately not register HTMLHelper methods to do the
+		 * same (unlike e.g. the actionlogs system plugin) because the names of our fields are too
+		 * generic and we run the risk of creating naming clashes. Instead, we manipulate the data
+		 * directly.
+		 */
+		if (($context === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		{
+			$pluginData = $data->{$this->profileKeyPrefix} ?? [];
+			$enabled    = $pluginData['enabled'] ?? false;
+			$token      = $pluginData['token'] ?? '';
+
+			$pluginData['enabled'] = Text::_('JDISABLED');
+			$pluginData['token']   = '';
+
+			if ($enabled)
+			{
+				$algo                  = $this->getAlgorithmFromFormFile();
+				$pluginData['enabled'] = Text::_('JENABLED');
+				$pluginData['token']   = $this->getTokenForDisplay($userId, $token, $algo);
+			}
+
+			$data->{$this->profileKeyPrefix} = $pluginData;
+		}
+
 		return true;
+	}
+
+	/**
+	 * Get the token algorithm as defined in the form file
+	 *
+	 * We use a simple RegEx match instead of loading the form for better performance.
+	 *
+	 * @return  string  The configured algorithm, 'sha256' as a fallback if none is found.
+	 */
+	private function getAlgorithmFromFormFile(): string
+	{
+		$algo = 'sha256';
+
+		$file     = __DIR__ . '/foftoken/foftoken.xml';
+		$contents = @file_get_contents($file);
+
+		if ($contents === false)
+		{
+			return $algo;
+		}
+
+		if (preg_match('/\s*algo=\s*"\s*([a-z0-9]+)\s*"/i', $contents, $matches) !== 1)
+		{
+			return $algo;
+		}
+
+		return $matches[1];
+	}
+
+	/**
+	 * Returns the token formatted suitably for the user to copy.
+	 *
+	 * @param   integer  $userId     The user id for token
+	 * @param   string   $tokenSeed  The token seed data stored in the database
+	 * @param   string   $algorithm  The hashing algorithm to use for the token (default: sha256)
+	 *
+	 * @return  string
+	 */
+	private function getTokenForDisplay(int $userId, string $tokenSeed, string $algorithm = 'sha256'): string
+	{
+		if (empty($tokenSeed))
+		{
+			return '';
+		}
+
+		try
+		{
+			$siteSecret = $this->app->get('secret');
+		}
+		catch (\Exception $e)
+		{
+			$jConfig    = JFactory::getConfig();
+			$siteSecret = $jConfig->get('secret');
+		}
+
+		// NO site secret? You monster!
+		if (empty($siteSecret))
+		{
+			return '';
+		}
+
+		$rawToken  = base64_decode($tokenSeed);
+		$tokenHash = hash_hmac($algorithm, $rawToken, $siteSecret);
+		$message   = base64_encode("$algorithm:$userId:$tokenHash");
+
+		if ($userId != JFactory::getUser()->id)
+		{
+			$message = '';
+		}
+
+		return $message;
 	}
 
 	/**
@@ -194,6 +298,12 @@ class PlgUserFoftoken extends CMSPlugin
 		$this->loadLanguage();
 		JForm::addFormPath(dirname(__FILE__) . '/foftoken');
 		$form->loadFile('foftoken', false);
+
+		// Remove the Reset field when displaying the user profile form
+		if (($form->getName() === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		{
+			$form->removeField('reset', 'foftoken');
+		}
 
 		return true;
 	}
@@ -379,7 +489,7 @@ class PlgUserFoftoken extends CMSPlugin
 		 * Do keep in mind that Bearer is **case-sensitive**. Whitespace between Bearer and the
 		 * token, as well as any whitespace following the token is discarded.
 		 */
-		$authHeader  = $this->app->input->server->get('HTTP_AUTHORIZATION', '', 'string');
+		$authHeader = $this->app->input->server->get('HTTP_AUTHORIZATION', '', 'string');
 
 		// Apache specific fixes. See https://github.com/symfony/symfony/issues/19693
 		if (empty($authHeader) && \PHP_SAPI === 'apache2handler'
@@ -389,7 +499,7 @@ class PlgUserFoftoken extends CMSPlugin
 
 			if (array_key_exists('authorization', $apacheHeaders))
 			{
-				$filter = \Joomla\CMS\Filter\InputFilter::getInstance();
+				$filter     = \Joomla\CMS\Filter\InputFilter::getInstance();
 				$authHeader = $filter->clean($apacheHeaders['authorization'], 'STRING');
 			}
 		}
