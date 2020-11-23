@@ -1,3 +1,7 @@
+FOF 3.7.1
+================================================================================
+# [MEDIUM] Can't use view template engines which use `.something.php` extensions [gh-694]
+
 FOF 3.7.0
 ================================================================================
 + Support akview and aktask as alternatives to view and task [gh-692]
