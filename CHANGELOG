@@ -1,6 +1,7 @@
 FOF 3.7.1
 ================================================================================
 # [MEDIUM] Can't use view template engines which use `.something.php` extensions [gh-694]
+# [HIGH] Session storage issues on Joomla 4 beta 6 after major change in how the session works
 
 FOF 3.7.0
 ================================================================================
