@@ -17,12 +17,12 @@ parameters:
   # Custom autoloader for our classes
   autoload_paths:
     - 'build/autoloader_for_rector.php'
-  # Use PHP 7.1 features only
+  # Use PHP 7.2 features only
   php_version_features: '7.2'
   # Paths to include
   paths:
     - 'fof'
-    - 'plugins'
+#    - 'plugins'
   # Paths to exclude from automatic refactoring
   #
   # WARNING! Rector includes .php files. Any terminal endpoint file will KILL Rector.
@@ -463,6 +463,13 @@ services:
       mbstrrpos: 'mb_strrpos'
       mbsubstr: 'mb_substr'
 
+      ## PHP 7.2 compatibility renames
+      jpeg2wbmp: 'imagecreatefromjpeg' # and imagewbmp
+      png2wbmp: 'imagecreatefrompng' # or imagewbmp
+      # http://php.net/manual/en/migration72.deprecated.php#migration72.deprecated.gmp_random-function
+      gmp_random: 'gmp_random_bits' # or gmp_random_range
+      read_exif_data: 'exif_read_data'
+
   # settype($value, 'int') → (int) $value
   Rector\Celebrity\Rector\FuncCall\SetTypeToCastRector: null
 
@@ -520,3 +527,16 @@ services:
   Rector\Php71\Rector\List_\ListToArrayDestructRector: ~
   Rector\Php71\Rector\Name\ReservedObjectRector: ~
   Rector\Php71\Rector\TryCatch\MultiExceptionCatchRector: ~
+
+  Rector\Php72\Rector\Each\WhileEachToForeachRector: null
+  Rector\Php72\Rector\Each\ListEachRector: null
+  Rector\Php72\Rector\Unset_\UnsetCastRector: null
+  Rector\Php72\Rector\ConstFetch\BarewordStringRector: null
+
+  ## PHP 7.2 compatibility rectors
+  Rector\Php72\Rector\FuncCall\GetClassOnNullRector: null
+  Rector\Php72\Rector\FuncCall\IsObjectOnIncompleteClassRector: null
+  Rector\Php72\Rector\FuncCall\ParseStrWithResultArgumentRector: null
+  Rector\Php72\Rector\FuncCall\StringsAssertNakedRector: null
+  Rector\Php72\Rector\FuncCall\CreateFunctionToAnonymousFunctionRector: null
+  Rector\Php72\Rector\FuncCall\StringifyDefineRector: null

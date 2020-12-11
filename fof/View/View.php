@@ -258,7 +258,6 @@ class View
 			 * 2. Any new template engines using a .something.php extension wouldn't work, see
 			 *    https://github.com/akeeba/fof/issues/694
 			 */
-
 			// Do not allow overriding the fallback .php handler
 			if (isset($config['viewEngineMap']['.php']))
 			{
