@@ -1,5 +1,6 @@
 FOF 3.7.1
 ================================================================================
+- Remove PHP 7.1 support, add PHP 8.0 support
 # [MEDIUM] Can't use view template engines which use `.something.php` extensions [gh-694]
 # [HIGH] Session storage issues on Joomla 4 beta 6 after major change in how the session works
 

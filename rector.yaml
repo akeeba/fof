@@ -18,7 +18,7 @@ parameters:
   autoload_paths:
     - 'build/autoloader_for_rector.php'
   # Use PHP 7.1 features only
-  php_version_features: '7.1'
+  php_version_features: '7.2'
   # Paths to include
   paths:
     - 'fof'
