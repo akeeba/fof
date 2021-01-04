@@ -2,6 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/fof" isTestSource="false" packagePrefix="FOF40\" />
       <excludeFolder url="file://$MODULE_DIR$/build/bin" />
       <excludeFolder url="file://$MODULE_DIR$/build/phingext" />
