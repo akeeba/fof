@@ -7,8 +7,11 @@
 
 namespace  FOF40\Input;
 
+use Exception;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\Input\Input as JoomlaInput;
+use ReflectionObject;
 
 defined('_JEXEC') or die;
 
@@ -29,30 +32,12 @@ class Input extends JoomlaInput
 		{
 			$hash = strtoupper($source);
 
-			switch ($hash)
+			if (!in_array($hash, ['GET', 'POST', 'FILES', 'COOKIE', 'ENV', 'SERVER', 'REQUEST']))
 			{
-				case 'GET':
-					$source = $_GET;
-					break;
-				case 'POST':
-					$source = $_POST;
-					break;
-				case 'FILES':
-					$source = $_FILES;
-					break;
-				case 'COOKIE':
-					$source = $_COOKIE;
-					break;
-				case 'ENV':
-					$source = $_ENV;
-					break;
-				case 'SERVER':
-					$source = $_SERVER;
-					break;
-				default:
-					$source = $_REQUEST;
-					break;
+				$hash = 'REQUEST';
 			}
+
+			$source = $this->extractJoomlaSource($hash);
 		}
 		elseif (is_object($source) && ($source instanceof Input))
 		{
@@ -74,7 +59,7 @@ class Input extends JoomlaInput
 			{
 				$source = (array) $source;
 			}
-			catch (\Exception $exc)
+			catch (Exception $exc)
 			{
 				$source = null;
 			}
@@ -89,10 +74,12 @@ class Input extends JoomlaInput
 			$source = null;
 		}
 
+		// TODO Joomla 4 -- get the data from the application input
+
 		// If we are not sure use the REQUEST array
 		if (empty($source))
 		{
-			$source = $_REQUEST;
+			$source = $this->extractJoomlaSource('REQUEST');
 		}
 
 		parent::__construct($source, $options);
@@ -217,6 +204,36 @@ class Input extends JoomlaInput
 		}
 
 		return $var;
+	}
+
+	protected function extractJoomlaSource($hash = 'REQUEST')
+	{
+		if (!in_array(strtoupper($hash), ['GET', 'POST', 'FILES', 'COOKIE', 'ENV', 'SERVER', 'REQUEST']))
+		{
+			$hash = 'REQUEST';
+		}
+
+		$hash = strtolower($hash);
+
+		try
+		{
+			$input = Factory::getApplication()->input;
+		}
+		catch (Exception $e)
+		{
+			$input = new \Joomla\Input\Input();
+		}
+
+		if ($hash !== 'request')
+		{
+			$input = $input->{$hash};
+		}
+
+		$refObject = new ReflectionObject($input);
+		$refProp   = $refObject->getProperty('data');
+		$refProp->setAccessible(true);
+
+		return $refProp->getValue($input);
 	}
 
 }
