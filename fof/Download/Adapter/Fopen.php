@@ -85,7 +85,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 				),
 				'ssl' => array(
 					'verify_peer'   => true,
-					'cafile'        => __DIR__ . '/cacert.pem',
+					'cafile'        => JPATH_LIBRARIES . '/src/Http/Transport/cacert.pem',
 					'verify_depth'  => 5,
 				)
 			);
@@ -103,7 +103,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 				),
 				'ssl' => array(
 					'verify_peer'   => true,
-					'cafile'        => __DIR__ . '/cacert.pem',
+					'cafile'        => JPATH_LIBRARIES . '/src/Http/Transport/cacert.pem',
 					'verify_depth'  => 5,
 				)
 			);

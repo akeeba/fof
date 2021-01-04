@@ -5,9 +5,10 @@
  * @license   GNU General Public License version 2, or later
  */
 
-
 use Joomla\CMS\Date\Date as JoomlaDate;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Log\Log;
@@ -20,6 +21,11 @@ if (class_exists('file_fof40InstallerScript', false))
 	return;
 }
 
+/**
+ * Class file_fof40InstallerScript
+ *
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
 class file_fof40InstallerScript
 {
 	/**
@@ -49,6 +55,23 @@ class file_fof40InstallerScript
 	 * @var   string
 	 */
 	protected $libraryFolder = 'fof40';
+
+	/**
+	 * Obsolete files and folders to remove.
+	 *
+	 * This is used when we refactor code. Some files inevitably become obsolete and need to be removed.
+	 *
+	 * All files and folders are relative to the library's root (JPATH_LIBRARIES . '/' . $this->libraryFolder).
+	 *
+	 * @var   array
+	 */
+	protected $removeFilesAllVersions = [
+		'files'   => [
+			'Download/Adapter/cacert.pem',
+		],
+		'folders' => [
+		],
+	];
 
 	/**
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
@@ -139,6 +162,9 @@ class file_fof40InstallerScript
 	 */
 	public function postflight($type, $parent)
 	{
+		// Remove obsolete files and folders
+		$this->removeFilesAndFolders($this->removeFiles);
+
 		if ($type == 'update')
 		{
 			$this->bugfixFilesNotCopiedOnUpdate($parent);
@@ -683,4 +709,45 @@ class file_fof40InstallerScript
 			return;
 		}
 	}
+
+	/**
+	 * Removes obsolete files and folders
+	 *
+	 * @param   array  $removeList  The files and directories to remove
+	 */
+	protected function removeFilesAndFolders($removeList)
+	{
+		// Remove files
+		if (isset($removeList['files']) && !empty($removeList['files']))
+		{
+			foreach ($removeList['files'] as $file)
+			{
+				$f = sprintf("%s/%s/%s", JPATH_LIBRARIES, $this->libraryFolder, $file);
+
+				if (!is_file($f))
+				{
+					continue;
+				}
+
+				File::delete($f);
+			}
+		}
+
+		// Remove folders
+		if (isset($removeList['folders']) && !empty($removeList['folders']))
+		{
+			foreach ($removeList['folders'] as $folder)
+			{
+				$f = sprintf("%s/%s/%s", JPATH_LIBRARIES, $this->libraryFolder, $folder);
+
+				if (!is_dir($f))
+				{
+					continue;
+				}
+
+				Folder::delete($f);
+			}
+		}
+	}
+
 }

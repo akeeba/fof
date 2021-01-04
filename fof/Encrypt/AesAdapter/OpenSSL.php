@@ -43,7 +43,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		 *
 		 * See http://stackoverflow.com/questions/24707007/using-openssl-raw-data-param-in-openssl-decrypt-with-php-5-3#24707117
 		 */
-		if (version_compare(PHP_VERSION, '5.4.0', 'ge'))
+		if (version_compare(PHP_VERSION, '7.2.0', 'ge'))
 		{
 			$this->openSSLOptions = OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING;
 		}
