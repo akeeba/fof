@@ -8,11 +8,11 @@
 defined('_JEXEC') or die;
 
 // Load FOF if not already loaded
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
 {
 	throw new RuntimeException('This extension requires FOF 3.0.');
 }
 
-class plgUserFoftokenInstallerScript extends FOF30\Utils\InstallScript\Plugin
+class plgUserFoftokenInstallerScript extends FOF40\Utils\InstallScript\Plugin
 {
 }

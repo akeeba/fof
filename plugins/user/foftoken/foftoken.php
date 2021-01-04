@@ -7,10 +7,10 @@
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Encrypt\Randval;
-use FOF30\Utils\ArrayHelper;
-use FOF30\Utils\Phpfunc;
+use FOF40\Container\Container;
+use FOF40\Encrypt\Randval;
+use FOF40\Utils\ArrayHelper;
+use FOF40\Utils\Phpfunc;
 use Joomla\CMS\Authentication\Authentication;
 use Joomla\CMS\Authentication\AuthenticationResponse;
 use Joomla\CMS\Factory as JFactory;
@@ -19,7 +19,7 @@ use Joomla\CMS\Form\Form as JForm;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin as JPlugin;
 
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
 {
 	return;
 }

@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die;
 
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
 {
 	return;
 }
