@@ -1,5 +1,7 @@
-### phpStorm project files
-.idea/
+### phpStorm
+.idea/webServers.xml
+.idea/sshConfigs.xml
+.idea/dataSources.xml
 
 ### We can't include composer.lock since the testing framework dependencies vary by PHP version we are testing against
 composer.lock
