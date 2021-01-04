@@ -37,6 +37,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\User\User;
+use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version as JoomlaVersion;
 use Joomla\Registry\Registry;
@@ -359,13 +360,25 @@ class Platform extends BasePlatform
 		{
 			if ($id)
 			{
-				return User::getInstance($id);
+				return User::getInstance($id) ?? new User();
 			}
 
 			return new User();
 		}
 
-		return JoomlaFactory::getUser($id);
+		// Joomla 3
+		if (version_compare(JVERSION, '3.999.999', 'lt'))
+		{
+			return JoomlaFactory::getUser($id) ?? new User();
+		}
+
+		// Joomla 4
+		if (is_null($id))
+		{
+			return JoomlaFactory::getApplication()->getIdentity() ?? new User();
+		}
+
+		return JoomlaFactory::getContainer()->get(UserFactoryInterface::class)->loadUserByUsername($id) ?? new User();
 	}
 
 	/**
