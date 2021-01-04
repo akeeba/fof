@@ -132,33 +132,37 @@ class Raw extends View implements DataViewInterface
 	 * Determines if the current Joomla! version and your current table support AJAX-powered drag and drop reordering.
 	 * If they do, it will set up the drag & drop reordering feature.
 	 *
-	 * @return  boolean|array  False if not supported, otherwise a table with necessary information (saveOrder: should
+	 * @return  null|array  Null if not supported, otherwise a table with necessary information (saveOrder: should
 	 * 						   you enable DnD reordering; orderingColumn: which column has the ordering information).
 	 */
-	public function hasAjaxOrderingSupport()
+	public function hasAjaxOrderingSupport(): ?array
 	{
 		/** @var DataModel $model */
 		$model = $this->getModel();
 
 		if (!$model->hasField('ordering'))
 		{
-			return false;
+			return null;
 		}
 
-		$listOrder = $this->escape($model->getState('filter_order', null, 'cmd'));
-		$listDirn = $this->escape($model->getState('filter_order_Dir', null, 'cmd'));
-		$saveOrder = $listOrder == $model->getFieldAlias('ordering');
+		$listOrder       = $this->escape($model->getState('filter_order', null, 'cmd'));
+		$listDirn        = $this->escape($model->getState('filter_order_Dir', null, 'cmd'));
+		$saveOrder       = $listOrder == $model->getFieldAlias('ordering');
+		$saveOrderingUrl = '';
 
 		if ($saveOrder)
 		{
 			$saveOrderingUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->getName() . '&task=saveorder&format=json';
-			HTMLHelper::_('sortablelist.sortable', 'itemsList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+			$helper          = version_compare(JVERSION, '3.999.999', 'le') ? 'sortablelist.sortable' : 'draggablelist.draggable';
+
+			HtmlHelper::_($helper, 'itemsList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 		}
 
-		return array(
-			'saveOrder'		 => $saveOrder,
-			'orderingColumn' => $model->getFieldAlias('ordering')
-		);
+		return [
+			'saveOrder'      => $saveOrder,
+			'saveOrderURL'   => $saveOrderingUrl . '&' . $this->container->platform->getToken() . '=1',
+			'orderingColumn' => $model->getFieldAlias('ordering'),
+		];
 	}
 
 	/**
