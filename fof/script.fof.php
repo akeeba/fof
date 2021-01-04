@@ -27,14 +27,14 @@ class file_fof40InstallerScript
 	 *
 	 * @var   string
 	 */
-	protected $minimumPHPVersion = '5.6.0';
+	protected $minimumPHPVersion = '7.2.0';
 
 	/**
 	 * The minimum Joomla! version required to install this extension
 	 *
 	 * @var   string
 	 */
-	protected $minimumJoomlaVersion = '3.8.0';
+	protected $minimumJoomlaVersion = '3.9.0';
 
 	/**
 	 * The maximum Joomla! version this extension can be installed on
