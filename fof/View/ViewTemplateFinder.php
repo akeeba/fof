@@ -9,6 +9,7 @@ namespace  FOF40\View;
 
 use FOF40\Container\Container;
 use Joomla\CMS\Language\Text;
+use RuntimeException;
 
 defined('_JEXEC') or die;
 
@@ -260,7 +261,7 @@ class ViewTemplateFinder
 	 *
 	 * @return  string
 	 *
-	 * @throws \RuntimeException
+	 * @throws  RuntimeException
 	 */
 	public function resolveUriToPath($uri, $layoutTemplate = '', array $extraPaths = array())
 	{
@@ -273,7 +274,7 @@ class ViewTemplateFinder
 		$templatePath   = $this->container->platform->getTemplateOverridePath($parts['component']);
 
 		// Get the lookup paths
-		$paths = array();
+		$paths = [];
 
 		// If we are on the correct side of the application or we have an "any:" URI look for a template override
 		if (($parts['admin'] == -1) || ($parts['admin'] == $isAdmin))
@@ -312,10 +313,11 @@ class ViewTemplateFinder
 
 		// Get the Joomla! version template suffixes
 		$jVersionSuffixes = array_merge($this->container->platform->getTemplateSuffixes(), ['']);
+
 		// Get the renderer name suffixes
 		$rendererNameSuffixes = [
 			'.' . $this->container->renderer->getInformation()->name,
-			''
+			'',
 		];
 
 		$filesystem = $this->container->filesystem;
@@ -343,7 +345,7 @@ class ViewTemplateFinder
 		 * If no view template was found for the component fall back to FOF's core Blade templates -- located in
 		 * <libdir>/ViewTemplates/<viewName>/<templateName> -- and their template overrides.
 		 */
-		$paths = [];
+		$paths   = [];
 		$paths[] = $this->container->platform->getTemplateOverridePath('lib_fof40') . '/' . $parts['view'];
 		$paths[] = realpath(__DIR__ . '/..') . '/ViewTemplates/' . $parts['view'];
 
@@ -363,7 +365,7 @@ class ViewTemplateFinder
 		}
 
 		// Nothing found, throw an error
-		throw new \RuntimeException(Text::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $uri), 500);
+		throw new RuntimeException(Text::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $uri), 500);
 	}
 
 	/**
