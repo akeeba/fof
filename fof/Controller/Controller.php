@@ -20,6 +20,7 @@ use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
@@ -914,6 +915,29 @@ class Controller
 			if ($auto)
 			{
 				$url = Route::_($url, false);
+			}
+
+			/**
+			 * Joomla 4 does not add the base URI to redirections.
+			 *
+			 * This means that all bare redirects, e.g. to 'index.php?option=com_example', no longer work correctly.
+			 *
+			 * In the frontend, if your site is located in a subdirectory e.g. /foobar you get redirected to
+			 * /index.php?option=com_example instead of /foobar/index.php?option=com_example
+			 *
+			 * In the backend, you're redirected to /index.php?option=com_example instead of the expected
+			 * /administrator/index.php?option=com_example which breaks your application since the backend redirects to
+			 * the frontend.
+			 *
+			 * This is an undocumented b/c break in Joomla 4. It even breaks some of the core components...
+			 *
+			 * The following code detects bare redirect URLs and adds the base URI path if auto-routing has been
+			 * disabled, automatically fixing the observed issue. It only does that on Joomla 4 since adding the base
+			 * URI on Joomla 3 can cause redirection problems.
+			 */
+			if (!$auto && version_compare(JVERSION, '3.999.999', 'gt'))
+			{
+				$url = Uri::base() . $url;
 			}
 		}
 
