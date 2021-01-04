@@ -195,9 +195,16 @@ class Input extends JoomlaInput
 		elseif ($mask & 4)
 		{
 			// If the allow HTML flag is set, apply a safe HTML filter to the variable
-			$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
-			$var = $safeHtmlFilter->clean($var, $type);
-		}
+			if (version_compare(JVERSION, '3.999.999', 'le'))
+			{
+				$safeHtmlFilter = InputFilter::getInstance(null, null, 1, 1);
+			}
+			else
+			{
+				$safeHtmlFilter = \JFilterInput::getInstance([], [], \JFilterInput::TAGS_BLACKLIST, \JFilterInput::ATTR_BLACKLIST);
+			}
+
+			$var = $safeHtmlFilter->clean($var, $type);		}
 		else
 		{
 			$var = $this->filter->clean($var, $type);
