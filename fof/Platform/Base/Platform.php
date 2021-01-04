@@ -154,7 +154,7 @@ abstract class Platform implements PlatformInterface
 	 */
 	public function getUser(?int $id = null): User
 	{
-		return null;
+		return new User();
 	}
 
 	/**
@@ -367,16 +367,8 @@ abstract class Platform implements PlatformInterface
 		// The default implementation does nothing. Override this in your platform classes.
 	}
 
-	/**
-	 * Adds a message
-	 *
-	 * @param string|array $title     A title, or an array of additional fields to add to the log entry
-	 * @param string       $logText   The translation key to the log text
-	 * @param string       $extension The name of the extension logging this entry
-	 *
-	 * @return  void
-	 */
-	public function logUserAction($title, string $logText, string $extension): void
+	/** @inheritDoc */
+	public function logUserAction($title, string $logText, string $extension, User $user = null): void
 	{
 		// The default implementation does nothing. Override this in your platform classes.
 	}

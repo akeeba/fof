@@ -386,10 +386,11 @@ interface PlatformInterface
 	 * @param   string|array  $title      A title, or an array of additional fields to add to the log entry
 	 * @param   string        $logText    The translation key to the log text
 	 * @param   string        $extension  The name of the extension logging this entry
+	 * @param   User|null     $user       The user the action is being logged for
 	 *
 	 * @return  void
 	 */
-	public function logUserAction($title, string $logText, string $extension): void;
+	public function logUserAction($title, string $logText, string $extension, User $user = null): void;
 
 	/**
 	 * Returns the root URI for the request.
