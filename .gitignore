@@ -3,8 +3,11 @@
 .idea/sshConfigs.xml
 .idea/dataSources.xml
 
-### We can't include composer.lock since the testing framework dependencies vary by PHP version we are testing against
+### Composer
+# We can't include composer.lock since the testing framework dependencies vary by PHP version we are testing against
 composer.lock
+# The dependencies folder itself
+/vendor/
 
 ### Automatically generated files
 # Library loader
@@ -18,7 +21,7 @@ composer.lock
 ### Release packages
 /release/*.zip
 
-### Excluded files and folders under Tests
+### Test files
 # Temporary Joomla! installations, used by Travis CI
 /Tests/environments/**
 # Test coverage output files
@@ -27,6 +30,3 @@ composer.lock
 /Tests/config.php
 # Log file, used when running tests under Travis CI
 /Tests/debug.txt
-
-### Composer dependencies
-/vendor/**
