@@ -70,7 +70,7 @@ class Update extends Model
 		// Get an instance of the updater class
 		$this->updater = JUpdater::getInstance();
 
-		$this->component = isset($config['update_component']) ? $config['update_component'] : $this->input->getCmd('option', '');
+		$this->component = $config['update_component'] ?? $this->input->getCmd('option', '');
 
 		// Get the component version
 		if (isset($config['update_version']))

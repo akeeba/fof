@@ -98,4 +98,18 @@ $autoloader->addClassMap([
 	'plgUserFoftokenInstallerScript' => __DIR__ . '/../plugins/user/foftoken/script.php',
 	# Akeeba FEF (must be installed in Joomla)
 	'AkeebaFEFHelper'                => $joomlaPath . '/media/fef/fef.php',
+	# Master fake class
+	'MasterFakeClass'                => __DIR__ . '/fakes/MasterFakeClass.php',
 ]);
+
+// Obsolete Joomla 3 classes removed in Joomla 4
+foreach ([
+	         'JEventDispatcher',
+	         'JArrayHelper',
+         ] as $className)
+{
+	if (!class_exists($className))
+	{
+		class_alias('MasterFakeClass', $className, true);
+	}
+}

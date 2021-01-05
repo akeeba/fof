@@ -930,8 +930,7 @@ class Component extends BaseInstaller
 
 			if (empty($menu_ids_level1))
 			{
-				// Oops! Could not get the menu ID. Go back and rollback changes.
-				\JError::raiseWarning(1, $table->getError());
+				JoomlaFactory::getApplication()->enqueueMessage($table->getError(), 'warning');
 
 				return false;
 			}
@@ -968,7 +967,7 @@ class Component extends BaseInstaller
 				if (!$table->bind($data) || !$table->check() || !$table->store())
 				{
 					// Install failed, warn user and rollback changes
-					\JError::raiseWarning(1, $table->getError());
+					JoomlaFactory::getApplication()->enqueueMessage($table->getError(), 'warning');
 
 					return false;
 				}

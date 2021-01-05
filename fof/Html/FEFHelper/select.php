@@ -695,7 +695,7 @@ abstract class FEFHelperSelect
 		{
 			$optionValue = $optionObject->$optKey;
 			$labelText   = $translate ? \Joomla\CMS\Language\Text::_($optionObject->$optText) : $optionObject->$optText;
-			$id          = (isset($optionObject->id) ? $optionObject->id : null);
+			$id          = ($optionObject->id ?? null);
 
 			$extra = '';
 			$id    = $id ? $optionObject->id : $id_text . $optionValue;

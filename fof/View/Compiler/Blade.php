@@ -690,7 +690,7 @@ class Blade implements CompilerInterface
 		$parts      = explode(',', $expression, 2);
 
 		$functionName  = '_fof_blade_repeatable_' . md5($this->path . trim($parts[0]));
-		$argumentsList = isset($parts[1]) ? $parts[1] : '';
+		$argumentsList = $parts[1] ?? '';
 
 		return "<?php @\$$functionName = function($argumentsList) { ?>";
 	}
@@ -720,7 +720,7 @@ class Blade implements CompilerInterface
 		$parts      = explode(',', $expression, 2);
 
 		$functionName  = '_fof_blade_repeatable_' . md5($this->path . trim($parts[0]));
-		$argumentsList = isset($parts[1]) ? $parts[1] : '';
+		$argumentsList = $parts[1] ?? '';
 
 		return "<?php \$$functionName($argumentsList); ?>";
 	}

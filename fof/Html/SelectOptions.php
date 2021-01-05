@@ -219,7 +219,7 @@ class SelectOptions
 		$db = JoomlaFactory::getDbo();
 
 		// Check for client_ids override
-		$client_ids = isset($params['client_ids']) ? $params['client_ids'] : [0, 1];
+		$client_ids = $params['client_ids'] ?? [0, 1];
 
 		if (is_string($client_ids))
 		{
@@ -294,7 +294,7 @@ class SelectOptions
 	 */
 	private static function _api_languages(array $params): array
 	{
-		$client = isset($params['client']) ? $params['client'] : 'site';
+		$client = $params['client'] ?? 'site';
 
 		if (!in_array($client, ['site', 'administrator']))
 		{
@@ -314,7 +314,7 @@ class SelectOptions
 			);
 		}
 
-		$none = isset($params['none']) ? $params['none'] : '*';
+		$none = $params['none'] ?? '*';
 
 		if (!empty($none))
 		{

@@ -3891,7 +3891,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getBehaviorParam($name, $default = null)
 	{
-		return isset($this->behaviorParams[$name]) ? $this->behaviorParams[$name] : $default;
+		return $this->behaviorParams[$name] ?? $default;
 	}
 
 	/**

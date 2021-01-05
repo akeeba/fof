@@ -191,7 +191,7 @@ class ModelTypeHints
 
 		foreach ($model->getTableFields() as $fieldName => $fieldMeta)
 		{
-			$fieldType = $this->getFieldType($fieldMeta->Type);
+			$fieldType = static::getFieldType($fieldMeta->Type);
 
 			if (!in_array($fieldName, $magicFields))
 			{

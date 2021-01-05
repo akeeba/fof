@@ -354,7 +354,7 @@ class Inflector
 	public function isSingular(string $string): bool
 	{
 		// Check cache assuming the string is plural.
-		$singular = isset($this->cache['singularized'][$string]) ? $this->cache['singularized'][$string] : null;
+		$singular = $this->cache['singularized'][$string] ?? null;
 		$plural   = $singular && isset($this->cache['pluralized'][$singular]) ? $this->cache['pluralized'][$singular] : null;
 
 		if ($singular && $plural)
@@ -382,7 +382,7 @@ class Inflector
 		}
 
 		// Check cache assuming the string is singular.
-		$plural   = isset($this->cache['pluralized'][$string]) ? $this->cache['pluralized'][$string] : null;
+		$plural   = $this->cache['pluralized'][$string] ?? null;
 		$singular = $plural && isset($this->cache['singularized'][$plural]) ? $this->cache['singularized'][$plural] : null;
 
 		if ($plural && $singular)
@@ -415,6 +415,6 @@ class Inflector
 			$index = count($parts) + $index;
 		}
 
-		return isset($parts[$index]) ? $parts[$index] : $default;
+		return $parts[$index] ?? $default;
 	}
 }
