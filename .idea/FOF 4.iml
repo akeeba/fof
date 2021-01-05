@@ -67,6 +67,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/autowire-array-parameter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/simple-php-doc-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symplify/package-builder" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mikey179/vfsstream" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

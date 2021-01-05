@@ -115,7 +115,7 @@ class Collection extends BaseCollection
 	 *
 	 * @return Collection
 	 */
-	public function fetch($key)
+	public function fetch(string $key): BaseCollection
 	{
 		return new static(array_fetch($this->toArray(), $key));
 	}
@@ -172,7 +172,7 @@ class Collection extends BaseCollection
 	 *
 	 * @return BaseCollection
 	 */
-	public function merge($collection)
+	public function merge($collection): BaseCollection
 	{
 		$dictionary = $this->getDictionary($this);
 
@@ -191,7 +191,7 @@ class Collection extends BaseCollection
 	 *
 	 * @return  BaseCollection
 	 */
-	public function diff($collection)
+	public function diff($collection): BaseCollection
 	{
 		$diff = new static;
 
@@ -216,7 +216,7 @@ class Collection extends BaseCollection
 	 *
 	 * @return  Collection
 	 */
-	public function intersect($collection)
+	public function intersect($collection): BaseCollection
 	{
 		$intersect = new static;
 
@@ -239,7 +239,7 @@ class Collection extends BaseCollection
 	 *
 	 * @return BaseCollection
 	 */
-	public function unique()
+	public function unique(): BaseCollection
 	{
 		$dictionary = $this->getDictionary($this);
 

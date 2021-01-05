@@ -11,6 +11,9 @@ use FOF40\Encrypt\Randval;
 use JSessionHandlerInterface;
 use RuntimeException;
 
+/**
+ * CLI session handler for Joomla 3.x
+ */
 class CliSessionHandler implements JSessionHandlerInterface
 {
 	private $id;

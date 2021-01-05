@@ -13,6 +13,7 @@ use FOF40\Cli\Traits\JoomlaConfigAware;
 use FOF40\Cli\Traits\MemStatsAware;
 use FOF40\Cli\Traits\TimeAgoAware;
 use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Application\ExtensionNamespaceMapper;
 use Joomla\CMS\Factory;
 use Joomla\Event\Dispatcher;
 use Joomla\Registry\Registry;
@@ -70,9 +71,7 @@ elseif (@file_exists($cmsImportFilePathOld))
  */
 abstract class FOFCliApplicationJoomla4 extends CliApplication
 {
-	use ExtensionNamespaceMapper;
-
-	use CGIModeAware, CustomOptionsAware, JoomlaConfigAware, MemStatsAware, TimeAgoAware;
+	use CGIModeAware, CustomOptionsAware, JoomlaConfigAware, MemStatsAware, TimeAgoAware, ExtensionNamespaceMapper;
 
 	private $allowedToClose = false;
 

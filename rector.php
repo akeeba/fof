@@ -10,6 +10,7 @@ use Rector\Set\ValueObject\SetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+	// get parameters
 	$parameters = $containerConfigurator->parameters();
 
 	// Custom autoloader for our classes
@@ -20,17 +21,59 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 	// Use PHP 7.2 features only
 	$parameters->set(Option::PHP_VERSION_FEATURES, '7.2');
 
-	//Paths to include
+	// Define what rule sets will be applied
+	$parameters->set(Option::SETS, [
+		SetList::DEAD_CODE,
+//	    SetList::EARLY_RETURN,
+//		SetList::CODE_QUALITY,
+//		SetList::PHP_52,
+//		SetList::PHP_53,
+//		SetList::PHP_54,
+//		SetList::PHP_55,
+//		SetList::PHP_56,
+//		SetList::PHP_70,
+//		SetList::PHP_71,
+//		SetList::PHP_72,
+	]);
+
+	// Paths to include
 	$parameters->set(Option::PATHS, [
-		__DIR__ . '/fof',
+		__DIR__ . '/fof/Autoloader',
+		__DIR__ . '/fof/Configuration',
+		__DIR__ . '/fof/Container',
+		__DIR__ . '/fof/Controller',
+		__DIR__ . '/fof/Database',
+		__DIR__ . '/fof/Date',
+		__DIR__ . '/fof/Dispatcher',
+		__DIR__ . '/fof/Download',
+		__DIR__ . '/fof/Encrypt',
+		__DIR__ . '/fof/Event',
+		__DIR__ . '/fof/Factory',
+		__DIR__ . '/fof/Html',
+		__DIR__ . '/fof/Inflector',
+		__DIR__ . '/fof/Input',
+		__DIR__ . '/fof/InstallScript',
+		__DIR__ . '/fof/IP',
+		__DIR__ . '/fof/JoomlaAbstraction',
+		__DIR__ . '/fof/Layout',
+		__DIR__ . '/fof/Model',
+		__DIR__ . '/fof/Params',
+		__DIR__ . '/fof/Pimple',
+		__DIR__ . '/fof/Platform',
+		__DIR__ . '/fof/Render',
+		__DIR__ . '/fof/Template',
+		__DIR__ . '/fof/Timer',
+		__DIR__ . '/fof/Toolbar',
+		__DIR__ . '/fof/TransparentAuthentication',
+		__DIR__ . '/fof/Update',
+		__DIR__ . '/fof/Utils',
+		__DIR__ . '/fof/View',
 	]);
 
 	/**
-	 * Paths to exclude from automatic refactoring
+	 * Paths and rectors to exclude.
 	 *
-	 * WARNING! Rector includes .php files. Any terminal endpoint file will KILL Rector.
-	 *
-	 * This means that all CLI scripts and error pages MUST be excluded.
+	 * But why does it not work...?
 	 *
 	 * @see https://github.com/rectorphp/rector/blob/master/docs/how_to_ignore_rule_or_paths.md
 	 */
@@ -54,20 +97,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 		AddDefaultValueForUndefinedVariableRector::class,
 	]);
 
-	// Rector sets to apply, see vendor/rector/rector/config/set
-	$parameters->set(Option::SETS, [
-		SetList::EARLY_RETURN,
-//		SetList::CODE_QUALITY,
-//		SetList::PHP_52,
-//		SetList::PHP_53,
-//		SetList::PHP_54,
-//		SetList::PHP_55,
-//		SetList::PHP_56,
-//		SetList::PHP_70,
-//		SetList::PHP_71,
-//		SetList::PHP_72,
-	]);
-
+	// get services (needed for register a single rule)
 	$services = $containerConfigurator->services();
 
 	// Joomla 3.9 compatibility
