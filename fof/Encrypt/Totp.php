@@ -58,7 +58,7 @@ class Totp
 		$this->timeStep       = $timeStep;
 		$this->passCodeLength = $passCodeLength;
 		$this->secretLength   = $secretLength;
-		$this->pinModulo      = pow(10, $this->passCodeLength);
+		$this->pinModulo      = 10 ** $this->passCodeLength;
 
 		$this->base32 = is_null($base32) ? new Base32() : $base32;
 	}

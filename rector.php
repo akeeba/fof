@@ -29,10 +29,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 //		SetList::CODE_QUALITY,
 //		SetList::PHP_52,
 //		SetList::PHP_53,
-		SetList::PHP_54,
+//		SetList::PHP_54,
 //		SetList::PHP_55,
 //		SetList::PHP_56,
-//		SetList::PHP_70,
+		SetList::PHP_70,
 //		SetList::PHP_71,
 //		SetList::PHP_72,
 	]);
