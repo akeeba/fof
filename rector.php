@@ -38,36 +38,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 	// Paths to include
 	$parameters->set(Option::PATHS, [
-		__DIR__ . '/fof/Autoloader',
-		__DIR__ . '/fof/Configuration',
-		__DIR__ . '/fof/Container',
-		__DIR__ . '/fof/Controller',
-		__DIR__ . '/fof/Database',
-		__DIR__ . '/fof/Date',
-		__DIR__ . '/fof/Dispatcher',
-		__DIR__ . '/fof/Download',
-		__DIR__ . '/fof/Encrypt',
-		__DIR__ . '/fof/Event',
-		__DIR__ . '/fof/Factory',
-		__DIR__ . '/fof/Html',
-		__DIR__ . '/fof/Inflector',
-		__DIR__ . '/fof/Input',
-		__DIR__ . '/fof/InstallScript',
-		__DIR__ . '/fof/IP',
-		__DIR__ . '/fof/JoomlaAbstraction',
-		__DIR__ . '/fof/Layout',
-		__DIR__ . '/fof/Model',
-		__DIR__ . '/fof/Params',
-		__DIR__ . '/fof/Pimple',
-		__DIR__ . '/fof/Platform',
-		__DIR__ . '/fof/Render',
-		__DIR__ . '/fof/Template',
-		__DIR__ . '/fof/Timer',
-		__DIR__ . '/fof/Toolbar',
-		__DIR__ . '/fof/TransparentAuthentication',
-		__DIR__ . '/fof/Update',
-		__DIR__ . '/fof/Utils',
-		__DIR__ . '/fof/View',
+		__DIR__ . '/fof',
 	]);
 
 	/**
@@ -77,10 +48,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 	 *
 	 * @see https://github.com/rectorphp/rector/blob/master/docs/how_to_ignore_rule_or_paths.md
 	 */
-	$parameters->set(Option::SKIP, [
+	$parameters->set(Option::EXCLUDE_PATHS, [
 		__DIR__ . '/fof/Cli/*',
 		__DIR__ . '/fof/language/*',
 		__DIR__ . '/fof/sql/*',
+		__DIR__ . '/fof/Utils/CliSessionHandler.php',
 		__DIR__ . '/fof/ViewTemplates/*',
 		__DIR__ . '/fof/*.xml',
 		__DIR__ . '/fof/*.txt',
@@ -89,7 +61,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 		__DIR__ . '/plugins/user/foftoken/.htaccess',
 		__DIR__ . '/plugins/user/foftoken/web.config',
 		__DIR__ . '/plugins/user/foftoken/language/*',
+	]);
 
+	/**
+	 * Paths and rectors to exclude.
+	 */
+	$parameters->set(Option::EXCLUDE_RECTORS, [
 		// WATCH OUT! This does crazy things, like convert $ret['ErrorException'] to $ret[\ErrorException::class] which
 		// is unfortunate and messes everything up.
 		StringClassNameToClassConstantRector::class,
