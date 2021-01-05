@@ -24,17 +24,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 	// Define what rule sets will be applied
 	$parameters->set(Option::SETS, [
-//		SetList::DEAD_CODE,
-//	    SetList::EARLY_RETURN,
-//		SetList::CODE_QUALITY,
-//		SetList::PHP_52,
-//		SetList::PHP_53,
-//		SetList::PHP_54,
-//		SetList::PHP_55,
-//		SetList::PHP_56,
-//		SetList::PHP_70,
+		SetList::DEAD_CODE,
+	    SetList::EARLY_RETURN,
+		SetList::CODE_QUALITY,
+		SetList::PHP_52,
+		SetList::PHP_53,
+		SetList::PHP_54,
+		SetList::PHP_55,
+		SetList::PHP_56,
+		SetList::PHP_70,
 		SetList::PHP_71,
-//		SetList::PHP_72,
+		SetList::PHP_72,
 	]);
 
 	// Paths to include
