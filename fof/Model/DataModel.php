@@ -176,7 +176,9 @@ class DataModel extends Model implements TableInterface
 	 * model behaviour observers to attach to the behavioursDispatcher. behaviours            Array    A list of
 	 * behaviour names to instantiate and attach to the behavioursDispatcher. fillable_fields       Array    Which
 	 * fields should be auto-filled from the model state (by extent, the request)? guarded_fields        Array    Which
-	 * fields should never be auto-filled from the model state (by extent, the request)? relations             Array    (hashed)  The relations to autoload on model creation. contentType           String   The UCM content type, e.g. "com_foobar.items"
+	 * fields should never be auto-filled from the model state (by extent, the request)? relations             Array
+	 * (hashed)  The relations to autoload on model creation. contentType           String   The UCM content type, e.g.
+	 * "com_foobar.items"
 	 *
 	 * Setting either fillable_fields or guarded_fields turns on automatic filling of fields in the constructor. If
 	 * both
@@ -792,14 +794,18 @@ class DataModel extends Model implements TableInterface
 			{
 				foreach (static::$tableFieldCache[$tableName] as $field)
 				{
-					if (strtolower($field->type) == 'timestamp without time zone')
+					if (strtolower($field->type) != 'timestamp without time zone')
 					{
-						if (stristr($field->Default, '\'::timestamp without time zone'))
-						{
-							[$date,] = explode('::', $field->Default, 2);
-							$field->Default = trim($date, "'");
-						}
+						continue;
 					}
+
+					if (!stristr($field->Default, '\'::timestamp without time zone'))
+					{
+						continue;
+					}
+
+					[$date,] = explode('::', $field->Default, 2);
+					$field->Default = trim($date, "'");
 				}
 			}
 		}
@@ -1490,19 +1496,23 @@ class DataModel extends Model implements TableInterface
 		foreach ($rows as $i => $row)
 		{
 			// Make sure the ordering is a positive integer.
-			if ($row->$order_field >= 0)
+			if ($row->$order_field < 0)
 			{
-				// Only update rows that are necessary.
-				if ($row->$order_field != $i + 1)
-				{
-					// Update the row ordering field.
-					$query = $db->getQuery(true)
-						->update($db->qn($this->getTableName()))
-						->set($db->qn($order_field) . ' = ' . $db->q($i + 1))
-						->where($db->qn($k) . ' = ' . $db->q($row->$k));
-					$db->setQuery($query)->execute();
-				}
+				continue;
 			}
+
+			// Only update rows that are necessary.
+			if ($row->$order_field == $i + 1)
+			{
+				continue;
+			}
+
+			// Update the row ordering field.
+			$query = $db->getQuery(true)
+				->update($db->qn($this->getTableName()))
+				->set($db->qn($order_field) . ' = ' . $db->q($i + 1))
+				->where($db->qn($k) . ' = ' . $db->q($row->$k));
+			$db->setQuery($query)->execute();
 		}
 
 		$this->triggerEvent('onAfterReorder');

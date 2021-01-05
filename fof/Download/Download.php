@@ -185,10 +185,17 @@ class Download
 			$adapter   = new $className;
 		}
 
-		if (is_object($adapter) && ($adapter instanceof DownloadInterface))
+		if (!is_object($adapter))
 		{
-			$this->adapter = $adapter;
+			return;
 		}
+
+		if (!$adapter instanceof DownloadInterface)
+		{
+			return;
+		}
+
+		$this->adapter = $adapter;
 	}
 
 	/**

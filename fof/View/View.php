@@ -1119,16 +1119,23 @@ class View
 			$this->getName(),
 		]);
 
-		if (is_array($extraPathsResults) && !empty($extraPathsResults))
+		if (!is_array($extraPathsResults))
 		{
-			foreach ($extraPathsResults as $somePaths)
+			return;
+		}
+
+		if (empty($extraPathsResults))
+		{
+			return;
+		}
+
+		foreach ($extraPathsResults as $somePaths)
+		{
+			if (!empty($somePaths))
 			{
-				if (!empty($somePaths))
+				foreach ($somePaths as $aPath)
 				{
-					foreach ($somePaths as $aPath)
-					{
-						$this->addTemplatePath($aPath);
-					}
+					$this->addTemplatePath($aPath);
 				}
 			}
 		}

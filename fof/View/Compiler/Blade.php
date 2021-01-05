@@ -102,10 +102,17 @@ class Blade implements CompilerInterface
 		$this->container      = $container;
 		$this->usingTokenizer = false;
 
-		if (function_exists('token_get_all') && defined('T_INLINE_HTML'))
+		if (!function_exists('token_get_all'))
 		{
-			$this->usingTokenizer = true;
+			return;
 		}
+
+		if (!defined('T_INLINE_HTML'))
+		{
+			return;
+		}
+
+		$this->usingTokenizer = true;
 	}
 
 	/**

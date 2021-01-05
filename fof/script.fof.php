@@ -77,8 +77,8 @@ class file_fof40InstallerScript
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string           $type   Installation type (install, update, discover_install)
-	 * @param   JoomlaInstaller  $parent Parent object
+	 * @param   string           $type    Installation type (install, update, discover_install)
+	 * @param   JoomlaInstaller  $parent  Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
@@ -230,7 +230,7 @@ class file_fof40InstallerScript
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   InstallerAdapter $parent The parent object
+	 * @param   InstallerAdapter  $parent  The parent object
 	 *
 	 * @throws  RuntimeException  If the uninstallation is not allowed
 	 */
@@ -253,7 +253,7 @@ class file_fof40InstallerScript
 	 * Is this package an update to the currently installed FOF? If not (we're a downgrade) we will return false
 	 * and prevent the installation from going on.
 	 *
-	 * @param   InstallerAdapter $parent The parent object
+	 * @param   InstallerAdapter  $parent  The parent object
 	 *
 	 * @return  bool  The installation status
 	 */
@@ -272,33 +272,33 @@ class file_fof40InstallerScript
 			return true;
 		}
 
-		$fofVersion = array();
+		$fofVersion = [];
 
 		if (File::exists($target . '/version.txt'))
 		{
 			$rawData                 = @file_get_contents($target . '/version.txt');
 			$rawData                 = ($rawData === false) ? "0.0.0\n2011-01-01\n" : $rawData;
 			$info                    = explode("\n", $rawData);
-			$fofVersion['installed'] = array(
+			$fofVersion['installed'] = [
 				'version' => trim($info[0]),
 				'date'    => new JoomlaDate(trim($info[1])),
-			);
+			];
 		}
 		else
 		{
-			$fofVersion['installed'] = array(
+			$fofVersion['installed'] = [
 				'version' => '0.0',
 				'date'    => new JoomlaDate('2011-01-01'),
-			);
+			];
 		}
 
 		$rawData               = @file_get_contents($source . '/fof/version.txt');
 		$rawData               = ($rawData === false) ? "0.0.0\n2011-01-01\n" : $rawData;
 		$info                  = explode("\n", $rawData);
-		$fofVersion['package'] = array(
+		$fofVersion['package'] = [
 			'version' => trim($info[0]),
 			'date'    => new JoomlaDate(trim($info[1])),
-		);
+		];
 
 		return $fofVersion['package']['date']->toUNIX() >= $fofVersion['installed']['date']->toUNIX();
 	}
@@ -313,17 +313,24 @@ class file_fof40InstallerScript
 		{
 			$filePath = JPATH_LIBRARIES . '/fof40/include.php';
 
-			if (!defined('FOF40_INCLUDED') && file_exists($filePath))
+			if (defined('FOF40_INCLUDED'))
 			{
-				@include_once $filePath;
+				return;
 			}
+
+			if (!file_exists($filePath))
+			{
+				return;
+			}
+
+			@include_once $filePath;
 		}
 	}
 
 	/**
 	 * Get the dependencies for a package from the #__akeeba_common table
 	 *
-	 * @param   string $package The package
+	 * @param   string  $package  The package
 	 *
 	 * @return  array  The dependencies
 	 */
@@ -343,12 +350,12 @@ class file_fof40InstallerScript
 
 			if (empty($dependencies))
 			{
-				$dependencies = array();
+				$dependencies = [];
 			}
 		}
 		catch (Exception $e)
 		{
-			$dependencies = array();
+			$dependencies = [];
 		}
 
 		return $dependencies;
@@ -357,8 +364,8 @@ class file_fof40InstallerScript
 	/**
 	 * Sets the dependencies for a package into the #__akeeba_common table
 	 *
-	 * @param   string $package      The package
-	 * @param   array  $dependencies The dependencies list
+	 * @param   string  $package       The package
+	 * @param   array   $dependencies  The dependencies list
 	 */
 	protected function setDependencies($package, array $dependencies)
 	{
@@ -377,10 +384,10 @@ class file_fof40InstallerScript
 			// Do nothing if the old key wasn't found
 		}
 
-		$object = (object) array(
+		$object = (object) [
 			'key'   => $package,
 			'value' => json_encode($dependencies),
-		);
+		];
 
 		try
 		{
@@ -395,8 +402,8 @@ class file_fof40InstallerScript
 	/**
 	 * Adds a package dependency to #__akeeba_common
 	 *
-	 * @param   string $package    The package
-	 * @param   string $dependency The dependency to add
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to add
 	 */
 	protected function addDependency($package, $dependency)
 	{
@@ -413,8 +420,8 @@ class file_fof40InstallerScript
 	/**
 	 * Removes a package dependency from #__akeeba_common
 	 *
-	 * @param   string $package    The package
-	 * @param   string $dependency The dependency to remove
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to remove
 	 */
 	protected function removeDependency($package, $dependency)
 	{
@@ -432,8 +439,8 @@ class file_fof40InstallerScript
 	/**
 	 * Do I have a dependency for a package in #__akeeba_common
 	 *
-	 * @param   string $package    The package
-	 * @param   string $dependency The dependency to check for
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to check for
 	 *
 	 * @return bool
 	 */
@@ -447,8 +454,8 @@ class file_fof40InstallerScript
 	/**
 	 * Recursively copy a bunch of files, but only if the source and target file have a different size.
 	 *
-	 * @param   string $source Path to copy FROM
-	 * @param   string $dest   Path to copy TO
+	 * @param   string  $source  Path to copy FROM
+	 * @param   string  $dest    Path to copy TO
 	 *
 	 * @return  void
 	 */
@@ -539,9 +546,9 @@ class file_fof40InstallerScript
 	/**
 	 * Try to log a warning / error with Joomla
 	 *
-	 * @param   string $message  The message to write to the log
-	 * @param   bool   $error    Is this an error? If not, it's a warning. (default: false)
-	 * @param   string $category Log category, default jerror
+	 * @param   string  $message   The message to write to the log
+	 * @param   bool    $error     Is this an error? If not, it's a warning. (default: false)
+	 * @param   string  $category  Log category, default jerror
 	 *
 	 * @return  void
 	 */
@@ -573,7 +580,7 @@ class file_fof40InstallerScript
 	 * added / modified files and folders you have. We are trying to work around it by retrying the copy operation
 	 * ourselves WITHOUT going through the manifest, based entirely on the conventions we follow.
 	 *
-	 * @param   InstallerAdapter $parent
+	 * @param   InstallerAdapter  $parent
 	 */
 	protected function bugfixFilesNotCopiedOnUpdate($parent)
 	{
@@ -637,7 +644,7 @@ class file_fof40InstallerScript
 	 */
 	protected function removeUpdateSiteFor($id)
 	{
-		$db = JoomlaFactory::getDbo();
+		$db    = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->qn('update_site_id'))
 			->from($db->qn('#__update_sites_extensions'))
@@ -690,7 +697,7 @@ class file_fof40InstallerScript
 		$extension = new Extension(JoomlaFactory::getDbo());
 		$extension->load($id);
 
-		$keyName = $extension->getKeyName();
+		$keyName  = $extension->getKeyName();
 		$loadedID = $extension->get($keyName, 0);
 
 		if ($loadedID != $id)
@@ -730,21 +737,27 @@ class file_fof40InstallerScript
 				File::delete($f);
 			}
 		}
-
 		// Remove folders
-		if (isset($removeList['folders']) && !empty($removeList['folders']))
+		if (!isset($removeList['folders']))
 		{
-			foreach ($removeList['folders'] as $folder)
+			return;
+		}
+
+		if (empty($removeList['folders']))
+		{
+			return;
+		}
+
+		foreach ($removeList['folders'] as $folder)
+		{
+			$f = sprintf("%s/%s/%s", JPATH_LIBRARIES, $this->libraryFolder, $folder);
+
+			if (!is_dir($f))
 			{
-				$f = sprintf("%s/%s/%s", JPATH_LIBRARIES, $this->libraryFolder, $folder);
-
-				if (!is_dir($f))
-				{
-					continue;
-				}
-
-				Folder::delete($f);
+				continue;
 			}
+
+			Folder::delete($f);
 		}
 	}
 

@@ -643,21 +643,27 @@ class Component extends BaseInstaller
 				File::delete($f);
 			}
 		}
-
 		// Remove folders
-		if (isset($removeList['folders']) && !empty($removeList['folders']))
+		if (!isset($removeList['folders']))
 		{
-			foreach ($removeList['folders'] as $folder)
+			return;
+		}
+
+		if (empty($removeList['folders']))
+		{
+			return;
+		}
+
+		foreach ($removeList['folders'] as $folder)
+		{
+			$f = JPATH_ROOT . '/' . $folder;
+
+			if (!is_dir($f))
 			{
-				$f = JPATH_ROOT . '/' . $folder;
-
-				if (!is_dir($f))
-				{
-					continue;
-				}
-
-				Folder::delete($f);
+				continue;
 			}
+
+			Folder::delete($f);
 		}
 	}
 

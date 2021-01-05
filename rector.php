@@ -23,8 +23,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 	// Define what rule sets will be applied
 	$parameters->set(Option::SETS, [
-		SetList::DEAD_CODE,
-//	    SetList::EARLY_RETURN,
+//		SetList::DEAD_CODE,
+	    SetList::EARLY_RETURN,
 //		SetList::CODE_QUALITY,
 //		SetList::PHP_52,
 //		SetList::PHP_53,
@@ -78,6 +78,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
 	// get services (needed for register a single rule)
 	$services = $containerConfigurator->services();
+
+	return;
 
 	// Joomla 3.9 compatibility
 	$services->set(RenameClassRector::class)

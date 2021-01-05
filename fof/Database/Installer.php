@@ -292,10 +292,22 @@ class Installer
 		}
 
 		// Auto-convert the collation of tables if we are told to do so, have utf8mb4 support and a list of tables.
-		if ($autoCollationConversion && $hasUtf8mb4Support && !empty($tablesToConvert))
+		if (!$autoCollationConversion)
 		{
-			$this->convertTablesToUtf8mb4($tablesToConvert);
+			return;
 		}
+
+		if (!$hasUtf8mb4Support)
+		{
+			return;
+		}
+
+		if (empty($tablesToConvert))
+		{
+			return;
+		}
+
+		$this->convertTablesToUtf8mb4($tablesToConvert);
 	}
 
 	/**

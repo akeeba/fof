@@ -13,6 +13,6 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/inclu
 	throw new RuntimeException('This extension requires FOF 3.0.');
 }
 
-class plgUserFoftokenInstallerScript extends FOF40\Utils\InstallScript\Plugin
+class plgUserFoftokenInstallerScript extends \FOF40\InstallScript\Plugin
 {
 }

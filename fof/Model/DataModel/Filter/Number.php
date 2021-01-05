@@ -252,13 +252,9 @@ class Number extends AbstractFilter
 
 		if (!is_array($value))
 		{
-			$value = str_replace(',', '.', (string) $value);
-		}
-		else
-		{
-			$value = array_map([$this, 'sanitiseValue'], $value);
+			return str_replace(',', '.', (string) $value);
 		}
 
-		return $value;
+		return array_map([$this, 'sanitiseValue'], $value);
 	}
 }

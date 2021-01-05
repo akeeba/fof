@@ -128,10 +128,17 @@ class DataController extends Controller
 			$this->cacheableTasks = ['browse', 'read'];
 		}
 
-		if (isset($config['taskPrivileges']) && is_array($config['taskPrivileges']))
+		if (!isset($config['taskPrivileges']))
 		{
-			$this->taskPrivileges = array_merge($this->taskPrivileges, $config['taskPrivileges']);
+			return;
 		}
+
+		if (!is_array($config['taskPrivileges']))
+		{
+			return;
+		}
+
+		$this->taskPrivileges = array_merge($this->taskPrivileges, $config['taskPrivileges']);
 	}
 
 	/**
