@@ -30,8 +30,8 @@ defined('_JEXEC') or die;
 class DataController extends Controller
 {
 	/**
-	 * Variables that should be taken in account while working with the cache. You can set them in Controller constructor
-	 * or inside onBefore* methods
+	 * Variables that should be taken in account while working with the cache. You can set them in Controller
+	 * constructor or inside onBefore* methods
 	 *
 	 * @var false|array
 	 */
@@ -90,8 +90,8 @@ class DataController extends Controller
 	 * taskPrivileges       array   ACL privileges for each task
 	 * cacheableTasks       array   The cache-enabled tasks
 	 *
-	 * @param Container $container The application container
-	 * @param array     $config    The configuration array
+	 * @param   Container  $container  The application container
+	 * @param   array      $config     The configuration array
 	 */
 	public function __construct(Container $container, array $config = [])
 	{
@@ -141,7 +141,7 @@ class DataController extends Controller
 	 * If $task == 'default' we will determine the CRUD task to use based on the view name and HTTP verb in the request,
 	 * overriding the routing.
 	 *
-	 * @param string $task The task to execute, e.g. "browse"
+	 * @param   string  $task  The task to execute, e.g. "browse"
 	 *
 	 * @return  null|bool  False on execution failure
 	 *
@@ -158,203 +158,12 @@ class DataController extends Controller
 	}
 
 	/**
-	 * Deal with JSON format: no redirects needed
-	 *
-	 * @param string $task The task being executed
-	 *
-	 * @return bool True if everything went well
-	 *
-	 * @throws Exception
-	 */
-	protected function onAfterExecute(string $task): bool
-	{
-		// JSON shouldn't have redirects
-		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') == 'json')
-		{
-			// Error: deal with it in REST api way
-			if ($this->messageType == 'error')
-			{
-				$response = new JsonResponse($this->message, $this->message, true);
-
-				echo $response;
-
-				$this->redirect = false;
-				$this->container->platform->setHeader('Status', 500);
-
-				return true;
-			}
-
-			// Not an error, avoid redirect and display the record(s)
-			$this->redirect = false;
-			$this->display();
-
-			return true;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Determines the CRUD task to use based on the view name and HTTP verb used in the request.
-	 *
-	 * @return  string  The CRUD task (browse, read, edit, delete)
-	 */
-	protected function getCrudTask(): string
-	{
-		// By default, a plural view means 'browse' and a singular view means 'edit'
-		$view = $this->input->getCmd('view', null);
-		$task = $this->container->inflector->isPlural($view) ? 'browse' : 'edit';
-
-		// If the task is 'edit' but there's no logged in user switch to a 'read' task
-		if (($task == 'edit') && !$this->container->platform->getUser()->id)
-		{
-			$task = 'read';
-		}
-
-		// Check if there is an id passed in the request
-		$id = $this->input->get('id', null, 'int');
-
-		if ($id == 0)
-		{
-			$ids = $this->input->get('ids', [], 'array');
-
-			if (!empty($ids))
-			{
-				$id = array_shift($ids);
-			}
-		}
-
-		// Get the request HTTP verb
-		$requestMethod = 'GET';
-
-		if (isset($_SERVER['REQUEST_METHOD']))
-		{
-			$requestMethod = strtoupper($_SERVER['REQUEST_METHOD']);
-		}
-
-		// Alter the task based on the verb
-		switch ($requestMethod)
-		{
-			// POST and PUT result in a record being saved; no ID means creating a new record
-			case 'POST':
-			case 'PUT':
-				$task = 'save';
-				break;
-
-			// DELETE results in a record being deleted, as long as there is an ID
-			case 'DELETE':
-				if ($id)
-				{
-					$task = 'remove';
-				}
-				break;
-
-			// GET results in browse, edit or add depending on the ID
-			case 'GET':
-			default:
-				// If it's an edit without an ID or ID=0, it's really an add
-				if (($task == 'edit') && ($id == 0))
-				{
-					$task = 'add';
-				}
-				break;
-		}
-
-		return $task;
-	}
-
-	/**
-	 * Checks if the current user has enough privileges for the requested ACL area. This overridden method supports
-	 * asset tracking as well.
-	 *
-	 * @param string $area The ACL area, e.g. core.manage
-	 *
-	 * @return  boolean  True if the user has the ACL privilege specified
-	 */
-	protected function checkACL(string $area): bool
-	{
-		$area = $this->getACLRuleFor($area);
-
-		$result = parent::checkACL($area);
-
-		// Check if we're dealing with ids
-		$ids = null;
-
-		// First, check if there is an asset for this record
-		/** @var DataModel $model */
-		$model = $this->getModel();
-
-		$ids = null;
-
-		if (is_object($model) && ($model instanceof DataModel) && $model->isAssetsTracked())
-		{
-			$ids = $this->getIDsFromRequest($model, false);
-		}
-
-		// No IDs tracked, return parent's result
-		if (empty($ids))
-		{
-			return $result;
-		}
-
-		// Asset tracking
-		if (!is_array($ids))
-		{
-			$ids = [$ids];
-		}
-
-		$resource    = $this->container->inflector->singularize($this->view);
-		$isEditState = ($area == 'core.edit.state');
-
-		foreach ($ids as $id)
-		{
-			$asset = $this->container->componentName . '.' . $resource . '.' . $id;
-
-			// Dedicated permission found, check it!
-			$platform = $this->container->platform;
-
-			if ($platform->authorise($area, $asset))
-			{
-				return true;
-			}
-
-			// Fallback on edit.own, if not edit.state. First test if the permission is available.
-
-			$editOwn = $this->getACLRuleFor('@*editown');
-
-			if ((!$isEditState) && ($platform->authorise($editOwn, $asset)))
-			{
-				$model->load($id);
-
-				if (!$model->hasField('created_by'))
-				{
-					return false;
-				}
-
-				// Now test the owner is the user.
-				$owner_id = (int) $model->getFieldValue('created_by', null);
-
-				// If the owner matches 'me' then do the test.
-				if ($owner_id == $platform->getUser()->id)
-				{
-					return true;
-				}
-
-				return false;
-			}
-		}
-
-		// No result found? Not authorised.
-		return false;
-	}
-
-	/**
 	 * Returns a named View object
 	 *
-	 * @param string $name       The View name. If null we'll use the viewName
+	 * @param   string  $name    The View name. If null we'll use the viewName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param array  $config     Configuration parameters to the View. If skipped
+	 * @param   array   $config  Configuration parameters to the View. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  View|DataViewInterface The instance of the View known to this Controller
@@ -438,7 +247,7 @@ class DataController extends Controller
 		// If there is no record loaded, try loading a record based on the id passed in the input object
 		if (!$model->getId())
 		{
-			$ids = $this->getIDsFromRequest($model, true);
+			$ids = $this->getIDsFromRequest($model);
 
 			if ($model->getId() != reset($ids))
 			{
@@ -517,7 +326,7 @@ class DataController extends Controller
 
 		if (!$model->getId())
 		{
-			$this->getIDsFromRequest($model, true);
+			$this->getIDsFromRequest($model);
 		}
 
 		$userId = $this->container->platform->getUser()->id;
@@ -611,7 +420,7 @@ class DataController extends Controller
 
 		$model = $this->getModel()->savestate(false);
 
-		$ids = $this->getIDsFromRequest($model, true);
+		$ids = $this->getIDsFromRequest($model);
 
 		$error = null;
 
@@ -718,7 +527,7 @@ class DataController extends Controller
 		$this->csrfProtection();
 
 		$model = $this->getModel()->savestate(false);
-		$ids   = $this->getIDsFromRequest($model, true);
+		$ids   = $this->getIDsFromRequest($model);
 		$data  = $this->input->getData();
 
 		unset($data[$model->getIdFieldName()]);
@@ -771,7 +580,7 @@ class DataController extends Controller
 
 		if (!$model->getId())
 		{
-			$this->getIDsFromRequest($model, true);
+			$this->getIDsFromRequest($model);
 		}
 
 		if ($model->getId())
@@ -1184,7 +993,7 @@ class DataController extends Controller
 
 		if (!$model->getId())
 		{
-			$this->getIDsFromRequest($model, true);
+			$this->getIDsFromRequest($model);
 		}
 
 		$error = null;
@@ -1240,7 +1049,7 @@ class DataController extends Controller
 
 		if (!$model->getId())
 		{
-			$this->getIDsFromRequest($model, true);
+			$this->getIDsFromRequest($model);
 		}
 
 		$error = null;
@@ -1289,7 +1098,7 @@ class DataController extends Controller
 	 */
 	public function remove(): void
 	{
-		$this->deleteOrTrash(false);
+		$this->deleteOrTrash();
 	}
 
 	/**
@@ -1304,200 +1113,13 @@ class DataController extends Controller
 	}
 
 	/**
-	 * Automatically decides whether to trash or delete a record based in the $forceDelete parameter
-	 *
-	 * @param bool $forceDelete Should I delete the record? If false, the record will be trashed instead.
-	 *
-	 * @throws Exception
-	 */
-	protected function deleteOrTrash(bool $forceDelete = false): void
-	{
-		// CSRF prevention
-		$this->csrfProtection();
-
-		$model = $this->getModel()->savestate(false);
-		$ids   = $this->getIDsFromRequest($model, false);
-		$error = null;
-
-		try
-		{
-			$status = true;
-
-			foreach ($ids as $id)
-			{
-				$model->find($id);
-
-				$userId = $this->container->platform->getUser()->id;
-
-				if ($model->isLocked($userId))
-				{
-					$model->checkIn($userId);
-				}
-
-				if ($forceDelete)
-				{
-					$model->forceDelete();
-				}
-				else
-				{
-					$model->delete();
-				}
-			}
-		}
-		catch (Exception $e)
-		{
-			$status = false;
-			$error  = $e->getMessage();
-		}
-
-		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
-		{
-			$customURL = base64_decode($customURL);
-		}
-
-		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
-
-		if (!$status)
-		{
-			$this->setRedirect($url, $error, 'error');
-		}
-		else
-		{
-			$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_DELETED');
-			$this->setRedirect($url, Text::_($textKey));
-		}
-	}
-
-	/**
-	 * Common method to handle apply and save tasks
-	 *
-	 * @return  bool True on success
-	 */
-	protected function applySave(): bool
-	{
-		// Load the model
-		$model = $this->getModel()->savestate(false);
-
-		if (!$model->getId())
-		{
-			$this->getIDsFromRequest($model, true);
-		}
-
-		$userId = $this->container->platform->getUser()->id;
-		$id     = $model->getId();
-		$data   = $this->input->getData();
-
-		if ($model->isLocked($userId))
-		{
-			try
-			{
-				$model->checkIn($userId);
-			}
-			catch (LockedRecord $e)
-			{
-				// Redirect to the display task
-				if ($customURL = $this->input->getBase64('returnurl', ''))
-				{
-					$customURL = base64_decode($customURL);
-				}
-
-				$eventName = 'onAfterApplySaveError';
-				$result    = $this->triggerEvent($eventName, [&$data, $id, $e]);
-
-				$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
-				$this->setRedirect($url, $e->getMessage(), 'error');
-
-				return false;
-			}
-		}
-
-		// Set the layout to form, if it's not set in the URL
-		if (is_null($this->layout))
-		{
-			$this->layout = 'form';
-		}
-
-		// Save the data
-		$status = true;
-		$error  = null;
-
-		try
-		{
-			$eventName = 'onBeforeApplySave';
-			$result    = $this->triggerEvent($eventName, [&$data]);
-
-			if ($id != 0)
-			{
-				// Try to check-in the record if it's not a new one
-				$model->unlock();
-			}
-
-			// Save the data
-			$model->save($data);
-
-			$eventName = 'onAfterApplySave';
-			$result    = $this->triggerEvent($eventName, [&$data, $model->getId()]);
-
-			$this->input->set('id', $model->getId());
-		}
-		catch (Exception $e)
-		{
-			$status = false;
-			$error  = $e->getMessage();
-
-			$eventName = 'onAfterApplySaveError';
-			$result    = $this->triggerEvent($eventName, [&$data, $model->getId(), $e]);
-		}
-
-		if (!$status)
-		{
-			// Cache the item data in the session. We may need to reuse them if the save fails.
-			$itemData = $model->getData();
-
-			$sessionKey = $this->viewName . '.savedata';
-			$this->container->platform->setSessionVar($sessionKey, $itemData, $this->container->componentName);
-
-			// Redirect on error
-			$id = $model->getId();
-
-			if ($customURL = $this->input->getBase64('returnurl', ''))
-			{
-				$customURL = base64_decode($customURL);
-			}
-
-			if (!empty($customURL))
-			{
-				$url = $customURL;
-			}
-			elseif ($id != 0)
-			{
-				$url = 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=edit&id=' . $id . $this->getItemidURLSuffix();
-			}
-			else
-			{
-				$url = 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=add' . $this->getItemidURLSuffix();
-			}
-
-			$this->setRedirect($url, $error, 'error');
-		}
-		else
-		{
-			$sessionKey = $this->viewName . '.savedata';
-			$this->container->platform->setSessionVar($sessionKey, null, $this->container->componentName);
-		}
-
-		return $status;
-	}
-
-	/**
 	 * Returns a named Model object. Makes sure that the Model is a database-aware model, throwing an exception
 	 * otherwise, when $name is null.
 	 *
-	 * @param string $name       The Model name. If null we'll use the modelName
+	 * @param   string  $name    The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param array  $config     Configuration parameters to the Model. If skipped
+	 * @param   array   $config  Configuration parameters to the Model. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  DataModel  The instance of the Model known to this Controller
@@ -1519,8 +1141,8 @@ class DataController extends Controller
 	/**
 	 * Gets the list of IDs from the request data
 	 *
-	 * @param DataModel $model      The model where the record will be loaded
-	 * @param bool      $loadRecord When true, the record matching the *first* ID found will be loaded into $model
+	 * @param   DataModel  $model       The model where the record will be loaded
+	 * @param   bool       $loadRecord  When true, the record matching the *first* ID found will be loaded into $model
 	 *
 	 * @return int[]
 	 */
@@ -1633,6 +1255,381 @@ class DataController extends Controller
 	}
 
 	/**
+	 * Deal with JSON format: no redirects needed
+	 *
+	 * @param   string  $task  The task being executed
+	 *
+	 * @return bool True if everything went well
+	 *
+	 * @throws Exception
+	 */
+	protected function onAfterExecute(string $task): bool
+	{
+		// JSON shouldn't have redirects
+		if ($this->hasRedirect() && $this->input->getCmd('format', 'html') == 'json')
+		{
+			// Error: deal with it in REST api way
+			if ($this->messageType == 'error')
+			{
+				$response = new JsonResponse($this->message, $this->message, true);
+
+				echo $response;
+
+				$this->redirect = false;
+				$this->container->platform->setHeader('Status', 500);
+
+				return true;
+			}
+
+			// Not an error, avoid redirect and display the record(s)
+			$this->redirect = false;
+			$this->display();
+
+			return true;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determines the CRUD task to use based on the view name and HTTP verb used in the request.
+	 *
+	 * @return  string  The CRUD task (browse, read, edit, delete)
+	 */
+	protected function getCrudTask(): string
+	{
+		// By default, a plural view means 'browse' and a singular view means 'edit'
+		$view = $this->input->getCmd('view', null);
+		$task = $this->container->inflector->isPlural($view) ? 'browse' : 'edit';
+
+		// If the task is 'edit' but there's no logged in user switch to a 'read' task
+		if (($task == 'edit') && !$this->container->platform->getUser()->id)
+		{
+			$task = 'read';
+		}
+
+		// Check if there is an id passed in the request
+		$id = $this->input->get('id', null, 'int');
+
+		if ($id == 0)
+		{
+			$ids = $this->input->get('ids', [], 'array');
+
+			if (!empty($ids))
+			{
+				$id = array_shift($ids);
+			}
+		}
+
+		// Get the request HTTP verb
+		$requestMethod = 'GET';
+
+		if (isset($_SERVER['REQUEST_METHOD']))
+		{
+			$requestMethod = strtoupper($_SERVER['REQUEST_METHOD']);
+		}
+
+		// Alter the task based on the verb
+		switch ($requestMethod)
+		{
+			// POST and PUT result in a record being saved; no ID means creating a new record
+			case 'POST':
+			case 'PUT':
+				$task = 'save';
+				break;
+
+			// DELETE results in a record being deleted, as long as there is an ID
+			case 'DELETE':
+				if ($id)
+				{
+					$task = 'remove';
+				}
+				break;
+
+			// GET results in browse, edit or add depending on the ID
+			case 'GET':
+			default:
+				// If it's an edit without an ID or ID=0, it's really an add
+				if (($task == 'edit') && ($id == 0))
+				{
+					$task = 'add';
+				}
+				break;
+		}
+
+		return $task;
+	}
+
+	/**
+	 * Checks if the current user has enough privileges for the requested ACL area. This overridden method supports
+	 * asset tracking as well.
+	 *
+	 * @param   string  $area  The ACL area, e.g. core.manage
+	 *
+	 * @return  boolean  True if the user has the ACL privilege specified
+	 */
+	protected function checkACL(string $area): bool
+	{
+		$area   = $this->getACLRuleFor($area);
+		$result = parent::checkACL($area);
+
+		// First, check if there is an asset for this record
+		/** @var DataModel $model */
+		$model = $this->getModel();
+		$ids   = null;
+
+		if (is_object($model) && ($model instanceof DataModel) && $model->isAssetsTracked())
+		{
+			$ids = $this->getIDsFromRequest($model, false);
+		}
+
+		// No IDs tracked, return parent's result
+		if (empty($ids))
+		{
+			return $result;
+		}
+
+		// Asset tracking
+		if (!is_array($ids))
+		{
+			$ids = [$ids];
+		}
+
+		$resource    = $this->container->inflector->singularize($this->view);
+		$isEditState = ($area == 'core.edit.state');
+
+		foreach ($ids as $id)
+		{
+			$asset = $this->container->componentName . '.' . $resource . '.' . $id;
+
+			// Dedicated permission found, check it!
+			$platform = $this->container->platform;
+
+			if ($platform->authorise($area, $asset))
+			{
+				return true;
+			}
+
+			// Fallback on edit.own, if not edit.state. First test if the permission is available.
+
+			$editOwn = $this->getACLRuleFor('@*editown');
+
+			if ((!$isEditState) && ($platform->authorise($editOwn, $asset)))
+			{
+				$model->load($id);
+
+				if (!$model->hasField('created_by'))
+				{
+					return false;
+				}
+
+				// Now test the owner is the user.
+				$owner_id = (int) $model->getFieldValue('created_by', null);
+
+				// If the owner matches 'me' then do the test.
+				if ($owner_id == $platform->getUser()->id)
+				{
+					return true;
+				}
+
+				return false;
+			}
+		}
+
+		// No result found? Not authorised.
+		return false;
+	}
+
+	/**
+	 * Automatically decides whether to trash or delete a record based in the $forceDelete parameter
+	 *
+	 * @param   bool  $forceDelete  Should I delete the record? If false, the record will be trashed instead.
+	 *
+	 * @throws Exception
+	 */
+	protected function deleteOrTrash(bool $forceDelete = false): void
+	{
+		// CSRF prevention
+		$this->csrfProtection();
+
+		$model = $this->getModel()->savestate(false);
+		$ids   = $this->getIDsFromRequest($model, false);
+		$error = null;
+
+		try
+		{
+			$status = true;
+
+			foreach ($ids as $id)
+			{
+				$model->find($id);
+
+				$userId = $this->container->platform->getUser()->id;
+
+				if ($model->isLocked($userId))
+				{
+					$model->checkIn($userId);
+				}
+
+				if ($forceDelete)
+				{
+					$model->forceDelete();
+				}
+				else
+				{
+					$model->delete();
+				}
+			}
+		}
+		catch (Exception $e)
+		{
+			$status = false;
+			$error  = $e->getMessage();
+		}
+
+		// Redirect
+		if ($customURL = $this->input->getBase64('returnurl', ''))
+		{
+			$customURL = base64_decode($customURL);
+		}
+
+		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+
+		if (!$status)
+		{
+			$this->setRedirect($url, $error, 'error');
+		}
+		else
+		{
+			$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_DELETED');
+			$this->setRedirect($url, Text::_($textKey));
+		}
+	}
+
+	/**
+	 * Common method to handle apply and save tasks
+	 *
+	 * @return  bool True on success
+	 */
+	protected function applySave(): bool
+	{
+		// Load the model
+		$model = $this->getModel()->savestate(false);
+
+		if (!$model->getId())
+		{
+			$this->getIDsFromRequest($model);
+		}
+
+		$userId = $this->container->platform->getUser()->id;
+		$id     = $model->getId();
+		$data   = $this->input->getData();
+
+		if ($model->isLocked($userId))
+		{
+			try
+			{
+				$model->checkIn($userId);
+			}
+			catch (LockedRecord $e)
+			{
+				// Redirect to the display task
+				if ($customURL = $this->input->getBase64('returnurl', ''))
+				{
+					$customURL = base64_decode($customURL);
+				}
+
+				$eventName = 'onAfterApplySaveError';
+				$result    = $this->triggerEvent($eventName, [&$data, $id, $e]);
+
+				$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+				$this->setRedirect($url, $e->getMessage(), 'error');
+
+				return false;
+			}
+		}
+
+		// Set the layout to form, if it's not set in the URL
+		if (is_null($this->layout))
+		{
+			$this->layout = 'form';
+		}
+
+		// Save the data
+		$status = true;
+		$error  = null;
+
+		try
+		{
+			$eventName = 'onBeforeApplySave';
+
+			$this->triggerEvent($eventName, [&$data]);
+
+			if ($id != 0)
+			{
+				// Try to check-in the record if it's not a new one
+				$model->unlock();
+			}
+
+			// Save the data
+			$model->save($data);
+
+			$eventName = 'onAfterApplySave';
+
+			$this->triggerEvent($eventName, [&$data, $model->getId()]);
+
+			$this->input->set('id', $model->getId());
+		}
+		catch (Exception $e)
+		{
+			$status = false;
+			$error  = $e->getMessage();
+
+			$eventName = 'onAfterApplySaveError';
+			$result    = $this->triggerEvent($eventName, [&$data, $model->getId(), $e]);
+		}
+
+		if (!$status)
+		{
+			// Cache the item data in the session. We may need to reuse them if the save fails.
+			$itemData = $model->getData();
+
+			$sessionKey = $this->viewName . '.savedata';
+			$this->container->platform->setSessionVar($sessionKey, $itemData, $this->container->componentName);
+
+			// Redirect on error
+			$id = $model->getId();
+
+			if ($customURL = $this->input->getBase64('returnurl', ''))
+			{
+				$customURL = base64_decode($customURL);
+			}
+
+			if (!empty($customURL))
+			{
+				$url = $customURL;
+			}
+			elseif ($id != 0)
+			{
+				$url = 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=edit&id=' . $id . $this->getItemidURLSuffix();
+			}
+			else
+			{
+				$url = 'index.php?option=' . $this->container->componentName . '&view=' . $this->view . '&task=add' . $this->getItemidURLSuffix();
+			}
+
+			$this->setRedirect($url, $error, 'error');
+		}
+		else
+		{
+			$sessionKey = $this->viewName . '.savedata';
+			$this->container->platform->setSessionVar($sessionKey, null, $this->container->componentName);
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Gets the applicable ACL privilege for the apply and save tasks. The value returned is:
 	 * - @add if the record's ID is empty / record doesn't exist
 	 * - True if the ACL privilege of the edit task (@edit) is allowed
@@ -1647,7 +1644,7 @@ class DataController extends Controller
 
 		if (!$model->getId())
 		{
-			$this->getIDsFromRequest($model, true);
+			$this->getIDsFromRequest($model);
 		}
 
 		$id = $model->getId();

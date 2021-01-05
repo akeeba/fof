@@ -45,7 +45,7 @@ class Access extends Observer
 	 * filters.
 	 *
 	 * @param   DataModel &$model  The model which was called
-	 * @param   Array     &$keys   The keys used to locate the record which was loaded
+	 * @param   array     &$keys   The keys used to locate the record which was loaded
 	 *
 	 * @return  void
 	 */

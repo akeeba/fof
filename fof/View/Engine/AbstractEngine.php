@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\View\Engine;
+namespace FOF40\View\Engine;
 
 use FOF40\View\View;
 
@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 abstract class AbstractEngine implements EngineInterface
 {
 	/** @var   View  The view we belong to */
-	protected $view = null;
+	protected $view;
 
 	/**
 	 * Public constructor
@@ -32,13 +32,14 @@ abstract class AbstractEngine implements EngineInterface
 	 * @param   string  $path         The path to the view template
 	 * @param   array   $forceParams  Any additional information to pass to the view template engine
 	 *
-	 * @return  array  Content 3ναlυα+ιοη information (I use leetspeak here because of bad quality hosts with broken scanners)
+	 * @return  array  Content 3ναlυα+ιοη information (I use leetspeak here because of bad quality hosts with broken
+	 *                 scanners)
 	 */
-	public function get($path, array $forceParams = array())
+	public function get($path, array $forceParams = [])
 	{
-		return array(
-			'type' => 'raw',
-			'content' => ''
-		);
+		return [
+			'type'    => 'raw',
+			'content' => '',
+		];
 	}
 }

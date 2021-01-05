@@ -14,19 +14,6 @@ defined('_JEXEC') or die;
 
 abstract class Filesystem implements FilesystemInterface
 {
-	/** @var  Container  The component container */
-	protected $container = null;
-
-	/**
-	 * Public constructor.
-	 *
-	 * @param \FOF40\Container\Container $c The component container
-	 */
-	public function __construct(Container $c)
-	{
-		$this->container = $c;
-	}
-
 	/**
 	 * The list of paths where platform class files will be looked for
 	 *
@@ -34,13 +21,26 @@ abstract class Filesystem implements FilesystemInterface
 	 */
 	protected static $paths = [];
 
+	/** @var  Container  The component container */
+	protected $container;
+
+	/**
+	 * Public constructor.
+	 *
+	 * @param   \FOF40\Container\Container  $c  The component container
+	 */
+	public function __construct(Container $c)
+	{
+		$this->container = $c;
+	}
+
 	/**
 	 * This method will crawl a starting directory and get all the valid files that will be analyzed by getInstance.
 	 * Then it organizes them into an associative array.
 	 *
-	 * @param string $path          Folder where we should start looking
-	 * @param array  $ignoreFolders Folder ignore list
-	 * @param array  $ignoreFiles   File ignore list
+	 * @param   string  $path           Folder where we should start looking
+	 * @param   array   $ignoreFolders  Folder ignore list
+	 * @param   array   $ignoreFiles    File ignore list
 	 *
 	 * @return  array   Associative array, where the `fullpath` key contains the path to the file,
 	 *                  and the `classname` key contains the name of the class
@@ -79,9 +79,9 @@ abstract class Filesystem implements FilesystemInterface
 	 * Recursive function that will scan every directory unless it's in the ignore list. Files that aren't in the
 	 * ignore list are returned.
 	 *
-	 * @param string $path          Folder where we should start looking
-	 * @param array  $ignoreFolders Folder ignore list
-	 * @param array  $ignoreFiles   File ignore list
+	 * @param   string  $path           Folder where we should start looking
+	 * @param   array   $ignoreFolders  Folder ignore list
+	 * @param   array   $ignoreFiles    File ignore list
 	 *
 	 * @return  array   List of all the files
 	 */
@@ -126,7 +126,7 @@ abstract class Filesystem implements FilesystemInterface
 	/**
 	 * Gets the extension of a file name
 	 *
-	 * @param string $file The file name
+	 * @param   string  $file  The file name
 	 *
 	 * @return  string  The file extension
 	 */
@@ -140,7 +140,7 @@ abstract class Filesystem implements FilesystemInterface
 	/**
 	 * Strips the last extension off of a file name
 	 *
-	 * @param string $file The file name
+	 * @param   string  $file  The file name
 	 *
 	 * @return  string  The file name without the extension
 	 */

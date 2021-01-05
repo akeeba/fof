@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\View\DataView;
+namespace FOF40\View\DataView;
 
 use FOF40\Render\RenderInterface;
 use Joomla\CMS\Application\SiteApplication;
@@ -20,60 +20,7 @@ class Html extends Raw implements DataViewInterface
 	public $setFrontendPageTitle = false;
 
 	/** @var string The translation key for the default page title */
-	public $defaultPageTitle = null;
-
-	/**
-	 * Runs before rendering the view template, echoing HTML to put before the
-	 * view template's generated HTML
-	 *
-	 * @return  void
-	 *
-	 * @throws \Exception
-	 */
-	protected function preRender()
-	{
-		$view = $this->getName();
-		$task = $this->task;
-
-		// Don't load the toolbar on CLI
-		$platform = $this->container->platform;
-
-		if (!$platform->isCli())
-		{
-			$toolbar = $this->container->toolbar;
-			$toolbar->perms = $this->permissions;
-			$toolbar->renderToolbar($view, $task);
-		}
-
-		if ($platform->isFrontend() && $this->setFrontendPageTitle)
-		{
-			$this->setPageTitle();
-		}
-
-		$renderer = $this->container->renderer;
-		$renderer->preRender($view, $task);
-	}
-
-	/**
-	 * Runs after rendering the view template, echoing HTML to put after the
-	 * view template's generated HTML
-	 *
-	 * @return  void
-	 *
-	 * @throws \Exception
-	 */
-	protected function postRender()
-	{
-		$view = $this->getName();
-		$task = $this->task;
-
-		$renderer = $this->container->renderer;
-
-		if ($renderer instanceof RenderInterface)
-		{
-			$renderer->postRender($view, $task);
-		}
-	}
+	public $defaultPageTitle;
 
 	public function setPageTitle()
 	{
@@ -83,15 +30,14 @@ class Html extends Raw implements DataViewInterface
 		}
 
 		/** @var SiteApplication $app */
-		$app = JoomlaFactory::getApplication();
+		$app      = JoomlaFactory::getApplication();
 		$document = JoomlaFactory::getDocument();
-		$menus = $app->getMenu();
-		$menu = $menus->getActive();
-		$title = null;
+		$menus    = $app->getMenu();
+		$menu     = $menus->getActive();
 
 		// Get the option and view name
 		$option = $this->container->componentName;
-		$view = $this->getName();
+		$view   = $this->getName();
 
 		// Get the default page title translation key
 		$default = empty($this->defaultPageTitle) ? $option . '_TITLE_' . $view : $this->defaultPageTitle;
@@ -109,7 +55,7 @@ class Html extends Raw implements DataViewInterface
 		}
 
 		// Set the document title
-		$title = $params->get('page_title', '');
+		$title    = $params->get('page_title', '');
 		$sitename = $app->get('sitename');
 
 		if ($title == $sitename)
@@ -149,6 +95,59 @@ class Html extends Raw implements DataViewInterface
 		}
 
 		return $title;
+	}
+
+	/**
+	 * Runs before rendering the view template, echoing HTML to put before the
+	 * view template's generated HTML
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 */
+	protected function preRender()
+	{
+		$view = $this->getName();
+		$task = $this->task;
+
+		// Don't load the toolbar on CLI
+		$platform = $this->container->platform;
+
+		if (!$platform->isCli())
+		{
+			$toolbar        = $this->container->toolbar;
+			$toolbar->perms = $this->permissions;
+			$toolbar->renderToolbar($view, $task);
+		}
+
+		if ($platform->isFrontend() && $this->setFrontendPageTitle)
+		{
+			$this->setPageTitle();
+		}
+
+		$renderer = $this->container->renderer;
+		$renderer->preRender($view, $task);
+	}
+
+	/**
+	 * Runs after rendering the view template, echoing HTML to put after the
+	 * view template's generated HTML
+	 *
+	 * @return  void
+	 *
+	 * @throws \Exception
+	 */
+	protected function postRender()
+	{
+		$view = $this->getName();
+		$task = $this->task;
+
+		$renderer = $this->container->renderer;
+
+		if ($renderer instanceof RenderInterface)
+		{
+			$renderer->postRender($view, $task);
+		}
 	}
 
 	/**

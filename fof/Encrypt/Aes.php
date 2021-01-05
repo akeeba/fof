@@ -46,8 +46,8 @@ class Aes
 	/**
 	 * Initialise the AES encryption object.
 	 *
-	 * @param string  $mode    Encryption mode. Can be ebc or cbc. We recommend using cbc.
-	 * @param Phpfunc $phpfunc For testing
+	 * @param   string   $mode     Encryption mode. Can be ebc or cbc. We recommend using cbc.
+	 * @param   Phpfunc  $phpfunc  For testing
 	 */
 	public function __construct(string $mode = 'cbc', Phpfunc $phpfunc = null)
 	{
@@ -103,7 +103,7 @@ class Aes
 	/**
 	 * Sets the password for this instance.
 	 *
-	 * @param string $password The password (either user-provided password or binary encryption key) to use
+	 * @param   string  $password  The password (either user-provided password or binary encryption key) to use
 	 */
 	public function setPassword(string $password)
 	{
@@ -113,8 +113,8 @@ class Aes
 	/**
 	 * Encrypts a string using AES
 	 *
-	 * @param string $stringToEncrypt The plaintext to encrypt
-	 * @param bool   $base64encoded   Should I Base64-encode the result?
+	 * @param   string  $stringToEncrypt  The plaintext to encrypt
+	 * @param   bool    $base64encoded    Should I Base64-encode the result?
 	 *
 	 * @return   string  The cryptotext. Please note that the first 16 bytes of
 	 *                   the raw string is the IV (initialisation vector) which
@@ -142,9 +142,9 @@ class Aes
 	/**
 	 * Decrypts a ciphertext into a plaintext string using AES
 	 *
-	 * @param string $stringToDecrypt   The ciphertext to decrypt. The first 16 bytes of the raw string must contain
-	 *                                  the IV (initialisation vector).
-	 * @param bool   $base64encoded     Should I Base64-decode the data before decryption?
+	 * @param   string  $stringToDecrypt  The ciphertext to decrypt. The first 16 bytes of the raw string must contain
+	 *                                    the IV (initialisation vector).
+	 * @param   bool    $base64encoded    Should I Base64-decode the data before decryption?
 	 *
 	 * @return   string  The plain text string
 	 */
@@ -168,7 +168,7 @@ class Aes
 		// Get the IV, the key and decrypt the string
 		$iv  = substr($stringToDecrypt, 0, $iv_size);
 		$key = $this->getExpandedKey($iv_size, $iv);
-		
+
 		return $this->adapter->decrypt($stringToDecrypt, $key);
 	}
 
@@ -178,8 +178,9 @@ class Aes
 	 * CAVEAT: If your password ($this->key) is the same size as $blockSize you don't get key expansion. Practically,
 	 * it means that you should avoid using 16 byte passwords.
 	 *
-	 * @param int    $blockSize Block size in bytes. This should always be 16 since we only deal with 128-bit AES here.
-	 * @param string $iv        The initial vector. Use Randval::generate($blockSize)
+	 * @param   int     $blockSize  Block size in bytes. This should always be 16 since we only deal with 128-bit AES
+	 *                              here.
+	 * @param   string  $iv         The initial vector. Use Randval::generate($blockSize)
 	 *
 	 * @return string
 	 */

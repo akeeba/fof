@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
 
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
@@ -24,12 +24,12 @@ class EmptyNonZero extends Observer
 	 * This event runs after we have built the query used to fetch a record
 	 * list in a model. It is used to apply automatic query filters.
 	 *
-	 * @param   DataModel      &$model The model which calls this event
-	 * @param   JDatabaseQuery &$query The query we are manipulating
+	 * @param   DataModel      &$model  The model which calls this event
+	 * @param   JDatabaseQuery &$query  The query we are manipulating
 	 *
 	 * @return  void
 	 */
-	public function onAfterBuildQuery(&$model, &$query)
+	public function onAfterBuildQuery(DataModel &$model, JDatabaseQuery &$query)
 	{
 		$model->setBehaviorParam('filterZero', 1);
 	}

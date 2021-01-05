@@ -20,8 +20,8 @@ class Collection
 	 * Reads a "collection" XML update source and returns the complete tree of categories
 	 * and extensions applicable for platform version $jVersion
 	 *
-	 * @param string      $url      The collection XML update source URL to read from
-	 * @param string|null $jVersion Joomla! version to fetch updates for, or null to use JVERSION
+	 * @param   string       $url       The collection XML update source URL to read from
+	 * @param   string|null  $jVersion  Joomla! version to fetch updates for, or null to use JVERSION
 	 *
 	 * @return  array  A list of update sources applicable to $jVersion
 	 */
@@ -192,29 +192,20 @@ class Collection
 
 		unset($xml);
 
-		if (!empty($rawUpdates['categories']))
+		foreach ($rawUpdates['categories'] as $category => $entries)
 		{
-			foreach ($rawUpdates['categories'] as $category => $entries)
-			{
-				$update                           = $this->filterListByPlatform($entries, $jVersion);
-				$updates['categories'][$category] = $update;
-			}
+			$update                           = $this->filterListByPlatform($entries, $jVersion);
+			$updates['categories'][$category] = $update;
 		}
 
-		if (!empty($rawUpdates['extensions']))
+		foreach ($rawUpdates['extensions'] as $type => $extensions)
 		{
-			foreach ($rawUpdates['extensions'] as $type => $extensions)
-			{
-				$updates['extensions'][$type] = [];
+			$updates['extensions'][$type] = [];
 
-				if (!empty($extensions))
-				{
-					foreach ($extensions as $element => $entries)
-					{
-						$update                                 = $this->filterListByPlatform($entries, $jVersion);
-						$updates['extensions'][$type][$element] = $update;
-					}
-				}
+			foreach ($extensions as $element => $entries)
+			{
+				$update                                 = $this->filterListByPlatform($entries, $jVersion);
+				$updates['extensions'][$type][$element] = $update;
 			}
 		}
 
@@ -222,11 +213,106 @@ class Collection
 	}
 
 	/**
+	 * Returns only the category definitions of a collection
+	 *
+	 * @param   string       $url       The URL of the collection update source
+	 * @param   string|null  $jVersion  Joomla! version to fetch updates for, or null to use JVERSION
+	 *
+	 * @return  array  An array of category update definitions
+	 */
+	public function getCategories(string $url, ?string $jVersion = null): array
+	{
+		$allUpdates = $this->getAllUpdates($url, $jVersion);
+
+		return $allUpdates['categories'];
+	}
+
+	/**
+	 * Returns the update source for a specific category
+	 *
+	 * @param   string       $url       The URL of the collection update source
+	 * @param   string       $category  The category name you want to get the update source URL of
+	 * @param   string|null  $jVersion  Joomla! version to fetch updates for, or null to use JVERSION
+	 *
+	 * @return  string|null  The update stream URL, or null if it's not found
+	 */
+	public function getCategoryUpdateSource(string $url, string $category, ?string $jVersion = null): ?string
+	{
+		$allUpdates = $this->getAllUpdates($url, $jVersion);
+
+		if (array_key_exists($category, $allUpdates['categories']))
+		{
+			return $allUpdates['categories'][$category]['ref'];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Get a list of updates for extensions only, optionally of a specific type
+	 *
+	 * @param   string       $url       The URL of the collection update source
+	 * @param   string       $type      The extension type you want to get the update source URL of, empty to get all
+	 *                                  extension types
+	 * @param   string|null  $jVersion  Joomla! version to fetch updates for, or null to use JVERSION
+	 *
+	 * @return  array|null  An array of extension update definitions or null if none is found
+	 */
+	public function getExtensions(string $url, ?string $type = null, ?string $jVersion = null): ?array
+	{
+		$allUpdates = $this->getAllUpdates($url, $jVersion);
+
+		if (empty($type))
+		{
+			return $allUpdates['extensions'];
+		}
+		elseif (array_key_exists($type, $allUpdates['extensions']))
+		{
+			return $allUpdates['extensions'][$type];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Get the update source URL for a specific extension, based on the type and element, e.g.
+	 * type=file and element=joomla is Joomla! itself.
+	 *
+	 * @param   string       $url       The URL of the collection update source
+	 * @param   string       $type      The extension type you want to get the update source URL of
+	 * @param   string       $element   The extension element you want to get the update source URL of
+	 * @param   string|null  $jVersion  Joomla! version to fetch updates for, or null to use JVERSION
+	 *
+	 * @return  string|null  The update source URL or null if the extension is not found
+	 */
+	public function getExtensionUpdateSource(string $url, string $type, string $element, ?string $jVersion = null): ?string
+	{
+		$allUpdates = $this->getExtensions($url, $type, $jVersion);
+
+		if (empty($allUpdates))
+		{
+			return null;
+		}
+		elseif (array_key_exists($element, $allUpdates))
+		{
+			return $allUpdates[$element]['detailsurl'];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * Filters a list of updates, returning only those available for the
 	 * specified platform version $jVersion
 	 *
-	 * @param array  $updates  An array containing update definitions (categories or extensions)
-	 * @param string $jVersion Joomla! version to fetch updates for, or null to use JVERSION
+	 * @param   array   $updates   An array containing update definitions (categories or extensions)
+	 * @param   string  $jVersion  Joomla! version to fetch updates for, or null to use JVERSION
 	 *
 	 * @return  array|null  The update definition that is compatible, or null if none is compatible
 	 */
@@ -275,100 +361,5 @@ class Collection
 		}
 
 		return $pickedExtension;
-	}
-
-	/**
-	 * Returns only the category definitions of a collection
-	 *
-	 * @param string      $url      The URL of the collection update source
-	 * @param string|null $jVersion Joomla! version to fetch updates for, or null to use JVERSION
-	 *
-	 * @return  array  An array of category update definitions
-	 */
-	public function getCategories(string $url, ?string $jVersion = null): array
-	{
-		$allUpdates = $this->getAllUpdates($url, $jVersion);
-
-		return $allUpdates['categories'];
-	}
-
-	/**
-	 * Returns the update source for a specific category
-	 *
-	 * @param string      $url      The URL of the collection update source
-	 * @param string      $category The category name you want to get the update source URL of
-	 * @param string|null $jVersion Joomla! version to fetch updates for, or null to use JVERSION
-	 *
-	 * @return  string|null  The update stream URL, or null if it's not found
-	 */
-	public function getCategoryUpdateSource(string $url, string $category, ?string $jVersion = null): ?string
-	{
-		$allUpdates = $this->getAllUpdates($url, $jVersion);
-
-		if (array_key_exists($category, $allUpdates['categories']))
-		{
-			return $allUpdates['categories'][$category]['ref'];
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * Get a list of updates for extensions only, optionally of a specific type
-	 *
-	 * @param string      $url      The URL of the collection update source
-	 * @param string      $type     The extension type you want to get the update source URL of, empty to get all
-	 *                              extension types
-	 * @param string|null $jVersion Joomla! version to fetch updates for, or null to use JVERSION
-	 *
-	 * @return  array|null  An array of extension update definitions or null if none is found
-	 */
-	public function getExtensions(string $url, ?string $type = null, ?string $jVersion = null): ?array
-	{
-		$allUpdates = $this->getAllUpdates($url, $jVersion);
-
-		if (empty($type))
-		{
-			return $allUpdates['extensions'];
-		}
-		elseif (array_key_exists($type, $allUpdates['extensions']))
-		{
-			return $allUpdates['extensions'][$type];
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * Get the update source URL for a specific extension, based on the type and element, e.g.
-	 * type=file and element=joomla is Joomla! itself.
-	 *
-	 * @param string      $url      The URL of the collection update source
-	 * @param string      $type     The extension type you want to get the update source URL of
-	 * @param string      $element  The extension element you want to get the update source URL of
-	 * @param string|null $jVersion Joomla! version to fetch updates for, or null to use JVERSION
-	 *
-	 * @return  string|null  The update source URL or null if the extension is not found
-	 */
-	public function getExtensionUpdateSource(string $url, string $type, string $element, ?string $jVersion = null): ?string
-	{
-		$allUpdates = $this->getExtensions($url, $type, $jVersion);
-
-		if (empty($allUpdates))
-		{
-			return null;
-		}
-		elseif (array_key_exists($element, $allUpdates))
-		{
-			return $allUpdates[$element]['detailsurl'];
-		}
-		else
-		{
-			return null;
-		}
 	}
 }

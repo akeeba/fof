@@ -30,8 +30,8 @@ final class ArrayHelper
 	/**
 	 * Function to convert array to integer values
 	 *
-	 * @param array          $array   The source array to convert
-	 * @param int|array|null $default A default value (int|array) to assign if $array is not an array
+	 * @param   array           $array    The source array to convert
+	 * @param   int|array|null  $default  A default value (int|array) to assign if $array is not an array
 	 *
 	 * @return  int[]
 	 *
@@ -60,9 +60,9 @@ final class ArrayHelper
 	/**
 	 * Utility function to map an array to a stdClass object.
 	 *
-	 * @param array   $array     The array to map.
-	 * @param string  $class     Name of the class to create
-	 * @param boolean $recursive Convert also any array inside the main array
+	 * @param   array    $array      The array to map.
+	 * @param   string   $class      Name of the class to create
+	 * @param   boolean  $recursive  Convert also any array inside the main array
 	 *
 	 * @return  object
 	 *
@@ -90,10 +90,10 @@ final class ArrayHelper
 	/**
 	 * Utility function to map an array to a string.
 	 *
-	 * @param array   $array        The array to map.
-	 * @param string  $inner_glue   The glue (optional, defaults to '=') between the key and the value.
-	 * @param string  $outer_glue   The glue (optional, defaults to ' ') between array elements.
-	 * @param boolean $keepOuterKey True if final key should be kept.
+	 * @param   array    $array         The array to map.
+	 * @param   string   $inner_glue    The glue (optional, defaults to '=') between the key and the value.
+	 * @param   string   $outer_glue    The glue (optional, defaults to ' ') between array elements.
+	 * @param   boolean  $keepOuterKey  True if final key should be kept.
 	 *
 	 * @return  string
 	 *
@@ -127,9 +127,9 @@ final class ArrayHelper
 	/**
 	 * Utility function to map an object to an array
 	 *
-	 * @param object      $p_obj   The source object
-	 * @param boolean     $recurse True to recurse through multi-level objects
-	 * @param string|null $regex   An optional regular expression to match on field names
+	 * @param   object       $p_obj    The source object
+	 * @param   boolean      $recurse  True to recurse through multi-level objects
+	 * @param   string|null  $regex    An optional regular expression to match on field names
 	 *
 	 * @return  array
 	 *
@@ -146,63 +146,13 @@ final class ArrayHelper
 	}
 
 	/**
-	 * Utility function to map an object or array to an array
-	 *
-	 * @param mixed   $item    The source object or array
-	 * @param boolean $recurse True to recurse through multi-level objects
-	 * @param string  $regex   An optional regular expression to match on field names
-	 *
-	 * @return  array
-	 *
-	 * @since   1.0
-	 */
-	private static function arrayFromObject($item, bool $recurse, ?string $regex): array
-	{
-		if (is_object($item))
-		{
-			$result = [];
-
-			foreach (get_object_vars($item) as $k => $v)
-			{
-				if (!$regex || preg_match($regex, $k))
-				{
-					if ($recurse)
-					{
-						$result[$k] = self::arrayFromObject($v, $recurse, $regex);
-					}
-					else
-					{
-						$result[$k] = $v;
-					}
-				}
-			}
-
-			return $result;
-		}
-
-		if (is_array($item))
-		{
-			$result = [];
-
-			foreach ($item as $k => $v)
-			{
-				$result[$k] = self::arrayFromObject($v, $recurse, $regex);
-			}
-
-			return $result;
-		}
-
-		return $item;
-	}
-
-	/**
 	 * Extracts a column from an array of arrays or objects
 	 *
-	 * @param array       $array    The source array
-	 * @param string      $valueCol The index of the column or name of object property to be used as value
-	 *                              It may also be NULL to return complete arrays or objects (this is
-	 *                              useful together with <var>$keyCol</var> to reindex the array).
-	 * @param string|null $keyCol   The index of the column or name of object property to be used as key
+	 * @param   array        $array     The source array
+	 * @param   string       $valueCol  The index of the column or name of object property to be used as value
+	 *                                  It may also be NULL to return complete arrays or objects (this is
+	 *                                  useful together with <var>$keyCol</var> to reindex the array).
+	 * @param   string|null  $keyCol    The index of the column or name of object property to be used as key
 	 *
 	 * @return  array  Column of values from the source array
 	 *
@@ -247,10 +197,10 @@ final class ArrayHelper
 	/**
 	 * Utility function to return a value from a named array or a specified default
 	 *
-	 * @param array|\ArrayAccess $array   A named array or object that implements ArrayAccess
-	 * @param string             $name    The key to search for
-	 * @param mixed              $default The default value to give if no key found
-	 * @param string             $type    Return type for the variable (INT, FLOAT, STRING, WORD, BOOLEAN, ARRAY)
+	 * @param   array|\ArrayAccess  $array    A named array or object that implements ArrayAccess
+	 * @param   string              $name     The key to search for
+	 * @param   mixed               $default  The default value to give if no key found
+	 * @param   string              $type     Return type for the variable (INT, FLOAT, STRING, WORD, BOOLEAN, ARRAY)
 	 *
 	 * @return  mixed
 	 *
@@ -344,7 +294,7 @@ final class ArrayHelper
 	 *     '6000' => 'Used'
 	 * );
 	 *
-	 * @param array $array The source array.
+	 * @param   array  $array  The source array.
 	 *
 	 * @return  array
 	 *
@@ -377,7 +327,7 @@ final class ArrayHelper
 	/**
 	 * Method to determine if an array is an associative array.
 	 *
-	 * @param array $array An array to test.
+	 * @param   array  $array  An array to test.
 	 *
 	 * @return  boolean
 	 *
@@ -402,10 +352,12 @@ final class ArrayHelper
 	/**
 	 * Pivots an array to create a reverse lookup of an array of scalars, arrays or objects.
 	 *
-	 * @param array       $source The source array.
-	 * @param string|null $key    Where the elements of the source array are objects or arrays, the key to pivot on.
+	 * @param   array        $source  The source array.
+	 * @param   string|null  $key     Where the elements of the source array are objects or arrays, the key to pivot
+	 *                                on.
 	 *
-	 * @return  array  An array of arrays pivoted either on the value of the keys, or an individual key of an object or array.
+	 * @return  array  An array of arrays pivoted either on the value of the keys, or an individual key of an object or
+	 *                 array.
 	 *
 	 * @since   1.0
 	 */
@@ -477,7 +429,7 @@ final class ArrayHelper
 	/**
 	 * Multidimensional-array-safe unique test
 	 *
-	 * @param array $array The array to make unique.
+	 * @param   array  $array  The array to make unique.
 	 *
 	 * @return  array
 	 *
@@ -488,17 +440,16 @@ final class ArrayHelper
 	{
 		$array = array_map('serialize', $array);
 		$array = array_unique($array);
-		$array = array_map('unserialize', $array);
 
-		return $array;
+		return array_map('unserialize', $array);
 	}
 
 	/**
 	 * An improved array_search that allows for partial matching of strings values in associative arrays.
 	 *
-	 * @param string  $needle        The text to search for within the array.
-	 * @param array   $haystack      Associative array to search in to find $needle.
-	 * @param boolean $caseSensitive True to search case sensitive, false otherwise.
+	 * @param   string   $needle         The text to search for within the array.
+	 * @param   array    $haystack       Associative array to search in to find $needle.
+	 * @param   boolean  $caseSensitive  True to search case sensitive, false otherwise.
 	 *
 	 * @return  mixed    Returns the matching array $key if found, otherwise false.
 	 *
@@ -522,9 +473,9 @@ final class ArrayHelper
 	/**
 	 * Method to recursively convert data to a one dimension array.
 	 *
-	 * @param array|object $array     The array or object to convert.
-	 * @param string       $separator The key separator.
-	 * @param string       $prefix    Last level key prefix.
+	 * @param   array|object  $array      The array or object to convert.
+	 * @param   string        $separator  The key separator.
+	 * @param   string        $prefix     Last level key prefix.
 	 *
 	 * @return  array
 	 *
@@ -556,5 +507,55 @@ final class ArrayHelper
 		}
 
 		return $array;
+	}
+
+	/**
+	 * Utility function to map an object or array to an array
+	 *
+	 * @param   mixed    $item     The source object or array
+	 * @param   boolean  $recurse  True to recurse through multi-level objects
+	 * @param   string   $regex    An optional regular expression to match on field names
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0
+	 */
+	private static function arrayFromObject($item, bool $recurse, ?string $regex): array
+	{
+		if (is_object($item))
+		{
+			$result = [];
+
+			foreach (get_object_vars($item) as $k => $v)
+			{
+				if (!$regex || preg_match($regex, $k))
+				{
+					if ($recurse)
+					{
+						$result[$k] = self::arrayFromObject($v, $recurse, $regex);
+					}
+					else
+					{
+						$result[$k] = $v;
+					}
+				}
+			}
+
+			return $result;
+		}
+
+		if (is_array($item))
+		{
+			$result = [];
+
+			foreach ($item as $k => $v)
+			{
+				$result[$k] = self::arrayFromObject($v, $recurse, $regex);
+			}
+
+			return $result;
+		}
+
+		return $item;
 	}
 }

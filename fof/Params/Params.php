@@ -19,19 +19,19 @@ class Params
 {
 
 	/** @var  Container  The container we belong to */
-	protected $container = null;
+	protected $container;
 
 	/**
 	 * Cached component parameters
 	 *
 	 * @var \Joomla\Registry\Registry
 	 */
-	private $params = null;
+	private $params;
 
 	/**
 	 * Public constructor for the params object
 	 *
-	 * @param \FOF40\Container\Container $container The container we belong to
+	 * @param   \FOF40\Container\Container  $container  The container we belong to
 	 */
 	public function __construct(Container $container)
 	{
@@ -60,8 +60,8 @@ class Params
 	/**
 	 * Returns the value of a component configuration parameter
 	 *
-	 * @param string $key     The parameter to get
-	 * @param mixed  $default Default value
+	 * @param   string  $key      The parameter to get
+	 * @param   mixed   $default  Default value
 	 *
 	 * @return  mixed
 	 */
@@ -81,22 +81,9 @@ class Params
 	}
 
 	/**
-	 * Sets the value of a component configuration parameter
-	 *
-	 * @param string $key   The parameter to set
-	 * @param mixed  $value The value to set
-	 *
-	 * @return  void
-	 */
-	public function set(string $key, $value)
-	{
-		$this->setParams([$key => $value]);
-	}
-
-	/**
 	 * Sets the value of multiple component configuration parameters at once
 	 *
-	 * @param array $params The parameters to set
+	 * @param   array  $params  The parameters to set
 	 *
 	 * @return  void
 	 */
@@ -106,6 +93,19 @@ class Params
 		{
 			$this->params->set($key, $value);
 		}
+	}
+
+	/**
+	 * Sets the value of a component configuration parameter
+	 *
+	 * @param   string  $key    The parameter to set
+	 * @param   mixed   $value  The value to set
+	 *
+	 * @return  void
+	 */
+	public function set(string $key, $value)
+	{
+		$this->setParams([$key => $value]);
 	}
 
 	/**

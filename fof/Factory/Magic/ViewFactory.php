@@ -8,7 +8,6 @@
 namespace FOF40\Factory\Magic;
 
 use FOF40\Factory\Exception\ViewNotFound;
-use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 
 defined('_JEXEC') or die;
@@ -21,9 +20,9 @@ class ViewFactory extends BaseFactory
 	/**
 	 * Create a new object instance
 	 *
-	 * @param string $name     The name of the class we're making
-	 * @param string $viewType The view type, default html, possible values html, form, raw, json, csv
-	 * @param array  $config   The config parameters which override the fof.xml information
+	 * @param   string  $name      The name of the class we're making
+	 * @param   string  $viewType  The view type, default html, possible values html, form, raw, json, csv
+	 * @param   array   $config    The config parameters which override the fof.xml information
 	 *
 	 * @return  View  A DataViewInterface view
 	 */
@@ -64,8 +63,6 @@ class ViewFactory extends BaseFactory
 			$className = '\\FOF40\\View\\DataView\\Html';
 		}
 
-		$view = new $className($this->container, $config);
-
-		return $view;
+		return new $className($this->container, $config);
 	}
 }

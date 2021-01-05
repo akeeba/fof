@@ -7,7 +7,6 @@
 
 namespace FOF40\Date;
 
-use DateInterval;
 use DateTime;
 use DateTimeZone;
 use JDatabaseDriver;
@@ -24,12 +23,13 @@ class DateDecorator extends Date
 	/**
 	 * The decorated object
 	 *
-	 * @param string              $date String in a format accepted by strtotime(), defaults to "now".
-	 * @param string|DateTimeZone $tz   Time zone to be used for the date. Might be a string or a DateTimeZone object.
+	 * @param   string               $date  String in a format accepted by strtotime(), defaults to "now".
+	 * @param   string|DateTimeZone  $tz    Time zone to be used for the date. Might be a string or a DateTimeZone
+	 *                                      object.
 	 *
 	 * @var   DateTime
 	 */
-	protected $decorated = null;
+	protected $decorated;
 
 	public function __construct(string $date = 'now', $tz = null)
 	{
@@ -47,14 +47,19 @@ class DateDecorator extends Date
 		parent::__construct($timestamp);
 
 		$this->setTimezone($this->decorated->getTimezone());
+	}
 
-		return;
+	public static function getInstance(string $date = 'now', $tz = null): self
+	{
+		$coreObject = new Date($date, $tz);
+
+		return new DateDecorator($coreObject);
 	}
 
 	/**
 	 * Magic method to access properties of the date given by class to the format method.
 	 *
-	 * @param string $name The name of the property.
+	 * @param   string  $name  The name of the property.
 	 *
 	 * @return  mixed   A value if the property name is valid, null otherwise.
 	 */
@@ -62,6 +67,8 @@ class DateDecorator extends Date
 	{
 		return $this->decorated->$name;
 	}
+
+	// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
 
 	public function __call(string $name, array $arguments = [])
 	{
@@ -74,13 +81,13 @@ class DateDecorator extends Date
 	}
 
 	// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
+
 	public function sub($interval)
 	{
 		// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
 		return $this->decorated->sub($interval);
 	}
 
-	// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
 	public function add($interval)
 	{
 		// Note to self: ignore phpStorm; we must NOT use a typehint for $interval
@@ -95,13 +102,6 @@ class DateDecorator extends Date
 	public function __toString(): string
 	{
 		return (string) $this->decorated;
-	}
-
-	public static function getInstance(string $date = 'now', $tz = null): self
-	{
-		$coreObject = new Date($date, $tz);
-
-		return new DateDecorator($coreObject);
 	}
 
 	public function dayToString(int $day, bool $abbr = false): string
@@ -126,7 +126,7 @@ class DateDecorator extends Date
 
 	public function monthToString(int $month, bool $abbr = false)
 	{
-		return $this->monthToString($month, $abbr);
+		return $this->decorated->monthToString($month, $abbr);
 	}
 
 	public function setTimezone($tz): Date

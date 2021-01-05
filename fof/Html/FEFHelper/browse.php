@@ -22,23 +22,25 @@ defined('_JEXEC') or die;
  * Framework (FEF).
  *
  * Call these methods as HTMLHelper::_('FEFHelper.browse.methodName', $parameter1, $parameter2, ...)
+ *
+ * @noinspection PhpIllegalPsrClassPathInspection
  */
 abstract class FEFHelperBrowse
 {
 	/**
 	 * Returns an action button on the browse view's table
 	 *
-	 * @param integer      $i              The row index
-	 * @param string       $task           The task to fire when the button is clicked
-	 * @param string|array $prefix         An optional task prefix or an array of options
-	 * @param string       $active_title   An optional active tooltip to display if $enable is true
-	 * @param string       $inactive_title An optional inactive tooltip to display if $enable is true
-	 * @param boolean      $tip            An optional setting for tooltip
-	 * @param string       $active_class   An optional active HTML class
-	 * @param string       $inactive_class An optional inactive HTML class
-	 * @param boolean      $enabled        An optional setting for access control on the action.
-	 * @param boolean      $translate      An optional setting for translation.
-	 * @param string       $checkbox       An optional prefix for checkboxes.
+	 * @param   integer       $i               The row index
+	 * @param   string        $task            The task to fire when the button is clicked
+	 * @param   string|array  $prefix          An optional task prefix or an array of options
+	 * @param   string        $active_title    An optional active tooltip to display if $enable is true
+	 * @param   string        $inactive_title  An optional inactive tooltip to display if $enable is true
+	 * @param   boolean       $tip             An optional setting for tooltip
+	 * @param   string        $active_class    An optional active HTML class
+	 * @param   string        $inactive_class  An optional inactive HTML class
+	 * @param   boolean       $enabled         An optional setting for access control on the action.
+	 * @param   boolean       $translate       An optional setting for translation.
+	 * @param   string        $checkbox        An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -76,7 +78,7 @@ abstract class FEFHelperBrowse
 
 			if (substr($active_class, 0, 2) == '--')
 			{
-				list($btnColor, $active_class) = explode(' ', $active_class, 2);
+				[$btnColor, $active_class] = explode(' ', $active_class, 2);
 				$btnColor = ltrim($btnColor, '-');
 			}
 
@@ -93,7 +95,7 @@ abstract class FEFHelperBrowse
 
 			if (substr($inactive_class, 0, 2) == '--')
 			{
-				list($btnColor, $inactive_class) = explode(' ', $inactive_class, 2);
+				[$btnColor, $inactive_class] = explode(' ', $inactive_class, 2);
 				$btnColor = ltrim($btnColor, '-');
 			}
 
@@ -116,17 +118,19 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns a state change button on the browse view's table
 	 *
-	 * @param array        $states        array of value/state. Each state is an array of the form
-	 *                                    (task, text, active title, inactive title, tip (boolean), HTML active class, HTML inactive class)
-	 *                                    or ('task'=>task, 'text'=>text, 'active_title'=>active title,
-	 *                                    'inactive_title'=>inactive title, 'tip'=>boolean, 'active_class'=>html active class,
+	 * @param   array         $states     array of value/state. Each state is an array of the form
+	 *                                    (task, text, active title, inactive title, tip (boolean), HTML active class,
+	 *                                    HTML inactive class) or ('task'=>task, 'text'=>text, 'active_title'=>active
+	 *                                    title,
+	 *                                    'inactive_title'=>inactive title, 'tip'=>boolean, 'active_class'=>html active
+	 *                                    class,
 	 *                                    'inactive_class'=>html inactive class)
-	 * @param integer      $value         The state value.
-	 * @param integer      $i             The row index
-	 * @param string|array $prefix        An optional task prefix or an array of options
-	 * @param boolean      $enabled       An optional setting for access control on the action.
-	 * @param boolean      $translate     An optional setting for translation.
-	 * @param string       $checkbox      An optional prefix for checkboxes.
+	 * @param   integer       $value      The state value.
+	 * @param   integer       $i          The row index
+	 * @param   string|array  $prefix     An optional task prefix or an array of options
+	 * @param   boolean       $enabled    An optional setting for access control on the action.
+	 * @param   boolean       $translate  An optional setting for translation.
+	 * @param   string        $checkbox   An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -162,13 +166,13 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns a published state on the browse view's table
 	 *
-	 * @param integer      $value        The state value.
-	 * @param integer      $i            The row index
-	 * @param string|array $prefix       An optional task prefix or an array of options
-	 * @param boolean      $enabled      An optional setting for access control on the action.
-	 * @param string       $checkbox     An optional prefix for checkboxes.
-	 * @param string       $publish_up   An optional start publishing date.
-	 * @param string       $publish_down An optional finish publishing date.
+	 * @param   integer       $value         The state value.
+	 * @param   integer       $i             The row index
+	 * @param   string|array  $prefix        An optional task prefix or an array of options
+	 * @param   boolean       $enabled       An optional setting for access control on the action.
+	 * @param   string        $checkbox      An optional prefix for checkboxes.
+	 * @param   string        $publish_up    An optional start publishing date.
+	 * @param   string        $publish_down  An optional finish publishing date.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -277,11 +281,11 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns an isDefault state on the browse view's table
 	 *
-	 * @param integer      $value    The state value.
-	 * @param integer      $i        The row index
-	 * @param string|array $prefix   An optional task prefix or an array of options
-	 * @param boolean      $enabled  An optional setting for access control on the action.
-	 * @param string       $checkbox An optional prefix for checkboxes.
+	 * @param   integer       $value     The state value.
+	 * @param   integer       $i         The row index
+	 * @param   string|array  $prefix    An optional task prefix or an array of options
+	 * @param   boolean       $enabled   An optional setting for access control on the action.
+	 * @param   string        $checkbox  An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -312,12 +316,12 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns a checked-out icon
 	 *
-	 * @param integer      $i          The row index.
-	 * @param string       $editorName The name of the editor.
-	 * @param string       $time       The time that the object was checked out.
-	 * @param string|array $prefix     An optional task prefix or an array of options
-	 * @param boolean      $enabled    True to enable the action.
-	 * @param string       $checkbox   An optional prefix for checkboxes.
+	 * @param   integer       $i           The row index.
+	 * @param   string        $editorName  The name of the editor.
+	 * @param   string        $time        The time that the object was checked out.
+	 * @param   string|array  $prefix      An optional task prefix or an array of options
+	 * @param   boolean       $enabled     True to enable the action.
+	 * @param   string        $checkbox    An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -349,12 +353,12 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns the drag'n'drop reordering field for Browse views
 	 *
-	 * @param string            $orderingField The name of the field you're ordering by
-	 * @param string            $order         The order value of the current row
-	 * @param string            $class         CSS class for the ordering value INPUT field
-	 * @param string            $icon          CSS class for the d'n'd handle icon
-	 * @param string            $inactiveIcon  CSS class for the d'n'd disabled icon
-	 * @param DataViewInterface $view          The view you're rendering against. Leave null for auto-detection.
+	 * @param   string             $orderingField  The name of the field you're ordering by
+	 * @param   string             $order          The order value of the current row
+	 * @param   string             $class          CSS class for the ordering value INPUT field
+	 * @param   string             $icon           CSS class for the d'n'd handle icon
+	 * @param   string             $inactiveIcon   CSS class for the d'n'd disabled icon
+	 * @param   DataViewInterface  $view           The view you're rendering against. Leave null for auto-detection.
 	 *
 	 * @return string
 	 */
@@ -413,8 +417,8 @@ abstract class FEFHelperBrowse
 	/**
 	 * Returns the drag'n'drop reordering table header for Browse views
 	 *
-	 * @param string $orderingField The name of the field you're ordering by
-	 * @param string $icon          CSS class for the d'n'd handle icon
+	 * @param   string  $orderingField  The name of the field you're ordering by
+	 * @param   string  $icon           CSS class for the d'n'd handle icon
 	 *
 	 * @return string
 	 */
@@ -441,12 +445,12 @@ HTML;
 	/**
 	 * Creates an order-up action icon.
 	 *
-	 * @param integer      $i        The row index.
-	 * @param string       $task     An optional task to fire.
-	 * @param string|array $prefix   An optional task prefix or an array of options
-	 * @param string       $text     An optional text to display
-	 * @param boolean      $enabled  An optional setting for access control on the action.
-	 * @param string       $checkbox An optional prefix for checkboxes.
+	 * @param   integer       $i         The row index.
+	 * @param   string        $task      An optional task to fire.
+	 * @param   string|array  $prefix    An optional task prefix or an array of options
+	 * @param   string        $text      An optional text to display
+	 * @param   boolean       $enabled   An optional setting for access control on the action.
+	 * @param   string        $checkbox  An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -470,12 +474,12 @@ HTML;
 	/**
 	 * Creates an order-down action icon.
 	 *
-	 * @param integer      $i        The row index.
-	 * @param string       $task     An optional task to fire.
-	 * @param string|array $prefix   An optional task prefix or an array of options
-	 * @param string       $text     An optional text to display
-	 * @param boolean      $enabled  An optional setting for access control on the action.
-	 * @param string       $checkbox An optional prefix for checkboxes.
+	 * @param   integer       $i         The row index.
+	 * @param   string        $task      An optional task to fire.
+	 * @param   string|array  $prefix    An optional task prefix or an array of options
+	 * @param   string        $text      An optional text to display
+	 * @param   boolean       $enabled   An optional setting for access control on the action.
+	 * @param   string        $checkbox  An optional prefix for checkboxes.
 	 *
 	 * @return  string  The HTML markup
 	 *
@@ -500,14 +504,14 @@ HTML;
 	/**
 	 * Table header for a field which changes the sort order when clicked
 	 *
-	 * @param string $title         The link title
-	 * @param string $order         The order field for the column
-	 * @param string $direction     The current direction
-	 * @param string $selected      The selected ordering
-	 * @param string $task          An optional task override
-	 * @param string $new_direction An optional direction for the new column
-	 * @param string $tip           An optional text shown as tooltip title instead of $title
-	 * @param string $form          An optional form selector
+	 * @param   string  $title          The link title
+	 * @param   string  $order          The order field for the column
+	 * @param   string  $direction      The current direction
+	 * @param   string  $selected       The selected ordering
+	 * @param   string  $task           An optional task override
+	 * @param   string  $new_direction  An optional direction for the new column
+	 * @param   string  $tip            An optional text shown as tooltip title instead of $title
+	 * @param   string  $form           An optional form selector
 	 *
 	 * @return  string
 	 *
@@ -556,17 +560,15 @@ HTML;
 			$html .= '<span class="' . $icon[$index] . '"></span>';
 		}
 
-		$html .= '</a>';
-
-		return $html;
+		return $html . '</a>';
 	}
 
 	/**
 	 * Method to check all checkboxes on the browse view's table
 	 *
-	 * @param string $name   The name of the form element
-	 * @param string $tip    The text shown as tooltip title instead of $tip
-	 * @param string $action The action to perform on clicking the checkbox
+	 * @param   string  $name    The name of the form element
+	 * @param   string  $tip     The text shown as tooltip title instead of $tip
+	 * @param   string  $action  The action to perform on clicking the checkbox
 	 *
 	 * @return  string
 	 *
@@ -585,11 +587,11 @@ HTML;
 	/**
 	 * Method to create a checkbox for a grid row.
 	 *
-	 * @param integer $rowNum     The row index
-	 * @param integer $recId      The record id
-	 * @param boolean $checkedOut True if item is checked out
-	 * @param string  $name       The name of the form element
-	 * @param string  $stub       The name of stub identifier
+	 * @param   integer  $rowNum      The row index
+	 * @param   integer  $recId       The record id
+	 * @param   boolean  $checkedOut  True if item is checked out
+	 * @param   string   $name        The name of the form element
+	 * @param   string   $stub        The name of stub identifier
 	 *
 	 * @return  mixed    String of html with a checkbox if item is not checked out, empty if checked out.
 	 *
@@ -605,8 +607,8 @@ HTML;
 	/**
 	 * Include the necessary JavaScript for the browse view's table order feature
 	 *
-	 * @param string $orderBy Filed by which we are currently sorting the table.
-	 * @param bool   $return  Should I return the JS? Default: false (= add to the page's head)
+	 * @param   string  $orderBy  Filed by which we are currently sorting the table.
+	 * @param   bool    $return   Should I return the JS? Default: false (= add to the page's head)
 	 *
 	 * @return string
 	 */
@@ -652,11 +654,13 @@ JS;
 	 * Returns the table ordering / pagination header for a browse view: number of records to display, order direction,
 	 * order by field.
 	 *
-	 * @param DataViewRaw $view       The view you're rendering against. If not provided we will guess it using MAGIC.
-	 * @param array       $sortFields Array of field name => description for the ordering fields in the dropdown. If not provided we will use all the fields available in the model.
-	 * @param Pagination  $pagination The Joomla pagination object. If not provided we fetch it from the view.
-	 * @param string      $sortBy     Order by field name. If not provided we fetch it from the view.
-	 * @param string      $order_Dir  Order direction. If not provided we fetch it from the view.
+	 * @param   DataViewRaw  $view        The view you're rendering against. If not provided we will guess it using
+	 *                                    MAGIC.
+	 * @param   array        $sortFields  Array of field name => description for the ordering fields in the dropdown.
+	 *                                    If not provided we will use all the fields available in the model.
+	 * @param   Pagination   $pagination  The Joomla pagination object. If not provided we fetch it from the view.
+	 * @param   string       $sortBy      Order by field name. If not provided we fetch it from the view.
+	 * @param   string       $order_Dir   Order direction. If not provided we fetch it from the view.
 	 *
 	 * @return  string
 	 *
@@ -730,8 +734,7 @@ JS;
 			],
 		]);
 
-
-		$html = <<<HTML
+		return <<<HTML
 		<div class="akeeba-filter-element akeeba-form-group">
 			<label for="limit" class="element-invisible">
 				$limitLabel
@@ -754,15 +757,13 @@ JS;
 		</div>
 
 HTML;
-
-		return $html;
 	}
 
 	/**
 	 * Get the default sort fields from a model. It creates a hash array where the keys are the model's field names and
 	 * the values are the translation keys for their names, following FOF's naming conventions.
 	 *
-	 * @param DataModel $model The model for which we get the sort fields
+	 * @param   DataModel  $model  The model for which we get the sort fields
 	 *
 	 * @return  array
 	 *

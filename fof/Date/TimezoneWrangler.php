@@ -36,7 +36,7 @@ class TimezoneWrangler
 	 *
 	 * @var DateTimeZone
 	 */
-	protected $forcedTimezone = null;
+	protected $forcedTimezone;
 
 	/**
 	 * Cache of user IDs to applicable timezones
@@ -70,7 +70,7 @@ class TimezoneWrangler
 	/**
 	 * Set the default timestamp format to use when one is not provided
 	 *
-	 * @param string $defaultFormat
+	 * @param   string  $defaultFormat
 	 *
 	 * @return  void
 	 */
@@ -93,7 +93,7 @@ class TimezoneWrangler
 	 * Sets the forced timezone which is used instead of the applicable Joomla! timezone. If the new timezone is
 	 * different than the existing one we will also reset the user to timezone cache.
 	 *
-	 * @param DateTimeZone|string $forcedTimezone
+	 * @param   DateTimeZone|string  $forcedTimezone
 	 *
 	 * @return  void
 	 */
@@ -149,7 +149,7 @@ class TimezoneWrangler
 	 * - Server Timezone (from Joomla's Global Configuration)
 	 * - GMT
 	 *
-	 * @param User|null $user
+	 * @param   User|null  $user
 	 *
 	 * @return  DateTimeZone
 	 */
@@ -214,11 +214,11 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
-	 * timezone is specified in a date string we assume it's GMT.
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string.
+	 * If no timezone is specified in a date string we assume it's GMT.
 	 *
-	 * @param User  $user Applicable user for timezone calculation. Null = current user.
-	 * @param mixed $time Source time. Leave blank for current date/time.
+	 * @param   User   $user  Applicable user for timezone calculation. Null = current user.
+	 * @param   mixed  $time  Source time. Leave blank for current date/time.
 	 *
 	 * @return  Date
 	 */
@@ -237,11 +237,11 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
-	 * timezone is specified in a date string we assume it's the user's applicable timezone.
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string.
+	 * If no timezone is specified in a date string we assume it's the user's applicable timezone.
 	 *
-	 * @param User  $user
-	 * @param mixed $time
+	 * @param   User   $user
+	 * @param   mixed  $time
 	 *
 	 * @return  Date
 	 */
@@ -263,17 +263,18 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
-	 * timezone is specified in a date string we assume it's GMT.
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string.
+	 * If no timezone is specified in a date string we assume it's GMT.
 	 *
 	 * $translate requires you to have loaded the relevant translation file (e.g. en-GB.ini). CMSApplication does that
 	 * for you automatically. If you're under CLI, a custom WebApplication etc you will probably have to load this file
 	 * manually.
 	 *
-	 * @param string|null                   $format    Timestamp format. If empty $defaultFormat is used.
-	 * @param User|null                     $user      Applicable user for timezone calculation. Null = current user.
-	 * @param DateTime|Date|string|int|null $time      Source time. Leave blank for current date/time.
-	 * @param bool                          $translate Translate day of week and month names?
+	 * @param   string|null                    $format     Timestamp format. If empty $defaultFormat is used.
+	 * @param   User|null                      $user       Applicable user for timezone calculation. Null = current
+	 *                                                     user.
+	 * @param   DateTime|Date|string|int|null  $time       Source time. Leave blank for current date/time.
+	 * @param   bool                           $translate  Translate day of week and month names?
 	 *
 	 * @return  string
 	 */
@@ -292,17 +293,18 @@ class TimezoneWrangler
 	 *
 	 * If no user is specified the current user will be used.
 	 *
-	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string. If no
-	 * timezone is specified in a date string we assume it's the user's applicable timezone.
+	 * $time can be a DateTime object (including Date and Joomla Date), an integer (UNIX timestamp) or a date string.
+	 * If no timezone is specified in a date string we assume it's the user's applicable timezone.
 	 *
 	 * $translate requires you to have loaded the relevant translation file (e.g. en-GB.ini). CMSApplication does that
 	 * for you automatically. If you're under CLI, a custom WebApplication etc you will probably have to load this file
 	 * manually.
 	 *
-	 * @param string|null                   $format    Timestamp format. If empty $defaultFormat is used.
-	 * @param User|null                     $user      Applicable user for timezone calculation. Null = current user.
-	 * @param DateTime|Date|string|int|null $time      Source time. Leave blank for current date/time.
-	 * @param bool                          $translate Translate day of week and month names?
+	 * @param   string|null                    $format     Timestamp format. If empty $defaultFormat is used.
+	 * @param   User|null                      $user       Applicable user for timezone calculation. Null = current
+	 *                                                     user.
+	 * @param   DateTime|Date|string|int|null  $time       Source time. Leave blank for current date/time.
+	 * @param   bool                           $translate  Translate day of week and month names?
 	 *
 	 * @return  string
 	 */
@@ -319,8 +321,8 @@ class TimezoneWrangler
 	 *
 	 * This is an alias to getGMTDateTime
 	 *
-	 * @param string|Date $time
-	 * @param User|null   $user
+	 * @param   string|Date  $time
+	 * @param   User|null    $user
 	 *
 	 * @return  Date
 	 */
@@ -334,8 +336,8 @@ class TimezoneWrangler
 	 *
 	 * This is an alias to getLocalDateTime
 	 *
-	 * @param string|Date $time
-	 * @param User|null   $user
+	 * @param   string|Date  $time
+	 * @param   User|null    $user
 	 *
 	 * @return  Date
 	 */

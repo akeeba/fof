@@ -15,6 +15,8 @@ defined('_JEXEC') or die;
  * Custom JHtml (HTMLHelper) class. Offers selects compatible with Akeeba Frontend Framework (FEF)
  *
  * Call these methods as HTMLHelper::_('FEFHelper.select.methodName', $parameter1, $parameter2, ...)
+ *
+ * @noinspection PhpIllegalPsrClassPathInspection
  */
 abstract class FEFHelperSelect
 {
@@ -56,12 +58,12 @@ abstract class FEFHelperSelect
 	public static function booleanlist($name, $attribs = array(), $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
 	{
 		$options     = [
-			JHtml::_('FEFHelper.select.option', '0', JText::_($no)),
-			JHtml::_('FEFHelper.select.option', '1', JText::_($yes)),
+			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.option', '0', \Joomla\CMS\Language\Text::_($no)),
+			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.option', '1', \Joomla\CMS\Language\Text::_($yes)),
 		];
 		$attribs = array_merge(['forSelect' => 1], $attribs);
 
-		return JHtml::_('FEFHelper.select.radiolist', $options, $name, $attribs, 'value', 'text', (int) $selected, $id);
+		return \Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.radiolist', $options, $name, $attribs, 'value', 'text', (int) $selected, $id);
 	}
 
 	/**
@@ -136,10 +138,9 @@ abstract class FEFHelperSelect
 		$id = str_replace(['[', ']', ' '], '', $id);
 
 		$baseIndent = str_repeat($options['format.indent'], $options['format.depth']++);
-		$html       = $baseIndent . '<select' . ($id !== '' ? ' id="' . $id . '"' : '') . ' name="' . $name . '"' . $attribs . '>' . $options['format.eol']
-			. static::options($data, $options) . $baseIndent . '</select>' . $options['format.eol'];
 
-		return $html;
+		return $baseIndent . '<select' . ($id !== '' ? ' id="' . $id . '"' : '') . ' name="' . $name . '"' . $attribs . '>' . $options['format.eol']
+			. static::options($data, $options) . $baseIndent . '</select>' . $options['format.eol'];
 	}
 
 	/**
@@ -281,9 +282,7 @@ abstract class FEFHelperSelect
 			}
 		}
 
-		$html .= $baseIndent . '</select>' . $options['format.eol'];
-
-		return $html;
+		return $html . ($baseIndent . '</select>' . $options['format.eol']);
 	}
 
 	/**
@@ -695,7 +694,7 @@ abstract class FEFHelperSelect
 		foreach ($data as $optionObject)
 		{
 			$optionValue = $optionObject->$optKey;
-			$labelText   = $translate ? JText::_($optionObject->$optText) : $optionObject->$optText;
+			$labelText   = $translate ? \Joomla\CMS\Language\Text::_($optionObject->$optText) : $optionObject->$optText;
 			$id          = (isset($optionObject->id) ? $optionObject->id : null);
 
 			$extra = '';
@@ -735,9 +734,7 @@ abstract class FEFHelperSelect
 			}
 		}
 
-		$html .= "\n";
-
-		return $html;
+		return $html . "\n";
 	}
 
 	/**

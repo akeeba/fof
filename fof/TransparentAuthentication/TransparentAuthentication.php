@@ -40,9 +40,6 @@ class TransparentAuthentication
 	/** @var string The TOTP secret key */
 	protected $totpKey = '';
 
-	/** @var string Internal variable */
-	private $cryptoKey = '';
-
 	/** @var array Enabled authentication methods, see the class constants */
 	protected $authenticationMethods = [3, 4, 5];
 
@@ -62,7 +59,10 @@ class TransparentAuthentication
 	protected $logoutOnExit = true;
 
 	/** @var Container The container we are attached to */
-	protected $container = null;
+	protected $container;
+
+	/** @var string Internal variable */
+	private $cryptoKey = '';
 
 	/**
 	 * Public constructor.
@@ -71,8 +71,8 @@ class TransparentAuthentication
 	 * class): timeStep, totpKey, cryptoKey, basicAuthUsername, queryParam, queryParamUsername, queryParamPassword,
 	 * logoutOnExit. See the property descriptions for more information.
 	 *
-	 * @param \FOF40\Container\Container $container
-	 * @param array                      $config
+	 * @param   \FOF40\Container\Container  $container
+	 * @param   array                       $config
 	 */
 	function __construct(Container $container, array $config = [])
 	{
@@ -99,9 +99,21 @@ class TransparentAuthentication
 	}
 
 	/**
+	 * Get the enabled authentication methods
+	 *
+	 * @return   int[]
+	 *
+	 * @codeCoverageIgnore
+	 */
+	public function getAuthenticationMethods(): array
+	{
+		return $this->authenticationMethods;
+	}
+
+	/**
 	 * Set the enabled authentication methods
 	 *
-	 * @param int[] $authenticationMethods
+	 * @param   int[]  $authenticationMethods
 	 *
 	 * @codeCoverageIgnore
 	 */
@@ -116,27 +128,17 @@ class TransparentAuthentication
 	}
 
 	/**
-	 * Get the enabled authentication methods
-	 *
-	 * @return   int[]
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function getAuthenticationMethods(): array
-	{
-		return $this->authenticationMethods;
-	}
-
-	/**
 	 * Enable an authentication method
 	 *
-	 * @param integer $method
+	 * @param   integer  $method
 	 */
 	public function addAuthenticationMethod(int $method): void
 	{
-		$validMethods = [self::Auth_HTTPBasicAuth_Plaintext, self::Auth_HTTPBasicAuth_TOTP,
+		$validMethods = [
+			self::Auth_HTTPBasicAuth_Plaintext, self::Auth_HTTPBasicAuth_TOTP,
 			self::Auth_QueryString_Plaintext, self::Auth_QueryString_TOTP,
-			self::Auth_SplitQueryString_Plaintext];
+			self::Auth_SplitQueryString_Plaintext,
+		];
 
 		if (!in_array($method, $validMethods))
 		{
@@ -152,7 +154,7 @@ class TransparentAuthentication
 	/**
 	 * Disable an authentication method
 	 *
-	 * @param integer $method
+	 * @param   integer  $method
 	 */
 	public function removeAuthenticationMethod(int $method): void
 	{
@@ -161,18 +163,6 @@ class TransparentAuthentication
 			$key = array_search($method, $this->authenticationMethods);
 			unset($this->authenticationMethods[$key]);
 		}
-	}
-
-	/**
-	 * Set the required username for the HTTP Basic Authentication with TOTP method
-	 *
-	 * @param string $basicAuthUsername
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function setBasicAuthUsername(string $basicAuthUsername): void
-	{
-		$this->basicAuthUsername = $basicAuthUsername;
 	}
 
 	/**
@@ -188,15 +178,15 @@ class TransparentAuthentication
 	}
 
 	/**
-	 * Set the query parameter for the Auth_QueryString_TOTP method
+	 * Set the required username for the HTTP Basic Authentication with TOTP method
 	 *
-	 * @param string $queryParam
+	 * @param   string  $basicAuthUsername
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setQueryParam(string $queryParam): void
+	public function setBasicAuthUsername(string $basicAuthUsername): void
 	{
-		$this->queryParam = $queryParam;
+		$this->basicAuthUsername = $basicAuthUsername;
 	}
 
 	/**
@@ -212,15 +202,15 @@ class TransparentAuthentication
 	}
 
 	/**
-	 * Set the query string for the password in the Auth_SplitQueryString_Plaintext method
+	 * Set the query parameter for the Auth_QueryString_TOTP method
 	 *
-	 * @param string $queryParamPassword
+	 * @param   string  $queryParam
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setQueryParamPassword(string $queryParamPassword): void
+	public function setQueryParam(string $queryParam): void
 	{
-		$this->queryParamPassword = $queryParamPassword;
+		$this->queryParam = $queryParam;
 	}
 
 	/**
@@ -236,15 +226,15 @@ class TransparentAuthentication
 	}
 
 	/**
-	 * Set the query string for the username in the Auth_SplitQueryString_Plaintext method
+	 * Set the query string for the password in the Auth_SplitQueryString_Plaintext method
 	 *
-	 * @param string $queryParamUsername
+	 * @param   string  $queryParamPassword
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setQueryParamUsername(string $queryParamUsername): void
+	public function setQueryParamPassword(string $queryParamPassword): void
 	{
-		$this->queryParamUsername = $queryParamUsername;
+		$this->queryParamPassword = $queryParamPassword;
 	}
 
 	/**
@@ -260,15 +250,15 @@ class TransparentAuthentication
 	}
 
 	/**
-	 * Set the time step in seconds for the TOTP in the Auth_HTTPBasicAuth_TOTP method
+	 * Set the query string for the username in the Auth_SplitQueryString_Plaintext method
 	 *
-	 * @param int $timeStep
+	 * @param   string  $queryParamUsername
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setTimeStep(int $timeStep): void
+	public function setQueryParamUsername(string $queryParamUsername): void
 	{
-		$this->timeStep = $timeStep;
+		$this->queryParamUsername = $queryParamUsername;
 	}
 
 	/**
@@ -284,15 +274,15 @@ class TransparentAuthentication
 	}
 
 	/**
-	 * Set the secret key for the TOTP in the Auth_HTTPBasicAuth_TOTP method
+	 * Set the time step in seconds for the TOTP in the Auth_HTTPBasicAuth_TOTP method
 	 *
-	 * @param string $totpKey
+	 * @param   int  $timeStep
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function setTotpKey(string $totpKey): void
+	public function setTimeStep(int $timeStep): void
 	{
-		$this->totpKey = $totpKey;
+		$this->timeStep = $timeStep;
 	}
 
 	/**
@@ -305,6 +295,18 @@ class TransparentAuthentication
 	public function getTotpKey(): string
 	{
 		return $this->totpKey;
+	}
+
+	/**
+	 * Set the secret key for the TOTP in the Auth_HTTPBasicAuth_TOTP method
+	 *
+	 * @param   string  $totpKey
+	 *
+	 * @codeCoverageIgnore
+	 */
+	public function setTotpKey(string $totpKey): void
+	{
+		$this->totpKey = $totpKey;
 	}
 
 	/**
@@ -322,7 +324,7 @@ class TransparentAuthentication
 	/**
 	 * Set the log out on exit flag (for testing)
 	 *
-	 * @param boolean $logoutOnExit
+	 * @param   boolean  $logoutOnExit
 	 *
 	 * @codeCoverageIgnore
 	 */
@@ -400,8 +402,6 @@ class TransparentAuthentication
 
 					return $this->decryptWithTOTP($encryptedData);
 
-					break;
-
 				case self::Auth_QueryString_TOTP:
 					if (empty($this->queryParam))
 					{
@@ -440,8 +440,6 @@ class TransparentAuthentication
 						'password' => $_SERVER['PHP_AUTH_PW'],
 					];
 
-					break;
-
 				case self::Auth_QueryString_Plaintext:
 					if (empty($this->queryParam))
 					{
@@ -468,8 +466,6 @@ class TransparentAuthentication
 					}
 
 					return $authInfo;
-
-					break;
 
 				case self::Auth_SplitQueryString_Plaintext:
 					if (empty($this->queryParamUsername))
@@ -499,8 +495,69 @@ class TransparentAuthentication
 						'username' => $username,
 						'password' => $password,
 					];
+			}
+		}
 
+		return $return;
+	}
+
+	/**
+	 * Parses a list of transparent authentication methods (array or comma separated list of integers or method names)
+	 * and converts it into an array of integers this class understands.
+	 *
+	 * @param   string|int[]|string[]  $methods
+	 *
+	 * @return int[]
+	 */
+	protected function parseAuthenticationMethods($methods): array
+	{
+		if (empty($methods))
+		{
+			return [];
+		}
+
+		if (!is_array($methods))
+		{
+			$methods = explode(',', $methods);
+		}
+
+		$return = [];
+
+		foreach ($methods as $method)
+		{
+			if (empty($method))
+			{
+				continue;
+			}
+
+			$method = trim($method);
+
+			if ((int) $method == $method)
+			{
+				$return[] = (int) $method;
+			}
+
+			switch ($method)
+			{
+				case 'HTTPBasicAuth_TOTP':
+					$return[] = 1;
 					break;
+
+				case 'QueryString_TOTP':
+					$return[] = 2;
+					break;
+
+				case 'HTTPBasicAuth_Plaintext':
+					$return[] = 3;
+					break;
+
+				case 'QueryString_Plaintext':
+					$return[] = 4;
+					break;
+
+				case 'SplitQueryString_Plaintext':
+					$return[] = 5;
+
 			}
 		}
 
@@ -510,7 +567,7 @@ class TransparentAuthentication
 	/**
 	 * Decrypts a transparent authentication message using a TOTP
 	 *
-	 * @param string $encryptedData The encrypted data
+	 * @param   string  $encryptedData  The encrypted data
 	 *
 	 * @return  array|null  The decrypted data
 	 */
@@ -569,68 +626,5 @@ class TransparentAuthentication
 		$this->cryptoKey = null;
 
 		return null;
-	}
-
-	/**
-	 * Parses a list of transparent authentication methods (array or comma separated list of integers or method names)
-	 * and converts it into an array of integers this class understands.
-	 *
-	 * @param string|int[]|string[] $methods
-	 *
-	 * @return int[]
-	 */
-	protected function parseAuthenticationMethods($methods): array
-	{
-		if (empty($methods))
-		{
-			return [];
-		}
-
-		if (!is_array($methods))
-		{
-			$methods = explode(',', $methods);
-		}
-
-		$return = [];
-
-		foreach ($methods as $method)
-		{
-			if (empty($method))
-			{
-				continue;
-			}
-
-			$method = trim($method);
-
-			if ((int) $method == $method)
-			{
-				$return[] = (int) $method;
-			}
-
-			switch ($method)
-			{
-				case 'HTTPBasicAuth_TOTP':
-					$return[] = 1;
-					break;
-
-				case 'QueryString_TOTP':
-					$return[] = 2;
-					break;
-
-				case 'HTTPBasicAuth_Plaintext':
-					$return[] = 3;
-					break;
-
-				case 'QueryString_Plaintext':
-					$return[] = 4;
-					break;
-
-				case 'SplitQueryString_Plaintext':
-					$return[] = 5;
-
-			}
-		}
-
-		return $return;
 	}
 }

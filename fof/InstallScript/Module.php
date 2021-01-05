@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\InstallScript;
+namespace FOF40\InstallScript;
 
 use Exception;
 use FOF40\Database\Installer as DatabaseInstaller;
@@ -62,10 +62,10 @@ class Module extends BaseInstaller
 		// Get the plugin name and folder from the class name (it's always plgFolderPluginInstallerScript) if necessary.
 		if (empty($this->moduleName))
 		{
-			$class              = get_class($this);
-			$words              = preg_replace('/(\s)+/', '_', $class);
-			$words              = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $words));
-			$classParts         = explode('_', $words);
+			$class      = get_class($this);
+			$words      = preg_replace('/(\s)+/', '_', $class);
+			$words      = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $words));
+			$classParts = explode('_', $words);
 
 			$this->moduleName = 'mod_' . $classParts[2];
 		}
@@ -75,10 +75,11 @@ class Module extends BaseInstaller
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string         $type   Installation type (install, update, discover_install)
-	 * @param   ModuleAdapter  $parent Parent object
+	 * @param   string         $type    Installation type (install, update, discover_install)
+	 * @param   ModuleAdapter  $parent  Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function preflight(string $type, ModuleAdapter $parent): bool
 	{
@@ -105,12 +106,12 @@ class Module extends BaseInstaller
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string         $type   install, update or discover_update
-	 * @param   ModuleAdapter  $parent Parent object
-	 *
-     * @throws Exception
+	 * @param   string         $type    install, update or discover_update
+	 * @param   ModuleAdapter  $parent  Parent object
 	 *
 	 * @return  void
+	 * @throws Exception
+	 *
 	 */
 	public function postflight(string $type, ModuleAdapter $parent): void
 	{
@@ -124,7 +125,7 @@ class Module extends BaseInstaller
 		// $this->addDependency('fof40', $this->getDependencyName());
 
 		// Install or update database
-		$schemaPath  = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
+		$schemaPath = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
 
 		if (@is_dir($schemaPath))
 		{
@@ -145,12 +146,12 @@ class Module extends BaseInstaller
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   ModuleAdapter  $parent The parent object
+	 * @param   ModuleAdapter  $parent  The parent object
 	 */
 	public function uninstall(ModuleAdapter $parent): void
 	{
 		// Uninstall database
-		$schemaPath  = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
+		$schemaPath = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
 
 		// Uninstall database
 		if (@is_dir($schemaPath))
@@ -190,27 +191,27 @@ class Module extends BaseInstaller
 		$temporarySource = $parent->getParent()->getPath('source');
 		$rootFolder      = ($this->moduleClient == 'site') ? JPATH_SITE : JPATH_ADMINISTRATOR;
 
-		$copyMap = array(
+		$copyMap = [
 			// Module files
 			$temporarySource               => $rootFolder . '/modules/' . $this->moduleName,
 			// Language
 			$temporarySource . '/language' => $rootFolder . '/language',
 			// Media files
 			$temporarySource . '/media'    => JPATH_ROOT . '/media/' . $this->moduleName,
-		);
+		];
 
 		foreach ($copyMap as $source => $target)
 		{
 			\Joomla\CMS\Log\Log::add(__CLASS__ . ":: Conditional copy $source to $target", Log::DEBUG, 'fof4_extension_installation');
 
-			$ignored = array();
+			$ignored = [];
 
 			if ($source == $temporarySource)
 			{
-				$ignored = array(
-					'index.html',  'index.htm', 'LICENSE.txt', 'license.txt', 'readme.htm', 'readme.html', 'README.md',
+				$ignored = [
+					'index.html', 'index.htm', 'LICENSE.txt', 'license.txt', 'readme.htm', 'readme.html', 'README.md',
 					'script.php', 'language', 'media',
-				);
+				];
 
 			}
 

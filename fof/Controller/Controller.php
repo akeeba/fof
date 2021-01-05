@@ -15,6 +15,7 @@ use FOF40\Model\Model;
 use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Cache\Cache;
+use Joomla\CMS\Cache\Exception\CacheExceptionInterface;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
@@ -34,11 +35,18 @@ defined('_JEXEC') or die;
 class Controller
 {
 	/**
+	 * Instance container.
+	 *
+	 * @var    Controller
+	 */
+	protected static $instance;
+
+	/**
 	 * The name of the controller
 	 *
 	 * @var    array
 	 */
-	protected $name = null;
+	protected $name;
 
 	/**
 	 * The mapped task that was performed.
@@ -131,13 +139,6 @@ class Controller
 	protected $taskMap;
 
 	/**
-	 * Instance container.
-	 *
-	 * @var    Controller
-	 */
-	protected static $instance;
-
-	/**
 	 * The current view name; you can override it in the configuration
 	 *
 	 * @var string
@@ -149,7 +150,7 @@ class Controller
 	 *
 	 * @var string
 	 */
-	protected $layout = null;
+	protected $layout;
 
 	/**
 	 * A cached copy of the class configuration parameter passed during initialisation
@@ -163,14 +164,14 @@ class Controller
 	 *
 	 * @var string
 	 */
-	protected $modelName = null;
+	protected $modelName;
 
 	/**
 	 * Overrides the name of the view's default view
 	 *
 	 * @var string
 	 */
-	protected $viewName = null;
+	protected $viewName;
 
 	/**
 	 * An array of Model instances known to this Controller
@@ -191,7 +192,7 @@ class Controller
 	 *
 	 * @var Container
 	 */
-	protected $container = null;
+	protected $container;
 
 	/**
 	 * The tasks for which caching should be enabled by default
@@ -232,7 +233,8 @@ class Controller
 	 *
 	 * 0    Disabled; no token checks are performed
 	 * 1    Enabled; token checks are always performed
-	 * 2    Only on HTML requests and backend; token checks are always performed in the back-end and in the front-end only when format is 'html'
+	 * 2    Only on HTML requests and backend; token checks are always performed in the back-end and in the front-end
+	 * only when format is 'html'
 	 * 3    Only on back-end; token checks are performed only in the back-end
 	 *
 	 * @var    integer
@@ -250,8 +252,8 @@ class Controller
 	 * viewConfig      array   The configuration overrides for the View.
 	 * modelConfig     array   The configuration overrides for the Model.
 	 *
-	 * @param Container $container The application container
-	 * @param array     $config    The configuration array
+	 * @param   Container  $container  The application container
+	 * @param   array      $config     The configuration array
 	 *
 	 * @return  Controller
 	 */
@@ -352,7 +354,7 @@ class Controller
 	 * Magic get method. Handles magic properties:
 	 * $this->input  mapped to $this->container->input
 	 *
-	 * @param string $name The property to fetch
+	 * @param   string  $name  The property to fetch
 	 *
 	 * @return  mixed|null
 	 */
@@ -379,7 +381,7 @@ class Controller
 	 * Executes a given controller task. The onBefore<task> and onAfter<task>
 	 * methods are called automatically if they exist.
 	 *
-	 * @param string $task The task to execute, e.g. "browse"
+	 * @param   string  $task  The task to execute, e.g. "browse"
 	 *
 	 * @return  mixed|bool  False on execution failure
 	 *
@@ -453,9 +455,9 @@ class Controller
 	 * YOU MUST NOT USE THIS TASK DIRECTLY IN A URL. It is supposed to be
 	 * used ONLY inside your code. In the URL, use task=browse instead.
 	 *
-	 * @param bool   $cachable  Is this view cacheable?
-	 * @param bool   $urlparams Add your safe URL parameters (see further down in the code)
-	 * @param string $tpl       The name of the template file to parse
+	 * @param   bool    $cachable   Is this view cacheable?
+	 * @param   bool    $urlparams  Add your safe URL parameters (see further down in the code)
+	 * @param   string  $tpl        The name of the template file to parse
 	 *
 	 * @return  void
 	 *
@@ -577,11 +579,11 @@ class Controller
 			// Get the cached view or cache the current view
 			try
 			{
-				/** @var \JCacheControllerView $cache */
-				$cache = \JFactory::getCache($option, 'view');
+				/** @var \Joomla\CMS\Cache\Controller\ViewController $cache */
+				$cache = JoomlaFactory::getCache($option, 'view');
 				$cache->get($view, 'display', $cacheId);
 			}
-			catch (\JCacheException $e)
+			catch (CacheExceptionInterface $e)
 			{
 				// Display without caching
 				$view->display($tpl);
@@ -609,10 +611,10 @@ class Controller
 	/**
 	 * Returns a named Model object
 	 *
-	 * @param string $name       The Model name. If null we'll use the modelName
+	 * @param   string  $name    The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param array  $config     Configuration parameters to the Model. If skipped
+	 * @param   array   $config  Configuration parameters to the Model. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  Model  The instance of the Model known to this Controller
@@ -669,10 +671,10 @@ class Controller
 	/**
 	 * Returns a named View object
 	 *
-	 * @param string $name       The Model name. If null we'll use the modelName
+	 * @param   string  $name    The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
-	 * @param array  $config     Configuration parameters to the Model. If skipped
+	 * @param   array   $config  Configuration parameters to the Model. If skipped
 	 *                           we will use $this->config
 	 *
 	 * @return  View  The instance of the Model known to this Controller
@@ -709,9 +711,22 @@ class Controller
 	}
 
 	/**
+	 * Pushes a named view to the Controller
+	 *
+	 * @param   string  $viewName  The name of the View
+	 * @param   View    $view      The actual View object to push
+	 *
+	 * @return  void
+	 */
+	public function setView(string $viewName, View &$view): void
+	{
+		$this->viewInstances[$viewName] = $view;
+	}
+
+	/**
 	 * Set the name of the view to be used by this Controller
 	 *
-	 * @param string $viewName The name of the view
+	 * @param   string  $viewName  The name of the view
 	 *
 	 * @return  void
 	 */
@@ -723,7 +738,7 @@ class Controller
 	/**
 	 * Set the name of the model to be used by this Controller
 	 *
-	 * @param string $modelName The name of the model
+	 * @param   string  $modelName  The name of the model
 	 *
 	 * @return  void
 	 */
@@ -735,27 +750,14 @@ class Controller
 	/**
 	 * Pushes a named model to the Controller
 	 *
-	 * @param string $modelName The name of the Model
-	 * @param Model  $model     The actual Model object to push
+	 * @param   string  $modelName  The name of the Model
+	 * @param   Model   $model      The actual Model object to push
 	 *
 	 * @return  void
 	 */
 	public function setModel(string $modelName, Model &$model): void
 	{
 		$this->modelInstances[$modelName] = $model;
-	}
-
-	/**
-	 * Pushes a named view to the Controller
-	 *
-	 * @param string $viewName The name of the View
-	 * @param View   $view     The actual View object to push
-	 *
-	 * @return  void
-	 */
-	public function setView(string $viewName, View &$view): void
-	{
-		$this->viewInstances[$viewName] = $view;
 	}
 
 	/**
@@ -825,7 +827,7 @@ class Controller
 	/**
 	 * Register the default task to perform if a mapping is not found.
 	 *
-	 * @param string $method The name of the method in the derived class to perform if a named task is not found.
+	 * @param   string  $method  The name of the method in the derived class to perform if a named task is not found.
 	 *
 	 * @return  Controller  This object to support chaining.
 	 */
@@ -839,8 +841,8 @@ class Controller
 	/**
 	 * Register (map) a task to a method in the class.
 	 *
-	 * @param string $task   The task.
-	 * @param string $method The name of the method in the derived class to perform for this task.
+	 * @param   string  $task    The task.
+	 * @param   string  $method  The name of the method in the derived class to perform for this task.
 	 *
 	 * @return  Controller  This object to support chaining.
 	 */
@@ -857,7 +859,7 @@ class Controller
 	/**
 	 * Unregister (unmap) a task in the class.
 	 *
-	 * @param string $task The task.
+	 * @param   string  $task  The task.
 	 *
 	 * @return  Controller  This object to support chaining.
 	 */
@@ -871,8 +873,8 @@ class Controller
 	/**
 	 * Sets the internal message that is passed with a redirect
 	 *
-	 * @param string $text Message to display on redirect.
-	 * @param string $type Message type. Optional, defaults to 'message'.
+	 * @param   string  $text  Message to display on redirect.
+	 * @param   string  $type  Message type. Optional, defaults to 'message'.
 	 *
 	 * @return  string|null  Previous message
 	 */
@@ -888,9 +890,11 @@ class Controller
 	/**
 	 * Set a URL for browser redirection.
 	 *
-	 * @param string $url  URL to redirect to.
-	 * @param string $msg  Message to display on redirect. Optional, defaults to value set internally by controller, if any.
-	 * @param string $type Message type. Optional, defaults to 'message' or the type set by a previous call to setMessage.
+	 * @param   string  $url   URL to redirect to.
+	 * @param   string  $msg   Message to display on redirect. Optional, defaults to value set internally by
+	 *                         controller, if any.
+	 * @param   string  $type  Message type. Optional, defaults to 'message' or the type set by a previous call to
+	 *                         setMessage.
 	 *
 	 * @return  Controller   This object to support chaining.
 	 */
@@ -966,6 +970,16 @@ class Controller
 	}
 
 	/**
+	 * Returns true if there is a redirect set in the controller
+	 *
+	 * @return  boolean
+	 */
+	public function hasRedirect(): bool
+	{
+		return !empty($this->redirect);
+	}
+
+	/**
 	 * Provides CSRF protection through the forced use of a secure token. If the token doesn't match the one in the
 	 * session we return false.
 	 *
@@ -990,7 +1004,6 @@ class Controller
 			// Never
 			case 0:
 				return true;
-				break;
 
 			// Always
 			case 1:
@@ -1079,8 +1092,8 @@ class Controller
 	 * 2. $this->checkACL('@something') if there is no onBeforeSomething and the event starts with onBefore
 	 * 3. Joomla! plugin event onComFoobarControllerItemBeforeSomething($this, 123, 456)
 	 *
-	 * @param string $event     The name of the event, typically named onPredicateVerb e.g. onBeforeKick
-	 * @param array  $arguments The arguments to pass to the event handlers
+	 * @param   string  $event      The name of the event, typically named onPredicateVerb e.g. onBeforeKick
+	 * @param   array   $arguments  The arguments to pass to the event handlers
 	 *
 	 * @return  bool
 	 */
@@ -1151,14 +1164,11 @@ class Controller
 		// Call the Joomla! plugins
 		$results = $this->container->platform->runPlugins($event, $arguments);
 
-		if (!empty($results))
+		foreach ($results as $result)
 		{
-			foreach ($results as $result)
+			if ($result === false)
 			{
-				if ($result === false)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 
@@ -1168,7 +1178,7 @@ class Controller
 	/**
 	 * Checks if the current user has enough privileges for the requested ACL area.
 	 *
-	 * @param string $area The ACL area, e.g. core.manage.
+	 * @param   string  $area  The ACL area, e.g. core.manage.
 	 *
 	 * @return  boolean  True if the user has the ACL privilege specified
 	 */
@@ -1212,8 +1222,8 @@ class Controller
 	/**
 	 * Resolves @task and &callback notations for ACL privileges
 	 *
-	 * @param string $area     The task notation to resolve
-	 * @param array  $oldAreas Areas we've already been redirected from, used to detect circular references
+	 * @param   string  $area      The task notation to resolve
+	 * @param   array   $oldAreas  Areas we've already been redirected from, used to detect circular references
 	 *
 	 * @return  string|bool  The resolved ACL privilege
 	 */
@@ -1275,16 +1285,6 @@ class Controller
 
 		// We have another reference. Resolve it.
 		return $this->getACLRuleFor($newArea, $oldAreas);
-	}
-
-	/**
-	 * Returns true if there is a redirect set in the controller
-	 *
-	 * @return  boolean
-	 */
-	public function hasRedirect(): bool
-	{
-		return !empty($this->redirect);
 	}
 
 

@@ -102,9 +102,8 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 
 		$plainText  .= $this->getZeroPadding($plainText, $iv_size);
 		$cipherText = openssl_encrypt($plainText, $this->method, $key, $this->openSSLOptions, $iv);
-		$cipherText = $iv . $cipherText;
 
-		return $cipherText;
+		return $iv . $cipherText;
 	}
 
 	public function decrypt(string $cipherText, string $key): string
@@ -113,9 +112,8 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		$key        = $this->resizeKey($key, $iv_size);
 		$iv         = substr($cipherText, 0, $iv_size);
 		$cipherText = substr($cipherText, $iv_size);
-		$plainText  = openssl_decrypt($cipherText, $this->method, $key, $this->openSSLOptions, $iv);
 
-		return $plainText;
+		return openssl_decrypt($cipherText, $this->method, $key, $this->openSSLOptions, $iv);
 	}
 
 	public function isSupported(Phpfunc $phpfunc = null): bool

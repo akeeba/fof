@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
 class Update extends Model
 {
 	/** @var JUpdater The Joomla! updater object */
-	protected $updater = null;
+	protected $updater;
 
 	/** @var int The extension_id of this component */
 	protected $extension_id = 0;
@@ -34,13 +34,13 @@ class Update extends Model
 	protected $component = 'com_foobar';
 
 	/** @var string The URL to the component's update XML stream */
-	protected $updateSite = null;
+	protected $updateSite;
 
 	/** @var string The name to the component's update site (description of the update XML stream) */
-	protected $updateSiteName = null;
+	protected $updateSiteName;
 
 	/** @var string The extra query to append to (commercial) components' download URLs */
-	protected $extraQuery = null;
+	protected $extraQuery;
 
 	/** @var string The component Options key which stores a copy of the Download ID */
 	protected $paramsKey = 'update_dlid';
@@ -187,8 +187,8 @@ class Update extends Model
 	public function getUpdateSites(): ?array
 	{
 		$updateSiteIDs = $this->getUpdateSiteIds();
-		$db    = $this->container->db;
-		$query = $db->getQuery(true)
+		$db            = $this->container->db;
+		$query         = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__update_sites'))
 			->where($db->qn('update_site_id') . ' IN (' . implode(', ', $updateSiteIDs) . ')');
@@ -255,7 +255,7 @@ class Update extends Model
 		}
 
 		// Make sure we DO NOT have a J4 key. If we do, the J4 key wins and gets backported to legacy storage.
-		$licenseKey = $this->getLicenseKey(false);
+		$licenseKey = $this->getLicenseKey();
 
 		if (!empty($licenseKey))
 		{
@@ -287,7 +287,7 @@ class Update extends Model
 		}
 
 		// Make sure we DO have a J4 key
-		$licenseKey = $this->getLicenseKey(false);
+		$licenseKey = $this->getLicenseKey();
 
 		if (empty($licenseKey))
 		{
@@ -735,7 +735,7 @@ class Update extends Model
 	 */
 	public function getExtensionObject()
 	{
-		list($extensionPrefix, $extensionName) = explode('_', $this->component);
+		[$extensionPrefix, $extensionName] = explode('_', $this->component);
 
 		switch ($extensionPrefix)
 		{

@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\View\DataView;
+namespace FOF40\View\DataView;
 
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
@@ -25,28 +25,28 @@ defined('_JEXEC') or die;
 class Raw extends View implements DataViewInterface
 {
 	/** @var   \stdClass  Data lists */
-	protected $lists = null;
+	protected $lists;
 
 	/** @var Pagination The pagination object */
-	protected $pagination = null;
+	protected $pagination;
 
 	/** @var Registry Page parameters object, for front-end views */
-	protected $pageParams = null;
+	protected $pageParams;
 
 	/** @var Collection The records loaded (browse views) */
-	protected $items = null;
+	protected $items;
 
 	/** @var DataModel The record loaded (read, edit, add views) */
-	protected $item = null;
+	protected $item;
 
 	/** @var int The total number of items in the model (more than those loaded) */
 	protected $itemCount = 0;
 
 	/** @var \stdClass ACL permissions map */
-	protected $permissions = null;
+	protected $permissions;
 
 	/** @var array Additional permissions to fetch on object creation, see getPermissions() */
-	protected $additionalPermissions = array();
+	protected $additionalPermissions = [];
 
 	/**
 	 * Overrides the constructor to apply Joomla! ACL permissions
@@ -54,7 +54,7 @@ class Raw extends View implements DataViewInterface
 	 * @param   Container  $container  The container we belong to
 	 * @param   array      $config     The configuration overrides for the view
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		parent::__construct($container, $config);
 
@@ -62,78 +62,11 @@ class Raw extends View implements DataViewInterface
 	}
 
 	/**
-	 * Returns a permissions object.
-	 *
-	 * The additionalPermissions array is a hashed array of local key => Joomla! ACL key value pairs. Local key is the
-	 * name of the permission in the permissions object, whereas Joomla! ACL key is the name of the ACL permission
-	 * known to Joomla! e.g. "core.manage", "foobar.something" and so on.
-	 *
-	 * Note: on CLI applications all permissions are set to TRUE. There is no ACL check there.
-	 *
-	 * @param   null|string  $component              The name of the component. Leave empty for automatic detection.
-	 * @param   array        $additionalPermissions  Any additional permissions you want to add to the object.
-	 *
-	 * @return  object
-	 */
-	protected function getPermissions($component = null, array $additionalPermissions = array())
-	{
-		// Make sure we have a component
-		if (empty($component))
-		{
-			$component = $this->container->componentName;
-		}
-
-		// Initialise with all true
-		$permissions = array(
-			'create'	 => true,
-			'edit'		 => true,
-			'editown'	 => true,
-			'editstate'	 => true,
-			'delete'	 => true,
-		);
-
-		if (!empty($additionalPermissions))
-		{
-			foreach ($additionalPermissions as $localKey => $joomlaPermission)
-			{
-				$permissions[$localKey] = true;
-			}
-		}
-
-		$platform = $this->container->platform;
-
-		// If this is a CLI application we don't make any ACL checks
-		if ($platform->isCli())
-		{
-			return (object) $permissions;
-		}
-
-		// Get the core permissions
-		$permissions = array(
-			'create'	 => $platform->authorise('core.create'    , $component),
-			'edit'		 => $platform->authorise('core.edit'      , $component),
-			'editown'	 => $platform->authorise('core.edit.own'  , $component),
-			'editstate'	 => $platform->authorise('core.edit.state', $component),
-			'delete'	 => $platform->authorise('core.delete'    , $component),
-		);
-
-		if (!empty($additionalPermissions))
-		{
-			foreach ($additionalPermissions as $localKey => $joomlaPermission)
-			{
-				$permissions[$localKey] = $platform->authorise($joomlaPermission, $component);
-			}
-		}
-
-		return (object)$permissions;
-	}
-
-	/**
 	 * Determines if the current Joomla! version and your current table support AJAX-powered drag and drop reordering.
 	 * If they do, it will set up the drag & drop reordering feature.
 	 *
 	 * @return  null|array  Null if not supported, otherwise a table with necessary information (saveOrder: should
-	 * 						   you enable DnD reordering; orderingColumn: which column has the ordering information).
+	 *                           you enable DnD reordering; orderingColumn: which column has the ordering information).
 	 */
 	public function hasAjaxOrderingSupport(): ?array
 	{
@@ -236,6 +169,67 @@ class Raw extends View implements DataViewInterface
 	}
 
 	/**
+	 * Returns a permissions object.
+	 *
+	 * The additionalPermissions array is a hashed array of local key => Joomla! ACL key value pairs. Local key is the
+	 * name of the permission in the permissions object, whereas Joomla! ACL key is the name of the ACL permission
+	 * known to Joomla! e.g. "core.manage", "foobar.something" and so on.
+	 *
+	 * Note: on CLI applications all permissions are set to TRUE. There is no ACL check there.
+	 *
+	 * @param   null|string  $component              The name of the component. Leave empty for automatic detection.
+	 * @param   array        $additionalPermissions  Any additional permissions you want to add to the object.
+	 *
+	 * @return  object
+	 */
+	protected function getPermissions($component = null, array $additionalPermissions = [])
+	{
+		// Make sure we have a component
+		if (empty($component))
+		{
+			$component = $this->container->componentName;
+		}
+
+		// Initialise with all true
+		$permissions = [
+			'create'    => true,
+			'edit'      => true,
+			'editown'   => true,
+			'editstate' => true,
+			'delete'    => true,
+		];
+
+		foreach ($additionalPermissions as $localKey => $joomlaPermission)
+		{
+			$permissions[$localKey] = true;
+		}
+
+		$platform = $this->container->platform;
+
+		// If this is a CLI application we don't make any ACL checks
+		if ($platform->isCli())
+		{
+			return (object) $permissions;
+		}
+
+		// Get the core permissions
+		$permissions = [
+			'create'    => $platform->authorise('core.create', $component),
+			'edit'      => $platform->authorise('core.edit', $component),
+			'editown'   => $platform->authorise('core.edit.own', $component),
+			'editstate' => $platform->authorise('core.edit.state', $component),
+			'delete'    => $platform->authorise('core.delete', $component),
+		];
+
+		foreach ($additionalPermissions as $localKey => $joomlaPermission)
+		{
+			$permissions[$localKey] = $platform->authorise($joomlaPermission, $component);
+		}
+
+		return (object) $permissions;
+	}
+
+	/**
 	 * Executes before rendering the page for the Browse task.
 	 */
 	protected function onBeforeBrowse()
@@ -268,17 +262,17 @@ class Raw extends View implements DataViewInterface
 		}
 
 		$this->lists->limitStart = $model->getState('limitstart', 0, 'int');
-		$this->lists->limit = $model->getState('limit', $defaultLimit, 'int');
+		$this->lists->limit      = $model->getState('limit', $defaultLimit, 'int');
 
 		$model->limitstart = $this->lists->limitStart;
-		$model->limit = $this->lists->limit;
+		$model->limit      = $this->lists->limit;
 
 		// Assign items to the view
-		$this->items = $model->get(false);
+		$this->items     = $model->get(false);
 		$this->itemCount = $model->count();
 
 		// Ordering information
-		$this->lists->order = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
+		$this->lists->order     = $model->getState('filter_order', $model->getIdFieldName(), 'cmd');
 		$this->lists->order_Dir = $model->getState('filter_order_Dir', null, 'cmd');
 
 		if ($this->lists->order_Dir)
@@ -293,8 +287,8 @@ class Raw extends View implements DataViewInterface
 		if ($this->container->platform->isFrontend())
 		{
 			/** @var SiteApplication $app */
-			$app = JoomlaFactory::getApplication();
-			$params = $app->getParams();
+			$app              = JoomlaFactory::getApplication();
+			$params           = $app->getParams();
 			$this->pageParams = $params;
 		}
 	}

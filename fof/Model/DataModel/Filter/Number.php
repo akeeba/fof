@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Filter;
+namespace FOF40\Model\DataModel\Filter;
 
 defined('_JEXEC') or die;
 
@@ -54,12 +54,11 @@ class Number extends AbstractFilter
 		}
 
 		$from = $this->sanitiseValue($from);
-		$to = $this->sanitiseValue($to);
+		$to   = $this->sanitiseValue($to);
 
 		$sql = '((' . $this->getFieldName() . ' >' . $extra . ' ' . $from . ') AND ';
-		$sql .= '(' . $this->getFieldName() . ' <' . $extra . ' ' . $to . '))';
 
-		return $sql;
+		return $sql . ('(' . $this->getFieldName() . ' <' . $extra . ' ' . $to . '))');
 	}
 
 	/**
@@ -93,12 +92,11 @@ class Number extends AbstractFilter
 		}
 
 		$from = $this->sanitiseValue($from);
-		$to = $this->sanitiseValue($to);
+		$to   = $this->sanitiseValue($to);
 
 		$sql = '((' . $this->getFieldName() . ' <' . $extra . ' ' . $from . ') OR ';
-		$sql .= '(' . $this->getFieldName() . ' >' . $extra . ' ' . $to . '))';
 
-		return $sql;
+		return $sql . ('(' . $this->getFieldName() . ' >' . $extra . ' ' . $to . '))');
 	}
 
 	/**
@@ -124,7 +122,7 @@ class Number extends AbstractFilter
 		$interval = (float) $interval;
 
 		$from = $value - $interval;
-		$to = $value + $interval;
+		$to   = $value + $interval;
 
 		$extra = '';
 
@@ -134,12 +132,11 @@ class Number extends AbstractFilter
 		}
 
 		$from = $this->sanitiseValue($from);
-		$to = $this->sanitiseValue($to);
+		$to   = $this->sanitiseValue($to);
 
 		$sql = '((' . $this->getFieldName() . ' >' . $extra . ' ' . $from . ') AND ';
-		$sql .= '(' . $this->getFieldName() . ' <' . $extra . ' ' . $to . '))';
 
-		return $sql;
+		return $sql . ('(' . $this->getFieldName() . ' <' . $extra . ' ' . $to . '))');
 	}
 
 	/**
@@ -169,7 +166,7 @@ class Number extends AbstractFilter
 			$extra = '=';
 		}
 
-		$sql = array();
+		$sql = [];
 
 		if ($from)
 		{
@@ -180,9 +177,7 @@ class Number extends AbstractFilter
 			$sql[] = '(' . $this->getFieldName() . ' <' . $extra . ' ' . $to . ')';
 		}
 
-		$sql = '(' . implode(' AND ', $sql) . ')';
-
-		return $sql;
+		return '(' . implode(' AND ', $sql) . ')';
 	}
 
 	/**
@@ -211,9 +206,8 @@ class Number extends AbstractFilter
 		}
 
 		$sql = '(' . $this->getFieldName() . ' >' . $extra . ' ' . $value . ' AND ';
-		$sql .= '(' . $this->getFieldName() . ' - ' . $value . ') % ' . $interval . ' = 0)';
 
-		return $sql;
+		return $sql . ('(' . $this->getFieldName() . ' - ' . $value . ') % ' . $interval . ' = 0)');
 	}
 
 	/**
@@ -262,7 +256,7 @@ class Number extends AbstractFilter
 		}
 		else
 		{
-			$value = array_map(array($this, 'sanitiseValue'), $value);
+			$value = array_map([$this, 'sanitiseValue'], $value);
 		}
 
 		return $value;

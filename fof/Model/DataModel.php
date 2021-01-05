@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model;
+namespace FOF40\Model;
 
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\LockedRecord;
@@ -34,7 +34,6 @@ use Joomla\CMS\Table\Asset;
 use Joomla\CMS\Table\ContentHistory;
 use Joomla\CMS\Table\ContentType;
 use Joomla\CMS\Table\CoreContent;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Table\TableInterface;
 use Joomla\CMS\UCM\UCMContent;
 
@@ -45,10 +44,15 @@ defined('_JEXEC') or die;
  *
  * Type hinting -- start
  *
- * @method $this hasOne() hasOne(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
- * @method $this belongsTo() belongsTo(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
- * @method $this hasMany() hasMany(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
- * @method $this belongsToMany() belongsToMany(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null, string $pivotTable = null, string $pivotLocalKey = null, string $pivotForeignKey = null)
+ * @method $this hasOne() hasOne(string $name, string $foreignModelClass = null, string $localKey = null, string
+ *         $foreignKey = null)
+ * @method $this belongsTo() belongsTo(string $name, string $foreignModelClass = null, string $localKey = null, string
+ *         $foreignKey = null)
+ * @method $this hasMany() hasMany(string $name, string $foreignModelClass = null, string $localKey = null, string
+ *         $foreignKey = null)
+ * @method $this belongsToMany() belongsToMany(string $name, string $foreignModelClass = null, string $localKey = null,
+ *         string $foreignKey = null, string $pivotTable = null, string $pivotLocalKey = null, string $pivotForeignKey
+ *         = null)
  *
  * @method $this filter_order() filter_order(string $orderingField)
  * @method $this filter_order_Dir() filter_order_Dir(string $direction)
@@ -57,30 +61,30 @@ defined('_JEXEC') or die;
  * @method $this enabled() enabled(int $enabled)
  * @method DataModel getNew() getNew(string $relationName)
  *
- * @property  int     $enabled      Publish status of this record
- * @property  int     $ordering     Sort ordering of this record
- * @property  int     $created_by   ID of the user who created this record
- * @property  string  $created_on   Date/time stamp of record creation
- * @property  int     $modified_by  ID of the user who modified this record
- * @property  string  $modified_on  Date/time stamp of record modification
- * @property  int     $locked_by    ID of the user who locked this record
- * @property  string  $locked_on    Date/time stamp of record locking
+ * @property  int    $enabled      Publish status of this record
+ * @property  int    $ordering     Sort ordering of this record
+ * @property  int    $created_by   ID of the user who created this record
+ * @property  string $created_on   Date/time stamp of record creation
+ * @property  int    $modified_by  ID of the user who modified this record
+ * @property  string $modified_on  Date/time stamp of record modification
+ * @property  int    $locked_by    ID of the user who locked this record
+ * @property  string $locked_on    Date/time stamp of record locking
  *
  * Type hinting -- end
  */
 class DataModel extends Model implements TableInterface
 {
 	/** @var   array  A list of tables in the database */
-	protected static $tableCache = array();
+	protected static $tableCache = [];
 
 	/** @var   array  A list of table fields, keyed per table */
-	protected static $tableFieldCache = array();
+	protected static $tableFieldCache = [];
 
 	/** @var   array  A list of permutations of the prefix with upper/lowercase letters */
-	protected static $prefixCasePermutations = array();
+	protected static $prefixCasePermutations = [];
 
 	/** @var   array  Table field name aliases, defined as aliasFieldName => actualFieldName */
-	protected $aliasFields = array();
+	protected $aliasFields = [];
 
 	/** @var   boolean  Should I run automatic checks on the table data? */
 	protected $autoChecks = true;
@@ -89,28 +93,28 @@ class DataModel extends Model implements TableInterface
 	protected $autoFill = false;
 
 	/** @var   Dispatcher  An event dispatcher for model behaviours */
-	protected $behavioursDispatcher = null;
+	protected $behavioursDispatcher;
 
 	/** @var   \JDatabaseDriver  The database driver for this model */
-	protected $dbo = null;
+	protected $dbo;
 
 	/** @var   array  Which fields should be exempt from automatic checks when autoChecks is enabled */
-	protected $fieldsSkipChecks = array();
+	protected $fieldsSkipChecks = [];
 
 	/** @var   array  Which fields should be auto-filled from the model state (by extent, the request)? */
-	protected $fillable = array();
+	protected $fillable = [];
 
 	/** @var   array  Which fields should never be auto-filled from the model state (by extent, the request)? */
-	protected $guarded = array();
+	protected $guarded = [];
 
 	/** @var   string  The identity field's name */
 	protected $idFieldName = '';
 
 	/** @var   array  A hash array with the table fields we know about and their information. Each key is the field name, the value is the field information */
-	protected $knownFields = array();
+	protected $knownFields = [];
 
 	/** @var   array  The data of the current record */
-	protected $recordData = array();
+	protected $recordData = [];
 
 	/** @var   boolean  What will delete() do? True: trash (enabled set to -2); false: hard delete (remove from database) */
 	protected $softDelete = false;
@@ -119,19 +123,19 @@ class DataModel extends Model implements TableInterface
 	protected $tableName = '';
 
 	/** @var   array  A collection of custom, additional where clauses to apply during buildQuery */
-	protected $whereClauses = array();
+	protected $whereClauses = [];
 
 	/** @var   RelationManager  The relation manager of this model */
-	protected $relationManager = null;
+	protected $relationManager;
 
 	/** @var   array  A list of all eager loaded relations and their attached callbacks */
-	protected $eagerRelations = array();
+	protected $eagerRelations = [];
 
 	/** @var   array  A list of the relation filter definitions for this model */
-	protected $relationFilters = array();
+	protected $relationFilters = [];
 
 	/** @var   array  A list of the relations which will be auto-touched by save() and touch() methods */
-	protected $touches = array();
+	protected $touches = [];
 
 	/** @var bool Should rows be tracked as ACL assets? */
 	protected $trackAssets = false;
@@ -143,10 +147,10 @@ class DataModel extends Model implements TableInterface
 	protected $rules;
 
 	/** @var  string  The UCM content type (typically: com_something.viewname, e.g. com_foobar.items) */
-	protected $contentType = null;
+	protected $contentType;
 
- 	/** @var  array  Shared parameters for behaviors */
-	protected $behaviorParams = array();
+	/** @var  array  Shared parameters for behaviors */
+	protected $behaviorParams = [];
 
 	/**
 	 * The asset key for items in this table. It's usually something in the
@@ -162,31 +166,30 @@ class DataModel extends Model implements TableInterface
 	 *
 	 * You can use the $config array to pass some configuration values to the object:
 	 *
-	 * tableName             String   The name of the database table to use. Default: #__appName_viewNamePlural (Ruby on Rails convention)
-	 * idFieldName           String   The table key field name. Default: appName_viewNameSingular_id (Ruby on Rails convention)
-	 * knownFields           Array    The known fields in the table. Default: read from the table itself
-	 * autoChecks            Boolean  Should I turn on automatic data validation checks?
-	 * fieldsSkipChecks      Array    List of fields which should not participate in automatic data validation checks.
-	 * aliasFields           Array    Associative array of "magic" field aliases.
-	 * behavioursDispatcher  EventDispatcher  The model behaviours event dispatcher.
-	 * behaviourObservers    Array    The model behaviour observers to attach to the behavioursDispatcher.
-	 * behaviours            Array    A list of behaviour names to instantiate and attach to the behavioursDispatcher.
-	 * fillable_fields       Array    Which fields should be auto-filled from the model state (by extent, the request)?
-	 * guarded_fields        Array    Which fields should never be auto-filled from the model state (by extent, the request)?
-	 * relations             Array    (hashed)  The relations to autoload on model creation.
-	 * contentType           String   The UCM content type, e.g. "com_foobar.items"
+	 * tableName             String   The name of the database table to use. Default: #__appName_viewNamePlural (Ruby
+	 * on Rails convention) idFieldName           String   The table key field name. Default:
+	 * appName_viewNameSingular_id (Ruby on Rails convention) knownFields           Array    The known fields in the
+	 * table. Default: read from the table itself autoChecks            Boolean  Should I turn on automatic data
+	 * validation checks? fieldsSkipChecks      Array    List of fields which should not participate in automatic data
+	 * validation checks. aliasFields           Array    Associative array of "magic" field aliases.
+	 * behavioursDispatcher  EventDispatcher  The model behaviours event dispatcher. behaviourObservers    Array    The
+	 * model behaviour observers to attach to the behavioursDispatcher. behaviours            Array    A list of
+	 * behaviour names to instantiate and attach to the behavioursDispatcher. fillable_fields       Array    Which
+	 * fields should be auto-filled from the model state (by extent, the request)? guarded_fields        Array    Which
+	 * fields should never be auto-filled from the model state (by extent, the request)? relations             Array    (hashed)  The relations to autoload on model creation. contentType           String   The UCM content type, e.g. "com_foobar.items"
 	 *
-	 * Setting either fillable_fields or guarded_fields turns on automatic filling of fields in the constructor. If both
+	 * Setting either fillable_fields or guarded_fields turns on automatic filling of fields in the constructor. If
+	 * both
 	 * are set only guarded_fields is taken into account. Fields are not filled automatically outside the constructor.
-	 *
-	 * @see Model::__construct()
 	 *
 	 * @param   Container  $container  The configuration variables to this model
 	 * @param   array      $config     Configuration values for this model
 	 *
 	 * @throws \FOF40\Model\DataModel\Exception\NoTableColumns
+	 * @see Model::__construct()
+	 *
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		// First call the parent constructor.
 		parent::__construct($container, $config);
@@ -202,7 +205,7 @@ class DataModel extends Model implements TableInterface
 		elseif (empty($this->tableName))
 		{
 			// The table name is by default: #__appName_viewNamePlural (Ruby on Rails convention)
-			$viewPlural = $container->inflector->pluralize($this->getName());
+			$viewPlural      = $container->inflector->pluralize($this->getName());
 			$this->tableName = '#__' . strtolower($this->container->bareComponentName) . '_' . strtolower($viewPlural);
 		}
 
@@ -214,7 +217,7 @@ class DataModel extends Model implements TableInterface
 		elseif (empty($this->idFieldName))
 		{
 			// The default ID field is: appName_viewNameSingular_id (Ruby on Rails convention)
-			$viewSingular = $container->inflector->singularize($this->getName());
+			$viewSingular      = $container->inflector->singularize($this->getName());
 			$this->idFieldName = strtolower($this->container->bareComponentName) . '_' . strtolower($viewSingular) . '_id';
 		}
 
@@ -245,7 +248,7 @@ class DataModel extends Model implements TableInterface
 			if (!is_bool($config['autoChecks']))
 			{
 				$config['autoChecks'] = strtolower($config['autoChecks']);
-				$config['autoChecks'] = in_array($config['autoChecks'], array('yes', 'true', 'on', 1));
+				$config['autoChecks'] = in_array($config['autoChecks'], ['yes', 'true', 'on', 1]);
 			}
 
 			$this->autoChecks = $config['autoChecks'];
@@ -257,7 +260,9 @@ class DataModel extends Model implements TableInterface
 			if (!is_array($config['fieldsSkipChecks']))
 			{
 				$config['fieldsSkipChecks'] = explode(',', $config['fieldsSkipChecks']);
-				$config['fieldsSkipChecks'] = array_map(function ($x) { return trim($x); }, $config['fieldsSkipChecks']);
+				$config['fieldsSkipChecks'] = array_map(function ($x) {
+					return trim($x);
+				}, $config['fieldsSkipChecks']);
 			}
 
 			$this->fieldsSkipChecks = $config['fieldsSkipChecks'];
@@ -299,7 +304,7 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// Add extra behaviours
-		foreach (array('Created', 'Modified') as $behaviour)
+		foreach (['Created', 'Modified'] as $behaviour)
 		{
 			$this->addBehaviour($behaviour);
 		}
@@ -310,10 +315,12 @@ class DataModel extends Model implements TableInterface
 			if (!is_array($config['fillable_fields']))
 			{
 				$config['fillable_fields'] = explode(',', $config['fillable_fields']);
-				$config['fillable_fields'] = array_map(function ($x) { return trim($x); }, $config['fillable_fields']);
+				$config['fillable_fields'] = array_map(function ($x) {
+					return trim($x);
+				}, $config['fillable_fields']);
 			}
 
-			$this->fillable = array();
+			$this->fillable = [];
 			$this->autoFill = true;
 
 			foreach ($config['fillable_fields'] as $field)
@@ -335,10 +342,12 @@ class DataModel extends Model implements TableInterface
 			if (!is_array($config['guarded_fields']))
 			{
 				$config['guarded_fields'] = explode(',', $config['guarded_fields']);
-				$config['guarded_fields'] = array_map(function ($x) { return trim($x); }, $config['guarded_fields']);
+				$config['guarded_fields'] = array_map(function ($x) {
+					return trim($x);
+				}, $config['guarded_fields']);
 			}
 
-			$this->guarded = array();
+			$this->guarded  = [];
 			$this->autoFill = true;
 
 			foreach ($config['guarded_fields'] as $field)
@@ -355,8 +364,8 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// If we are tracking assets, make sure an access field exists and initially set the default.
-		$asset_id_field	= $this->getFieldAlias('asset_id');
-		$access_field	= $this->getFieldAlias('access');
+		$asset_id_field = $this->getFieldAlias('asset_id');
+		$access_field   = $this->getFieldAlias('access');
 
 		if (array_key_exists($asset_id_field, $this->knownFields))
 		{
@@ -364,11 +373,11 @@ class DataModel extends Model implements TableInterface
 		}
 
 		/**
-		if ($this->trackAssets && array_key_exists($access_field, $this->knownFields) && !($this->getState($access_field, null)))
-		{
-			$this->$access_field = (int) $this->container->platform->getConfig()->get('access');
-		}
-		**/
+		 * if ($this->trackAssets && array_key_exists($access_field, $this->knownFields) && !($this->getState($access_field, null)))
+		 * {
+		 * $this->$access_field = (int) $this->container->platform->getConfig()->get('access');
+		 * }
+		 **/
 
 		$assetKey = $this->container->componentName . '.' . strtolower($container->inflector->singularize($this->getName()));
 		$this->setAssetKey($assetKey);
@@ -401,7 +410,7 @@ class DataModel extends Model implements TableInterface
 					continue;
 				}
 
-				$stateValue = $this->getState($field, null);
+				$stateValue = $this->getState($field);
 
 				if (!is_null($stateValue))
 				{
@@ -423,7 +432,7 @@ class DataModel extends Model implements TableInterface
 					continue;
 				}
 
-				$defaultRelConfig = array(
+				$defaultRelConfig = [
 					'type'              => 'hasOne',
 					'foreignModelClass' => null,
 					'localKey'          => null,
@@ -431,7 +440,7 @@ class DataModel extends Model implements TableInterface
 					'pivotTable'        => null,
 					'pivotLocalKey'     => null,
 					'pivotForeignKey'   => null,
-				);
+				];
 
 				$relConfig = array_merge($defaultRelConfig, $relConfig);
 
@@ -445,7 +454,7 @@ class DataModel extends Model implements TableInterface
 		foreach ($this->knownFields as $fieldName => $information)
 		{
 			// Initialize only the null or not yet set records
-			if(!isset($this->recordData[$fieldName]))
+			if (!isset($this->recordData[$fieldName]))
 			{
 				$this->recordData[$fieldName] = $information->Default;
 			}
@@ -459,8 +468,8 @@ class DataModel extends Model implements TableInterface
 	 * Magic caller. It works like the magic setter and returns ourselves for chaining. If no arguments are passed we'll
 	 * only look for a scope filter.
 	 *
-	 * @param   string $name
-	 * @param   mixed  $arguments
+	 * @param   string  $name
+	 * @param   mixed   $arguments
 	 *
 	 * @return  static
 	 */
@@ -487,7 +496,7 @@ class DataModel extends Model implements TableInterface
 		// Magically map relations to methods, e.g. $this->foobar will return the "foobar" relations' contents
 		if ($this->relationManager->isMagicMethod($name))
 		{
-			return call_user_func_array(array($this->relationManager, $name), $arguments);
+			return call_user_func_array([$this->relationManager, $name], $arguments);
 		}
 
 		// Otherwise call the parent
@@ -495,10 +504,10 @@ class DataModel extends Model implements TableInterface
 	}
 
 	/**
-	 * Magic checker on a property. It follows the same logic of the __get magic method, however, if nothing is found, it
-	 * won't return the state of a variable (we are checking if a property is set)
+	 * Magic checker on a property. It follows the same logic of the __get magic method, however, if nothing is found,
+	 * it won't return the state of a variable (we are checking if a property is set)
 	 *
-	 * @param   string  $name   The name of the field to check
+	 * @param   string  $name  The name of the field to check
 	 *
 	 * @return  bool    Is the field set?
 	 */
@@ -510,7 +519,7 @@ class DataModel extends Model implements TableInterface
 		if (substr($name, 0, 3) == 'flt')
 		{
 			$isState = true;
-			$name = strtolower(substr($name, 3, 1)) . substr($name, 4);
+			$name    = strtolower(substr($name, 3, 1)) . substr($name, 4);
 		}
 
 		// If $name is a field name, get its value
@@ -542,7 +551,7 @@ class DataModel extends Model implements TableInterface
 	 * Tip: You can define custom field getter methods as getFieldNameAttribute, where FieldName is your field's name,
 	 *      in CamelCase (even if the field name itself is in snake_case).
 	 *
-	 * @param   string $name The name of the field / state variable to retrieve
+	 * @param   string  $name  The name of the field / state variable to retrieve
 	 *
 	 * @return  static|mixed
 	 */
@@ -559,7 +568,7 @@ class DataModel extends Model implements TableInterface
 		if (substr($name, 0, 3) == 'flt')
 		{
 			$isState = true;
-			$name = strtolower(substr($name, 3, 1)) . substr($name, 4);
+			$name    = strtolower(substr($name, 3, 1)) . substr($name, 4);
 		}
 
 		// If $name is a field name, get its value
@@ -595,8 +604,8 @@ class DataModel extends Model implements TableInterface
 	 * Tip: You can define custom field setter methods as setFieldNameAttribute, where FieldName is your field's name,
 	 *      in CamelCase (even if the field name itself is in snake_case).
 	 *
-	 * @param   string $name  The name of the field / scope / state variable to set
-	 * @param   mixed  $value The value to set
+	 * @param   string  $name   The name of the field / scope / state variable to set
+	 * @param   mixed   $value  The value to set
 	 *
 	 * @return  void
 	 */
@@ -608,12 +617,12 @@ class DataModel extends Model implements TableInterface
 		if (substr($name, 0, 3) == 'flt')
 		{
 			$isState = true;
-			$name = strtolower(substr($name, 3, 1)) . substr($name, 4);
+			$name    = strtolower(substr($name, 3, 1)) . substr($name, 4);
 		}
 		elseif (substr($name, 0, 5) == 'scope')
 		{
 			$isScope = true;
-			$name = strtolower(substr($name, 5, 1)) . substr($name, 5);
+			$name    = strtolower(substr($name, 5, 1)) . substr($name, 5);
 		}
 
 		// If $name is a field name, set its value
@@ -677,16 +686,16 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$info = (object)array(
+		$info = (object) [
 			'Default' => $default,
-			'Type' => $type,
-			'Null' => 'YES',
-		);
+			'Type'    => $type,
+			'Null'    => 'YES',
+		];
 
 		$this->knownFields[$fieldName] = $info;
 
 		// Initialize only the null or not yet set records
-		if(!isset($this->recordData[$fieldName]))
+		if (!isset($this->recordData[$fieldName]))
 		{
 			$this->recordData[$fieldName] = $default;
 		}
@@ -707,7 +716,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Get the columns from a database table.
 	 *
-	 * @param   string $tableName Table name. If null current table is used
+	 * @param   string  $tableName  Table name. If null current table is used
 	 *
 	 * @return  mixed  An array of the field names, or false if an error occurs.
 	 */
@@ -748,12 +757,12 @@ class DataModel extends Model implements TableInterface
 			if (!in_array($checkName, static::$tableCache) && preg_match('/[A-Z]/', $prefix) && (substr($name, 0, 3) == '#__'))
 			{
 				$prefixPermutations = $this->getPrefixCasePermutations();
-				$partialCheckName = substr($name, 3);
+				$partialCheckName   = substr($name, 3);
 
 				foreach ($prefixPermutations as $permutatedPrefix)
 				{
 					$checkName = $permutatedPrefix . $partialCheckName;
-					
+
 					if (in_array($checkName, static::$tableCache))
 					{
 						break;
@@ -787,7 +796,7 @@ class DataModel extends Model implements TableInterface
 					{
 						if (stristr($field->Default, '\'::timestamp without time zone'))
 						{
-							list ($date,) = explode('::', $field->Default, 2);
+							[$date,] = explode('::', $field->Default, 2);
 							$field->Default = trim($date, "'");
 						}
 					}
@@ -821,7 +830,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getData()
 	{
-		$ret = array();
+		$ret = [];
 
 		foreach ($this->knownFields as $field => $info)
 		{
@@ -855,8 +864,8 @@ class DataModel extends Model implements TableInterface
 	 * Alias of getIdFieldName. Used for TableInterface compatibility.
 	 *
 	 * @return  string  The name of the primary key for the table.
-     *
-     * @codeCoverageIgnore
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function getKeyName()
 	{
@@ -877,8 +886,8 @@ class DataModel extends Model implements TableInterface
 	 * Returns the value of a field. If a field is not set it uses the $default value. Automatically uses magic
 	 * getter variables if required.
 	 *
-	 * @param   string $name    The name of the field to retrieve
-	 * @param   mixed  $default Default value, if the field is not set and doesn't have a getter method
+	 * @param   string  $name     The name of the field to retrieve
+	 * @param   mixed   $default  Default value, if the field is not set and doesn't have a getter method
 	 *
 	 * @return  mixed  The value of the field
 	 */
@@ -905,8 +914,8 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Sets the value of a field.
 	 *
-	 * @param   string $name  The name of the field to set
-	 * @param   mixed  $value The value to set it to
+	 * @param   string  $name   The name of the field to set
+	 * @param   mixed   $value  The value to set it to
 	 *
 	 * @return  void
 	 */
@@ -972,7 +981,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Does this model know about a field called $fieldName? Automatically uses aliases when necessary.
 	 *
-	 * @param   string $fieldName Field name to check
+	 * @param   string  $fieldName  Field name to check
 	 *
 	 * @return  boolean  True if the field exists
 	 */
@@ -986,7 +995,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Get the real name of a field name based on its alias. If the field is not aliased $alias is returned
 	 *
-	 * @param   string $alias The field to get an alias for
+	 * @param   string  $alias  The field to get an alias for
 	 *
 	 * @return  string  The real name of the field
 	 */
@@ -1014,7 +1023,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getRelationFields()
 	{
-		$fields = array();
+		$fields = [];
 
 		$relationNames = $this->relationManager->getRelationNames();
 
@@ -1072,7 +1081,7 @@ class DataModel extends Model implements TableInterface
 		}
 
 		$fieldName = substr($fieldName, 0, -3);
-		list($component, $modelName) = explode('_', $fieldName, 2);
+		[$component, $modelName] = explode('_', $fieldName, 2);
 		$modelName = $this->container->inflector->camelize($modelName);
 
 		return "$component.$modelName";
@@ -1091,7 +1100,9 @@ class DataModel extends Model implements TableInterface
 	 * @param   null|array  $data            [Optional] Data to bind
 	 * @param   string      $orderingFilter  A WHERE clause used to apply table item reordering
 	 * @param   array       $ignore          A list of fields to ignore when binding $data
-	 * @para    boolean     $resetRelations  Should I automatically reset relations if relation-important fields are changed?
+	 *
+	 * @para    boolean     $resetRelations  Should I automatically reset relations if relation-important fields are
+	 *          changed?
 	 *
 	 * @return   DataModel  Self, for chaining
 	 */
@@ -1101,11 +1112,11 @@ class DataModel extends Model implements TableInterface
 		$oldPKValue = $this->getId();
 
 		// Call the onBeforeSave event
-		$this->triggerEvent('onBeforeSave', array(&$data));
+		$this->triggerEvent('onBeforeSave', [&$data]);
 
 		// Get the relation to local field map and initialise the relationsAffected array
 		$relationImportantFields = $this->getRelationFields();
-		$dataBeforeBind = array();
+		$dataBeforeBind          = [];
 
 		// If we have relations we keep a copy of the data before bind.
 		if (count($relationImportantFields))
@@ -1138,11 +1149,11 @@ class DataModel extends Model implements TableInterface
 		// Insert or update the record. Note that the object we use for insertion / update is the a copy holding
 		// the transformed data.
 		$dataObject = $this->recordDataToDatabaseData();
-		$dataObject = (object)$dataObject;
+		$dataObject = (object) $dataObject;
 
 		if ($isNewRecord)
 		{
-			$this->triggerEvent('onBeforeCreate', array(&$dataObject));
+			$this->triggerEvent('onBeforeCreate', [&$dataObject]);
 
 			// Insert the new record
 			$db->insertObject($this->tableName, $dataObject, $this->idFieldName);
@@ -1160,7 +1171,7 @@ class DataModel extends Model implements TableInterface
 		}
 		else
 		{
-			$this->triggerEvent('onBeforeUpdate', array(&$dataObject));
+			$this->triggerEvent('onBeforeUpdate', [&$dataObject]);
 
 			$db->updateObject($this->tableName, $dataObject, $this->idFieldName, true);
 
@@ -1174,25 +1185,21 @@ class DataModel extends Model implements TableInterface
 			$this->reorder($orderingFilter ? $db->qn($orderingFilter) . ' = ' . $db->q($filterValue) : '');
 		}
 
-		// One more thing... Touch all relations in the $touches array
-		if (!empty($this->touches))
+		foreach ($this->touches as $relation)
 		{
-			foreach ($this->touches as $relation)
+			$records = $this->getRelations()->getData($relation);
+
+			if (!empty($records))
 			{
-				$records = $this->getRelations()->getData($relation);
-
-				if (!empty($records))
+				if ($records instanceof DataModel)
 				{
-					if ($records instanceof DataModel)
-					{
-						$records = array($records);
-					}
+					$records = [$records];
+				}
 
-					/** @var DataModel $record */
-					foreach ($records as $record)
-					{
-						$record->touch();
-					}
+				/** @var DataModel $record */
+				foreach ($records as $record)
+				{
+					$record->touch();
 				}
 			}
 		}
@@ -1201,11 +1208,11 @@ class DataModel extends Model implements TableInterface
 		if (count($relationImportantFields) && $resetRelations)
 		{
 			// Since array_diff_assoc doesn't work recursively we have to do it the EXCRUCIATINGLY SLOW WAY. Sad panda :(
-			$keysRecord = (is_array($this->recordData) && !empty($this->recordData)) ? array_keys($this->recordData) : array();
-			$keysBefore = (is_array($dataBeforeBind) && !empty($dataBeforeBind)) ? array_keys($dataBeforeBind) : array();
-			$keysAll = array_merge($keysRecord, $keysBefore);
-			$keysAll = array_unique($keysAll);
-			$modifiedFields = array();
+			$keysRecord     = (is_array($this->recordData) && !empty($this->recordData)) ? array_keys($this->recordData) : [];
+			$keysBefore     = (is_array($dataBeforeBind) && !empty($dataBeforeBind)) ? array_keys($dataBeforeBind) : [];
+			$keysAll        = array_merge($keysRecord, $keysBefore);
+			$keysAll        = array_unique($keysAll);
+			$modifiedFields = [];
 
 			foreach ($keysAll as $key)
 			{
@@ -1223,7 +1230,7 @@ class DataModel extends Model implements TableInterface
 
 			if (count($modifiedFields))
 			{
-				$relationsAffected = array();
+				$relationsAffected = [];
 
 				unset($modifiedData);
 
@@ -1273,10 +1280,11 @@ class DataModel extends Model implements TableInterface
 	 * data, unless you provide a $data array. On top of that, it also saves all specified relations. If $relations is
 	 * null it will save all relations known to this model.
 	 *
-	 * @param   null|array $data           [Optional] Data to bind
-	 * @param   string     $orderingFilter A WHERE clause used to apply table item reordering
-	 * @param   array      $ignore         A list of fields to ignore when binding $data
-	 * @param   array      $relations      Which relations to save with the model's record. Leave null for all relations
+	 * @param   null|array  $data            [Optional] Data to bind
+	 * @param   string      $orderingFilter  A WHERE clause used to apply table item reordering
+	 * @param   array       $ignore          A list of fields to ignore when binding $data
+	 * @param   array       $relations       Which relations to save with the model's record. Leave null for all
+	 *                                       relations
 	 *
 	 * @return $this Self, for chaining
 	 */
@@ -1294,7 +1302,7 @@ class DataModel extends Model implements TableInterface
 		// Otherwise empty $this->touches completely as we'll be pushing all relations
 		else
 		{
-			$this->touches = array();
+			$this->touches = [];
 		}
 
 		// Save this record
@@ -1304,17 +1312,14 @@ class DataModel extends Model implements TableInterface
 		$relManager   = $this->getRelations();
 		$allRelations = $relManager->getRelationNames();
 
-		if (!empty($allRelations))
+		foreach ($allRelations as $relationName)
 		{
-			foreach ($allRelations as $relationName)
+			if (!is_null($relations) && !in_array($relationName, $relations))
 			{
-				if (!is_null($relations) && !in_array($relationName, $relations))
-				{
-					continue;
-				}
-
-				$relManager->save($relationName);
+				continue;
 			}
+
+			$relManager->save($relationName);
 		}
 
 		// Restore the model's $touches definition
@@ -1333,17 +1338,17 @@ class DataModel extends Model implements TableInterface
 	 * be bound to the record data. If you are using aliased fields you may also want to override the
 	 * databaseDataToRecordData method. Generally, it is a BAD idea using JOINs instead of relations.
 	 *
-	 * @param   mixed $data   An associative array or object to bind to the DataModel instance.
-	 * @param   mixed $ignore An optional array or space separated list of properties to ignore while binding.
+	 * @param   mixed  $data    An associative array or object to bind to the DataModel instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  static  Self, for chaining
 	 *
 	 * @throws  \InvalidArgumentException
 	 * @throws    \Exception
 	 */
-	public function bind($data, $ignore = array())
+	public function bind($data, $ignore = [])
 	{
-		$this->triggerEvent('onBeforeBind', array(&$data));
+		$this->triggerEvent('onBeforeBind', [&$data]);
 
 		// If the source value is not an array or object return false.
 		if (!is_object($data) && !is_array($data))
@@ -1377,7 +1382,7 @@ class DataModel extends Model implements TableInterface
 		// Perform data transformation
 		$this->databaseDataToRecordData();
 
-		$this->triggerEvent('onAfterBind', array($data));
+		$this->triggerEvent('onAfterBind', [$data]);
 
 		return $this;
 	}
@@ -1400,8 +1405,8 @@ class DataModel extends Model implements TableInterface
 		$this->triggerEvent('onBeforeCheck');
 
 		// Create a slug if there is a title and an empty slug
-        $slugField  = $this->getFieldAlias('slug');
-        $titleField = $this->getFieldAlias('title');
+		$slugField  = $this->getFieldAlias('slug');
+		$titleField = $this->getFieldAlias('title');
 
 		if ($this->hasField('title') && $this->hasField('slug') && !$this->$slugField)
 		{
@@ -1446,7 +1451,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Change the ordering of the records of the table
 	 *
-	 * @param   string $where The WHERE clause of the SQL used to fetch the order
+	 * @param   string  $where  The WHERE clause of the SQL used to fetch the order
 	 *
 	 * @return  static  Self, for chaining
 	 *
@@ -1460,7 +1465,7 @@ class DataModel extends Model implements TableInterface
 			throw new SpecialColumnMissing(sprintf('%s does not support ordering.', $this->tableName));
 		}
 
-		$this->triggerEvent('onBeforeReorder', array(&$where));
+		$this->triggerEvent('onBeforeReorder', [&$where]);
 
 		$order_field = $this->getFieldAlias('ordering');
 		$k           = $this->getIdFieldName();
@@ -1468,10 +1473,10 @@ class DataModel extends Model implements TableInterface
 
 		// Get the primary keys and ordering values for the selection.
 		$query = $db->getQuery(true)
-					->select($db->qn($k) . ', ' . $db->qn($order_field))
-					->from($db->qn($this->getTableName()))
-					->where($db->qn($order_field) . ' >= ' . $db->q(0))
-					->order($db->qn($order_field) . 'ASC, ' . $db->qn($k) . 'ASC');
+			->select($db->qn($k) . ', ' . $db->qn($order_field))
+			->from($db->qn($this->getTableName()))
+			->where($db->qn($order_field) . ' >= ' . $db->q(0))
+			->order($db->qn($order_field) . 'ASC, ' . $db->qn($k) . 'ASC');
 
 		// Setup the extra where and ordering clause data.
 		if ($where)
@@ -1492,9 +1497,9 @@ class DataModel extends Model implements TableInterface
 				{
 					// Update the row ordering field.
 					$query = $db->getQuery(true)
-								->update($db->qn($this->getTableName()))
-								->set($db->qn($order_field) . ' = ' . $db->q($i + 1))
-								->where($db->qn($k) . ' = ' . $db->q($row->$k));
+						->update($db->qn($this->getTableName()))
+						->set($db->qn($order_field) . ' = ' . $db->q($i + 1))
+						->where($db->qn($k) . ' = ' . $db->q($row->$k));
 					$db->setQuery($query)->execute();
 				}
 			}
@@ -1509,8 +1514,8 @@ class DataModel extends Model implements TableInterface
 	 * Method to move a row in the ordering sequence of a group of rows defined by an SQL WHERE clause.
 	 * Negative numbers move the row up in the sequence and positive numbers move it down.
 	 *
-	 * @param   integer $delta   The direction and magnitude to move the row in the ordering sequence.
-	 * @param   string  $where   WHERE clause to use for limiting the selection of rows to compact the
+	 * @param   integer  $delta  The direction and magnitude to move the row in the ordering sequence.
+	 * @param   string   $where  WHERE clause to use for limiting the selection of rows to compact the
 	 *                           ordering values.
 	 *
 	 * @return  static  Self, for chaining
@@ -1525,7 +1530,7 @@ class DataModel extends Model implements TableInterface
 			throw new SpecialColumnMissing(sprintf('%s does not support ordering.', $this->tableName));
 		}
 
-		$this->triggerEvent('onBeforeMove', array(&$delta, &$where));
+		$this->triggerEvent('onBeforeMove', [&$delta, &$where]);
 
 		$ordering_field = $this->getFieldAlias('ordering');
 
@@ -1537,9 +1542,8 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$k = $this->idFieldName;
-		$row = null;
-		$db = $this->getDbo();
+		$k     = $this->idFieldName;
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 
 		// If the table is not loaded, return false
@@ -1549,21 +1553,21 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// Select the primary key and ordering values from the table.
-		$query->select(array(
-				$db->qn($this->idFieldName), $db->qn($ordering_field)
-			)
+		$query->select([
+				$db->qn($this->idFieldName), $db->qn($ordering_field),
+			]
 		)->from($db->qn($this->tableName));
 
 		// If the movement delta is negative move the row up.
 		if ($delta < 0)
 		{
-			$query->where($db->qn($ordering_field) . ' < ' . $db->q((int)$this->$ordering_field));
+			$query->where($db->qn($ordering_field) . ' < ' . $db->q((int) $this->$ordering_field));
 			$query->order($db->qn($ordering_field) . ' DESC');
 		}
 		// If the movement delta is positive move the row down.
 		elseif ($delta > 0)
 		{
-			$query->where($db->qn($ordering_field) . ' > ' . $db->q((int)$this->$ordering_field));
+			$query->where($db->qn($ordering_field) . ' > ' . $db->q((int) $this->$ordering_field));
 			$query->order($db->qn($ordering_field) . ' ASC');
 		}
 
@@ -1582,14 +1586,14 @@ class DataModel extends Model implements TableInterface
 			// Update the ordering field for this instance to the row's ordering value.
 			$query = $db->getQuery(true)
 				->update($db->qn($this->tableName))
-				->set($db->qn($ordering_field) . ' = ' . $db->q((int)$row->$ordering_field))
+				->set($db->qn($ordering_field) . ' = ' . $db->q((int) $row->$ordering_field))
 				->where($db->qn($k) . ' = ' . $db->q($this->$k));
 			$db->setQuery($query)->execute();
 
 			// Update the ordering field for the row to this instance's ordering value.
 			$query = $db->getQuery(true)
 				->update($db->qn($this->tableName))
-				->set($db->qn($ordering_field) . ' = ' . $db->q((int)$this->$ordering_field))
+				->set($db->qn($ordering_field) . ' = ' . $db->q((int) $this->$ordering_field))
 				->where($db->qn($k) . ' = ' . $db->q($row->$k));
 			$db->setQuery($query)->execute();
 
@@ -1605,8 +1609,8 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Process a large collection of records a few at a time.
 	 *
-	 * @param   integer   $chunkSize How many records to process at once
-	 * @param   callable  $callback  A callable to process each record
+	 * @param   integer   $chunkSize  How many records to process at once
+	 * @param   callable  $callback   A callable to process each record
 	 *
 	 * @return  $this  Self, for chaining
 	 */
@@ -1639,35 +1643,33 @@ class DataModel extends Model implements TableInterface
 	public function count()
 	{
 		// Get a "count all" query
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $this->buildQuery(true);
 		$query->clear('select')->clear('order')->select('COUNT(*)');
 
 		// Run the "before build query" hook and behaviours
-		$this->triggerEvent('onBuildCountQuery', array(&$query));
+		$this->triggerEvent('onBuildCountQuery', [&$query]);
 
-		$total = $db->setQuery($query)->loadResult();
-
-		return $total;
+		return $db->setQuery($query)->loadResult();
 	}
 
 	/**
 	 * Build the query to fetch data from the database
 	 *
-	 * @param   boolean $overrideLimits Should I override limits
+	 * @param   boolean  $overrideLimits  Should I override limits
 	 *
 	 * @return  \JDatabaseQuery  The database query to use
 	 */
 	public function buildQuery($overrideLimits = false)
 	{
 		// Get a "select all" query
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($this->getTableName());
 
 		// Run the "before build query" hook and behaviours
-		$this->triggerEvent('onBeforeBuildQuery', array(&$query, $overrideLimits));
+		$this->triggerEvent('onBeforeBuildQuery', [&$query, $overrideLimits]);
 
 		// Apply custom WHERE clauses
 		if (count($this->whereClauses))
@@ -1690,7 +1692,7 @@ class DataModel extends Model implements TableInterface
 
 		$dir = strtoupper($this->getState('filter_order_Dir', null, 'cmd'));
 
-		if (!in_array($dir, array('ASC', 'DESC')))
+		if (!in_array($dir, ['ASC', 'DESC']))
 		{
 			$dir = 'ASC';
 			$this->setState('filter_order_Dir', $dir);
@@ -1699,7 +1701,7 @@ class DataModel extends Model implements TableInterface
 		$query->order($order . ' ' . $dir);
 
 		// Run the "before after query" hook and behaviours
-		$this->triggerEvent('onAfterBuildQuery', array(&$query, $overrideLimits));
+		$this->triggerEvent('onAfterBuildQuery', [&$query, $overrideLimits]);
 
 		return $query;
 	}
@@ -1707,9 +1709,9 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Returns a DataCollection iterator based on your currently set Model state
 	 *
-	 * @param   boolean $overrideLimits Should I ignore limits set in the Model?
-	 * @param   integer $limitstart     How many items to skip from the start, only when $overrideLimits = true
-	 * @param   integer $limit          How many items to return, only when $overrideLimits = true
+	 * @param   boolean  $overrideLimits  Should I ignore limits set in the Model?
+	 * @param   integer  $limitstart      How many items to skip from the start, only when $overrideLimits = true
+	 * @param   integer  $limit           How many items to return, only when $overrideLimits = true
 	 *
 	 * @return  DataCollection  The data collection
 	 */
@@ -1718,12 +1720,12 @@ class DataModel extends Model implements TableInterface
 		if (!$overrideLimits)
 		{
 			$limitstart = $this->getState('limitstart', 0);
-			$limit = $this->getState('limit', 0);
+			$limit      = $this->getState('limit', 0);
 		}
 
 		$dataCollection = DataCollection::make($this->getItemsArray($limitstart, $limit, $overrideLimits));
 
-		$this->eagerLoad($dataCollection, null);
+		$this->eagerLoad($dataCollection);
 
 		return $dataCollection;
 	}
@@ -1740,21 +1742,21 @@ class DataModel extends Model implements TableInterface
 	public function &getItemsArray($limitstart = 0, $limit = 0, $overrideLimits = false)
 	{
 		$itemsTemp = $this->getRawDataArray($limitstart, $limit, $overrideLimits);
-		$items = array();
+		$items     = [];
 
 		while (!empty($itemsTemp))
 		{
 			$data = array_shift($itemsTemp);
 			/** @var DataModel $item */
 			$item = clone $this;
-			$item->clearState()->reset(true);
+			$item->clearState()->reset();
 			$item->bind($data);
 			$items[$item->getId()] = $item;
 			$item->relationManager = clone $this->relationManager;
 			$item->relationManager->rebase($item);
 		}
 
-		$this->triggerEvent('onAfterGetItemsArray', array(&$items));
+		$this->triggerEvent('onAfterGetItemsArray', [&$items]);
 
 		return $items;
 	}
@@ -1771,7 +1773,7 @@ class DataModel extends Model implements TableInterface
 	public function &getRawDataArray($limitstart = 0, $limit = 0, $overrideLimits = false)
 	{
 		$limitstart = max($limitstart, 0);
-		$limit = max($limit, 0);
+		$limit      = max($limit, 0);
 
 		$query = $this->buildQuery($overrideLimits);
 
@@ -1785,8 +1787,10 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Eager loads the provided relations and assigns their data to a data collection
 	 *
-	 * @param    DataCollection  $dataCollection  The data collection on which the eager loaded relations will be applied
-	 * @param    array|null      $relations       The relations to eager load. Leave empty to use the already defined relations
+	 * @param   DataCollection  $dataCollection  The data collection on which the eager loaded relations will be
+	 *                                           applied
+	 * @param   array|null      $relations       The relations to eager load. Leave empty to use the already defined
+	 *                                           relations
 	 *
 	 * @return $this for chaining
 	 */
@@ -1832,7 +1836,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function archive()
 	{
-		if(!$this->getId())
+		if (!$this->getId())
 		{
 			throw new RecordNotLoaded("Can't archive a not loaded DataModel");
 		}
@@ -1842,7 +1846,7 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$this->triggerEvent('onBeforeArchive', array());
+		$this->triggerEvent('onBeforeArchive');
 
 		$enabled = $this->getFieldAlias('enabled');
 
@@ -1859,7 +1863,7 @@ class DataModel extends Model implements TableInterface
 	 * is loaded before trying to trash it. Unlike a hard delete, trashing is a "soft delete", only setting the enabled
 	 * field to -2.
 	 *
-	 * @param   mixed $id Primary key (id field) value
+	 * @param   mixed  $id  Primary key (id field) value
 	 *
 	 * @return  $this  for chaining
 	 */
@@ -1872,7 +1876,7 @@ class DataModel extends Model implements TableInterface
 
 		$id = $this->getId();
 
-		if(!$id)
+		if (!$id)
 		{
 			throw new RecordNotLoaded("Can't trash a not loaded DataModel");
 		}
@@ -1882,13 +1886,13 @@ class DataModel extends Model implements TableInterface
 			throw new SpecialColumnMissing("DataModel::trash method needs an 'enabled' field");
 		}
 
-		$this->triggerEvent('onBeforeTrash', array(&$id));
+		$this->triggerEvent('onBeforeTrash', [&$id]);
 
-		$enabled = $this->getFieldAlias('enabled');
+		$enabled        = $this->getFieldAlias('enabled');
 		$this->$enabled = -2;
 		$this->save();
 
-		$this->triggerEvent('onAfterTrash', array(&$id));
+		$this->triggerEvent('onAfterTrash', [&$id]);
 
 		return $this;
 	}
@@ -1897,13 +1901,13 @@ class DataModel extends Model implements TableInterface
 	 * Change the publish state of a record. By default it will set it to 1 (published) unless you specify a different
 	 * value.
 	 *
-	 * @param int $state The publish state. Default: 1 (published).
+	 * @param   int  $state  The publish state. Default: 1 (published).
 	 *
 	 * @return   $this  For chaining
 	 */
 	public function publish($state = 1)
 	{
-		if(!$this->getId())
+		if (!$this->getId())
 		{
 			throw new RecordNotLoaded("Can't change the state of a not loaded DataModel");
 		}
@@ -1913,7 +1917,7 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$this->triggerEvent('onBeforePublish', array());
+		$this->triggerEvent('onBeforePublish');
 
 		$enabled = $this->getFieldAlias('enabled');
 
@@ -1932,7 +1936,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function unpublish()
 	{
-		if(!$this->getId())
+		if (!$this->getId())
 		{
 			throw new RecordNotLoaded("Can't unpublish a not loaded DataModel");
 		}
@@ -1942,7 +1946,7 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$this->triggerEvent('onBeforeUnpublish', array());
+		$this->triggerEvent('onBeforeUnpublish');
 
 		$enabled = $this->getFieldAlias('enabled');
 
@@ -1959,7 +1963,7 @@ class DataModel extends Model implements TableInterface
 	 * record is loaded before trying to untrash it. Please note that enabled is set to 0 (unpublished) when you untrash
 	 * an item.
 	 *
-	 * @param   mixed $id Primary key (id field) value
+	 * @param   mixed  $id  Primary key (id field) value
 	 *
 	 * @return  $this  for chaining
 	 */
@@ -1977,19 +1981,19 @@ class DataModel extends Model implements TableInterface
 
 		$id = $this->getId();
 
-		if(!$id)
+		if (!$id)
 		{
 			throw new RecordNotLoaded("Can't change the state of a not loaded DataModel");
 		}
 
-		$this->triggerEvent('onBeforeRestore', array(&$id));
+		$this->triggerEvent('onBeforeRestore', [&$id]);
 
 		$enabled = $this->getFieldAlias('enabled');
 
 		$this->$enabled = 0;
 		$this->save();
 
-		$this->triggerEvent('onAfterRestore', array(&$id));
+		$this->triggerEvent('onAfterRestore', [&$id]);
 
 		return $this;
 	}
@@ -1998,7 +2002,8 @@ class DataModel extends Model implements TableInterface
 	 * Creates a copy of the current record. After the copy is performed, the data model contains the data of the new
 	 * record.
 	 *
-	 * @param   array|DataModel  An associative array or object to bind to the DataModel instance. Allows you to override values on the copied object.
+	 * @param   array|DataModel  An associative array or object to bind to the DataModel instance. Allows you to
+	 *                              override values on the copied object.
 	 *
 	 * @return   DataModel
 	 */
@@ -2010,37 +2015,37 @@ class DataModel extends Model implements TableInterface
 
 		if ($this->hasField('created_by'))
 		{
-			$this->setFieldValue('created_by', null);
+			$this->setFieldValue('created_by');
 		}
 
 		if ($this->hasField('modified_by'))
 		{
-			$this->setFieldValue('modified_by', null);
+			$this->setFieldValue('modified_by');
 		}
 
 		if ($this->hasField('locked_by'))
 		{
-			$this->setFieldValue('locked_by', null);
+			$this->setFieldValue('locked_by');
 		}
 
 		if ($this->hasField('created_on'))
 		{
-			$this->setFieldValue('created_on', null);
+			$this->setFieldValue('created_on');
 		}
 
 		if ($this->hasField('modified_on'))
 		{
-			$this->setFieldValue('modified_on', null);
+			$this->setFieldValue('modified_on');
 		}
 
 		if ($this->hasField('locked_on'))
 		{
-			$this->setFieldValue('locked_on', null);
+			$this->setFieldValue('locked_on');
 		}
 
 		$result = $this->save($data);
 
-		$this->triggerEvent('onAfterCopy', array(&$result));
+		$this->triggerEvent('onAfterCopy', [&$result]);
 
 		return $result;
 	}
@@ -2089,26 +2094,24 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// Get the component privileges
-		$platform = $this->container->platform;
+		$platform  = $this->container->platform;
 		$component = $this->container->componentName;
 
-		$privileges = array
-		(
-			'editown'	 => $platform->authorise('core.edit.own'  , $component),
-			'editstate'	 => $platform->authorise('core.edit.state', $component),
-			'admin'	     => $platform->authorise('core.admin'    , $component),
-			'manage'	 => $platform->authorise('core.manage'    , $component),
-		);
+		$privileges = [
+			'editown'   => $platform->authorise('core.edit.own', $component),
+			'editstate' => $platform->authorise('core.edit.state', $component),
+			'admin'     => $platform->authorise('core.admin', $component),
+			'manage'    => $platform->authorise('core.manage', $component),
+		];
 
 		// If we are trackign assets get the item's privileges
 		if ($this->isAssetsTracked())
 		{
-			$assetKey = $this->getAssetKey();
-			$assetPrivileges = array
-			(
-				'editown'	 => $platform->authorise('core.edit.own'  , $assetKey),
-				'editstate'	 => $platform->authorise('core.edit.state', $assetKey),
-			);
+			$assetKey        = $this->getAssetKey();
+			$assetPrivileges = [
+				'editown'   => $platform->authorise('core.edit.own', $assetKey),
+				'editstate' => $platform->authorise('core.edit.state', $assetKey),
+			];
 
 			foreach ($assetPrivileges as $k => $v)
 			{
@@ -2142,15 +2145,15 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Reset the record data
 	 *
-	 * @param   boolean $useDefaults    Should I use the default values? Default: yes
-	 * @param   boolean $resetRelations Should I reset the relations too? Default: no
+	 * @param   boolean  $useDefaults     Should I use the default values? Default: yes
+	 * @param   boolean  $resetRelations  Should I reset the relations too? Default: no
 	 *
 	 * @return  static  Self, for chaining
 	 */
 	public function reset($useDefaults = true, $resetRelations = false)
 	{
-		$this->recordData = array();
-		$this->whereClauses = array();
+		$this->recordData   = [];
+		$this->whereClauses = [];
 
 		foreach ($this->knownFields as $fieldName => $information)
 		{
@@ -2167,12 +2170,12 @@ class DataModel extends Model implements TableInterface
 		if ($resetRelations)
 		{
 			$this->relationManager->resetRelationData();
-			$this->eagerRelations = array();
+			$this->eagerRelations = [];
 		}
 
-		$this->relationFilters = array();
+		$this->relationFilters = [];
 
-		$this->triggerEvent('onAfterReset', array($useDefaults, $resetRelations));
+		$this->triggerEvent('onAfterReset', [$useDefaults, $resetRelations]);
 
 		return $this;
 	}
@@ -2182,7 +2185,7 @@ class DataModel extends Model implements TableInterface
 	 * enabled to -2 whereas a hard delete removes the data from the database. If you want to force a specific behaviour
 	 * directly call trash() for a soft delete or forceDelete() for a hard delete.
 	 *
-	 * @param   mixed $id Primary key (id field) value
+	 * @param   mixed  $id  Primary key (id field) value
 	 *
 	 * @return  $this  for chaining
 	 */
@@ -2202,7 +2205,7 @@ class DataModel extends Model implements TableInterface
 	 * Delete a record, either the currently loaded one or the one specified in $id. If an $id is specified that record
 	 * is loaded before trying to delete it. In the end the data model is reset.
 	 *
-	 * @param   mixed $id Primary key (id field) value
+	 * @param   mixed  $id  Primary key (id field) value
 	 *
 	 * @return  $this  for chaining
 	 */
@@ -2215,12 +2218,12 @@ class DataModel extends Model implements TableInterface
 
 		$id = $this->getId();
 
-		if(!$id)
+		if (!$id)
 		{
 			throw new RecordNotLoaded("Can't delete a not loaded DataModel object");
 		}
 
-		$this->triggerEvent('onBeforeDelete', array(&$id));
+		$this->triggerEvent('onBeforeDelete', [&$id]);
 
 		$db = $this->getDbo();
 
@@ -2230,7 +2233,7 @@ class DataModel extends Model implements TableInterface
 			->where($db->qn($this->idFieldName) . ' = ' . $db->q($id));
 		$db->setQuery($query)->execute();
 
-		$this->triggerEvent('onAfterDelete', array(&$id));
+		$this->triggerEvent('onAfterDelete', [&$id]);
 
 		$this->reset();
 
@@ -2258,41 +2261,41 @@ class DataModel extends Model implements TableInterface
 			$this->$pkField = intval($oid);
 		}
 
-        if(!$this->$pkField)
-        {
-            throw new \InvalidArgumentException('Master table should be loaded or an ID should be passed');
-        }
+		if (!$this->$pkField)
+		{
+			throw new \InvalidArgumentException('Master table should be loaded or an ID should be passed');
+		}
 
 		if (is_array($joins))
 		{
 			$db      = $this->getDbo();
 			$query   = $db->getQuery(true)
-			              ->select($db->qn('master') . '.' . $db->qn($pkField))
-			              ->from($db->qn($this->tableName) . ' AS ' . $db->qn('master'));
+				->select($db->qn('master') . '.' . $db->qn($pkField))
+				->from($db->qn($this->tableName) . ' AS ' . $db->qn('master'));
 			$tableNo = 0;
 
 			foreach ($joins as $table)
 			{
-                // Sanity check on passed array
-                $check  = array('idfield', 'idalias', 'name', 'joinfield', 'label');
-                $result = array_intersect($check, array_keys($table));
+				// Sanity check on passed array
+				$check  = ['idfield', 'idalias', 'name', 'joinfield', 'label'];
+				$result = array_intersect($check, array_keys($table));
 
-                if(count($result) != count($check))
-                {
-                    throw new \InvalidArgumentException('Join array missing some keys, please check the documentation');
-                }
+				if (count($result) != count($check))
+				{
+					throw new \InvalidArgumentException('Join array missing some keys, please check the documentation');
+				}
 
 				$tableNo++;
 				$query->select(
-					array(
+					[
 						'COUNT(DISTINCT ' . $db->qn('t' . $tableNo) .
-						'.' . $db->qn($table['idfield']) . ') AS ' . $db->qn($table['idalias'])
-					)
+						'.' . $db->qn($table['idfield']) . ') AS ' . $db->qn($table['idalias']),
+					]
 				);
 				$query->join('LEFT', $db->qn($table['name']) .
-				                     ' AS ' . $db->qn('t' . $tableNo) .
-				                     ' ON ' . $db->qn('t' . $tableNo) . '.' . $db->qn($table['joinfield']) .
-				                     ' = ' . $db->qn('master') . '.' . $db->qn($pkField)
+					' AS ' . $db->qn('t' . $tableNo) .
+					' ON ' . $db->qn('t' . $tableNo) . '.' . $db->qn($table['joinfield']) .
+					' = ' . $db->qn('master') . '.' . $db->qn($pkField)
 				);
 			}
 
@@ -2302,7 +2305,7 @@ class DataModel extends Model implements TableInterface
 
 			$obj = $this->getDbo()->loadObject();
 
-			$msg = array();
+			$msg = [];
 			$i   = 0;
 
 			foreach ($joins as $table)
@@ -2321,7 +2324,7 @@ class DataModel extends Model implements TableInterface
 			{
 				$option  = $this->container->componentName;
 				$comName = $this->container->bareComponentName;
-				$tbl = $this->getTableName();
+				$tbl     = $this->getTableName();
 				$tview   = str_replace('#__' . $comName . '_', '', $tbl);
 				$prefix  = $option . '_' . $tview . '_NODELETE_';
 
@@ -2342,7 +2345,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Find and load a single record based on the provided key values. If the record is not found an exception is thrown
 	 *
-	 * @param   array|mixed $keys   An optional primary key value to load the row by, or an array of fields to match.
+	 * @param   array|mixed  $keys  An optional primary key value to load the row by, or an array of fields to match.
 	 *                              If not set the "id" state variable or, if empty, the identity column's value is used
 	 *
 	 * @return  static  Self, for chaining
@@ -2353,9 +2356,9 @@ class DataModel extends Model implements TableInterface
 	{
 		$this->find($keys);
 
-        // We have to assign the value, since empty() is not triggering the __get magic method
-        // http://stackoverflow.com/questions/2045791/php-empty-on-get-accessor
-        $value = $this->getId();
+		// We have to assign the value, since empty() is not triggering the __get magic method
+		// http://stackoverflow.com/questions/2045791/php-empty-on-get-accessor
+		$value = $this->getId();
 
 		if (empty($value))
 		{
@@ -2368,16 +2371,16 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Method to load a row from the database by primary key. Used for TableInterface compatibility.
 	 *
-	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
-	 *                           set the instance property value is used.
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If
+	 *                           not set the instance property value is used.
 	 * @param   boolean  $reset  True to reset the default values before loading the new row.
 	 *
 	 * @return  boolean  True if successful. False if row not found.
 	 *
-	 * @link    http://docs.joomla.org/JTable/load
-	 * @since   3.2
 	 * @throws  \RuntimeException
 	 * @throws  \UnexpectedValueException
+	 * @link    http://docs.joomla.org/JTable/load
+	 * @since   3.2
 	 */
 	public function load($keys = null, $reset = true)
 	{
@@ -2401,7 +2404,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Find and load a single record based on the provided key values
 	 *
-	 * @param   array|mixed $keys   An optional primary key value to load the row by, or an array of fields to match.
+	 * @param   array|mixed  $keys  An optional primary key value to load the row by, or an array of fields to match.
 	 *                              If not set the "id" state variable or, if empty, the identity column's value is used
 	 *
 	 * @return  static  Self, for chaining
@@ -2409,7 +2412,7 @@ class DataModel extends Model implements TableInterface
 	public function find($keys = null)
 	{
 		// Execute the onBeforeLoad event
-		$this->triggerEvent('onBeforeLoad', array(&$keys));
+		$this->triggerEvent('onBeforeLoad', [&$keys]);
 
 		// If we are not given any keys, try to get the ID from the state or the table data
 		if (empty($keys))
@@ -2423,34 +2426,34 @@ class DataModel extends Model implements TableInterface
 
 			if (empty($id))
 			{
-				$this->triggerEvent('onAfterLoad', array(false, &$keys));
+				$this->triggerEvent('onAfterLoad', [false, &$keys]);
 
 				$this->reset();
 
 				return $this;
 			}
 
-			$keys = array($this->idFieldName => $id);
+			$keys = [$this->idFieldName => $id];
 		}
 		elseif (!is_array($keys))
 		{
 			if (empty($keys))
 			{
-				$this->triggerEvent('onAfterLoad', array(false, &$keys));
+				$this->triggerEvent('onAfterLoad', [false, &$keys]);
 
 				$this->reset();
 
 				return $this;
 			}
 
-			$keys = array($this->idFieldName => $keys);
+			$keys = [$this->idFieldName => $keys];
 		}
 
 		// Reset the table
 		$this->reset();
 
 		// Get the query
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn($this->tableName));
@@ -2483,7 +2486,7 @@ class DataModel extends Model implements TableInterface
 
 		if (empty($row))
 		{
-			$this->triggerEvent('onAfterLoad', array(false, &$keys));
+			$this->triggerEvent('onAfterLoad', [false, &$keys]);
 
 			return $this;
 		}
@@ -2494,7 +2497,7 @@ class DataModel extends Model implements TableInterface
 		$this->relationManager->rebase($this);
 
 		// Execute the onAfterLoad event
-		$this->triggerEvent('onAfterLoad', array(true, &$keys));
+		$this->triggerEvent('onAfterLoad', [true, &$keys]);
 
 		return $this;
 	}
@@ -2502,7 +2505,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Create a new record with the provided data
 	 *
-	 * @param   array $data The data to use in the new record
+	 * @param   array  $data  The data to use in the new record
 	 *
 	 * @return  static  Self, for chaining
 	 */
@@ -2514,7 +2517,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Return the first item found or create a new one based on the provided $data
 	 *
-	 * @param   array $data Data for the newly created item
+	 * @param   array  $data  Data for the newly created item
 	 *
 	 * @return  static
 	 */
@@ -2578,17 +2581,17 @@ class DataModel extends Model implements TableInterface
 	 * modelName            is the model's name, first character uppercase, e.g. Baz
 	 * behaviourName        is the $behaviour parameter, first character uppercase, e.g. Something
 	 *
-	 * @param   string $behaviour The behaviour's name
+	 * @param   string  $behaviour  The behaviour's name
 	 *
 	 * @return  $this  Self, for chaining
 	 */
 	public function addBehaviour($behaviour)
 	{
-		$prefixes = array(
+		$prefixes = [
 			$this->container->getNamespacePrefix() . 'Model\\Behaviour\\' . ucfirst($this->getName()),
 			$this->container->getNamespacePrefix() . 'Model\\Behaviour',
 			'\\FOF40\\Model\\DataModel\\Behaviour',
-		);
+		];
 
 		foreach ($prefixes as $prefix)
 		{
@@ -2617,17 +2620,17 @@ class DataModel extends Model implements TableInterface
 	 * modelName            is the model's name, first character uppercase, e.g. Baz
 	 * behaviourName        is the $behaviour parameter, first character uppercase, e.g. Something
 	 *
-	 * @param   string $behaviour The behaviour's name
+	 * @param   string  $behaviour  The behaviour's name
 	 *
 	 * @return  $this  Self, for chaining
 	 */
 	public function removeBehaviour($behaviour)
 	{
-		$prefixes = array(
+		$prefixes = [
 			$this->container->getNamespacePrefix() . 'Model\\Behaviour\\' . ucfirst($this->getName()),
 			$this->container->getNamespacePrefix() . 'Model\\Behaviour',
 			'\\FOF40\\Model\\DataModel\\Behaviour',
-		);
+		];
 
 		foreach ($prefixes as $prefix)
 		{
@@ -2662,8 +2665,8 @@ class DataModel extends Model implements TableInterface
 	 * Set the field and direction of ordering for the query returned by buildQuery.
 	 * Alias of $this->setState('filter_order', $fieldName) and $this->setState('filter_order_Dir', $direction)
 	 *
-	 * @param   string $fieldName The field name to order by
-	 * @param   string $direction The direction to order by (ASC for ascending or DESC for descending)
+	 * @param   string  $fieldName  The field name to order by
+	 * @param   string  $direction  The direction to order by (ASC for ascending or DESC for descending)
 	 *
 	 * @return  $this  For chaining
 	 */
@@ -2671,7 +2674,7 @@ class DataModel extends Model implements TableInterface
 	{
 		$direction = strtoupper($direction);
 
-		if (!in_array($direction, array('ASC', 'DESC')))
+		if (!in_array($direction, ['ASC', 'DESC']))
 		{
 			$direction = 'ASC';
 		}
@@ -2686,14 +2689,14 @@ class DataModel extends Model implements TableInterface
 	 * Set the limitStart for the query, i.e. how many records to skip.
 	 * Alias of $this->setState('limitstart', $limitStart);
 	 *
-	 * @param   integer $limitStart Records to skip from the start
+	 * @param   integer  $limitStart  Records to skip from the start
 	 *
 	 * @return  $this  For chaining
 	 */
 	public function skip($limitStart = null)
 	{
 		// Only positive integers are allowed
-		if(!is_int($limitStart) || $limitStart < 0 || !$limitStart)
+		if (!is_int($limitStart) || $limitStart < 0 || !$limitStart)
 		{
 			$limitStart = 0;
 		}
@@ -2707,14 +2710,14 @@ class DataModel extends Model implements TableInterface
 	 * Set the limit for the query, i.e. how many records to return.
 	 * Alias of $this->setState('limit', $limit);
 	 *
-	 * @param   integer $limit Maximum number of records to return
+	 * @param   integer  $limit  Maximum number of records to return
 	 *
 	 * @return  $this  For chaining
 	 */
 	public function take($limit = null)
 	{
 		// Only positive integers are allowed
-		if(!is_int($limit) || $limit < 0 || !$limit)
+		if (!is_int($limit) || $limit < 0 || !$limit)
 		{
 			$limit = 0;
 		}
@@ -2737,7 +2740,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Returns the record's data as a JSON string
 	 *
-	 * @param   boolean $prettyPrint Should I format the JSON for pretty printing
+	 * @param   boolean  $prettyPrint  Should I format the JSON for pretty printing
 	 *
 	 * @return  string
 	 */
@@ -2758,13 +2761,13 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Touch a record, updating its modified_on and/or modified_by columns
 	 *
-	 * @param   integer $userId Optional user ID of the user touching the record
+	 * @param   integer  $userId  Optional user ID of the user touching the record
 	 *
 	 * @return  $this  Self, for chaining
 	 */
 	public function touch($userId = null)
 	{
-		if(!$this->getId())
+		if (!$this->getId())
 		{
 			throw new RecordNotLoaded("Can't touch a not loaded DataModel");
 		}
@@ -2774,7 +2777,7 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$db = $this->getDbo();
+		$db   = $this->getDbo();
 		$date = new Date();
 
 		// Update the created_on / modified_on
@@ -2804,13 +2807,13 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Lock a record by setting its locked_on and/or locked_by columns
 	 *
-	 * @param   integer $userId
+	 * @param   integer  $userId
 	 *
 	 * @return  $this  Self, for chaining
 	 */
 	public function lock($userId = null)
 	{
-		if(!$this->getId())
+		if (!$this->getId())
 		{
 			throw new CannotLockNotLoadedRecord;
 		}
@@ -2820,7 +2823,7 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$this->triggerEvent('onBeforeLock', array());
+		$this->triggerEvent('onBeforeLock');
 
 		$db = $this->getDbo();
 
@@ -2856,7 +2859,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function unlock()
 	{
-		if(!$this->getId())
+		if (!$this->getId())
 		{
 			throw new RecordNotLoaded("Can't unlock a not loaded DataModel");
 		}
@@ -2866,7 +2869,7 @@ class DataModel extends Model implements TableInterface
 			return $this;
 		}
 
-		$this->triggerEvent('onBeforeUnlock', array());
+		$this->triggerEvent('onBeforeUnlock');
 
 		$db = $this->getDbo();
 
@@ -2929,7 +2932,7 @@ class DataModel extends Model implements TableInterface
 			}
 		}
 
-		$allowedUsers = array(0);
+		$allowedUsers = [0];
 
 		if (!empty($userId))
 		{
@@ -2947,9 +2950,10 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Automatically uses the Filters behaviour to filter records in the model based on your criteria.
 	 *
-	 * @param   string $fieldName The field name to filter on
-	 * @param   string $method    The filtering method, e.g. <>, =, != and so on
-	 * @param   mixed  $values    The value you're filtering on. Some filters (e.g. interval or between) require an array of values
+	 * @param   string  $fieldName  The field name to filter on
+	 * @param   string  $method     The filtering method, e.g. <>, =, != and so on
+	 * @param   mixed   $values     The value you're filtering on. Some filters (e.g. interval or between) require an
+	 *                              array of values
 	 *
 	 * @return  $this  For chaining
 	 */
@@ -2965,53 +2969,53 @@ class DataModel extends Model implements TableInterface
 		// be used inside the Filters behaviour
 		// -- Let's not do this. The Filters behaviour works just fine with the regular field name!
 		/**
-		if ($fieldName == $this->getIdFieldName())
-		{
-			$fieldName = 'id';
-		}
-		**/
+		 * if ($fieldName == $this->getIdFieldName())
+		 * {
+		 * $fieldName = 'id';
+		 * }
+		 **/
 
-		$options = array(
+		$options = [
 			'method' => $method,
-			'value'  => $values
-		);
+			'value'  => $values,
+		];
 
 		// Handle method aliases
 		switch ($method)
 		{
 			case '<>':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '!=';
 				break;
 
 			case 'lt':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '<';
 				break;
 
 			case 'le':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '<=';
 				break;
 
 			case 'gt':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '>';
 				break;
 
 			case 'ge':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '>=';
 				break;
 
 			case 'eq':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '=';
 				break;
 
 			case 'neq':
 			case 'ne':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = '!=';
 				break;
 
@@ -3025,7 +3029,7 @@ class DataModel extends Model implements TableInterface
 			case '!>=':
 			case '!=':
 			case '=':
-				$options['method'] = 'search';
+				$options['method']   = 'search';
 				$options['operator'] = $method;
 				break;
 
@@ -3067,9 +3071,7 @@ class DataModel extends Model implements TableInterface
 
 			default:
 
-				throw new InvalidSearchMethod('Method '.$method.' is unsupported');
-
-				break;
+				throw new InvalidSearchMethod('Method ' . $method . ' is unsupported');
 		}
 
 		// Handle real methods
@@ -3083,12 +3085,12 @@ class DataModel extends Model implements TableInterface
 					if (isset($values['from']) && isset($values['to']))
 					{
 						$options['from'] = $values['from'];
-						$options['to'] = $values['to'];
+						$options['to']   = $values['to'];
 					}
 					else
 					{
 						$options['from'] = array_shift($values);
-						$options['to'] = array_shift($values);
+						$options['to']   = array_shift($values);
 					}
 
 					unset($options['value']);
@@ -3114,12 +3116,12 @@ class DataModel extends Model implements TableInterface
 					// Get the value and interval from the $values array
 					if (isset($values['value']) && isset($values['interval']))
 					{
-						$options['value'] = $values['value'];
+						$options['value']    = $values['value'];
 						$options['interval'] = $values['interval'];
 					}
 					else
 					{
-						$options['value'] = array_shift($values);
+						$options['value']    = array_shift($values);
 						$options['interval'] = array_shift($values);
 					}
 				}
@@ -3131,8 +3133,8 @@ class DataModel extends Model implements TableInterface
 						$values = array_shift($values);
 					}
 
-					$options['value'] = $values;
-					$options['method'] = 'search';
+					$options['value']    = $values;
+					$options['method']   = 'search';
 					$options['operator'] = '=';
 				}
 				break;
@@ -3150,12 +3152,12 @@ class DataModel extends Model implements TableInterface
 					if (isset($values['operator']) && isset($values['value']))
 					{
 						$options['operator'] = $values['operator'];
-						$options['value'] = $values['value'];
+						$options['value']    = $values['value'];
 					}
 					else
 					{
 						$options['operator'] = array_shift($values);
-						$options['value'] = array_shift($values);
+						$options['value']    = array_shift($values);
 					}
 				}
 				break;
@@ -3176,7 +3178,7 @@ class DataModel extends Model implements TableInterface
 	 * business logic with raw SQL makes your application harder to maintain and refactor as dependencies to your
 	 * database schema creep in areas of your code that should have nothing to do with it.
 	 *
-	 * @param   string $rawWhereClause The raw WHERE clause to add
+	 * @param   string  $rawWhereClause  The raw WHERE clause to add
 	 *
 	 * @return  $this  For chaining
 	 */
@@ -3203,7 +3205,7 @@ class DataModel extends Model implements TableInterface
 	 * Please note that eager loaded relations produce their queries without going through the respective model. Instead
 	 * they generate a SQL query directly, then map the loaded results into a DataCollection.
 	 *
-	 * @param array $relations The relations to eager load. See above for more information.
+	 * @param   array  $relations  The relations to eager load. See above for more information.
 	 *
 	 * @return $this For chaining
 	 */
@@ -3211,7 +3213,7 @@ class DataModel extends Model implements TableInterface
 	{
 		if (empty($relations))
 		{
-			$this->eagerRelations = array();
+			$this->eagerRelations = [];
 
 			return $this;
 		}
@@ -3222,12 +3224,12 @@ class DataModel extends Model implements TableInterface
 		{
 			if (is_callable($v))
 			{
-				$relName = $k;
+				$relName  = $k;
 				$callback = $v;
 			}
 			else
 			{
-				$relName = $v;
+				$relName  = $v;
 				$callback = null;
 			}
 
@@ -3245,10 +3247,11 @@ class DataModel extends Model implements TableInterface
 	 * $posts->has('comments', '>=', 10)->get();
 	 * will return all posts with at least 10 comments.
 	 *
-	 * @param string $relation The relation to query
-	 * @param string $operator The comparison operator. Same operators as the where() method.
-	 * @param mixed  $value    The value(s) to compare against.
-	 * @param bool   $replace  When true (default) any existing relation filters for the same relation will be replaced
+	 * @param   string  $relation  The relation to query
+	 * @param   string  $operator  The comparison operator. Same operators as the where() method.
+	 * @param   mixed   $value     The value(s) to compare against.
+	 * @param   bool    $replace   When true (default) any existing relation filters for the same relation will be
+	 *                             replaced
 	 *
 	 * @return $this
 	 */
@@ -3260,49 +3263,49 @@ class DataModel extends Model implements TableInterface
 			$this->addBehaviour('relationFilters');
 		}
 
-		$filter = array(
+		$filter = [
 			'relation' => $relation,
 			'method'   => $operator,
 			'operator' => $operator,
-			'value'    => $value
-		);
+			'value'    => $value,
+		];
 
 		// Handle method aliases
 		switch ($operator)
 		{
 			case '<>':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '!=';
 				break;
 
 			case 'lt':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '<';
 				break;
 
 			case 'le':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '<=';
 				break;
 
 			case 'gt':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '>';
 				break;
 
 			case 'ge':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '>=';
 				break;
 
 			case 'eq':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '=';
 				break;
 
 			case 'neq':
 			case 'ne':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = '!=';
 				break;
 
@@ -3316,7 +3319,7 @@ class DataModel extends Model implements TableInterface
 			case '!>=':
 			case '!=':
 			case '=':
-				$filter['method'] = 'search';
+				$filter['method']   = 'search';
 				$filter['operator'] = $operator;
 				break;
 
@@ -3357,13 +3360,12 @@ class DataModel extends Model implements TableInterface
 				break;
 
 			case 'callback':
-				$filter['method'] = 'callback';
+				$filter['method']   = 'callback';
 				$filter['operator'] = 'callback';
 				break;
 
 			default:
-				throw new InvalidSearchMethod('Operator '.$operator.' is unsupported');
-				break;
+				throw new InvalidSearchMethod('Operator ' . $operator . ' is unsupported');
 		}
 
 		// Handle real methods
@@ -3377,12 +3379,12 @@ class DataModel extends Model implements TableInterface
 					if (isset($value['from']) && isset($value['to']))
 					{
 						$filter['from'] = $value['from'];
-						$filter['to'] = $value['to'];
+						$filter['to']   = $value['to'];
 					}
 					else
 					{
 						$filter['from'] = array_shift($value);
-						$filter['to'] = array_shift($value);
+						$filter['to']   = array_shift($value);
 					}
 
 					unset($filter['value']);
@@ -3396,8 +3398,8 @@ class DataModel extends Model implements TableInterface
 					}
 
 					$filter['operator'] = ($filter['method'] == 'between') ? '=' : '!=';
-					$filter['value'] = $value;
-					$filter['method'] = 'search';
+					$filter['value']    = $value;
+					$filter['method']   = 'search';
 				}
 
 				break;
@@ -3408,12 +3410,12 @@ class DataModel extends Model implements TableInterface
 					// Get the value and interval from the $value array
 					if (isset($value['value']) && isset($value['interval']))
 					{
-						$filter['value'] = $value['value'];
+						$filter['value']    = $value['value'];
 						$filter['interval'] = $value['interval'];
 					}
 					else
 					{
-						$filter['value'] = array_shift($value);
+						$filter['value']    = array_shift($value);
 						$filter['interval'] = array_shift($value);
 					}
 				}
@@ -3425,8 +3427,8 @@ class DataModel extends Model implements TableInterface
 						$value = array_shift($value);
 					}
 
-					$filter['value'] = $value;
-					$filter['method'] = 'search';
+					$filter['value']    = $value;
+					$filter['method']   = 'search';
 					$filter['operator'] = '=';
 				}
 				break;
@@ -3444,12 +3446,12 @@ class DataModel extends Model implements TableInterface
 					if (isset($value['operator']) && isset($value['value']))
 					{
 						$filter['operator'] = $value['operator'];
-						$filter['value'] = $value['value'];
+						$filter['value']    = $value['value'];
 					}
 					else
 					{
 						$filter['operator'] = array_shift($value);
-						$filter['value'] = array_shift($value);
+						$filter['value']    = array_shift($value);
 					}
 				}
 				break;
@@ -3457,9 +3459,9 @@ class DataModel extends Model implements TableInterface
 			case 'callback':
 				if (!is_callable($filter['value']))
 				{
-					$filter['method'] = 'search';
+					$filter['method']   = 'search';
 					$filter['operator'] = '=';
-					$filter['value'] = 1;
+					$filter['value']    = 1;
 				}
 				break;
 		}
@@ -3489,9 +3491,10 @@ class DataModel extends Model implements TableInterface
 	 * You have to return a WHERE clause for the model's query, e.g.
 	 * (SELECT COUNT(*) FROM #__comments AS reltbl WHERE reltbl.user_id = user_id) BETWEEN 1 AND 20
 	 *
-	 * @param string   $relation The relation to query against
-	 * @param callable $callBack The callback to use for filtering
-	 * @param bool     $replace  When true (default) any existing relation filters for the same relation will be replaced
+	 * @param   string    $relation  The relation to query against
+	 * @param   callable  $callBack  The callback to use for filtering
+	 * @param   bool      $replace   When true (default) any existing relation filters for the same relation will be
+	 *                               replaced
 	 *
 	 * @return $this
 	 */
@@ -3533,6 +3536,16 @@ class DataModel extends Model implements TableInterface
 	}
 
 	/**
+	 * Method to get the rules for the record.
+	 *
+	 * @return  Rules object
+	 */
+	public function getRules()
+	{
+		return $this->rules;
+	}
+
+	/**
 	 * Method to set rules for the record.
 	 *
 	 * @param   mixed  $input  A Rules object, JSON string, or array.
@@ -3549,16 +3562,6 @@ class DataModel extends Model implements TableInterface
 		{
 			$this->rules = new Rules($input);
 		}
-	}
-
-	/**
-	 * Method to get the rules for the record.
-	 *
-	 * @return  Rules object
-	 */
-	public function getRules()
-	{
-		return $this->rules;
 	}
 
 	/**
@@ -3606,34 +3609,13 @@ class DataModel extends Model implements TableInterface
 	}
 
 	/**
-	 * Loads the asset table related to this table.
-	 * This will help tests, too, since we can mock this function.
-	 *
-	 * @return bool|Asset     False on failure, otherwise Asset
-	 */
-	protected function getAsset()
-	{
-		$name     = $this->getAssetName();
-
-		// Do NOT touch Table here -- we are loading the core asset table which is a Joomla Table, not a FOF model
-		$asset    = new Asset(Factory::getDbo());
-
-		if (!$asset->loadByName($name))
-		{
-			return false;
-		}
-
-		return $asset;
-	}
-
-	/**
 	 * Method to compute the default name of the asset.
 	 * The default name is in the form table_name.id
 	 * where id is the value of the primary key of the table.
 	 *
+	 * @return  string
 	 * @throws  NoAssetKey
 	 *
-	 * @return  string
 	 */
 	public function getAssetName()
 	{
@@ -3661,6 +3643,19 @@ class DataModel extends Model implements TableInterface
 	}
 
 	/**
+	 * This method sets the asset key for the items of this table. Obviously, it
+	 * is only meant to be used when you have a table with an asset field.
+	 *
+	 * @param   string  $assetKey  The name of the asset key to use
+	 *
+	 * @return  void
+	 */
+	public function setAssetKey($assetKey)
+	{
+		$this->assetKey = $assetKey;
+	}
+
+	/**
 	 * Method to return the title to use for the asset table.  In
 	 * tracking the assets a title is kept for each asset so that there is some
 	 * context available in a unified access manager.  Usually this would just
@@ -3668,8 +3663,8 @@ class DataModel extends Model implements TableInterface
 	 * primary name of the row. If this method is not overridden, the asset name is used.
 	 *
 	 * @return  string  The string to use as the title in the asset table.
-     *
-     * @codeCoverageIgnore
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public function getAssetTitle()
 	{
@@ -3684,7 +3679,7 @@ class DataModel extends Model implements TableInterface
 	 * asset does not exist it will be created.
 	 *
 	 * @param   DataModel  $model  A model object for the asset parent.
-	 * @param   integer   $id      Id to look up
+	 * @param   integer    $id     Id to look up
 	 *
 	 * @return  integer
 	 */
@@ -3703,30 +3698,17 @@ class DataModel extends Model implements TableInterface
 	}
 
 	/**
-	 * This method sets the asset key for the items of this table. Obviously, it
-	 * is only meant to be used when you have a table with an asset field.
-	 *
-	 * @param   string  $assetKey  The name of the asset key to use
-	 *
-	 * @return  void
-	 */
-	public function setAssetKey($assetKey)
-	{
-		$this->assetKey = $assetKey;
-	}
-
-	/**
 	 * Method to load a row for editing from the version history table.
 	 *
-	 * @param   integer    $version_id  Key to the version history table.
-	 * @param   string     $alias       The type_alias in #__content_types
+	 * @param   integer  $version_id  Key to the version history table.
+	 * @param   string   $alias       The type_alias in #__content_types
 	 *
 	 * @return  boolean  True on success
 	 *
-	 * @since   2.3
-	 *
 	 * @throws  RecordNotLoaded
 	 * @throws  BaseException
+	 * @since   2.3
+	 *
 	 */
 	public function loadhistory($version_id, $alias)
 	{
@@ -3747,7 +3729,7 @@ class DataModel extends Model implements TableInterface
 		$rowArray = ArrayHelper::fromObject(json_decode($historyTable->version_data));
 
 		$contentTypeTable = new ContentType(Factory::getDbo());
-		$typeId = $contentTypeTable->getTypeId($alias);
+		$typeId           = $contentTypeTable->getTypeId($alias);
 
 		if ($historyTable->ucm_type_id != $typeId)
 		{
@@ -3815,7 +3797,7 @@ class DataModel extends Model implements TableInterface
 	 * Check if a UCM content type exists for this resource, and
 	 * create it if it does not
 	 *
-	 * @param  string  $alias  The content type alias (optional)
+	 * @param   string  $alias  The content type alias (optional)
 	 *
 	 * @return  null
 	 */
@@ -3843,11 +3825,11 @@ class DataModel extends Model implements TableInterface
 		$name = $component_name . ' ' . ucfirst($aliasParts[1]);
 
 		// Create a new content type for our resource
-		if (!$contentType->load(array('type_alias' => $alias)))
+		if (!$contentType->load(['type_alias' => $alias]))
 		{
 			$contentType->type_title = $name;
 			$contentType->type_alias = $alias;
-			$contentType->table = json_encode(
+			$contentType->table      = json_encode(
 				[
 					'special' => [
 						'dbtable' => $this->getTableName(),
@@ -3868,9 +3850,9 @@ class DataModel extends Model implements TableInterface
 			);
 
 			$contentType->field_mappings = json_encode(
-				array(
-					'common' => array(
-						0 => array(
+				[
+					'common'  => [
+						0 => [
 							"core_content_item_id" => $this->getKeyName(),
 							"core_title"           => $this->getUcmCoreAlias('title'),
 							"core_state"           => $this->getUcmCoreAlias('enabled'),
@@ -3894,29 +3876,29 @@ class DataModel extends Model implements TableInterface
 							"core_metadesc"        => $this->getUcmCoreAlias('metadesc'),
 							"core_catid"           => $this->getUcmCoreAlias('cat_id'),
 							"core_xreference"      => $this->getUcmCoreAlias('xreference'),
-							"asset_id"             => $this->getUcmCoreAlias('asset_id')
-						)
-					),
-					'special' => array(
-						0 => array(
-						)
-					)
-				)
+							"asset_id"             => $this->getUcmCoreAlias('asset_id'),
+						],
+					],
+					'special' => [
+						0 => [
+						],
+					],
+				]
 			);
 
-			$ignoreFields = array(
+			$ignoreFields = [
 				$this->getUcmCoreAlias('modified_on', null),
 				$this->getUcmCoreAlias('modified_by', null),
 				$this->getUcmCoreAlias('locked_by', null),
 				$this->getUcmCoreAlias('locked_on', null),
 				$this->getUcmCoreAlias('hits', null),
-				$this->getUcmCoreAlias('version', null)
-			);
+				$this->getUcmCoreAlias('version', null),
+			];
 
 			$contentType->content_history_options = json_encode(
-				array(
-					"ignoreChanges" => array_filter($ignoreFields, 'strlen')
-				)
+				[
+					"ignoreChanges" => array_filter($ignoreFields, 'strlen'),
+				]
 			);
 
 			$contentType->router = '';
@@ -3926,29 +3908,10 @@ class DataModel extends Model implements TableInterface
 	}
 
 	/**
-	 * Utility methods that fetches the column name for the field.
-	 * If it does not exists, returns a "null" string
-	 *
-	 * @param  string  $alias  The alias for the column
-	 * @param  string  $null   What to return if no column exists
-	 *
-	 * @return string The column name
-	 */
-	protected function getUcmCoreAlias($alias, $null = "null")
-	{
-		if (!$this->hasField($alias))
-		{
-			return $null;
-		}
-
-		return $this->getFieldAlias($alias);
-	}
-
-	/**
 	 * Set a behavior param
 	 *
-	 * @param   string  $name     The name of the param you want to set
-	 * @param   mixed   $value    The value to set
+	 * @param   string  $name   The name of the param you want to set
+	 * @param   mixed   $value  The value to set
 	 *
 	 * @return  $this   Self, for chaining
 	 */
@@ -3978,8 +3941,8 @@ class DataModel extends Model implements TableInterface
 	 * Note: passing a null $list to get the filter blacklist is deprecated as of FOF 3.1. Pleas use getBlacklistFilters
 	 *       instead.
 	 *
-	 * @param   mixed    $list    A filter or list of filters to backlist. If null return the list of backlisted filter
-	 * @param   boolean  $reset   Reset the blacklist if true
+	 * @param   mixed    $list   A filter or list of filters to backlist. If null return the list of backlisted filter
+	 * @param   boolean  $reset  Reset the blacklist if true
 	 *
 	 * @return  null|array  Return an array of value if $list is null
 	 */
@@ -3987,7 +3950,7 @@ class DataModel extends Model implements TableInterface
 	{
 		if (!isset($list))
 		{
-			return $this->getBehaviorParam('blacklistFilters', array());
+			return $this->getBehaviorParam('blacklistFilters', []);
 		}
 
 		if (is_string($list))
@@ -3997,7 +3960,7 @@ class DataModel extends Model implements TableInterface
 
 		if (!$reset)
 		{
-			$list = array_unique(array_merge($this->getBehaviorParam('blacklistFilters', array()), $list));
+			$list = array_unique(array_merge($this->getBehaviorParam('blacklistFilters', []), $list));
 		}
 
 		$this->setBehaviorParam('blacklistFilters', $list);
@@ -4012,7 +3975,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getBlacklistFilters()
 	{
-		return $this->getBehaviorParam('blacklistFilters', array());
+		return $this->getBehaviorParam('blacklistFilters', []);
 	}
 
 	/**
@@ -4023,19 +3986,19 @@ class DataModel extends Model implements TableInterface
 	public function updateUcmContent()
 	{
 		// Process the tags
-		$data  = $this->getData();
-		$alias = $this->getContentType();
+		$data            = $this->getData();
+		$alias           = $this->getContentType();
 		$ucmContentTable = new CoreContent(Factory::getDbo());
 
-		$ucm = new UCMContent($this, $alias);
+		$ucm     = new UCMContent($this, $alias);
 		$ucmData = $data ? $ucm->mapData($data) : $ucm->ucmData;
 
 		$primaryId = $ucm->getPrimaryKey($ucmData['common']['core_type_id'], $ucmData['common']['core_content_item_id']);
-		$result = $ucmContentTable->load($primaryId);
-		$result = $result && $ucmContentTable->bind($ucmData['common']);
-		$result = $result && $ucmContentTable->check();
-		$result = $result && $ucmContentTable->store();
-		$ucmId = $ucmContentTable->core_content_id;
+		$result    = $ucmContentTable->load($primaryId);
+		$result    = $result && $ucmContentTable->bind($ucmData['common']);
+		$result    = $result && $ucmContentTable->check();
+		$result    = $result && $ucmContentTable->store();
+		$ucmId     = $ucmContentTable->core_content_id;
 
 		return $result;
 	}
@@ -4051,7 +4014,7 @@ class DataModel extends Model implements TableInterface
 	{
 		if (!is_array($this->fieldsSkipChecks))
 		{
-			$this->fieldsSkipChecks = array();
+			$this->fieldsSkipChecks = [];
 		}
 
 		if (!$this->hasField($fieldName))
@@ -4078,7 +4041,7 @@ class DataModel extends Model implements TableInterface
 	{
 		if (!is_array($this->fieldsSkipChecks))
 		{
-			$this->fieldsSkipChecks = array();
+			$this->fieldsSkipChecks = [];
 
 			return;
 		}
@@ -4108,7 +4071,7 @@ class DataModel extends Model implements TableInterface
 	{
 		if (!is_array($this->fieldsSkipChecks))
 		{
-			$this->fieldsSkipChecks = array();
+			$this->fieldsSkipChecks = [];
 
 			return false;
 		}
@@ -4121,6 +4084,46 @@ class DataModel extends Model implements TableInterface
 		$fieldName = $this->getFieldAlias($fieldName);
 
 		return in_array($fieldName, $this->fieldsSkipChecks);
+	}
+
+	/**
+	 * Loads the asset table related to this table.
+	 * This will help tests, too, since we can mock this function.
+	 *
+	 * @return bool|Asset     False on failure, otherwise Asset
+	 */
+	protected function getAsset()
+	{
+		$name = $this->getAssetName();
+
+		// Do NOT touch Table here -- we are loading the core asset table which is a Joomla Table, not a FOF model
+		$asset = new Asset(Factory::getDbo());
+
+		if (!$asset->loadByName($name))
+		{
+			return false;
+		}
+
+		return $asset;
+	}
+
+	/**
+	 * Utility methods that fetches the column name for the field.
+	 * If it does not exists, returns a "null" string
+	 *
+	 * @param   string  $alias  The alias for the column
+	 * @param   string  $null   What to return if no column exists
+	 *
+	 * @return string The column name
+	 */
+	protected function getUcmCoreAlias($alias, $null = "null")
+	{
+		if (!$this->hasField($alias))
+		{
+			return $null;
+		}
+
+		return $this->getFieldAlias($alias);
 	}
 
 	/**
@@ -4142,13 +4145,13 @@ class DataModel extends Model implements TableInterface
 			}
 
 			$letters      = str_split($prefix, 1);
-			$permutations = array('');
+			$permutations = [''];
 
 			foreach ($letters as $nextLetter)
 			{
 				$lower = strtolower($nextLetter);
 				$upper = strtoupper($nextLetter);
-				$ret = array();
+				$ret   = [];
 
 				foreach ($permutations as $perm)
 				{
@@ -4163,12 +4166,11 @@ class DataModel extends Model implements TableInterface
 				}
 			}
 
-			$permutations = array_merge(array(
+			$permutations = array_merge([
 				strtolower($prefix),
 				strtoupper($prefix),
-			), $permutations);
-			$permutations = array_map(function ($x) use ($suffix)
-			{
+			], $permutations);
+			$permutations = array_map(function ($x) use ($suffix) {
 				return $x . $suffix;
 			}, $permutations);
 

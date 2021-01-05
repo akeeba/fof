@@ -149,8 +149,8 @@ class Inflector
 	/**
 	 * Add a word to the cache, useful to make exceptions or to add words in other languages.
 	 *
-	 * @param string $singular word.
-	 * @param string $plural   word.
+	 * @param   string  $singular  word.
+	 * @param   string  $plural    word.
 	 *
 	 * @return  void
 	 */
@@ -163,7 +163,7 @@ class Inflector
 	/**
 	 * Singular English word to plural.
 	 *
-	 * @param string $word word to pluralize.
+	 * @param   string  $word  word to pluralize.
 	 *
 	 * @return  string Plural noun.
 	 */
@@ -208,7 +208,7 @@ class Inflector
 	/**
 	 * Plural English word to singular.
 	 *
-	 * @param string $word Word to singularize.
+	 * @param   string  $word  Word to singularize.
 	 *
 	 * @return  string Singular noun.
 	 */
@@ -257,16 +257,15 @@ class Inflector
 	 * will remove non alphanumeric characters from the word, so
 	 * "who's online" will be converted to "WhoSOnline"
 	 *
-	 * @param string $word Word to convert to camel case.
+	 * @param   string  $word  Word to convert to camel case.
 	 *
 	 * @return  string  UpperCamelCasedWord
 	 */
 	public function camelize(string $word): string
 	{
 		$word = preg_replace('/[^a-zA-Z0-9\s]/', ' ', $word);
-		$word = str_replace(' ', '', ucwords(strtolower(str_replace('_', ' ', $word))));
 
-		return $word;
+		return str_replace(' ', '', ucwords(strtolower(str_replace('_', ' ', $word))));
 	}
 
 	/**
@@ -274,16 +273,15 @@ class Inflector
 	 *
 	 * Convert any "CamelCased" or "ordinary Word" into an "underscored_word".
 	 *
-	 * @param string $word Word to underscore
+	 * @param   string  $word  Word to underscore
 	 *
 	 * @return string Underscored word
 	 */
 	public function underscore(string $word): string
 	{
 		$word = preg_replace('/(\s)+/', '_', $word);
-		$word = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $word));
 
-		return $word;
+		return strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $word));
 	}
 
 	/**
@@ -292,29 +290,25 @@ class Inflector
 	 * Returns an array of strings each of which is a substring of string formed
 	 * by splitting it at the camelcased letters.
 	 *
-	 * @param string $word Word to explode
+	 * @param   string  $word  Word to explode
 	 *
 	 * @return  string[]   Array of strings
 	 */
 	public function explode(string $word): array
 	{
-		$result = explode('_', self::underscore($word));
-
-		return $result;
+		return explode('_', self::underscore($word));
 	}
 
 	/**
 	 * Convert  an array of strings into a "CamelCased" word.
 	 *
-	 * @param string[] $words Array of words to implode
+	 * @param   string[]  $words  Array of words to implode
 	 *
 	 * @return  string UpperCamelCasedWord
 	 */
 	public function implode(array $words): string
 	{
-		$result = self::camelize(implode('_', $words));
-
-		return $result;
+		return self::camelize(implode('_', $words));
 	}
 
 	/**
@@ -324,21 +318,19 @@ class Inflector
 	 * underscores with a space, and by upper-casing the initial
 	 * character by default.
 	 *
-	 * @param string $word String to "humanize"
+	 * @param   string  $word  String to "humanize"
 	 *
 	 * @return string Human-readable word
 	 */
 	public function humanize(string $word): string
 	{
-		$result = ucwords(strtolower(str_replace("_", " ", $word)));
-
-		return $result;
+		return ucwords(strtolower(str_replace("_", " ", $word)));
 	}
 
 	/**
 	 * Returns camelBacked version of a string. Same as camelize but first char is lowercased.
 	 *
-	 * @param string $string String to be camelBacked.
+	 * @param   string  $string  String to be camelBacked.
 	 *
 	 * @return string
 	 *
@@ -346,17 +338,16 @@ class Inflector
 	 */
 	public function variablize(string $string): string
 	{
-		$string   = self::camelize(self::underscore($string));
-		$result   = strtolower(substr($string, 0, 1));
-		$variable = preg_replace('/\\w/', $result, $string, 1);
+		$string = self::camelize(self::underscore($string));
+		$result = strtolower(substr($string, 0, 1));
 
-		return $variable;
+		return preg_replace('/\\w/', $result, $string, 1);
 	}
 
 	/**
 	 * Check to see if an English word is singular
 	 *
-	 * @param string $string The word to check
+	 * @param   string  $string  The word to check
 	 *
 	 * @return boolean
 	 */
@@ -378,7 +369,7 @@ class Inflector
 	/**
 	 * Check to see if an Enlish word is plural.
 	 *
-	 * @param string $string String to be checked.
+	 * @param   string  $string  String to be checked.
 	 *
 	 * @return boolean
 	 */
@@ -409,9 +400,9 @@ class Inflector
 	 * Use a negative index to start at the last part of the word (-1 is the
 	 * last part)
 	 *
-	 * @param string      $string  Word
-	 * @param integer     $index   Index of the part
-	 * @param string|null $default Default value
+	 * @param   string       $string   Word
+	 * @param   integer      $index    Index of the part
+	 * @param   string|null  $default  Default value
 	 *
 	 * @return string|null
 	 */

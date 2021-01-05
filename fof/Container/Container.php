@@ -9,7 +9,6 @@ namespace FOF40\Container;
 
 use FOF40\Autoloader\Autoloader;
 use FOF40\Configuration\Configuration;
-use FOF40\Container\Exception\NoComponent;
 use FOF40\Dispatcher\Dispatcher;
 use FOF40\Encrypt\EncryptService;
 use FOF40\Factory\FactoryInterface;
@@ -30,7 +29,6 @@ use JDatabaseDriver;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Session\Session;
 use Joomla\Input\Input as JoomlaInput;
-use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
@@ -98,212 +96,6 @@ class Container extends ContainerBase
 	 * @var   array
 	 */
 	protected static $instances = [];
-
-	/**
-	 * The container SHOULD NEVER be serialised. If this happens, it means that any of the installed version is doing
-	 * something REALLY BAD, so let's die and inform the user of what it's going on.
-	 */
-	public function __sleep()
-	{
-		// If the site is in debug mode we die and let the user figure it out
-		if (defined('JDEBUG') && JDEBUG)
-		{
-			$msg = <<< END
-Something on your site is broken and tries to save the plugin state in the cache. This is a major security issue and
-will cause your site to not work properly. Go to your site's backend, Global Configuration and set Caching to OFF as a
-temporary solution. Possible causes: older versions of JoomlaShine templates, JomSocial, BetterPreview and other third
-party Joomla! extensions. 
-END;
-
-			die($msg);
-		}
-
-		// Otherwise we serialise the Container
-		return ['values', 'factories', 'protected', 'frozen', 'raw', 'keys'];
-	}
-
-	/**
-	 * Returns a container instance for a specific component. This method goes through fof.xml to read the default
-	 * configuration values for the container. You are advised to use this unless you have a specific reason for
-	 * instantiating a Container without going through the fof.xml file.
-	 *
-	 * Pass the value 'tempInstance' => true in the $values array to get a temporary instance. Otherwise you will get
-	 * the cached instance of the previously created container.
-	 *
-	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
-	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
-	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in
-	 *                              auto-detection.
-	 *
-	 * @return \FOF40\Container\Container
-	 */
-	public static function &getInstance($component, array $values = [], $section = 'auto')
-	{
-		$tempInstance = false;
-
-		if (isset($values['tempInstance']))
-		{
-			$tempInstance = $values['tempInstance'];
-			unset($values['tempInstance']);
-		}
-
-		if ($tempInstance)
-		{
-			return self::makeInstance($component, $values, $section);
-		}
-
-		$signature = md5($component . '@' . $section);
-
-		if (!isset(self::$instances[$signature]))
-		{
-			self::$instances[$signature] = self::makeInstance($component, $values, $section);
-		}
-
-		return self::$instances[$signature];
-	}
-
-	/**
-	 * Returns a temporary container instance for a specific component.
-	 *
-	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
-	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
-	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in
-	 *                              auto-detection.
-	 *
-	 * @return \FOF40\Container\Container
-	 *
-	 * @throws Exception\NoComponent
-	 */
-	protected static function &makeInstance($component, array $values = [], $section = 'auto')
-	{
-		// Try to auto-detect some defaults
-		$tmpConfig    = array_merge($values, ['componentName' => $component]);
-		$tmpContainer = new Container($tmpConfig);
-
-		if (!in_array($section, ['site', 'admin']))
-		{
-			$section = $tmpContainer->platform->isBackend() ? 'admin' : 'site';
-		}
-
-		$appConfig = $tmpContainer->appConfig;
-
-		// Get the namespace from fof.xml
-		$namespace = $appConfig->get('container.componentNamespace', null);
-
-		// $values always overrides $namespace and fof.xml
-		if (isset($values['componentNamespace']))
-		{
-			$namespace = $values['componentNamespace'];
-		}
-
-		// If there is no namespace set, try to guess it.
-		if (empty($namespace))
-		{
-			$bareComponent = $component;
-
-			if (substr($component, 0, 4) == 'com_')
-			{
-				$bareComponent = substr($component, 4);
-			}
-
-			$namespace = ucfirst($bareComponent);
-		}
-
-		// Get the default front-end/back-end paths
-		$frontEndPath = $appConfig->get('container.frontEndPath', JPATH_SITE . '/components/' . $component);
-		$backEndPath  = $appConfig->get('container.backEndPath', JPATH_ADMINISTRATOR . '/components/' . $component);
-
-		// Parse path variables if necessary
-		$frontEndPath = $tmpContainer->parsePathVariables($frontEndPath);
-		$backEndPath  = $tmpContainer->parsePathVariables($backEndPath);
-
-		// Apply path overrides
-		if (isset($values['frontEndPath']))
-		{
-			$frontEndPath = $values['frontEndPath'];
-		}
-
-		if (isset($values['backEndPath']))
-		{
-			$backEndPath = $values['backEndPath'];
-		}
-
-		$thisPath = ($section == 'admin') ? $backEndPath : $frontEndPath;
-
-		// Get the namespaces for the front-end and back-end parts of the component
-		$frontEndNamespace = '\\' . $namespace . '\\Site\\';
-		$backEndNamespace  = '\\' . $namespace . '\\Admin\\';
-
-		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
-		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
-		if ($frontEndPath == $backEndPath)
-		{
-			$frontEndNamespace = '\\' . $namespace . '\\';
-			$backEndNamespace  = '\\' . $namespace . '\\';
-		}
-
-		// Do we have to register the component's namespaces with the autoloader?
-		$autoloader = Autoloader::getInstance();
-
-		if (!$autoloader->hasMap($frontEndNamespace))
-		{
-			$autoloader->addMap($frontEndNamespace, $frontEndPath);
-		}
-
-		if (!$autoloader->hasMap($backEndNamespace))
-		{
-			$autoloader->addMap($backEndNamespace, $backEndPath);
-		}
-
-		// Get the Container class name
-		$classNamespace = ($section == 'admin') ? $backEndNamespace : $frontEndNamespace;
-		$class          = $classNamespace . 'Container';
-
-		// Get the values overrides from fof.xml
-		$values = array_merge([
-			'factoryClass'              => '\\FOF40\\Factory\\BasicFactory',
-			'platformClass'             => '\\FOF40\\Platform\\Joomla\\Platform',
-			'section'                   => $section,
-		], $values);
-
-		$values = array_merge($values, [
-			'componentName'             => $component,
-			'componentNamespace'        => $namespace,
-			'frontEndPath'              => $frontEndPath,
-			'backEndPath'               => $backEndPath,
-			'thisPath'                  => $thisPath,
-			'rendererClass'             => $appConfig->get('container.rendererClass', null),
-			'factoryClass'              => $appConfig->get('container.factoryClass', $values['factoryClass']),
-			'platformClass'             => $appConfig->get('container.platformClass', $values['platformClass']),
-		]);
-
-		if (empty($values['rendererClass']))
-		{
-			unset ($values['rendererClass']);
-		}
-
-		$mediaVersion = $appConfig->get('container.mediaVersion', null);
-
-		unset($appConfig);
-		unset($tmpConfig);
-		unset($tmpContainer);
-
-		if (class_exists($class, true))
-		{
-			$container = new $class($values);
-		}
-		else
-		{
-			$container = new Container($values);
-		}
-
-		if (!is_null($mediaVersion))
-		{
-			$container->mediaVersion->setMediaVersion($mediaVersion);
-		}
-
-		return $container;
-	}
 
 	/**
 	 * Public constructor. This does NOT go through the fof.xml file. You are advised to use getInstance() instead.
@@ -561,42 +353,39 @@ END;
 				$renderer    = null;
 				$priority    = 0;
 
-				if (!empty($renderFiles))
+				foreach ($renderFiles as $filename)
 				{
-					foreach ($renderFiles as $filename)
+					if ($filename == 'RenderBase.php')
 					{
-						if ($filename == 'RenderBase.php')
-						{
-							continue;
-						}
+						continue;
+					}
 
-						if ($filename == 'RenderInterface.php')
-						{
-							continue;
-						}
+					if ($filename == 'RenderInterface.php')
+					{
+						continue;
+					}
 
-						$className = 'FOF40\\Render\\' . basename($filename, '.php');
+					$className = 'FOF40\\Render\\' . basename($filename, '.php');
 
-						if (!class_exists($className, true))
-						{
-							continue;
-						}
+					if (!class_exists($className, true))
+					{
+						continue;
+					}
 
-						/** @var RenderInterface $o */
-						$o = new $className($c);
+					/** @var RenderInterface $o */
+					$o = new $className($c);
 
-						$info = $o->getInformation();
+					$info = $o->getInformation();
 
-						if (!$info->enabled)
-						{
-							continue;
-						}
+					if (!$info->enabled)
+					{
+						continue;
+					}
 
-						if ($info->priority > $priority)
-						{
-							$priority = $info->priority;
-							$renderer = $o;
-						}
+					if ($info->priority > $priority)
+					{
+						$priority = $info->priority;
+						$renderer = $o;
 					}
 				}
 
@@ -638,8 +427,7 @@ END;
 		// Session service
 		if (!isset($this['session']))
 		{
-			$this['session'] = function (Container $c)
-			{
+			$this['session'] = function (Container $c) {
 				return JoomlaFactory::getSession();
 			};
 		}
@@ -672,6 +460,212 @@ END;
 				return new EncryptService($c, new Phpfunc());
 			};
 		}
+	}
+
+	/**
+	 * Returns a container instance for a specific component. This method goes through fof.xml to read the default
+	 * configuration values for the container. You are advised to use this unless you have a specific reason for
+	 * instantiating a Container without going through the fof.xml file.
+	 *
+	 * Pass the value 'tempInstance' => true in the $values array to get a temporary instance. Otherwise you will get
+	 * the cached instance of the previously created container.
+	 *
+	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
+	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
+	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in
+	 *                              auto-detection.
+	 *
+	 * @return \FOF40\Container\Container
+	 */
+	public static function &getInstance($component, array $values = [], $section = 'auto')
+	{
+		$tempInstance = false;
+
+		if (isset($values['tempInstance']))
+		{
+			$tempInstance = $values['tempInstance'];
+			unset($values['tempInstance']);
+		}
+
+		if ($tempInstance)
+		{
+			return self::makeInstance($component, $values, $section);
+		}
+
+		$signature = md5($component . '@' . $section);
+
+		if (!isset(self::$instances[$signature]))
+		{
+			self::$instances[$signature] = self::makeInstance($component, $values, $section);
+		}
+
+		return self::$instances[$signature];
+	}
+
+	/**
+	 * Returns a temporary container instance for a specific component.
+	 *
+	 * @param   string  $component  The component you want to get a container for, e.g. com_foobar.
+	 * @param   array   $values     Container configuration overrides you want to apply. Optional.
+	 * @param   string  $section    The application section (site, admin) you want to fetch. Any other value results in
+	 *                              auto-detection.
+	 *
+	 * @return \FOF40\Container\Container
+	 *
+	 * @throws Exception\NoComponent
+	 */
+	protected static function &makeInstance($component, array $values = [], $section = 'auto')
+	{
+		// Try to auto-detect some defaults
+		$tmpConfig    = array_merge($values, ['componentName' => $component]);
+		$tmpContainer = new Container($tmpConfig);
+
+		if (!in_array($section, ['site', 'admin']))
+		{
+			$section = $tmpContainer->platform->isBackend() ? 'admin' : 'site';
+		}
+
+		$appConfig = $tmpContainer->appConfig;
+
+		// Get the namespace from fof.xml
+		$namespace = $appConfig->get('container.componentNamespace', null);
+
+		// $values always overrides $namespace and fof.xml
+		if (isset($values['componentNamespace']))
+		{
+			$namespace = $values['componentNamespace'];
+		}
+
+		// If there is no namespace set, try to guess it.
+		if (empty($namespace))
+		{
+			$bareComponent = $component;
+
+			if (substr($component, 0, 4) == 'com_')
+			{
+				$bareComponent = substr($component, 4);
+			}
+
+			$namespace = ucfirst($bareComponent);
+		}
+
+		// Get the default front-end/back-end paths
+		$frontEndPath = $appConfig->get('container.frontEndPath', JPATH_SITE . '/components/' . $component);
+		$backEndPath  = $appConfig->get('container.backEndPath', JPATH_ADMINISTRATOR . '/components/' . $component);
+
+		// Parse path variables if necessary
+		$frontEndPath = $tmpContainer->parsePathVariables($frontEndPath);
+		$backEndPath  = $tmpContainer->parsePathVariables($backEndPath);
+
+		// Apply path overrides
+		if (isset($values['frontEndPath']))
+		{
+			$frontEndPath = $values['frontEndPath'];
+		}
+
+		if (isset($values['backEndPath']))
+		{
+			$backEndPath = $values['backEndPath'];
+		}
+
+		$thisPath = ($section == 'admin') ? $backEndPath : $frontEndPath;
+
+		// Get the namespaces for the front-end and back-end parts of the component
+		$frontEndNamespace = '\\' . $namespace . '\\Site\\';
+		$backEndNamespace  = '\\' . $namespace . '\\Admin\\';
+
+		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
+		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
+		if ($frontEndPath == $backEndPath)
+		{
+			$frontEndNamespace = '\\' . $namespace . '\\';
+			$backEndNamespace  = '\\' . $namespace . '\\';
+		}
+
+		// Do we have to register the component's namespaces with the autoloader?
+		$autoloader = Autoloader::getInstance();
+
+		if (!$autoloader->hasMap($frontEndNamespace))
+		{
+			$autoloader->addMap($frontEndNamespace, $frontEndPath);
+		}
+
+		if (!$autoloader->hasMap($backEndNamespace))
+		{
+			$autoloader->addMap($backEndNamespace, $backEndPath);
+		}
+
+		// Get the Container class name
+		$classNamespace = ($section == 'admin') ? $backEndNamespace : $frontEndNamespace;
+		$class          = $classNamespace . 'Container';
+
+		// Get the values overrides from fof.xml
+		$values = array_merge([
+			'factoryClass'  => '\\FOF40\\Factory\\BasicFactory',
+			'platformClass' => '\\FOF40\\Platform\\Joomla\\Platform',
+			'section'       => $section,
+		], $values);
+
+		$values = array_merge($values, [
+			'componentName'      => $component,
+			'componentNamespace' => $namespace,
+			'frontEndPath'       => $frontEndPath,
+			'backEndPath'        => $backEndPath,
+			'thisPath'           => $thisPath,
+			'rendererClass'      => $appConfig->get('container.rendererClass', null),
+			'factoryClass'       => $appConfig->get('container.factoryClass', $values['factoryClass']),
+			'platformClass'      => $appConfig->get('container.platformClass', $values['platformClass']),
+		]);
+
+		if (empty($values['rendererClass']))
+		{
+			unset ($values['rendererClass']);
+		}
+
+		$mediaVersion = $appConfig->get('container.mediaVersion', null);
+
+		unset($appConfig);
+		unset($tmpConfig);
+		unset($tmpContainer);
+
+		if (class_exists($class, true))
+		{
+			$container = new $class($values);
+		}
+		else
+		{
+			$container = new Container($values);
+		}
+
+		if (!is_null($mediaVersion))
+		{
+			$container->mediaVersion->setMediaVersion($mediaVersion);
+		}
+
+		return $container;
+	}
+
+	/**
+	 * The container SHOULD NEVER be serialised. If this happens, it means that any of the installed version is doing
+	 * something REALLY BAD, so let's die and inform the user of what it's going on.
+	 */
+	public function __sleep()
+	{
+		// If the site is in debug mode we die and let the user figure it out
+		if (defined('JDEBUG') && JDEBUG)
+		{
+			$msg = <<< END
+Something on your site is broken and tries to save the plugin state in the cache. This is a major security issue and
+will cause your site to not work properly. Go to your site's backend, Global Configuration and set Caching to OFF as a
+temporary solution. Possible causes: older versions of JoomlaShine templates, JomSocial, BetterPreview and other third
+party Joomla! extensions. 
+END;
+
+			die($msg);
+		}
+
+		// Otherwise we serialise the Container
+		return ['values', 'factories', 'protected', 'frozen', 'raw', 'keys'];
 	}
 
 	/**
@@ -718,19 +712,14 @@ END;
 				{
 					return $frontEndNamespace;
 				}
-				else
-				{
-					return $backEndNamespace;
-				}
-				break;
+
+				return $backEndNamespace;
 
 			case 'site':
 				return $frontEndNamespace;
-				break;
 
 			case 'admin':
 				return $backEndNamespace;
-				break;
 		}
 	}
 
@@ -745,7 +734,7 @@ END;
 	 * * %tmp%     Path to the temp directory
 	 * * %log%     Path to the log directory
 	 *
-	 * @param string $path
+	 * @param   string  $path
 	 *
 	 * @return mixed
 	 */

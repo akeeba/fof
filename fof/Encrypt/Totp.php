@@ -40,7 +40,7 @@ class Totp
 	 *
 	 * @var Base32|null
 	 */
-	private $base32 = null;
+	private $base32;
 
 	/**
 	 * Initialises an RFC6238-compatible TOTP generator. Please note that this
@@ -48,10 +48,10 @@ class Totp
 	 * of RFC6238. It's up to you to ensure that the same user/device does not
 	 * retry validation within the same Time Step.
 	 *
-	 * @param int    $timeStep       The Time Step (in seconds). Use 30 to be compatible with Google Authenticator.
-	 * @param int    $passCodeLength The generated passcode length. Default: 6 digits.
-	 * @param int    $secretLength   The length of the secret key. Default: 10 bytes (80 bits).
-	 * @param Base32 $base32         The base32 en/decrypter
+	 * @param   int     $timeStep        The Time Step (in seconds). Use 30 to be compatible with Google Authenticator.
+	 * @param   int     $passCodeLength  The generated passcode length. Default: 6 digits.
+	 * @param   int     $secretLength    The length of the secret key. Default: 10 bytes (80 bits).
+	 * @param   Base32  $base32          The base32 en/decrypter
 	 */
 	public function __construct(int $timeStep = 30, int $passCodeLength = 6, int $secretLength = 10, Base32 $base32 = null)
 	{
@@ -75,7 +75,7 @@ class Totp
 	 * defined. If $time is skipped or set to null the current timestamp will
 	 * be used.
 	 *
-	 * @param int|null $time Timestamp
+	 * @param   int|null  $time  Timestamp
 	 *
 	 * @return  int  The time period since the UNIX Epoch
 	 */
@@ -86,18 +86,16 @@ class Totp
 			$time = time();
 		}
 
-		$period = floor($time / $this->timeStep);
-
-		return $period;
+		return floor($time / $this->timeStep);
 	}
 
 	/**
 	 * Check is the given passcode $code is a valid TOTP generated using secret
 	 * key $secret
 	 *
-	 * @param string $secret The Base32-encoded secret key
-	 * @param string $code   The passcode to check
-	 * @param int    $time   The time to check it against. Leave null to check for the current server time.
+	 * @param   string  $secret  The Base32-encoded secret key
+	 * @param   string  $code    The passcode to check
+	 * @param   int     $time    The time to check it against. Leave null to check for the current server time.
 	 *
 	 * @return boolean True if the code is valid
 	 */
@@ -120,8 +118,8 @@ class Totp
 	 * Gets the TOTP passcode for a given secret key $secret and a given UNIX
 	 * timestamp $time
 	 *
-	 * @param string $secret The Base32-encoded secret key
-	 * @param int    $time   UNIX timestamp
+	 * @param   string  $secret  The Base32-encoded secret key
+	 * @param   int     $time    UNIX timestamp
 	 *
 	 * @return string
 	 */
@@ -138,27 +136,25 @@ class Totp
 		$offset = $offset & 0xF;
 
 		$truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
-		$pinValue      = str_pad($truncatedHash % $this->pinModulo, $this->passCodeLength, "0", STR_PAD_LEFT);
 
-		return $pinValue;
+		return str_pad($truncatedHash % $this->pinModulo, $this->passCodeLength, "0", STR_PAD_LEFT);
 	}
 
 	/**
 	 * Returns a QR code URL for easy setup of TOTP apps like Google Authenticator
 	 *
-	 * @param string $user     User
-	 * @param string $hostname Hostname
-	 * @param string $secret   Secret string
+	 * @param   string  $user      User
+	 * @param   string  $hostname  Hostname
+	 * @param   string  $secret    Secret string
 	 *
 	 * @return  string
 	 */
 	public function getUrl(string $user, string $hostname, string $secret): string
 	{
-		$url        = sprintf("otpauth://totp/%s@%s?secret=%s", $user, $hostname, $secret);
-		$encoder    = "https://chart.googleapis.com/chart?chs=200x200&chld=Q|2&cht=qr&chl=";
-		$encoderURL = $encoder . urlencode($url);
+		$url     = sprintf("otpauth://totp/%s@%s?secret=%s", $user, $hostname, $secret);
+		$encoder = "https://chart.googleapis.com/chart?chs=200x200&chld=Q|2&cht=qr&chl=";
 
-		return $encoderURL;
+		return $encoder . urlencode($url);
 	}
 
 	/**
@@ -182,8 +178,8 @@ class Totp
 	/**
 	 * Extracts a part of a hash as an integer
 	 *
-	 * @param string $bytes The hash
-	 * @param string $start The char to start from (0 = first char)
+	 * @param   string  $bytes  The hash
+	 * @param   string  $start  The char to start from (0 = first char)
 	 *
 	 * @return  string
 	 */

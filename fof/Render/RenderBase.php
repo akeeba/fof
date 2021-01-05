@@ -20,7 +20,7 @@ abstract class RenderBase implements RenderInterface
 {
 
 	/** @var   Container|null  The container we are attached to */
-	protected $container = null;
+	protected $container;
 
 	/** @var   bool  Is this renderer available under this execution environment? */
 	protected $enabled = false;
@@ -29,7 +29,7 @@ abstract class RenderBase implements RenderInterface
 	protected $priority = 0;
 
 	/** @var   Registry  A registry object holding renderer options */
-	protected $optionsRegistry = null;
+	protected $optionsRegistry;
 
 	/**
 	 * Public constructor. Determines the priority of this class and if it should be enabled
@@ -44,8 +44,8 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Set a renderer option (depends on the renderer)
 	 *
-	 * @param string $key   The name of the option to set
-	 * @param string $value The value of the option
+	 * @param   string  $key    The name of the option to set
+	 * @param   string  $value  The value of the option
 	 *
 	 * @return  void
 	 */
@@ -57,7 +57,7 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Set multiple renderer options at once (depends on the renderer)
 	 *
-	 * @param array $options The options to set as key => value pairs
+	 * @param   array  $options  The options to set as key => value pairs
 	 *
 	 * @return  void
 	 */
@@ -72,8 +72,8 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Get the value of a renderer option
 	 *
-	 * @param string $key     The name of the parameter
-	 * @param mixed  $default The default value to return if the parameter is not set
+	 * @param   string  $key      The name of the parameter
+	 * @param   mixed   $default  The default value to return if the parameter is not set
 	 *
 	 * @return  mixed  The parameter value
 	 */
@@ -101,8 +101,8 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Echoes any HTML to show before the view template
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -114,8 +114,8 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Echoes any HTML to show after the view template
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -141,7 +141,7 @@ abstract class RenderBase implements RenderInterface
 	/**
 	 * Opens a wrapper DIV. Our component's output will be inside this wrapper.
 	 *
-	 * @param array $classes An array of additional CSS classes to add to the outer page wrapper element.
+	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
 	 *
 	 * @return  void
 	 */

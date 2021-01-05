@@ -5,12 +5,11 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\View;
+namespace FOF40\View;
 
 use FOF40\Container\Container;
 use FOF40\Model\Model;
 use FOF40\View\Engine\EngineInterface;
-use FOF40\View\Exception\AccessForbidden;
 use FOF40\View\Exception\CannotGetName;
 use FOF40\View\Exception\EmptyStack;
 use FOF40\View\Exception\ModelNotFound;
@@ -24,32 +23,48 @@ defined('_JEXEC') or die;
  *
  * A generic MVC view implementation
  *
- * @property-read  \FOF40\Input\Input  $input  The input object (magic __get returns the Input from the Container)
+ * @property-read  \FOF40\Input\Input $input  The input object (magic __get returns the Input from the Container)
  */
 class View
 {
-    public $baseurl = null;
+	public $baseurl;
+
+	/**
+	 * Current or most recently performed task.
+	 * Currently public, it should be reduced to protected in the future
+	 *
+	 * @var  string
+	 */
+	public $task;
+
+	/**
+	 * The mapped task that was performed.
+	 * Currently public, it should be reduced to protected in the future
+	 *
+	 * @var  string
+	 */
+	public $doTask;
 
 	/**
 	 * The name of the view
 	 *
 	 * @var    array
 	 */
-	protected $name = null;
+	protected $name;
 
 	/**
 	 * Registered models
 	 *
 	 * @var    array
 	 */
-	protected $modelInstances = array();
+	protected $modelInstances = [];
 
 	/**
 	 * The default model
 	 *
 	 * @var    string
 	 */
-	protected $defaultModel = null;
+	protected $defaultModel;
 
 	/**
 	 * Layout name
@@ -70,28 +85,28 @@ class View
 	 *
 	 * @var   array
 	 */
-	protected $templatePaths = array();
+	protected $templatePaths = [];
 
 	/**
 	 * The name of the default template source file.
 	 *
 	 * @var   string
 	 */
-	protected $template = null;
+	protected $template;
 
 	/**
 	 * The output of the template script.
 	 *
 	 * @var   string
 	 */
-	protected $output = null;
+	protected $output;
 
 	/**
 	 * A cached copy of the configuration
 	 *
 	 * @var   array
 	 */
-	protected $config = array();
+	protected $config = [];
 
 	/**
 	 * The container attached to this view
@@ -105,30 +120,14 @@ class View
 	 *
 	 * @var   ViewTemplateFinder
 	 */
-	protected $viewFinder = null;
+	protected $viewFinder;
 
 	/**
 	 * Used when loading template files to avoid variable scope issues
 	 *
 	 * @var   null
 	 */
-	protected $_tempFilePath = null;
-
-	/**
-	 * Current or most recently performed task.
-	 * Currently public, it should be reduced to protected in the future
-	 *
-	 * @var  string
-	 */
-	public $task;
-
-	/**
-	 * The mapped task that was performed.
-	 * Currently public, it should be reduced to protected in the future
-	 *
-	 * @var  string
-	 */
-	public $doTask;
+	protected $_tempFilePath;
 
 	/**
 	 * Should I run the pre-render step?
@@ -149,24 +148,24 @@ class View
 	 *
 	 * @var    array
 	 */
-	protected $viewEngineMap = array(
+	protected $viewEngineMap = [
 		'.blade.php' => 'FOF40\\View\\Engine\\BladeEngine',
 		'.php'       => 'FOF40\\View\\Engine\\PhpEngine',
-	);
+	];
 
 	/**
 	 * All of the finished, captured sections.
 	 *
 	 * @var array
 	 */
-	protected $sections = array();
+	protected $sections = [];
 
 	/**
 	 * The stack of in-progress sections.
 	 *
 	 * @var array
 	 */
-	protected $sectionStack = array();
+	protected $sectionStack = [];
 
 	/**
 	 * The number of active rendering operations.
@@ -186,7 +185,7 @@ class View
 	 *
 	 * @var  array
 	 */
-	protected $viewTemplateAliases = array();
+	protected $viewTemplateAliases = [];
 
 	/**
 	 * Constructor.
@@ -198,12 +197,12 @@ class View
 	 * viewFinder     ViewTemplateFinder  The object used to locate view templates in the filesystem
 	 * viewEngineMap  array   Maps view template extensions to view engine classes
 	 *
-	 * @param   Container $container  The container we belong to
-	 * @param   array     $config     The configuration overrides for the view
+	 * @param   Container  $container  The container we belong to
+	 * @param   array      $config     The configuration overrides for the view
 	 *
 	 * @return  View
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		$this->container = $container;
 
@@ -239,8 +238,8 @@ class View
 		{
 			if (!is_array($config['viewEngineMap']))
 			{
-				$temp = explode(',', $config['viewEngineMap']);
-				$config['viewEngineMap'] = array();
+				$temp                    = explode(',', $config['viewEngineMap']);
+				$config['viewEngineMap'] = [];
 
 				foreach ($temp as $assignment)
 				{
@@ -251,7 +250,9 @@ class View
 						continue;
 					}
 
-					$parts = array_map(function($x) { return trim($x); }, $parts);
+					$parts = array_map(function ($x) {
+						return trim($x);
+					}, $parts);
 
 					$config['viewEngineMap'][$parts[0]] = $parts[1];
 				}
@@ -303,78 +304,6 @@ class View
 	}
 
 	/**
-	 * Sets an entire array of search paths for templates or resources.
-	 *
-	 * @param   mixed $path The new search path, or an array of search paths.  If null or false, resets to the current
-	 *                      directory only.
-	 *
-	 * @return  void
-	 */
-	protected function setTemplatePath($path)
-	{
-		// Clear out the prior search dirs
-		$this->templatePaths = array();
-
-		// Actually add the user-specified directories
-		$this->addTemplatePath($path);
-
-		// Set the alternative template search dir
-		$templatePath = JPATH_THEMES;
-		$fallback = $templatePath . '/' . $this->container->platform->getTemplate() . '/html/' . $this->container->componentName . '/' . $this->name;
-		$this->addTemplatePath($fallback);
-
-		// Get extra directories through event dispatchers
-		$extraPathsResults = $this->container->platform->runPlugins('onGetViewTemplatePaths', array(
-			$this->container->componentName,
-			$this->getName()
-		));
-
-		if (is_array($extraPathsResults) && !empty($extraPathsResults))
-		{
-			foreach ($extraPathsResults as $somePaths)
-			{
-				if (!empty($somePaths))
-				{
-					foreach ($somePaths as $aPath)
-					{
-						$this->addTemplatePath($aPath);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Adds to the search path for templates and resources.
-	 *
-	 * @param   mixed $path The directory or stream, or an array of either, to search.
-	 *
-	 * @return  void
-	 */
-	protected function addTemplatePath($path)
-	{
-		// Just force to array
-		settype($path, 'array');
-
-		// Loop through the path directories
-		foreach ($path as $dir)
-		{
-			// No surrounding spaces allowed!
-			$dir = trim($dir);
-
-			// Add trailing separators as needed
-			if (substr($dir, -1) != DIRECTORY_SEPARATOR)
-			{
-				// Directory
-				$dir .= DIRECTORY_SEPARATOR;
-			}
-
-			// Add to the top of the search dirs
-			array_unshift($this->templatePaths, $dir);
-		}
-	}
-
-	/**
 	 * Method to get the view name
 	 *
 	 * The model name by default parsed using the classname, or it can be set
@@ -404,7 +333,7 @@ class View
 	/**
 	 * Escapes a value for output in a view script.
 	 *
-	 * @param   mixed $var The output to escape.
+	 * @param   mixed  $var  The output to escape.
 	 *
 	 * @return  mixed  The escaped value.
 	 */
@@ -416,9 +345,9 @@ class View
 	/**
 	 * Method to get data from a registered model or a property of the view
 	 *
-	 * @param   string $property  The name of the method to call on the Model or the property to get
-	 * @param   string $default   The default value [optional]
-	 * @param   string $modelName The name of the Model to reference [optional]
+	 * @param   string  $property   The name of the method to call on the Model or the property to get
+	 * @param   string  $default    The default value [optional]
+	 * @param   string  $modelName  The name of the Model to reference [optional]
 	 *
 	 * @return  mixed  The return value of the method
 	 */
@@ -477,7 +406,7 @@ class View
 	/**
 	 * Returns a named Model object
 	 *
-	 * @param   string $name     The Model name. If null we'll use the modelName
+	 * @param   string  $name    The Model name. If null we'll use the modelName
 	 *                           variable or, if it's empty, the same name as
 	 *                           the Controller
 	 *
@@ -509,7 +438,7 @@ class View
 	/**
 	 * Pushes the default Model to the View
 	 *
-	 * @param   Model $model The model to push
+	 * @param   Model  $model  The model to push
 	 */
 	public function setDefaultModel(Model &$model)
 	{
@@ -522,7 +451,7 @@ class View
 	/**
 	 * Set the name of the Model to be used by this View
 	 *
-	 * @param   string $modelName The name of the Model
+	 * @param   string  $modelName  The name of the Model
 	 *
 	 * @return  void
 	 */
@@ -534,8 +463,8 @@ class View
 	/**
 	 * Pushes a named model to the View
 	 *
-	 * @param   string $modelName The name of the Model
-	 * @param   Model  $model     The actual Model object to push
+	 * @param   string  $modelName  The name of the Model
+	 * @param   Model   $model      The actual Model object to push
 	 *
 	 * @return  void
 	 */
@@ -548,7 +477,7 @@ class View
 	 * Overrides the default method to execute and display a template script.
 	 * Instead of loadTemplate is uses loadAnyTemplate.
 	 *
-	 * @param   string $tpl The name of the template file to parse
+	 * @param   string  $tpl  The name of the template file to parse
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -557,7 +486,7 @@ class View
 	public function display($tpl = null)
 	{
 		$eventName = 'onBefore' . ucfirst($this->doTask);
-		$this->triggerEvent($eventName, array($tpl));
+		$this->triggerEvent($eventName, [$tpl]);
 
 		$preRenderResult = '';
 
@@ -566,13 +495,13 @@ class View
 			@ob_start();
 			$this->preRender();
 			$preRenderResult = @ob_get_contents();
-            @ob_end_clean();
+			@ob_end_clean();
 		}
 
 		$templateResult = $this->loadTemplate($tpl);
 
 		$eventName = 'onAfter' . ucfirst($this->doTask);
-		$this->triggerEvent($eventName, array($tpl));
+		$this->triggerEvent($eventName, [$tpl]);
 
 		if (is_object($templateResult) && ($templateResult instanceof \Exception))
 		{
@@ -602,7 +531,7 @@ class View
 	/**
 	 * Sets the layout name to use
 	 *
-	 * @param   string $layout The layout name or a string in format <template>:<layout file>
+	 * @param   string  $layout  The layout name or a string in format <template>:<layout file>
 	 *
 	 * @return  string  Previous value.
 	 */
@@ -622,7 +551,7 @@ class View
 		else
 		{
 			// Convert parameter to array based on :
-			$temp = explode(':', $layout);
+			$temp         = explode(':', $layout);
 			$this->layout = $temp[1];
 
 			// Set layout template
@@ -635,8 +564,8 @@ class View
 	/**
 	 * Our function uses loadAnyTemplate to provide smarter view template loading.
 	 *
-	 * @param   string  $tpl    The name of the template file to parse
-	 * @param   boolean $strict Should we use strict naming, i.e. force a non-empty $tpl?
+	 * @param   string   $tpl     The name of the template file to parse
+	 * @param   boolean  $strict  Should we use strict naming, i.e. force a non-empty $tpl?
 	 *
 	 * @return  mixed  A string if successful, otherwise an Exception
 	 */
@@ -644,13 +573,13 @@ class View
 	{
 		$result = '';
 
-		$uris = $this->viewFinder->getViewTemplateUris(array(
+		$uris = $this->viewFinder->getViewTemplateUris([
 			'component' => $this->container->componentName,
 			'view'      => $this->getName(),
 			'layout'    => $this->getLayout(),
 			'tpl'       => $tpl,
-			'strictTpl' => $strict
-		));
+			'strictTpl' => $strict,
+		]);
 
 		foreach ($uris as $uri)
 		{
@@ -683,14 +612,16 @@ class View
 	 * any:com_example/invoices/printpreview
 	 *
 	 * @param   string    $uri          The template path
-	 * @param   array     $forceParams  A hash array of variables to be extracted in the local scope of the template file
-	 * @param   callable  $callback     A method to post-process the 3ναluα+3d view template (I use leetspeak here because of bad quality hosts with broken scanners)
+	 * @param   array     $forceParams  A hash array of variables to be extracted in the local scope of the template
+	 *                                  file
+	 * @param   callable  $callback     A method to post-process the 3ναluα+3d view template (I use leetspeak here
+	 *                                  because of bad quality hosts with broken scanners)
 	 *
 	 * @return  string  The output of the template
 	 *
 	 * @throws  \Exception  When the layout file is not found
 	 */
-	public function loadAnyTemplate($uri = '', $forceParams = array(), $callback = null)
+	public function loadAnyTemplate($uri = '', $forceParams = [], $callback = null)
 	{
 		if (isset($this->viewTemplateAliases[$uri]))
 		{
@@ -699,7 +630,7 @@ class View
 
 		$layoutTemplate = $this->getLayoutTemplate();
 
-		$extraPaths = array();
+		$extraPaths = [];
 
 		if (!empty($this->templatePaths))
 		{
@@ -774,10 +705,12 @@ class View
 	 * Go through a data array and render a subtemplate against each record (think master-detail views). This is
 	 * accessible through Blade templates as @each
 	 *
-	 * @param  string  $viewTemplate  The view template to use for each subitem, format componentPart://componentName/viewName/layoutName
-	 * @param  array   $data          The array of data you want to render. It can be a DataModel\Collection, array, ...
-	 * @param  string  $eachItemName  How to call each item in the loaded subtemplate (passed through $forceParams)
-	 * @param  string  $empty         What to display if the array is empty
+	 * @param   string  $viewTemplate  The view template to use for each subitem, format
+	 *                                 componentPart://componentName/viewName/layoutName
+	 * @param   array   $data          The array of data you want to render. It can be a DataModel\Collection, array,
+	 *                                 ...
+	 * @param   string  $eachItemName  How to call each item in the loaded subtemplate (passed through $forceParams)
+	 * @param   string  $empty         What to display if the array is empty
 	 *
 	 * @return string
 	 */
@@ -792,7 +725,7 @@ class View
 		{
 			foreach ($data as $key => $value)
 			{
-				$data = array('key' => $key, $eachItemName => $value);
+				$data = ['key' => $key, $eachItemName => $value];
 
 				$result .= $this->loadAnyTemplate($viewTemplate, $data);
 			}
@@ -823,8 +756,9 @@ class View
 	/**
 	 * Start injecting content into a section.
 	 *
-	 * @param  string  $section
-	 * @param  string  $content
+	 * @param   string  $section
+	 * @param   string  $content
+	 *
 	 * @return void
 	 */
 	public function startSection($section, $content = '')
@@ -855,18 +789,19 @@ class View
 	/**
 	 * Stop injecting content into a section.
 	 *
-	 * @param  bool  $overwrite
+	 * @param   bool  $overwrite
+	 *
 	 * @return string
 	 */
 	public function stopSection($overwrite = false)
 	{
-        if(empty($this->sectionStack))
-        {
-            // Let's close the output buffering
-            ob_get_clean();
+		if (empty($this->sectionStack))
+		{
+			// Let's close the output buffering
+			ob_get_clean();
 
-            throw new EmptyStack();
-        }
+			throw new EmptyStack();
+		}
 
 		$last = array_pop($this->sectionStack);
 
@@ -889,13 +824,13 @@ class View
 	 */
 	public function appendSection()
 	{
-        if(empty($this->sectionStack))
-        {
-            // Let's close the output buffering
-            ob_get_clean();
+		if (empty($this->sectionStack))
+		{
+			// Let's close the output buffering
+			ob_get_clean();
 
-            throw new EmptyStack();
-        }
+			throw new EmptyStack();
+		}
 
 		$last = array_pop($this->sectionStack);
 
@@ -912,28 +847,11 @@ class View
 	}
 
 	/**
-	 * Append content to a given section.
-	 *
-	 * @param  string  $section
-	 * @param  string  $content
-	 * @return void
-	 */
-	protected function extendSection($section, $content)
-	{
-		if (isset($this->sections[$section]))
-		{
-			$content = str_replace('@parent', $content, $this->sections[$section]);
-		}
-
-		$this->sections[$section] = $content;
-	}
-
-	/**
 	 * Get the string contents of a section.
 	 *
-	 * @param  string  $section
-	 * @param  string  $default
-     *
+	 * @param   string  $section
+	 * @param   string  $default
+	 *
 	 * @return string
 	 */
 	public function yieldContent($section, $default = '')
@@ -955,9 +873,9 @@ class View
 	 */
 	public function flushSections()
 	{
-		$this->sections = array();
+		$this->sections = [];
 
-		$this->sectionStack = array();
+		$this->sectionStack = [];
 	}
 
 	/**
@@ -968,91 +886,9 @@ class View
 	public function flushSectionsIfDoneRendering()
 	{
 		if ($this->doneRendering())
-        {
-            $this->flushSections();
-        }
-	}
-
-	/**
-	 * Evaluates the template described in the _tempFilePath property
-	 *
-	 * @param   array  $forceParams  Forced parameters
-	 *
-	 * @return string
-	 * @throws \Exception
-	 */
-	protected function processTemplate(array &$forceParams)
-	{
-		// If the engine returned raw content, return the raw content immediately
-		if ($this->_tempFilePath['type'] == 'raw')
 		{
-			return $this->_tempFilePath['content'];
+			$this->flushSections();
 		}
-
-		if (substr($this->_tempFilePath['content'], 0, 4) == 'raw|')
-		{
-			return substr($this->_tempFilePath['content'], 4);
-		}
-
-		$obLevel = ob_get_level();
-
-		ob_start();
-
-		// We'll process the contents of the view inside a try/catch block so we can
-		// flush out any stray output that might get out before an error occurs or
-		// an exception is thrown. This prevents any partial views from leaking.
-		try
-		{
-			$this->includeTemplateFile($forceParams);
-		}
-		catch (\Exception $e)
-		{
-			$this->handleViewException($e, $obLevel);
-		}
-
-		return ob_get_clean();
-	}
-
-	/**
-	 * This method makes sure the current scope isn't polluted with variables when including a view template
-	 *
-	 * @param   array   $forceParams  Forced parameters
-	 *
-	 * @return  void
-	 */
-	private function includeTemplateFile(array &$forceParams)
-	{
-		// Extract forced parameters
-		if (!empty($forceParams))
-		{
-			extract($forceParams);
-		}
-
-		include $this->_tempFilePath['content'];
-	}
-
-	/**
-	 * Handle a view exception.
-	 *
-	 * @param   \Exception  $e        The exception to handle
-	 * @param   int         $obLevel  The target output buffering level
-	 *
-	 * @return  void
-	 *
-	 * @throws  $e
-	 */
-	protected function handleViewException(\Exception $e, $obLevel)
-	{
-		while (ob_get_level() > $obLevel)
-		{
-			ob_end_clean();
-		}
-
-		$message = $e->getMessage().' (View template: ' . realpath($this->_tempFilePath['content']) . ')';
-
-		$newException = new \ErrorException($message, 0, 1, $e->getFile(), $e->getLine(), $e);
-
-		throw $newException;
 	}
 
 	/**
@@ -1066,47 +902,9 @@ class View
 	}
 
 	/**
-	 * Get the appropriate view engine for the given view template path.
-	 *
-	 * @param   string  $path  The path of the view template
-	 *
-	 * @return  EngineInterface
-	 *
-	 * @throws  UnrecognisedExtension
-	 */
-	protected function getEngine($path)
-	{
-		foreach ($this->viewEngineMap as $extension => $engine)
-		{
-			if (substr($path, -strlen($extension)) == $extension)
-			{
-				return new $engine($this);
-			}
-		}
-
-		throw new UnrecognisedExtension($path);
-	}
-
-	/**
-	 * Get the extension used by the view file.
-	 *
-	 * @param  string  $path
-	 * @return string
-	 */
-	protected function getExtension($path)
-	{
-		$extensions = array_keys($this->viewEngineMap);
-
-		return array_first($extensions, function($key, $value) use ($path)
-		{
-			return ends_with($path, $value);
-		});
-	}
-
-	/**
 	 * Load a helper file
 	 *
-	 * @param   string $helperClass    The last part of the name of the helper
+	 * @param   string  $helperClass   The last part of the name of the helper
 	 *                                 class.
 	 *
 	 * @return  void
@@ -1169,96 +967,6 @@ class View
 	}
 
 	/**
-	 * Triggers an object-specific event. The event runs both locally –if a suitable method exists– and through the
-	 * Joomla! plugin system. A true/false return value is expected. The first false return cancels the event.
-	 *
-	 * EXAMPLE
-	 * Component: com_foobar, Object name: item, Event: onBeforeSomething, Arguments: array(123, 456)
-	 * The event calls:
-	 * 1. $this->onBeforeSomething(123, 456)
-	 * 2. Joomla! plugin event onComFoobarViewItemBeforeSomething($this, 123, 456)
-	 *
-	 * @param   string  $event      The name of the event, typically named onPredicateVerb e.g. onBeforeKick
-	 * @param   array   $arguments  The arguments to pass to the event handlers
-	 *
-	 * @return  bool
-	 */
-	protected function triggerEvent($event, array $arguments = array())
-	{
-		$result = true;
-
-		// If there is an object method for this event, call it
-		if (method_exists($this, $event))
-		{
-			switch (count($arguments))
-			{
-				case 0:
-					$result = $this->{$event}();
-					break;
-				case 1:
-					$result = $this->{$event}($arguments[0]);
-					break;
-				case 2:
-					$result = $this->{$event}($arguments[0], $arguments[1]);
-					break;
-				case 3:
-					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2]);
-					break;
-				case 4:
-					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2], $arguments[3]);
-					break;
-				case 5:
-					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
-					break;
-				default:
-					$result = call_user_func_array(array($this, $event), $arguments);
-					break;
-			}
-		}
-
-		if ($result === false)
-		{
-			return false;
-		}
-
-		// All other event handlers live outside this object, therefore they need to be passed a reference to this
-		// objects as the first argument.
-		array_unshift($arguments, $this);
-
-		// If we have an "on" prefix for the event (e.g. onFooBar) remove it and stash it for later.
-		$prefix = '';
-
-		if (substr($event, 0, 2) == 'on')
-		{
-			$prefix = 'on';
-			$event = substr($event, 2);
-		}
-
-		// Get the component/model prefix for the event
-		$prefix .= 'Com' . ucfirst($this->container->bareComponentName) . 'View';
-		$prefix .= ucfirst($this->getName());
-
-		// The event name will be something like onComFoobarItemsBeforeSomething
-		$event = $prefix . $event;
-
-		// Call the Joomla! plugins
-		$results = $this->container->platform->runPlugins($event, $arguments);
-
-		if (!empty($results))
-		{
-			foreach ($results as $result)
-			{
-				if ($result === false)
-				{
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-	/**
 	 * Sets the pre-render flag
 	 *
 	 * @param   boolean  $value  True to enable the pre-render step
@@ -1283,32 +991,11 @@ class View
 	}
 
 	/**
-	 * Runs before rendering the view template, echoing HTML to put before the
-	 * view template's generated HTML
-	 *
-	 * @return void
-	 */
-	protected function preRender()
-	{
-		// You need to implement this in children classes
-	}
-
-	/**
-	 * Runs after rendering the view template, echoing HTML to put after the
-	 * view template's generated HTML
-	 *
-	 * @return  void
-	 */
-	protected function postRender()
-	{
-		// You need to implement this in children classes
-	}
-
-	/**
 	 * Add an alias for a view template.
 	 *
-	 * @param  string  $viewTemplate  Existing view template, in the format componentPart://componentName/viewName/layoutName
-	 * @param  string  $alias         The alias of the view template (any string will do)
+	 * @param   string  $viewTemplate  Existing view template, in the format
+	 *                                 componentPart://componentName/viewName/layoutName
+	 * @param   string  $alias         The alias of the view template (any string will do)
 	 *
 	 * @return void
 	 */
@@ -1377,7 +1064,7 @@ class View
 	 *
 	 * @return  $this  Self, for chaining
 	 */
-	public function addCssFile($uri, $version = null, $type = 'text/css', $media = null, $attribs = array())
+	public function addCssFile($uri, $version = null, $type = 'text/css', $media = null, $attribs = [])
 	{
 		// Add an automatic version if $version is null. For no version parameter pass an empty string to $version.
 		if (is_null($version))
@@ -1403,5 +1090,324 @@ class View
 		$this->container->template->addCSSInline($css, $type);
 
 		return $this;
+	}
+
+	/**
+	 * Sets an entire array of search paths for templates or resources.
+	 *
+	 * @param   mixed  $path  The new search path, or an array of search paths.  If null or false, resets to the current
+	 *                        directory only.
+	 *
+	 * @return  void
+	 */
+	protected function setTemplatePath($path)
+	{
+		// Clear out the prior search dirs
+		$this->templatePaths = [];
+
+		// Actually add the user-specified directories
+		$this->addTemplatePath($path);
+
+		// Set the alternative template search dir
+		$templatePath = JPATH_THEMES;
+		$fallback     = $templatePath . '/' . $this->container->platform->getTemplate() . '/html/' . $this->container->componentName . '/' . $this->name;
+		$this->addTemplatePath($fallback);
+
+		// Get extra directories through event dispatchers
+		$extraPathsResults = $this->container->platform->runPlugins('onGetViewTemplatePaths', [
+			$this->container->componentName,
+			$this->getName(),
+		]);
+
+		if (is_array($extraPathsResults) && !empty($extraPathsResults))
+		{
+			foreach ($extraPathsResults as $somePaths)
+			{
+				if (!empty($somePaths))
+				{
+					foreach ($somePaths as $aPath)
+					{
+						$this->addTemplatePath($aPath);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Adds to the search path for templates and resources.
+	 *
+	 * @param   mixed  $path  The directory or stream, or an array of either, to search.
+	 *
+	 * @return  void
+	 */
+	protected function addTemplatePath($path)
+	{
+		// Just force to array
+		settype($path, 'array');
+
+		// Loop through the path directories
+		foreach ($path as $dir)
+		{
+			// No surrounding spaces allowed!
+			$dir = trim($dir);
+
+			// Add trailing separators as needed
+			if (substr($dir, -1) != DIRECTORY_SEPARATOR)
+			{
+				// Directory
+				$dir .= DIRECTORY_SEPARATOR;
+			}
+
+			// Add to the top of the search dirs
+			array_unshift($this->templatePaths, $dir);
+		}
+	}
+
+	/**
+	 * Append content to a given section.
+	 *
+	 * @param   string  $section
+	 * @param   string  $content
+	 *
+	 * @return void
+	 */
+	protected function extendSection($section, $content)
+	{
+		if (isset($this->sections[$section]))
+		{
+			$content = str_replace('@parent', $content, $this->sections[$section]);
+		}
+
+		$this->sections[$section] = $content;
+	}
+
+	/**
+	 * Evaluates the template described in the _tempFilePath property
+	 *
+	 * @param   array  $forceParams  Forced parameters
+	 *
+	 * @return string
+	 * @throws \Exception
+	 */
+	protected function processTemplate(array &$forceParams)
+	{
+		// If the engine returned raw content, return the raw content immediately
+		if ($this->_tempFilePath['type'] == 'raw')
+		{
+			return $this->_tempFilePath['content'];
+		}
+
+		if (substr($this->_tempFilePath['content'], 0, 4) == 'raw|')
+		{
+			return substr($this->_tempFilePath['content'], 4);
+		}
+
+		$obLevel = ob_get_level();
+
+		ob_start();
+
+		// We'll process the contents of the view inside a try/catch block so we can
+		// flush out any stray output that might get out before an error occurs or
+		// an exception is thrown. This prevents any partial views from leaking.
+		try
+		{
+			$this->includeTemplateFile($forceParams);
+		}
+		catch (\Exception $e)
+		{
+			$this->handleViewException($e, $obLevel);
+		}
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Handle a view exception.
+	 *
+	 * @param   \Exception  $e        The exception to handle
+	 * @param   int         $obLevel  The target output buffering level
+	 *
+	 * @return  void
+	 *
+	 * @throws  $e
+	 */
+	protected function handleViewException(\Exception $e, $obLevel)
+	{
+		while (ob_get_level() > $obLevel)
+		{
+			ob_end_clean();
+		}
+
+		$message = $e->getMessage() . ' (View template: ' . realpath($this->_tempFilePath['content']) . ')';
+
+		$newException = new \ErrorException($message, 0, 1, $e->getFile(), $e->getLine(), $e);
+
+		throw $newException;
+	}
+
+	/**
+	 * Get the appropriate view engine for the given view template path.
+	 *
+	 * @param   string  $path  The path of the view template
+	 *
+	 * @return  EngineInterface
+	 *
+	 * @throws  UnrecognisedExtension
+	 */
+	protected function getEngine($path)
+	{
+		foreach ($this->viewEngineMap as $extension => $engine)
+		{
+			if (substr($path, -strlen($extension)) == $extension)
+			{
+				return new $engine($this);
+			}
+		}
+
+		throw new UnrecognisedExtension($path);
+	}
+
+	/**
+	 * Get the extension used by the view file.
+	 *
+	 * @param   string  $path
+	 *
+	 * @return string
+	 */
+	protected function getExtension($path)
+	{
+		$extensions = array_keys($this->viewEngineMap);
+
+		return array_first($extensions, function ($key, $value) use ($path) {
+			return ends_with($path, $value);
+		});
+	}
+
+	/**
+	 * Triggers an object-specific event. The event runs both locally –if a suitable method exists– and through the
+	 * Joomla! plugin system. A true/false return value is expected. The first false return cancels the event.
+	 *
+	 * EXAMPLE
+	 * Component: com_foobar, Object name: item, Event: onBeforeSomething, Arguments: array(123, 456)
+	 * The event calls:
+	 * 1. $this->onBeforeSomething(123, 456)
+	 * 2. Joomla! plugin event onComFoobarViewItemBeforeSomething($this, 123, 456)
+	 *
+	 * @param   string  $event      The name of the event, typically named onPredicateVerb e.g. onBeforeKick
+	 * @param   array   $arguments  The arguments to pass to the event handlers
+	 *
+	 * @return  bool
+	 */
+	protected function triggerEvent($event, array $arguments = [])
+	{
+		$result = true;
+
+		// If there is an object method for this event, call it
+		if (method_exists($this, $event))
+		{
+			switch (count($arguments))
+			{
+				case 0:
+					$result = $this->{$event}();
+					break;
+				case 1:
+					$result = $this->{$event}($arguments[0]);
+					break;
+				case 2:
+					$result = $this->{$event}($arguments[0], $arguments[1]);
+					break;
+				case 3:
+					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2]);
+					break;
+				case 4:
+					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2], $arguments[3]);
+					break;
+				case 5:
+					$result = $this->{$event}($arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
+					break;
+				default:
+					$result = call_user_func_array([$this, $event], $arguments);
+					break;
+			}
+		}
+
+		if ($result === false)
+		{
+			return false;
+		}
+
+		// All other event handlers live outside this object, therefore they need to be passed a reference to this
+		// objects as the first argument.
+		array_unshift($arguments, $this);
+
+		// If we have an "on" prefix for the event (e.g. onFooBar) remove it and stash it for later.
+		$prefix = '';
+
+		if (substr($event, 0, 2) == 'on')
+		{
+			$prefix = 'on';
+			$event  = substr($event, 2);
+		}
+
+		// Get the component/model prefix for the event
+		$prefix .= 'Com' . ucfirst($this->container->bareComponentName) . 'View';
+		$prefix .= ucfirst($this->getName());
+
+		// The event name will be something like onComFoobarItemsBeforeSomething
+		$event = $prefix . $event;
+
+		// Call the Joomla! plugins
+		$results = $this->container->platform->runPlugins($event, $arguments);
+
+		foreach ($results as $result)
+		{
+			if ($result === false)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Runs before rendering the view template, echoing HTML to put before the
+	 * view template's generated HTML
+	 *
+	 * @return void
+	 */
+	protected function preRender()
+	{
+		// You need to implement this in children classes
+	}
+
+	/**
+	 * Runs after rendering the view template, echoing HTML to put after the
+	 * view template's generated HTML
+	 *
+	 * @return  void
+	 */
+	protected function postRender()
+	{
+		// You need to implement this in children classes
+	}
+
+	/**
+	 * This method makes sure the current scope isn't polluted with variables when including a view template
+	 *
+	 * @param   array  $forceParams  Forced parameters
+	 *
+	 * @return  void
+	 */
+	private function includeTemplateFile(array &$forceParams)
+	{
+		// Extract forced parameters
+		if (!empty($forceParams))
+		{
+			extract($forceParams);
+		}
+
+		include $this->_tempFilePath['content'];
 	}
 }

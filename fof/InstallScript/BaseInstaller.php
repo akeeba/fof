@@ -5,13 +5,13 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\InstallScript;
+namespace FOF40\InstallScript;
 
 use DirectoryIterator;
 use Exception;
-use JFile;
-use JFolder;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
 
 defined('_JEXEC') or die;
@@ -48,7 +48,7 @@ class BaseInstaller
 	 *
 	 * @var   array
 	 */
-	protected $postInstallationMessages = array();
+	protected $postInstallationMessages = [];
 
 	/**
 	 * Recursively copy a bunch of files, but only if the source and target file have a different size.
@@ -59,7 +59,7 @@ class BaseInstaller
 	 *
 	 * @return  void
 	 */
-	protected function recursiveConditionalCopy(string $source, string $dest, array $ignored = array()): void
+	protected function recursiveConditionalCopy(string $source, string $dest, array $ignored = []): void
 	{
 		// Make sure source and destination exist
 		if (!@is_dir($source))
@@ -71,7 +71,7 @@ class BaseInstaller
 		{
 			if (!@mkdir($dest, 0755))
 			{
-				JFolder::create($dest, 0755);
+				Folder::create($dest, 0755);
 			}
 		}
 
@@ -141,7 +141,7 @@ class BaseInstaller
 
 			if (!@copy($sourcePath, $targetPath))
 			{
-				if (!JFile::copy($sourcePath, $targetPath))
+				if (!File::copy($sourcePath, $targetPath))
 				{
 					$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
 				}
@@ -152,9 +152,9 @@ class BaseInstaller
 	/**
 	 * Try to log a warning / error with Joomla
 	 *
-	 * @param   string $message  The message to write to the log
-	 * @param   bool   $error    Is this an error? If not, it's a warning. (default: false)
-	 * @param   string $category Log category, default jerror
+	 * @param   string  $message   The message to write to the log
+	 * @param   bool    $error     Is this an error? If not, it's a warning. (default: false)
+	 * @param   string  $category  Log category, default jerror
 	 *
 	 * @return  void
 	 */
@@ -265,7 +265,7 @@ class BaseInstaller
 	/**
 	 * Get the dependencies for a package from the #__akeeba_common table
 	 *
-	 * @param   string $package The package
+	 * @param   string  $package  The package
 	 *
 	 * @return  array  The dependencies
 	 */
@@ -285,12 +285,12 @@ class BaseInstaller
 
 			if (empty($dependencies))
 			{
-				$dependencies = array();
+				$dependencies = [];
 			}
 		}
 		catch (Exception $e)
 		{
-			$dependencies = array();
+			$dependencies = [];
 		}
 
 		return $dependencies;
@@ -299,8 +299,8 @@ class BaseInstaller
 	/**
 	 * Sets the dependencies for a package into the #__akeeba_common table
 	 *
-	 * @param   string $package      The package
-	 * @param   array  $dependencies The dependencies list
+	 * @param   string  $package       The package
+	 * @param   array   $dependencies  The dependencies list
 	 */
 	protected function setDependencies(string $package, array $dependencies): void
 	{
@@ -319,10 +319,10 @@ class BaseInstaller
 			// Do nothing if the old key wasn't found
 		}
 
-		$object = (object) array(
+		$object = (object) [
 			'key'   => $package,
 			'value' => json_encode($dependencies),
-		);
+		];
 
 		try
 		{
@@ -337,8 +337,8 @@ class BaseInstaller
 	/**
 	 * Adds a package dependency to #__akeeba_common
 	 *
-	 * @param   string $package    The package
-	 * @param   string $dependency The dependency to add
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to add
 	 */
 	protected function addDependency(string $package, string $dependency): void
 	{
@@ -355,8 +355,8 @@ class BaseInstaller
 	/**
 	 * Removes a package dependency from #__akeeba_common
 	 *
-	 * @param   string $package    The package
-	 * @param   string $dependency The dependency to remove
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to remove
 	 */
 	protected function removeDependency(string $package, string $dependency): void
 	{
@@ -374,8 +374,8 @@ class BaseInstaller
 	/**
 	 * Do I have a dependency for a package in #__akeeba_common
 	 *
-	 * @param   string $package    The package
-	 * @param   string $dependency The dependency to check for
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to check for
 	 *
 	 * @return bool
 	 */
@@ -421,15 +421,28 @@ class BaseInstaller
 	 * enabled              Must be 1 for this message to be enabled. If you omit it, it defaults to 1.
 	 *
 	 * condition_file        The RAD path to a PHP file containing a PHP function which determines whether this message
-	 *                        should be shown to the user. @see Template::parsePath() for RAD path format. Joomla!
+	 *                        should be shown to the user. @param   array  $options  See description
+	 *
+	 * @return  void
+	 *
+	 * @throws Exception
+	 * @see                   Template::parsePath() for RAD path format. Joomla! will include this file
+	 *                        before calling the function defined in the action key below.
+	 *                        Example:   admin://components/com_foobar/helpers/postinstall.php
+	 *
+	 * action                The name of a PHP function which will be used to run the action of this PIM. This must be
+	 * a
+	 *                      simple PHP user function (not a class method, static method etc) which returns no result.
+	 *                        Example: com_foobar_postinstall_messageone_action
+	 *
+	 * @see                   Template::parsePath() for RAD path format. Joomla!
 	 *                        will include this file before calling the condition_method.
 	 *                      Example:   admin://components/com_foobar/helpers/postinstall.php
 	 *
 	 * condition_method     The name of a PHP function which will be used to determine whether to show this message to
 	 *                      the user. This must be a simple PHP user function (not a class method, static method etc)
-	 *                        which returns true to show the message and false to hide it. This function is defined in the
-	 *                        condition_file.
-	 *                        Example: com_foobar_postinstall_messageone_condition
+	 *                        which returns true to show the message and false to hide it. This function is defined in
+	 *                        the condition_file. Example: com_foobar_postinstall_messageone_condition
 	 *
 	 * When type=message no additional keys are required.
 	 *
@@ -440,21 +453,9 @@ class BaseInstaller
 	 *
 	 * Then type=action the following additional keys are required:
 	 *
-	 * action_file            The RAD path to a PHP file containing a PHP function which performs the action of this PIM.
+	 * action_file            The RAD path to a PHP file containing a PHP function which performs the action of this
+	 * PIM.
 	 *
-	 * @see                   Template::parsePath() for RAD path format. Joomla! will include this file
-	 *                        before calling the function defined in the action key below.
-	 *                        Example:   admin://components/com_foobar/helpers/postinstall.php
-	 *
-	 * action                The name of a PHP function which will be used to run the action of this PIM. This must be a
-	 *                      simple PHP user function (not a class method, static method etc) which returns no result.
-	 *                        Example: com_foobar_postinstall_messageone_action
-	 *
-	 * @param array $options See description
-	 *
-	 * @return  void
-	 *
-	 * @throws Exception
 	 */
 	protected function addPostInstallationMessage(array $options): void
 	{
@@ -465,7 +466,7 @@ class BaseInstaller
 		}
 
 		// Initialise array keys
-		$defaultOptions = array(
+		$defaultOptions = [
 			'extension_id'       => '',
 			'type'               => '',
 			'title_key'          => '',
@@ -479,7 +480,7 @@ class BaseInstaller
 			'condition_method'   => '',
 			'version_introduced' => '',
 			'enabled'            => '1',
-		);
+		];
 
 		$options = array_merge($defaultOptions, $options);
 
@@ -488,12 +489,9 @@ class BaseInstaller
 		$allKeys     = array_keys($options);
 		$extraKeys   = array_diff($allKeys, $defaultKeys);
 
-		if (!empty($extraKeys))
+		foreach ($extraKeys as $key)
 		{
-			foreach ($extraKeys as $key)
-			{
-				unset($options[$key]);
-			}
+			unset($options[$key]);
 		}
 
 		// Normalisation of integer values
@@ -502,7 +500,7 @@ class BaseInstaller
 		$options['enabled']            = (int) $options['enabled'];
 
 		// Normalisation of 0/1 values
-		foreach (array('language_client_id', 'enabled') as $key)
+		foreach (['language_client_id', 'enabled'] as $key)
 		{
 			$options[$key] = $options[$key] ? 1 : 0;
 		}
@@ -514,7 +512,7 @@ class BaseInstaller
 		}
 
 		// Make sure there's a valid type
-		if (!in_array($options['type'], array('message', 'link', 'action')))
+		if (!in_array($options['type'], ['message', 'link', 'action']))
 		{
 			throw new Exception('Post-installation message definitions need to declare a type of message, link or action', 500);
 		}

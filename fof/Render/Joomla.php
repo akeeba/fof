@@ -40,8 +40,8 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Echoes any HTML to show before the view template
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -119,8 +119,8 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Echoes any HTML to show after the view template
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -154,8 +154,8 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Renders the submenu (link bar)
 	 *
-	 * @param string $view The active view name
-	 * @param string $task The current task
+	 * @param   string  $view  The active view name
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -180,8 +180,8 @@ class Joomla extends RenderBase implements RenderInterface
 	 * Renders the submenu (link bar) in F0F's classic style, using a Bootstrapped
 	 * tab bar.
 	 *
-	 * @param   string    $view    The active view name
-	 * @param   string    $task    The current task
+	 * @param   string  $view  The active view name
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -325,8 +325,8 @@ class Joomla extends RenderBase implements RenderInterface
 	 * is a list of bar separated links, on Joomla! 3 it's a sidebar at the
 	 * left-hand side of the page.
 	 *
-	 * @param string $view The active view name
-	 * @param string $task The current task
+	 * @param   string  $view  The active view name
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -355,7 +355,7 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Render the linkbar
 	 *
-	 * @param Toolbar $toolbar A toolbar object
+	 * @param   Toolbar  $toolbar  A toolbar object
 	 *
 	 * @return  void
 	 */
@@ -390,8 +390,8 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Renders the toolbar buttons
 	 *
-	 * @param string $view The active view name
-	 * @param string $task The current task
+	 * @param   string  $view  The active view name
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -488,7 +488,7 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Opens the wrapper DIV element. Our component's output will be inside this wrapper.
 	 *
-	 * @param array $classes An array of additional CSS classes to add to the outer page wrapper element.
+	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
 	 *
 	 * @return  void
 	 */

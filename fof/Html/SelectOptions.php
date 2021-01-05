@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Html;
+namespace FOF40\Html;
 
 use Joomla\CMS\Cache\Cache;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -13,11 +13,19 @@ use Joomla\CMS\Helper\UserGroupsHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
+use stdClass;
 
 defined('_JEXEC') or die;
 
 /**
  * Returns arrays of HTMLHelper select options for Joomla-specific information such as access levels.
+ *
+ * @method static array access() access(array $params)
+ * @method static array usergroups() usergroups(array $params)
+ * @method static array cachehandlers() cachehandlers(array $params)
+ * @method static array components() components(array $params)
+ * @method static array languages() languages(array $params)
+ * @method static array published() published(array $params)
  */
 class SelectOptions
 {
@@ -27,13 +35,12 @@ class SelectOptions
 	 * Magic method to handle static calls
 	 *
 	 * @param   string  $name       The name of the static method being called
-	 * @param   string  $arguments  Ignored.
+	 * @param   array   $arguments  Optional arguments, if they are supported by the options type.
 	 *
+	 * @return  mixed
 	 * @since   3.3.0
-	 *
-	 * @return mixed
 	 */
-	public static function __callStatic($name, $arguments)
+	public static function __callStatic(string $name, array $arguments = [])
 	{
 		return self::getOptions($name, $arguments);
 	}
@@ -52,14 +59,14 @@ class SelectOptions
 	 *
 	 * See the private static methods of this class for more information on params.
 	 *
-	 * @param   string $type   The options type to get
-	 * @param   array  $params Optional arguments, if they are supported by the options type.
+	 * @param   string  $type    The options type to get
+	 * @param   array   $params  Optional arguments, if they are supported by the options type.
 	 *
+	 * @return  stdClass[]
 	 * @since   3.3.0
-	 *
-	 * @return  \stdClass[]
+	 * @api
 	 */
-	public static function getOptions(string $type, array $params = [])
+	public static function getOptions(string $type, array $params = []): array
 	{
 		if ((substr($type, 0, 1) == '_') || !method_exists(__CLASS__, $type))
 		{
@@ -76,10 +83,11 @@ class SelectOptions
 
 		$cacheKey = sha1($type . '--' . print_r($params, true));
 		$fetchNew = !$useCache || ($useCache && !isset(self::$cache[$cacheKey]));
+		$ret      = [];
 
 		if ($fetchNew)
 		{
-			$ret = forward_static_call_array([__CLASS__, $type], [$params]);
+			$ret = forward_static_call_array([__CLASS__, '_api_' . $type], [$params]);
 		}
 
 		if (!$useCache)
@@ -103,25 +111,27 @@ class SelectOptions
 	 *
 	 * @param   array  $params  Parameters
 	 *
+	 * @return  stdClass[]
 	 * @since   3.3.0
+	 * @internal
 	 *
-	 * @return  \stdClass[]
+	 * @see     \Joomla\CMS\HTML\Helpers\Access::level()
 	 *
-	 * @see \JHtmlAccess::level()
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function access(array $params = [])
+	private static function _api_access(array $params = []): array
 	{
-		$db = JoomlaFactory::getDbo();
+		$db    = JoomlaFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('a.id', 'value') . ', ' . $db->quoteName('a.title', 'text'))
 			->from($db->quoteName('#__viewlevels', 'a'))
-			->group($db->quoteName(array('a.id', 'a.title', 'a.ordering')))
+			->group($db->quoteName(['a.id', 'a.title', 'a.ordering']))
 			->order($db->quoteName('a.ordering') . ' ASC')
 			->order($db->quoteName('title') . ' ASC');
 
 		// Get the options.
 		$db->setQuery($query);
-		$options = $db->loadObjectList();
+		$options = $db->loadObjectList() ?? [];
 
 		if (isset($params['allLevels']) && $params['allLevels'])
 		{
@@ -139,20 +149,22 @@ class SelectOptions
 	 *
 	 * @param   array  $params  Parameters
 	 *
+	 * @return  stdClass[]
 	 * @since   3.3.0
+	 * @internal
 	 *
-	 * @return  \stdClass[]
+	 * @see     \Joomla\CMS\HTML\Helpers\Access::usergroup()
 	 *
-	 * @see \JHtmlAccess::usergroup()
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function usergroups(array $params = [])
+	private static function _api_usergroups(array $params = []): array
 	{
 		$options = array_values(UserGroupsHelper::getInstance()->getAll());
 
 		for ($i = 0, $n = count($options); $i < $n; $i++)
 		{
 			$options[$i]->value = $options[$i]->id;
-			$options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->title;
+			$options[$i]->text  = str_repeat('- ', $options[$i]->level) . $options[$i]->title;
 		}
 
 		// If all usergroups is allowed, push it into the array.
@@ -167,13 +179,17 @@ class SelectOptions
 	/**
 	 * Joomla cache handlers
 	 *
-	 * @since   3.3.0
+	 * @param   array  $params  Ignored
 	 *
-	 * @return  \stdClass[]
+	 * @return  stdClass[]
+	 * @since   3.3.0
+	 * @internal
+	 *
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function cachehandlers()
+	private static function _api_cachehandlers(array $params = []): array
 	{
-		$options = array();
+		$options = [];
 
 		// Convert to name => name array.
 		foreach (Cache::getStores() as $store)
@@ -192,11 +208,13 @@ class SelectOptions
 	 *
 	 * @param   array  $params
 	 *
+	 * @return  stdClass[]
 	 * @since   3.3.0
+	 * @internal
 	 *
-	 * @return 	\stdClass[]
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function components(array $params)
+	private static function _api_components(array $params = []): array
 	{
 		$db = JoomlaFactory::getDbo();
 
@@ -266,14 +284,16 @@ class SelectOptions
 	 * - client  'site' (default) or 'administrator'
 	 * - none    Text to show for "all languages" option, use empty string to remove it
 	 *
-	 * @since   3.3.0
+	 * @param   array  $params
 	 *
-	 * @return  \stdClass  Languages for the specifed client
+	 * @return  object[]  Languages for the specified client
+	 * @since   3.3.0
+	 * @internal
+	 *
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function languages(array $params)
+	private static function _api_languages(array $params): array
 	{
-		$db = JoomlaFactory::getDbo();
-
 		$client = isset($params['client']) ? $params['client'] : 'site';
 
 		if (!in_array($client, ['site', 'administrator']))
@@ -288,8 +308,7 @@ class SelectOptions
 		{
 			usort(
 				$options,
-				function ($a, $b)
-				{
+				function ($a, $b) {
 					return strcmp($a['value'], $b['value']);
 				}
 			);
@@ -316,11 +335,15 @@ class SelectOptions
 	 * - trash          Show "Trashed"? Default: false
 	 * - all            Show "All" option? This is different than none, the key is '*'. Default: false
 	 *
-	 * @param $params
+	 * @param   array  $params
 	 *
-	 * @return array
+	 * @return  array
+	 * @since   3.3.0
+	 * @internal
+	 *
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function published(array $params = [])
+	private static function _api_published(array $params = []): array
 	{
 		$config = array_merge([
 			'none'        => '',
@@ -331,7 +354,7 @@ class SelectOptions
 			'all'         => false,
 		], $params);
 
-		$options = array();
+		$options = [];
 
 		if (!empty($config['none']))
 		{
@@ -372,17 +395,21 @@ class SelectOptions
 	 * Params:
 	 * - none           Placeholder for no selection (empty key). Default: null.
 	 *
-	 * @param $params
+	 * @param   array  $params
 	 *
-	 * @return array
+	 * @return  array
+	 * @since   3.3.0
+	 * @internal
+	 *
+	 * @noinspection PhpUnusedPrivateMethodInspection
 	 */
-	private static function boolean(array $params = [])
+	private static function _api_boolean(array $params = []): array
 	{
 		$config = array_merge([
-			'none'        => '',
+			'none' => '',
 		], $params);
 
-		$options = array();
+		$options = [];
 
 		if (!empty($config['none']))
 		{
@@ -399,15 +426,15 @@ class SelectOptions
 	/**
 	 * Translate a component name
 	 *
-	 * @param   \stdClass  $item  The component object
-	 *
-	 * @since   3.3.0
+	 * @param   object  $item  The component object
 	 *
 	 * @return  string  $text  The translated name of the extension
+	 * @since   3.3.0
+	 * @internal
 	 *
-	 * @see administrator/com_installer/models/extension.php
+	 * @see     /administrator/com_installer/models/extension.php
 	 */
-	private static function _translateComponentName($item): string
+	private static function _translateComponentName(object $item): string
 	{
 		// Map the manifest cache to $item. This is needed to get the name from the
 		// manifest_cache and NOT from the name column, else some Text::_() translations fails.

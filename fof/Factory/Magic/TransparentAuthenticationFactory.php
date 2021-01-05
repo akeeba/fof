@@ -12,14 +12,15 @@ use FOF40\TransparentAuthentication\TransparentAuthentication;
 defined('_JEXEC') or die;
 
 /**
- * Creates a TransparentAuthentication object instance based on the information provided by the fof.xml configuration file
+ * Creates a TransparentAuthentication object instance based on the information provided by the fof.xml configuration
+ * file
  */
 class TransparentAuthenticationFactory extends BaseFactory
 {
 	/**
 	 * Create a new object instance
 	 *
-	 * @param array $config The config parameters which override the fof.xml information
+	 * @param   array  $config  The config parameters which override the fof.xml information
 	 *
 	 * @return  TransparentAuthentication  A new TransparentAuthentication object
 	 */
@@ -36,8 +37,6 @@ class TransparentAuthenticationFactory extends BaseFactory
 			$className = '\\FOF40\\TransparentAuthentication\\TransparentAuthentication';
 		}
 
-		$dispatcher = new $className($this->container, $config);
-
-		return $dispatcher;
+		return new $className($this->container, $config);
 	}
 }

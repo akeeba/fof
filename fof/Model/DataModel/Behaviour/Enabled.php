@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
 
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
@@ -24,12 +24,12 @@ class Enabled extends Observer
 	 * This event runs before we have built the query used to fetch a record
 	 * list in a model. It is used to apply automatic query filters.
 	 *
-	 * @param   DataModel      &$model The model which calls this event
-	 * @param   JDatabaseQuery &$query The query we are manipulating
+	 * @param   DataModel      &$model  The model which calls this event
+	 * @param   JDatabaseQuery &$query  The query we are manipulating
 	 *
 	 * @return  void
 	 */
-	public function onBeforeBuildQuery(&$model, &$query)
+	public function onBeforeBuildQuery(DataModel &$model, JDatabaseQuery &$query)
 	{
 		// Make sure the field actually exists
 		if (!$model->hasField('enabled'))
@@ -38,7 +38,7 @@ class Enabled extends Observer
 		}
 
 		$fieldName = $model->getFieldAlias('enabled');
-		$db = $model->getDbo();
+		$db        = $model->getDbo();
 
 		$model->whereRaw($db->qn($fieldName) . ' = ' . $db->q(1));
 	}
@@ -48,11 +48,11 @@ class Enabled extends Observer
 	 * filters.
 	 *
 	 * @param   DataModel &$model  The model which was called
-	 * @param   Array     &$keys   The keys used to locate the record which was loaded
+	 * @param   array     &$keys   The keys used to locate the record which was loaded
 	 *
 	 * @return  void
 	 */
-	public function onAfterLoad(&$model, &$keys)
+	public function onAfterLoad(DataModel &$model, array &$keys)
 	{
 		// Make sure we have a DataModel
 		if (!($model instanceof DataModel))

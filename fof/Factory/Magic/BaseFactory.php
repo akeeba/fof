@@ -16,11 +16,12 @@ abstract class BaseFactory
 	/**
 	 * @var   Container|null  The container where this factory belongs to
 	 */
-	protected $container = null;
+	protected $container;
 
 	/**
 	 * Section used to build the namespace prefix. We have to pass it since in CLI we need
-	 * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for valid values
+	 * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for
+	 * valid values
 	 *
 	 * @var   string
 	 */
@@ -29,7 +30,7 @@ abstract class BaseFactory
 	/**
 	 * Public constructor
 	 *
-	 * @param Container $container The container we belong to
+	 * @param   Container  $container  The container we belong to
 	 */
 	public function __construct(Container $container)
 	{
@@ -45,7 +46,7 @@ abstract class BaseFactory
 	}
 
 	/**
-	 * @param string $section
+	 * @param   string  $section
 	 */
 	public function setSection(string $section): void
 	{

@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Relation;
+namespace FOF40\Model\DataModel\Relation;
 
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Relation;
@@ -22,13 +22,15 @@ class HasMany extends Relation
 	/**
 	 * Public constructor. Initialises the relation.
 	 *
-	 * @param   DataModel $parentModel       The data model we are attached to
-	 * @param   string    $foreignModelName  The name of the foreign key's model in the format "modelName@com_something"
-	 * @param   string    $localKey          The local table key for this relation, default: parentModel's ID field name
-	 * @param   string    $foreignKey        The foreign key for this relation, default: parentModel's ID field name
-	 * @param   string    $pivotTable        IGNORED
-	 * @param   string    $pivotLocalKey     IGNORED
-	 * @param   string    $pivotForeignKey   IGNORED
+	 * @param   DataModel  $parentModel       The data model we are attached to
+	 * @param   string     $foreignModelName  The name of the foreign key's model in the format
+	 *                                        "modelName@com_something"
+	 * @param   string     $localKey          The local table key for this relation, default: parentModel's ID field
+	 *                                        name
+	 * @param   string     $foreignKey        The foreign key for this relation, default: parentModel's ID field name
+	 * @param   string     $pivotTable        IGNORED
+	 * @param   string     $pivotLocalKey     IGNORED
+	 * @param   string     $pivotForeignKey   IGNORED
 	 */
 	public function __construct(DataModel $parentModel, $foreignModelName, $localKey = null, $foreignKey = null, $pivotTable = null, $pivotLocalKey = null, $pivotForeignKey = null)
 	{
@@ -46,10 +48,67 @@ class HasMany extends Relation
 	}
 
 	/**
+	 * Returns the count subquery for DataModel's has() and whereHas() methods.
+	 *
+	 * @param   string  $tableAlias  The alias of the local table in the query. Leave blank to use the table's name.
+	 *
+	 * @return \JDatabaseQuery
+	 */
+	public function getCountSubquery($tableAlias = null)
+	{
+		// Get a model instance
+		$foreignModel = $this->getForeignModel();
+		$foreignModel->setIgnoreRequest(true);
+
+		$db = $foreignModel->getDbo();
+
+		if (empty($tableAlias))
+		{
+			$tableAlias = $this->parentModel->getTableName();
+		}
+
+		return $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->qn($foreignModel->getTableName(), 'reltbl'))
+			->where($db->qn('reltbl') . '.' . $db->qn($foreignModel->getFieldAlias($this->foreignKey)) . ' = '
+				. $db->qn($tableAlias) . '.'
+				. $db->qn($this->parentModel->getFieldAlias($this->localKey)));
+	}
+
+	/**
+	 * Returns a new item of the foreignModel type, pre-initialised to fulfil this relation
+	 *
+	 * @return DataModel
+	 *
+	 * @throws DataModel\Relation\Exception\NewNotSupported when it's not supported
+	 */
+	public function getNew()
+	{
+		// Get a model instance
+		$foreignModel = $this->getForeignModel();
+		$foreignModel->setIgnoreRequest(true);
+
+		// Prime the model
+		$foreignModel->setFieldValue($this->foreignKey, $this->parentModel->getFieldValue($this->localKey));
+
+		// Make sure we do have a data list
+		if (!($this->data instanceof DataModel\Collection))
+		{
+			$this->getData();
+		}
+
+		// Add the model to the data list
+		$this->data->add($foreignModel);
+
+		return $this->data->last();
+	}
+
+	/**
 	 * Applies the relation filters to the foreign model when getData is called
 	 *
-	 * @param DataModel  $foreignModel   The foreign model you're operating on
-	 * @param DataModel\Collection $dataCollection If it's an eager loaded relation, the collection of loaded parent records
+	 * @param   DataModel             $foreignModel    The foreign model you're operating on
+	 * @param   DataModel\Collection  $dataCollection  If it's an eager loaded relation, the collection of loaded
+	 *                                                 parent records
 	 *
 	 * @return boolean Return false to force an empty data collection
 	 */
@@ -62,7 +121,7 @@ class HasMany extends Relation
 			if (!empty($dataCollection))
 			{
 				// Get a list of local keys from the collection
-				$values = array();
+				$values = [];
 
 				/** @var $item DataModel */
 				foreach ($dataCollection as $item)
@@ -108,63 +167,5 @@ class HasMany extends Relation
 		}
 
 		return true;
-	}
-
-	/**
-	 * Returns the count subquery for DataModel's has() and whereHas() methods.
-	 *
-	 * @param   string  $tableAlias  The alias of the local table in the query. Leave blank to use the table's name.
-	 *
-	 * @return \JDatabaseQuery
-	 */
-	public function getCountSubquery($tableAlias = null)
-	{
-		// Get a model instance
-		$foreignModel = $this->getForeignModel();
-		$foreignModel->setIgnoreRequest(true);
-
-		$db = $foreignModel->getDbo();
-
-		if (empty($tableAlias))
-		{
-			$tableAlias = $this->parentModel->getTableName();
-		}
-
-		$query = $db->getQuery(true)
-			->select('COUNT(*)')
-			->from($db->qn($foreignModel->getTableName(), 'reltbl'))
-			->where($db->qn('reltbl') . '.' . $db->qn($foreignModel->getFieldAlias($this->foreignKey)) . ' = '
-				. $db->qn($tableAlias) . '.'
-				. $db->qn($this->parentModel->getFieldAlias($this->localKey)));
-
-		return $query;
-	}
-
-	/**
-	 * Returns a new item of the foreignModel type, pre-initialised to fulfil this relation
-	 *
-	 * @return DataModel
-	 *
-	 * @throws DataModel\Relation\Exception\NewNotSupported when it's not supported
-	 */
-	public function getNew()
-	{
-		// Get a model instance
-		$foreignModel = $this->getForeignModel();
-		$foreignModel->setIgnoreRequest(true);
-
-		// Prime the model
-		$foreignModel->setFieldValue($this->foreignKey, $this->parentModel->getFieldValue($this->localKey));
-
-		// Make sure we do have a data list
-		if (!($this->data instanceof DataModel\Collection))
-		{
-			$this->getData();
-		}
-
-		// Add the model to the data list
-		$this->data->add($foreignModel);
-
-		return $this->data->last();
 	}
 } 

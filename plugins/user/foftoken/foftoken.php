@@ -190,6 +190,7 @@ class PlgUserFoftoken extends JPlugin
 	 * @param   string  $error   Error string
 	 *
 	 * @return bool
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
@@ -298,6 +299,7 @@ class PlgUserFoftoken extends JPlugin
 	 * @return  bool
 	 *
 	 * @throws  Exception
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function onUserAfterDelete($user, $success, $msg)
 	{
@@ -339,6 +341,7 @@ class PlgUserFoftoken extends JPlugin
 	 * @param   Container  $container  The container of the component performing a transparent authentication check.
 	 *
 	 * @return  array  Authentication credentials
+	 * @noinspection PhpUnused
 	 */
 	public function onFOFGetTransparentAuthenticationCredentials(Container $container)
 	{
@@ -389,6 +392,8 @@ class PlgUserFoftoken extends JPlugin
 	 * @param   array  $options
 	 *
 	 * @return  AuthenticationResponse
+	 * @noinspection PhpUnusedParameterInspection
+	 * @noinspection PhpUnused
 	 */
 	public function onFOFUserAuthenticate(array $credentials, array $options)
 	{

@@ -36,8 +36,9 @@ class Language extends Observer
 	 * @param   JDatabaseQuery  &$query  The model which calls this event
 	 *
 	 * @return  void
+	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onBeforeBuildQuery(&$model, &$query)
+	public function onBeforeBuildQuery(DataModel &$model, JDatabaseQuery &$query)
 	{
 		if ($model->getContainer()->platform->isFrontend())
 		{
@@ -104,11 +105,11 @@ class Language extends Observer
 	 * filters.
 	 *
 	 * @param   DataModel &$model  The model which was called
-	 * @param   Array     &$keys   The keys used to locate the record which was loaded
+	 * @param   array     &$keys   The keys used to locate the record which was loaded
 	 *
 	 * @return  void
 	 */
-	public function onAfterLoad(&$model, &$keys)
+	public function onAfterLoad(DataModel &$model, array &$keys)
 	{
 		// Make sure we have a DataModel
 		if (!($model instanceof DataModel))

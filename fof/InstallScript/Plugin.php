@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\InstallScript;
+namespace FOF40\InstallScript;
 
 use Exception;
 use FOF40\Database\Installer;
@@ -63,10 +63,10 @@ class Plugin extends BaseInstaller
 		// Get the plugin name and folder from the class name (it's always plgFolderPluginInstallerScript) if necessary.
 		if (empty($this->pluginFolder) || empty($this->pluginName))
 		{
-			$class              = get_class($this);
-			$words              = preg_replace('/(\s)+/', '_', $class);
-			$words              = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $words));
-			$classParts         = explode('_', $words);
+			$class      = get_class($this);
+			$words      = preg_replace('/(\s)+/', '_', $class);
+			$words      = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $words));
+			$classParts = explode('_', $words);
 
 			if (empty($this->pluginFolder))
 			{
@@ -75,7 +75,7 @@ class Plugin extends BaseInstaller
 
 			if (empty($this->pluginName))
 			{
-				$this->pluginName   = $classParts[2];
+				$this->pluginName = $classParts[2];
 			}
 		}
 	}
@@ -84,10 +84,11 @@ class Plugin extends BaseInstaller
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string         $type   Installation type (install, update, discover_install)
-	 * @param   PluginAdapter  $parent Parent object
+	 * @param   string         $type    Installation type (install, update, discover_install)
+	 * @param   PluginAdapter  $parent  Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function preflight(string $type, PluginAdapter $parent): bool
 	{
@@ -114,12 +115,12 @@ class Plugin extends BaseInstaller
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string         $type   install, update or discover_update
-	 * @param   PluginAdapter  $parent Parent object
-	 *
-     * @throws Exception
+	 * @param   string         $type    install, update or discover_update
+	 * @param   PluginAdapter  $parent  Parent object
 	 *
 	 * @return  void
+	 * @throws Exception
+	 *
 	 */
 	public function postflight(string $type, PluginAdapter $parent): void
 	{
@@ -133,7 +134,7 @@ class Plugin extends BaseInstaller
 		// $this->addDependency('fof40', $this->getDependencyName());
 
 		// Install or update database
-		$schemaPath  = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
+		$schemaPath = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
 
 		if (@is_dir($schemaPath))
 		{
@@ -154,12 +155,12 @@ class Plugin extends BaseInstaller
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   PluginAdapter  $parent The parent object
+	 * @param   PluginAdapter  $parent  The parent object
 	 */
 	public function uninstall(PluginAdapter $parent): void
 	{
 		// Uninstall database
-		$schemaPath  = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
+		$schemaPath = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
 
 		// Uninstall database
 		if (@is_dir($schemaPath))
@@ -198,27 +199,27 @@ class Plugin extends BaseInstaller
 
 		$temporarySource = $parent->getParent()->getPath('source');
 
-		$copyMap = array(
+		$copyMap = [
 			// Plugin files
 			$temporarySource               => JPATH_ROOT . '/plugins/' . $this->pluginFolder . '/' . $this->pluginName,
 			// Language (always stored in administrator for plugins)
 			$temporarySource . '/language' => JPATH_ADMINISTRATOR . '/language',
 			// Media files, e.g. /media/plg_system_foobar
 			$temporarySource . '/media'    => JPATH_ROOT . '/media/' . $this->getDependencyName(),
-		);
+		];
 
 		foreach ($copyMap as $source => $target)
 		{
 			Log::add(__CLASS__ . ":: Conditional copy $source to $target", Log::DEBUG, 'fof4_extension_installation');
 
-			$ignored = array();
+			$ignored = [];
 
 			if ($source == $temporarySource)
 			{
-				$ignored = array(
-					'index.html',  'index.htm', 'LICENSE.txt', 'license.txt', 'readme.htm', 'readme.html', 'README.md',
+				$ignored = [
+					'index.html', 'index.htm', 'LICENSE.txt', 'license.txt', 'readme.htm', 'readme.html', 'README.md',
 					'script.php', 'language', 'media',
-				);
+				];
 			}
 
 			$this->recursiveConditionalCopy($source, $target, $ignored);

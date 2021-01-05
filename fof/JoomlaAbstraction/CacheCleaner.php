@@ -39,7 +39,7 @@ class CacheCleaner
 	 */
 	public static function clearPluginsCache(): void
 	{
-		self::clearCacheGroups(['com_plugins'], [0, 1]);
+		self::clearCacheGroups(['com_plugins']);
 	}
 
 	/**
@@ -50,22 +50,24 @@ class CacheCleaner
 	 */
 	public static function clearModulesCache(): void
 	{
-		self::clearCacheGroups(['com_modules'], [0, 1]);
+		self::clearCacheGroups(['com_modules']);
 	}
 
 	/**
 	 * Clears the specified cache groups.
 	 *
-	 * @param   array        $clearGroups   Which cache groups to clear. Usually this is com_yourcomponent to clear your
+	 * @param   array        $clearGroups  Which cache groups to clear. Usually this is com_yourcomponent to clear your
 	 *                                      component's cache.
 	 * @param   array        $cacheClients  Which cache clients to clear. 0 is the back-end, 1 is the front-end. If you
 	 *                                      do not specify anything, both cache clients will be cleared.
-	 * @param   string|null  $event         An event to run upon trying to clear the cache. Empty string to disable. If
+	 * @param   string|null  $event  An event to run upon trying to clear the cache. Empty string to disable. If
 	 *                                      NULL and the group is "com_content" I will trigger onContentCleanCache.
 	 *
 	 * @return  void
 	 */
-	public static function clearCacheGroups(array $clearGroups, array $cacheClients = [0, 1], ?string $event = null): void
+	public static function clearCacheGroups(array $clearGroups, array $cacheClients = [
+		0, 1,
+	], ?string $event = null): void
 	{
 		try
 		{

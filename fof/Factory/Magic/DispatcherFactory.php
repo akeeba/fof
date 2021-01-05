@@ -19,7 +19,7 @@ class DispatcherFactory extends BaseFactory
 	/**
 	 * Create a new object instance
 	 *
-	 * @param array $config The config parameters which override the fof.xml information
+	 * @param   array  $config  The config parameters which override the fof.xml information
 	 *
 	 * @return  Dispatcher  A new Dispatcher object
 	 */
@@ -36,8 +36,6 @@ class DispatcherFactory extends BaseFactory
 			$className = '\\FOF40\\Dispatcher\\Dispatcher';
 		}
 
-		$dispatcher = new $className($this->container, $config);
-
-		return $dispatcher;
+		return new $className($this->container, $config);
 	}
 }

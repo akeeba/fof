@@ -21,7 +21,7 @@ class IPHelper
 	 *
 	 * @var   string
 	 */
-	protected static $ip = null;
+	protected static $ip;
 
 	/**
 	 * Should I allow IP overrides through X-Forwarded-For or Client-Ip HTTP headers?
@@ -55,7 +55,7 @@ class IPHelper
 	/**
 	 * Set the $useFirstIpInChain flag. See above.
 	 *
-	 * @param bool $value
+	 * @param   bool  $value
 	 */
 	public static function setUseFirstIpInChain(bool $value = true): void
 	{
@@ -102,7 +102,7 @@ class IPHelper
 	/**
 	 * Set the IP address of the current visitor
 	 *
-	 * @param string $ip
+	 * @param   string  $ip
 	 *
 	 * @return  void
 	 */
@@ -112,27 +112,11 @@ class IPHelper
 	}
 
 	/**
-	 * Is it an IPv6 IP address?
-	 *
-	 * @param string $ip An IPv4 or IPv6 address
-	 *
-	 * @return  boolean  True if it's IPv6
-	 */
-	protected static function isIPv6(string $ip): bool
-	{
-		if (strstr($ip, ':'))
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Checks if an IP is contained in a list of IPs or IP expressions
 	 *
-	 * @param string       $ip      The IPv4/IPv6 address to check
-	 * @param array|string $ipTable An IP expression (or a comma-separated or array list of IP expressions) to check against
+	 * @param   string        $ip       The IPv4/IPv6 address to check
+	 * @param   array|string  $ipTable  An IP expression (or a comma-separated or array list of IP expressions) to
+	 *                                  check against
 	 *
 	 * @return  boolean  True if it's in the list
 	 */
@@ -197,7 +181,7 @@ class IPHelper
 			// Inclusive IP range, i.e. 123.123.123.123-124.125.126.127
 			if (strstr($ipExpression, '-'))
 			{
-				list($from, $to) = explode('-', $ipExpression, 2);
+				[$from, $to] = explode('-', $ipExpression, 2);
 
 				if ($ipv6 && (!self::isIPv6($from) || !self::isIPv6($to)))
 				{
@@ -222,7 +206,7 @@ class IPHelper
 				// Swap from/to if they're in the wrong order
 				if ($from > $to)
 				{
-					list($from, $to) = [$to, $from];
+					[$from, $to] = [$to, $from];
 				}
 
 				if (($myIP >= $from) && ($myIP <= $to))
@@ -235,7 +219,7 @@ class IPHelper
 			{
 				$binaryip = self::inet_to_bits($myIP);
 
-				list($net, $maskbits) = explode('/', $ipExpression, 2);
+				[$net, $maskbits] = explode('/', $ipExpression, 2);
 				if ($ipv6 && !self::isIPv6($net))
 				{
 					// Do not apply IPv4 filtering on an IPv6 address
@@ -426,7 +410,7 @@ class IPHelper
 	/**
 	 * Should I allow the remote client's IP to be overridden by an X-Forwarded-For or Client-Ip HTTP header?
 	 *
-	 * @param bool $newState True to allow the override
+	 * @param   bool  $newState  True to allow the override
 	 *
 	 * @return  void
 	 */
@@ -436,11 +420,29 @@ class IPHelper
 	}
 
 	/**
+	 * Is it an IPv6 IP address?
+	 *
+	 * @param   string  $ip  An IPv4 or IPv6 address
+	 *
+	 * @return  boolean  True if it's IPv6
+	 */
+	protected static function isIPv6(string $ip): bool
+	{
+		if (strstr($ip, ':'))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Gets the visitor's IP address. Automatically handles reverse proxies
 	 * reporting the IPs of intermediate devices, like load balancers. Examples:
 	 * https://www.akeebabackup.com/support/admin-tools/13743-double-ip-adresses-in-security-exception-log-warnings.html
 	 * http://stackoverflow.com/questions/2422395/why-is-request-envremote-addr-returning-two-ips
-	 * The solution used is assuming that the first IP address is the external one (unless $useFirstIpInChain is set to false)
+	 * The solution used is assuming that the first IP address is the external one (unless $useFirstIpInChain is set to
+	 * false)
 	 *
 	 * @return  string
 	 */
@@ -498,7 +500,7 @@ class IPHelper
 			// Get the embedded IPv4 (in hex notation)
 			$ip = substr($ip, strpos($ip, ':FFFF:') + 6);
 			// Convert each 16-bit WORD to decimal
-			list($word1, $word2) = explode(':', $ip);
+			[$word1, $word2] = explode(':', $ip);
 			$word1  = hexdec($word1);
 			$word2  = hexdec($word2);
 			$longIp = $word1 * 65536 + $word2;
@@ -576,7 +578,7 @@ class IPHelper
 	/**
 	 * Converts inet_pton output to bits string
 	 *
-	 * @param string $inet The in_addr representation of an IPv4 or IPv6 address
+	 * @param   string  $inet  The in_addr representation of an IPv4 or IPv6 address
 	 *
 	 * @return  string
 	 */
@@ -604,8 +606,8 @@ class IPHelper
 	/**
 	 * Checks if an IPv6 address $ip is part of the IPv6 CIDR block $cidrnet
 	 *
-	 * @param string $ip      The IPv6 address to check, e.g. 21DA:00D3:0000:2F3B:02AC:00FF:FE28:9C5A
-	 * @param string $cidrnet The IPv6 CIDR block, e.g. 21DA:00D3:0000:2F3B::/64
+	 * @param   string  $ip       The IPv6 address to check, e.g. 21DA:00D3:0000:2F3B:02AC:00FF:FE28:9C5A
+	 * @param   string  $cidrnet  The IPv6 CIDR block, e.g. 21DA:00D3:0000:2F3B::/64
 	 *
 	 * @return  bool
 	 */
@@ -614,7 +616,7 @@ class IPHelper
 		$ip       = inet_pton($ip);
 		$binaryip = self::inet_to_bits($ip);
 
-		list($net, $maskbits) = explode('/', $cidrnet);
+		[$net, $maskbits] = explode('/', $cidrnet);
 		$net       = inet_pton($net);
 		$binarynet = self::inet_to_bits($net);
 

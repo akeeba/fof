@@ -25,7 +25,8 @@ defined('_JEXEC') or die;
  *     ....
  *   ),
  *   'files' => array(
- *     'administrator/components/com_foobar/access.xml' => array('705', '09aa0351a316bf011ecc8c1145134761', 'b95f00c7b49a07a60570dc674f2497c45c4e7152'),
+ *     'administrator/components/com_foobar/access.xml' => array('705', '09aa0351a316bf011ecc8c1145134761',
+ *     'b95f00c7b49a07a60570dc674f2497c45c4e7152'),
  *     ....
  *   )
  * );
@@ -42,10 +43,10 @@ class FilesCheck
 	protected $option = '';
 
 	/** @var string Current component version */
-	protected $version = null;
+	protected $version;
 
 	/** @var string Current component release date */
-	protected $date = null;
+	protected $date;
 
 	/** @var array List of files to check as filepath => (filesize, md5, sha1) */
 	protected $fileList = [];
@@ -62,9 +63,9 @@ class FilesCheck
 	/**
 	 * Create and initialise the object
 	 *
-	 * @param string $componentName Component name, e.g. com_foobar
-	 * @param string $version       The current component version, as reported by the component
-	 * @param string $date          The current component release date, as reported by the component
+	 * @param   string  $componentName  Component name, e.g. com_foobar
+	 * @param   string  $version        The current component version, as reported by the component
+	 * @param   string  $date           The current component release date, as reported by the component
 	 */
 	public function __construct(string $componentName, string $version, string $date)
 	{
@@ -201,7 +202,7 @@ class FilesCheck
 	/**
 	 * Performs a slow, thorough check of all files and folders (including MD5/SHA1 sum checks)
 	 *
-	 * @param int $idx The index from where to start
+	 * @param   int  $idx  The index from where to start
 	 *
 	 * @return array Progress report
 	 */

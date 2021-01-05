@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Configuration\Domain;
+namespace FOF40\Configuration\Domain;
 
 use SimpleXMLElement;
 
@@ -21,7 +21,7 @@ class Container implements DomainInterface
 	/**
 	 * Parse the XML data, adding them to the $ret array
 	 *
-	 * @param   SimpleXMLElement  $xml   The XML data of the component's configuration area
+	 * @param   SimpleXMLElement   $xml  The XML data of the component's configuration area
 	 * @param   array             &$ret  The parsed data, in the form of a hash array
 	 *
 	 * @return  void
@@ -29,7 +29,7 @@ class Container implements DomainInterface
 	public function parseDomain(SimpleXMLElement $xml, array &$ret): void
 	{
 		// Initialise
-		$ret['container'] = array();
+		$ret['container'] = [];
 
 		// Parse the dispatcher configuration
 		$containerData = $xml->container;
@@ -43,13 +43,10 @@ class Container implements DomainInterface
 
 		$options = $xml->xpath('container/option');
 
-		if (!empty($options))
+		foreach ($options as $option)
 		{
-			foreach ($options as $option)
-			{
-				$key = (string) $option['name'];
-				$ret['container'][$key] = (string) $option;
-			}
+			$key                    = (string) $option['name'];
+			$ret['container'][$key] = (string) $option;
 		}
 	}
 
@@ -57,8 +54,8 @@ class Container implements DomainInterface
 	 * Return a configuration variable
 	 *
 	 * @param   string  &$configuration  Configuration variables (hashed array)
-	 * @param   string  $var             The variable we want to fetch
-	 * @param   mixed   $default         Default value
+	 * @param   string   $var            The variable we want to fetch
+	 * @param   mixed    $default        Default value
 	 *
 	 * @return  mixed  The variable's value
 	 */

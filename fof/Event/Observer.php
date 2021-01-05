@@ -15,14 +15,14 @@ defined('_JEXEC') or die;
 class Observer
 {
 	/** @var   Observable  The object to observe */
-	protected $subject = null;
+	protected $subject;
 
-	protected $events = null;
+	protected $events;
 
 	/**
 	 * Creates the observer and attaches it to the observable subject object
 	 *
-	 * @param Observable $subject The observable object to attach the observer to
+	 * @param   Observable  $subject  The observable object to attach the observer to
 	 */
 	function __construct(Observable &$subject)
 	{

@@ -5,9 +5,10 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Input;
+namespace FOF40\Input;
 
 use Exception;
+use JFilterInput;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\Input\Input as JoomlaInput;
@@ -24,7 +25,7 @@ class Input extends JoomlaInput
 	 * @param   array|string|object|null  $source   Source data; set null to use $_REQUEST
 	 * @param   array                     $options  Filter options
 	 */
-	public function __construct($source = null, array $options = array())
+	public function __construct($source = null, array $options = [])
 	{
 		$hash = null;
 
@@ -64,6 +65,7 @@ class Input extends JoomlaInput
 				$source = null;
 			}
 		}
+		/** @noinspection PhpStatementHasEmptyBodyInspection */
 		elseif (is_array($source))
 		{
 			// Nothing, it's already an array
@@ -79,7 +81,7 @@ class Input extends JoomlaInput
 		// If we are not sure use the REQUEST array
 		if (empty($source))
 		{
-			$source = $this->extractJoomlaSource('REQUEST');
+			$source = $this->extractJoomlaSource();
 		}
 
 		parent::__construct($source, $options);
@@ -141,7 +143,7 @@ class Input extends JoomlaInput
 			$filter = substr($name, 3);
 
 			$default = null;
-			$mask = 0;
+			$mask    = 0;
 
 			if (isset($arguments[1]))
 			{
@@ -171,7 +173,7 @@ class Input extends JoomlaInput
 	{
 		if (is_array($var))
 		{
-			$temp = array();
+			$temp = [];
 
 			foreach ($var as $k => $v)
 			{
@@ -201,10 +203,15 @@ class Input extends JoomlaInput
 			}
 			else
 			{
-				$safeHtmlFilter = \JFilterInput::getInstance([], [], \JFilterInput::TAGS_BLACKLIST, \JFilterInput::ATTR_BLACKLIST);
+				/**
+				 * @noinspection PhpDeprecationInspection
+				 * @noinspection PhpUndefinedClassConstantInspection
+				 */
+				$safeHtmlFilter = JFilterInput::getInstance([], [], JFilterInput::TAGS_BLACKLIST, JFilterInput::ATTR_BLACKLIST);
 			}
 
-			$var = $safeHtmlFilter->clean($var, $type);		}
+			$var = $safeHtmlFilter->clean($var, $type);
+		}
 		else
 		{
 			$var = $this->filter->clean($var, $type);
@@ -213,6 +220,11 @@ class Input extends JoomlaInput
 		return $var;
 	}
 
+	/**
+	 * @param   string  $hash
+	 *
+	 * @return  array
+	 */
 	protected function extractJoomlaSource($hash = 'REQUEST')
 	{
 		if (!in_array(strtoupper($hash), ['GET', 'POST', 'FILES', 'COOKIE', 'ENV', 'SERVER', 'REQUEST']))
@@ -228,7 +240,7 @@ class Input extends JoomlaInput
 		}
 		catch (Exception $e)
 		{
-			$input = new \Joomla\Input\Input();
+			$input = new JoomlaInput();
 		}
 
 		if ($hash !== 'request')
@@ -240,7 +252,7 @@ class Input extends JoomlaInput
 		$refProp   = $refObject->getProperty('data');
 		$refProp->setAccessible(true);
 
-		return $refProp->getValue($input);
+		return $refProp->getValue($input) ?? [];
 	}
 
 }

@@ -34,11 +34,12 @@ defined('_JEXEC') or die;
 class BasicFactory implements FactoryInterface
 {
 	/** @var  Container  The container we belong to */
-	protected $container = null;
+	protected $container;
 
 	/**
 	 * Section used to build the namespace prefix. We have to pass it since in CLI we need
-	 * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for valid values
+	 * to force the section we're in (ie Site or Admin). {@see \FOF40\Container\Container::getNamespacePrefix() } for
+	 * valid values
 	 *
 	 * @var   string
 	 */
@@ -47,7 +48,7 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Public constructor for the factory object
 	 *
-	 * @param Container $container The container we belong to
+	 * @param   Container  $container  The container we belong to
 	 */
 	public function __construct(Container $container)
 	{
@@ -57,8 +58,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Create a new Controller object
 	 *
-	 * @param string $viewName The name of the view we're getting a Controller for.
-	 * @param array  $config   Optional MVC configuration values for the Controller object.
+	 * @param   string  $viewName  The name of the view we're getting a Controller for.
+	 * @param   array   $config    Optional MVC configuration values for the Controller object.
 	 *
 	 * @return  Controller
 	 */
@@ -76,16 +77,14 @@ class BasicFactory implements FactoryInterface
 
 		$controllerClass = $this->container->getNamespacePrefix($this->getSection()) . 'Controller\\' . ucfirst($this->container->inflector->singularize($viewName));
 
-		$controller = $this->createController($controllerClass, $config);
-
-		return $controller;
+		return $this->createController($controllerClass, $config);
 	}
 
 	/**
 	 * Create a new Model object
 	 *
-	 * @param string $viewName The name of the view we're getting a Model for.
-	 * @param array  $config   Optional MVC configuration values for the Model object.
+	 * @param   string  $viewName  The name of the view we're getting a Model for.
+	 * @param   array   $config    Optional MVC configuration values for the Model object.
 	 *
 	 * @return  Model
 	 */
@@ -103,17 +102,15 @@ class BasicFactory implements FactoryInterface
 
 		$modelClass = $this->container->getNamespacePrefix($this->getSection()) . 'Model\\' . ucfirst($this->container->inflector->singularize($viewName));
 
-		$model = $this->createModel($modelClass, $config);
-
-		return $model;
+		return $this->createModel($modelClass, $config);
 	}
 
 	/**
 	 * Create a new View object
 	 *
-	 * @param string $viewName The name of the view we're getting a View object for.
-	 * @param string $viewType The type of the View object. By default it's "html".
-	 * @param array  $config   Optional MVC configuration values for the View object.
+	 * @param   string  $viewName  The name of the view we're getting a View object for.
+	 * @param   string  $viewType  The type of the View object. By default it's "html".
+	 * @param   array   $config    Optional MVC configuration values for the View object.
 	 *
 	 * @return  View
 	 */
@@ -134,15 +131,13 @@ class BasicFactory implements FactoryInterface
 
 		$viewClass = $prefix . 'View\\' . ucfirst($container->inflector->singularize($viewName)) . '\\' . ucfirst($viewType);
 
-		$view = $this->createView($viewClass, $config);
-
-		return $view;
+		return $this->createView($viewClass, $config);
 	}
 
 	/**
 	 * Creates a new Dispatcher
 	 *
-	 * @param array $config The configuration values for the Dispatcher object
+	 * @param   array  $config  The configuration values for the Dispatcher object
 	 *
 	 * @return  Dispatcher
 	 */
@@ -164,7 +159,7 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new Toolbar
 	 *
-	 * @param array $config The configuration values for the Toolbar object
+	 * @param   array  $config  The configuration values for the Toolbar object
 	 *
 	 * @return  Toolbar
 	 */
@@ -186,7 +181,7 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a new TransparentAuthentication handler
 	 *
-	 * @param array $config The configuration values for the TransparentAuthentication object
+	 * @param   array  $config  The configuration values for the TransparentAuthentication object
 	 *
 	 * @return  TransparentAuthentication
 	 */
@@ -213,8 +208,8 @@ class BasicFactory implements FactoryInterface
 	 * look only for the specified view; do NOT fall back to the default layout or subtemplate;
 	 * look for templates ONLY in site or admin, depending on where we're running from
 	 *
-	 * @param View  $view   The view this view template finder will be attached to
-	 * @param array $config Configuration variables for the object
+	 * @param   View   $view    The view this view template finder will be attached to
+	 * @param   array  $config  Configuration variables for the object
 	 *
 	 * @return  ViewTemplateFinder
 	 *
@@ -262,7 +257,7 @@ class BasicFactory implements FactoryInterface
 	}
 
 	/**
-	 * @param string $section
+	 * @param   string  $section
 	 */
 	public function setSection(string $section): void
 	{
@@ -272,8 +267,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a Controller object
 	 *
-	 * @param string $controllerClass The fully qualified class name for the Controller
-	 * @param array  $config          Optional MVC configuration values for the Controller object.
+	 * @param   string  $controllerClass  The fully qualified class name for the Controller
+	 * @param   array   $config           Optional MVC configuration values for the Controller object.
 	 *
 	 * @return  Controller
 	 *
@@ -292,8 +287,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a Model object
 	 *
-	 * @param string $modelClass The fully qualified class name for the Model
-	 * @param array  $config     Optional MVC configuration values for the Model object.
+	 * @param   string  $modelClass  The fully qualified class name for the Model
+	 * @param   array   $config      Optional MVC configuration values for the Model object.
 	 *
 	 * @return  Model
 	 *
@@ -312,8 +307,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a View object
 	 *
-	 * @param string $viewClass The fully qualified class name for the View
-	 * @param array  $config    Optional MVC configuration values for the View object.
+	 * @param   string  $viewClass  The fully qualified class name for the View
+	 * @param   array   $config     Optional MVC configuration values for the View object.
 	 *
 	 * @return  View
 	 *
@@ -332,8 +327,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a Toolbar object
 	 *
-	 * @param string $toolbarClass The fully qualified class name for the Toolbar
-	 * @param array  $config       The configuration values for the Toolbar object
+	 * @param   string  $toolbarClass  The fully qualified class name for the Toolbar
+	 * @param   array   $config        The configuration values for the Toolbar object
 	 *
 	 * @return  Toolbar
 	 *
@@ -352,8 +347,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a Dispatcher object
 	 *
-	 * @param string $dispatcherClass The fully qualified class name for the Dispatcher
-	 * @param array  $config          The configuration values for the Dispatcher object
+	 * @param   string  $dispatcherClass  The fully qualified class name for the Dispatcher
+	 * @param   array   $config           The configuration values for the Dispatcher object
 	 *
 	 * @return  Dispatcher
 	 *
@@ -372,8 +367,8 @@ class BasicFactory implements FactoryInterface
 	/**
 	 * Creates a TransparentAuthentication object
 	 *
-	 * @param string $authClass The fully qualified class name for the TransparentAuthentication
-	 * @param array  $config    The configuration values for the TransparentAuthentication object
+	 * @param   string  $authClass  The fully qualified class name for the TransparentAuthentication
+	 * @param   array   $config     The configuration values for the TransparentAuthentication object
 	 *
 	 * @return  TransparentAuthentication
 	 *

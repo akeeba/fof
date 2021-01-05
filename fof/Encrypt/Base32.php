@@ -25,9 +25,37 @@ class Base32
 	const CSRFC3548 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
 	/**
+	 * Convert any string to a base32 string
+	 * This should be binary safe...
+	 *
+	 * @param   string  $str  The string to convert
+	 *
+	 * @return  string  The converted base32 string
+	 */
+	public function encode(string $str): string
+	{
+		return $this->fromBin($this->str2bin($str));
+	}
+
+	/**
+	 * Convert any base32 string to a normal sctring
+	 * This should be binary safe...
+	 *
+	 * @param   string  $str  The base32 string to convert
+	 *
+	 * @return  string  The normal string
+	 */
+	public function decode(string $str): string
+	{
+		$str = strtoupper($str);
+
+		return $this->bin2str($this->tobin($str));
+	}
+
+	/**
 	 * Converts any ascii string to a binary string
 	 *
-	 * @param string $str The string you want to convert
+	 * @param   string  $str  The string you want to convert
 	 *
 	 * @return  string  String of 0's and 1's
 	 */
@@ -41,7 +69,7 @@ class Base32
 	/**
 	 * Converts a binary string to an ascii string
 	 *
-	 * @param string $str The string of 0's and 1's you want to convert
+	 * @param   string  $str  The string of 0's and 1's you want to convert
 	 *
 	 * @return  string  The ascii output
 	 *
@@ -71,7 +99,7 @@ class Base32
 	/**
 	 * Converts a correct binary string to base32
 	 *
-	 * @param string $str The string of 0's and 1's you want to convert
+	 * @param   string  $str  The string of 0's and 1's you want to convert
 	 *
 	 * @return  string  String encoded as base32
 	 *
@@ -113,7 +141,7 @@ class Base32
 	/**
 	 * Accepts a base32 string and returns an ascii binary string
 	 *
-	 * @param string $str The base32 string to convert
+	 * @param   string  $str  The base32 string to convert
 	 *
 	 * @return  string  Ascii binary string
 	 *
@@ -145,38 +173,10 @@ class Base32
 	}
 
 	/**
-	 * Convert any string to a base32 string
-	 * This should be binary safe...
-	 *
-	 * @param string $str The string to convert
-	 *
-	 * @return  string  The converted base32 string
-	 */
-	public function encode(string $str): string
-	{
-		return $this->fromBin($this->str2bin($str));
-	}
-
-	/**
-	 * Convert any base32 string to a normal sctring
-	 * This should be binary safe...
-	 *
-	 * @param string $str The base32 string to convert
-	 *
-	 * @return  string  The normal string
-	 */
-	public function decode(string $str): string
-	{
-		$str = strtoupper($str);
-
-		return $this->bin2str($this->tobin($str));
-	}
-
-	/**
 	 * Used with array_map to map the bits from a binary string
 	 * directly into a base32 character set
 	 *
-	 * @param string $str The string of 0's and 1's you want to convert
+	 * @param   string  $str  The string of 0's and 1's you want to convert
 	 *
 	 * @return  string  Resulting base32 character
 	 *
@@ -194,7 +194,7 @@ class Base32
 	 * Used with array_map to map the characters from a base32
 	 * character set directly into a binary string
 	 *
-	 * @param string $chr The caracter to map
+	 * @param   string  $chr  The caracter to map
 	 *
 	 * @return  string  String of 0's and 1's
 	 *

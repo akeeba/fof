@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel;
+namespace FOF40\Model\DataModel;
 
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
@@ -15,61 +15,64 @@ defined('_JEXEC') or die;
 abstract class Relation
 {
 	/** @var   DataModel  The data model we are attached to */
-	protected $parentModel = null;
+	protected $parentModel;
 
 	/** @var   string  The class name of the foreign key's model */
-	protected $foreignModelClass = null;
+	protected $foreignModelClass;
 
 	/** @var   string  The application name of the foreign model */
-	protected $foreignModelComponent = null;
+	protected $foreignModelComponent;
 
 	/** @var   string  The bade name of the foreign model */
-	protected $foreignModelName = null;
+	protected $foreignModelName;
 
 	/** @var   string   The local table key for this relation */
-	protected $localKey = null;
+	protected $localKey;
 
 	/** @var   string   The foreign table key for this relation */
-	protected $foreignKey = null;
+	protected $foreignKey;
 
 	/** @var   null  For many-to-many relations, the pivot (glue) table */
-	protected $pivotTable = null;
+	protected $pivotTable;
 
 	/** @var   null  For many-to-many relations, the pivot table's column storing the local key */
-	protected $pivotLocalKey = null;
+	protected $pivotLocalKey;
 
 	/** @var   null  For many-to-many relations, the pivot table's column storing the foreign key */
-	protected $pivotForeignKey = null;
+	protected $pivotForeignKey;
 
 	/** @var   Collection  The data loaded by this relation */
-	protected $data = null;
+	protected $data;
 
 	/** @var  array  Maps each local table key to an array of foreign table keys, used in many-to-many relations */
-	protected $foreignKeyMap = array();
+	protected $foreignKeyMap = [];
 
 	/** @var  Container  The component container for this relation */
-	protected $container = null;
+	protected $container;
 
 	/**
 	 * Public constructor. Initialises the relation.
 	 *
-	 * @param   DataModel $parentModel       The data model we are attached to
-	 * @param   string    $foreignModelName  The name of the foreign key's model in the format "modelName@com_something"
-	 * @param   string    $localKey          The local table key for this relation
-	 * @param   string    $foreignKey        The foreign key for this relation
-	 * @param   string    $pivotTable        For many-to-many relations, the pivot (glue) table
-	 * @param   string    $pivotLocalKey     For many-to-many relations, the pivot table's column storing the local key
-	 * @param   string    $pivotForeignKey   For many-to-many relations, the pivot table's column storing the foreign key
+	 * @param   DataModel  $parentModel       The data model we are attached to
+	 * @param   string     $foreignModelName  The name of the foreign key's model in the format
+	 *                                        "modelName@com_something"
+	 * @param   string     $localKey          The local table key for this relation
+	 * @param   string     $foreignKey        The foreign key for this relation
+	 * @param   string     $pivotTable        For many-to-many relations, the pivot (glue) table
+	 * @param   string     $pivotLocalKey     For many-to-many relations, the pivot table's column storing the local
+	 *                                        key
+	 * @param   string     $pivotForeignKey   For many-to-many relations, the pivot table's column storing the foreign
+	 *                                        key
 	 */
 	public function __construct(DataModel $parentModel, $foreignModelName, $localKey = null, $foreignKey = null, $pivotTable = null, $pivotLocalKey = null, $pivotForeignKey = null)
 	{
-		$this->parentModel = $parentModel;
+		$this->parentModel       = $parentModel;
 		$this->foreignModelClass = $foreignModelName;
-		$this->localKey = $localKey;
-		$this->foreignKey = $foreignKey;
-		$this->pivotTable = $pivotTable;
-		$this->pivotLocalKey = $pivotLocalKey;
-		$this->pivotForeignKey = $pivotForeignKey;
+		$this->localKey          = $localKey;
+		$this->foreignKey        = $foreignKey;
+		$this->pivotTable        = $pivotTable;
+		$this->pivotLocalKey     = $pivotLocalKey;
+		$this->pivotForeignKey   = $pivotForeignKey;
 
 		$this->container = $parentModel->getContainer();
 
@@ -78,13 +81,13 @@ abstract class Relation
 		if (strpos($class, '@') === false)
 		{
 			$this->foreignModelComponent = null;
-			$this->foreignModelName = $class;
+			$this->foreignModelName      = $class;
 		}
 		else
 		{
-			$foreignParts = explode('@', $class, 2);
+			$foreignParts                = explode('@', $class, 2);
 			$this->foreignModelComponent = $foreignParts[1];
-			$this->foreignModelName = $foreignParts[0];
+			$this->foreignModelName      = $foreignParts[0];
 		}
 	}
 
@@ -95,8 +98,8 @@ abstract class Relation
 	 */
 	public function reset()
 	{
-		$this->data = null;
-		$this->foreignKeyMap = array();
+		$this->data          = null;
+		$this->foreignKeyMap = [];
 
 		return $this;
 	}
@@ -104,7 +107,7 @@ abstract class Relation
 	/**
 	 * Rebase the relation to a different model
 	 *
-	 * @param DataModel $model
+	 * @param   DataModel  $model
 	 *
 	 * @return $this For chaining
 	 */
@@ -123,8 +126,8 @@ abstract class Relation
 	 * supposed to return anything, just modify $foreignModel's state directly. For example, you may want to do:
 	 * $foreignModel->setState('foo', 'bar')
 	 *
-	 * @param callable   $callback The callback to run on the remote model.
-	 * @param Collection $dataCollection
+	 * @param   callable    $callback  The callback to run on the remote model.
+	 * @param   Collection  $dataCollection
 	 *
 	 * @return Collection|DataModel
 	 */
@@ -163,8 +166,8 @@ abstract class Relation
 	 * Populates the internal $this->data collection from the contents of the provided collection. This is used by
 	 * DataModel to push the eager loaded data into each item's relation.
 	 *
-	 * @param Collection $data   The relation data to push into this relation
-	 * @param mixed      $keyMap Used by many-to-many relations to pass around the local to foreign key map
+	 * @param   Collection  $data    The relation data to push into this relation
+	 * @param   mixed       $keyMap  Used by many-to-many relations to pass around the local to foreign key map
 	 *
 	 * @return void
 	 */
@@ -177,7 +180,7 @@ abstract class Relation
 			$localKeyValue = $this->parentModel->getFieldValue($this->localKey);
 
 			/** @var DataModel $item */
-			foreach ($data as $key => $item)
+			foreach ($data as $item)
 			{
 				if ($item->getFieldValue($this->foreignKey) == $localKeyValue)
 				{
@@ -186,16 +189,6 @@ abstract class Relation
 			}
 		}
 	}
-
-	/**
-	 * Applies the relation filters to the foreign model when getData is called
-	 *
-	 * @param DataModel  $foreignModel   The foreign model you're operating on
-	 * @param Collection $dataCollection If it's an eager loaded relation, the collection of loaded parent records
-	 *
-	 * @return boolean Return false to force an empty data collection
-	 */
-	abstract protected function filterForeignModel(DataModel $foreignModel, Collection $dataCollection = null);
 
 	/**
 	 * Returns the count subquery for DataModel's has() and whereHas() methods.
@@ -244,22 +237,24 @@ abstract class Relation
 	/**
 	 * Gets an object instance of the foreign model
 	 *
-	 * @param  array  $config  Optional configuration information for the Model
+	 * @param   array  $config  Optional configuration information for the Model
 	 *
 	 * @return DataModel
 	 */
-	public function &getForeignModel(array $config = array())
+	public function &getForeignModel(array $config = [])
 	{
 		// If the model comes from this component go through our Factory
 		if (is_null($this->foreignModelComponent))
 		{
+			/** @var DataModel $model */
 			$model = $this->container->factory->model($this->foreignModelName, $config)->tmpInstance();
 
 			return $model;
 		}
 
 		// The model comes from another component. Create a container and go through its factory.
-		$foreignContainer = Container::getInstance($this->foreignModelComponent, array('tempInstance' => true));
+		$foreignContainer = Container::getInstance($this->foreignModelComponent, ['tempInstance' => true]);
+		/** @var DataModel $model */
 		$model = $foreignContainer->factory->model($this->foreignModelName, $config)->tmpInstance();
 
 		return $model;
@@ -274,4 +269,14 @@ abstract class Relation
 	{
 		return $this->localKey;
 	}
+
+	/**
+	 * Applies the relation filters to the foreign model when getData is called
+	 *
+	 * @param   DataModel   $foreignModel    The foreign model you're operating on
+	 * @param   Collection  $dataCollection  If it's an eager loaded relation, the collection of loaded parent records
+	 *
+	 * @return boolean Return false to force an empty data collection
+	 */
+	abstract protected function filterForeignModel(DataModel $foreignModel, Collection $dataCollection = null);
 }

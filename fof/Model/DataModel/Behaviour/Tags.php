@@ -5,11 +5,11 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
 
+use FOF40\Event\Observable;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
-use FOF40\Event\Observable;
 use Joomla\CMS\Helper\TagsHelper;
 
 defined('_JEXEC') or die;
@@ -21,8 +21,8 @@ defined('_JEXEC') or die;
  */
 class Tags extends Observer
 {
-    /** @var TagsHelper  */
-    protected $tagsHelper;
+	/** @var TagsHelper */
+	protected $tagsHelper;
 
 	public function __construct(Observable &$subject)
 	{
@@ -34,8 +34,8 @@ class Tags extends Observer
 	/**
 	 * This event runs after unpublishing a record in a model
 	 *
-	 * @param   DataModel  &$model        The model which calls this event
-	 * @param   \stdClass  &$dataObject   The data to bind to the form
+	 * @param   DataModel  &$model       The model which calls this event
+	 * @param   \stdClass  &$dataObject  The data to bind to the form
 	 *
 	 * @return  void
 	 */
@@ -49,8 +49,8 @@ class Tags extends Observer
 	/**
 	 * This event runs after unpublishing a record in a model
 	 *
-	 * @param   DataModel  &$model        The model which calls this event
-	 * @param   \stdClass  &$dataObject   The data to bind to the form
+	 * @param   DataModel  &$model       The model which calls this event
+	 * @param   \stdClass  &$dataObject  The data to bind to the form
 	 *
 	 * @return  void
 	 */
@@ -75,7 +75,7 @@ class Tags extends Observer
 		$tagField = $model->getBehaviorParam('tagFieldName', 'tags');
 
 		// Avoid to update on other method (e.g. publish, ...)
-		if (!in_array($model->getContainer()->input->getCmd('task'), array('apply', 'save', 'savenew')))
+		if (!in_array($model->getContainer()->input->getCmd('task'), ['apply', 'save', 'savenew']))
 		{
 			return;
 		}
@@ -103,8 +103,8 @@ class Tags extends Observer
 	/**
 	 * The event which runs after deleting a record
 	 *
-	 * @param   DataModel &$model The model which calls this event
-	 * @param   integer   $oid    The PK value of the record which was deleted
+	 * @param   DataModel &$model  The model which calls this event
+	 * @param   integer    $oid    The PK value of the record which was deleted
 	 *
 	 * @return  void
 	 *
@@ -124,9 +124,10 @@ class Tags extends Observer
 	 * This event runs after unpublishing a record in a model
 	 *
 	 * @param   DataModel  &$model  The model which calls this event
-	 * @param   mixed      $data    An associative array or object to bind to the DataModel instance.
+	 * @param   mixed       $data   An associative array or object to bind to the DataModel instance.
 	 *
 	 * @return  void
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function onAfterBind(&$model, &$data)
 	{

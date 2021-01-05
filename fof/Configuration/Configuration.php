@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Configuration;
+namespace FOF40\Configuration;
 
 use FOF40\Container\Container;
 
@@ -20,18 +20,18 @@ defined('_JEXEC') or die;
 class Configuration
 {
 	/**
-	 * The component's container
-	 *
-	 * @var  Container
-	 */
-	protected $container = null;
-
-	/**
 	 * Cache of FOF components' configuration variables
 	 *
 	 * @var array
 	 */
-	public static $configurations = array();
+	public static $configurations = [];
+
+	/**
+	 * The component's container
+	 *
+	 * @var  Container
+	 */
+	protected $container;
 
 	function __construct(Container $c)
 	{
@@ -59,7 +59,7 @@ class Configuration
 			$domains = $this->getDomains();
 		}
 
-		list($domain, $var) = explode('.', $variable, 2);
+		[$domain, $var] = explode('.', $variable, 2);
 
 		if (!in_array(ucfirst($domain), $domains))
 		{
@@ -67,7 +67,7 @@ class Configuration
 		}
 
 		$class = '\\FOF40\\Configuration\\Domain\\' . ucfirst($domain);
-		/** @var   \FOF40\Configuration\Domain\DomainInterface  $o */
+		/** @var   \FOF40\Configuration\Domain\DomainInterface $o */
 		$o = new $class;
 
 		return $o->get(self::$configurations[$this->container->componentName], $var, $default);
@@ -82,27 +82,27 @@ class Configuration
 	{
 		if ($this->container->platform->isCli())
 		{
-			$order = array('cli', 'backend');
+			$order = ['cli', 'backend'];
 		}
 		elseif ($this->container->platform->isBackend())
 		{
-			$order = array('backend');
+			$order = ['backend'];
 		}
 		else
 		{
-			$order = array('frontend');
+			$order = ['frontend'];
 		}
 
 		$order[] = 'common';
 
-		$order = array_reverse($order);
-		self::$configurations[$this->container->componentName] = array();
+		$order                                                 = array_reverse($order);
+		self::$configurations[$this->container->componentName] = [];
 
-		foreach (array(false, true) as $userConfig)
+		foreach ([false, true] as $userConfig)
 		{
 			foreach ($order as $area)
 			{
-				$config = $this->parseComponentArea($area, $userConfig);
+				$config                                                = $this->parseComponentArea($area, $userConfig);
 				self::$configurations[$this->container->componentName] = array_replace_recursive(self::$configurations[$this->container->componentName], $config);
 			}
 		}
@@ -121,7 +121,7 @@ class Configuration
 		$component = $this->container->componentName;
 
 		// Initialise the return array
-		$ret = array();
+		$ret = [];
 
 		// Get the folders of the component
 		$componentPaths = $this->container->platform->getComponentBaseDirs($component);
@@ -201,7 +201,7 @@ class Configuration
 	 */
 	protected function getDomains(): array
 	{
-		static $domains = array();
+		static $domains = [];
 
 		if (empty($domains))
 		{
@@ -220,7 +220,7 @@ class Configuration
 						continue;
 					}
 
-					$domain = preg_replace('/[^A-Za-z0-9]/', '', $domain);
+					$domain    = preg_replace('/[^A-Za-z0-9]/', '', $domain);
 					$domains[] = $domain;
 				}
 

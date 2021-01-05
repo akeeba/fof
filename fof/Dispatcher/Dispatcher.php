@@ -23,22 +23,22 @@ defined('_JEXEC') or die;
 class Dispatcher
 {
 	/** @var   string  The name of the default view, in case none is specified */
-	public $defaultView = null;
+	public $defaultView;
 
 	/** @var  array  Local cache of the dispatcher configuration */
 	protected $config = [];
 
 	/** @var  Container  The container we belong to */
-	protected $container = null;
+	protected $container;
 
 	/** @var  string  The view which will be rendered by the dispatcher */
-	protected $view = null;
+	protected $view;
 
 	/** @var  string  The layout for rendering the view */
-	protected $layout = null;
+	protected $layout;
 
 	/** @var  Controller  The controller which will be used */
-	protected $controller = null;
+	protected $controller;
 
 	/** @var  bool  Is this user transparently logged in? */
 	protected $isTransparentlyLoggedIn = false;
@@ -52,8 +52,8 @@ class Dispatcher
 	 * Do note that $config is passed to the Controller and through it to the Model and View. Please see these classes
 	 * for more information on the configuration variables they accept.
 	 *
-	 * @param Container $container
-	 * @param array     $config
+	 * @param   Container  $container
+	 * @param   array      $config
 	 */
 	public function __construct(Container $container, array $config = [])
 	{
@@ -84,7 +84,7 @@ class Dispatcher
 	 * Magic get method. Handles magic properties:
 	 * $this->input  mapped to $this->container->input
 	 *
-	 * @param string $name The property to fetch
+	 * @param   string  $name  The property to fetch
 	 *
 	 * @return  mixed|null
 	 */
@@ -232,8 +232,8 @@ class Dispatcher
 	 * 1. $this->onBeforeDispatch(123, 456)
 	 * 2. Joomla! plugin event onComFoobarDispatcherBeforeDispatch($this, 123, 456)
 	 *
-	 * @param string $event     The name of the event, typically named onPredicateVerb e.g. onBeforeKick
-	 * @param array  $arguments The arguments to pass to the event handlers
+	 * @param   string  $event      The name of the event, typically named onPredicateVerb e.g. onBeforeKick
+	 * @param   array   $arguments  The arguments to pass to the event handlers
 	 *
 	 * @return  bool
 	 */
@@ -297,14 +297,11 @@ class Dispatcher
 		// Call the Joomla! plugins
 		$results = $this->container->platform->runPlugins($event, $arguments);
 
-		if (!empty($results))
+		foreach ($results as $result)
 		{
-			foreach ($results as $result)
+			if ($result === false)
 			{
-				if ($result === false)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 

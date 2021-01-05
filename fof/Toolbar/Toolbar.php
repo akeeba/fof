@@ -28,11 +28,11 @@ defined('_JEXEC') or die;
  */
 class Toolbar
 {
-	/** @var   Container   Component container */
-	protected $container = null;
-
 	/** @var   array   Permissions map, see the __construct method for more information */
 	public $perms = [];
+
+	/** @var   Container   Component container */
+	protected $container;
 
 	/** @var   array   The links to be rendered in the toolbar */
 	protected $linkbar = [];
@@ -47,7 +47,7 @@ class Toolbar
 	protected $useConfigurationFile = false;
 
 	/** @var  null|bool  Are we rendering a data-aware view? */
-	protected $isDataView = null;
+	protected $isDataView;
 
 	/**
 	 * Public constructor.
@@ -58,8 +58,8 @@ class Toolbar
 	 * renderFrontendSubmenu    bool    Should I render the submenu in the front-end of the component?
 	 * useConfigurationFile        bool    Should we use the configuration file (fof.xml) of the component?
 	 *
-	 * @param Container $c      The container for the component
-	 * @param array     $config The configuration overrides, see above
+	 * @param   Container  $c       The container for the component
+	 * @param   array      $config  The configuration overrides, see above
 	 */
 	public function __construct(Container $c, array $config = [])
 	{
@@ -124,8 +124,8 @@ class Toolbar
 	/**
 	 * Renders the toolbar for the current view and task
 	 *
-	 * @param string|null $view The view of the component
-	 * @param string|null $task The exact task of the view
+	 * @param   string|null  $view  The view of the component
+	 * @param   string|null  $task  The exact task of the view
 	 *
 	 * @return  void
 	 */
@@ -474,11 +474,11 @@ class Toolbar
 	/**
 	 * Append a link to the link bar
 	 *
-	 * @param string      $name   The text of the link
-	 * @param string|null $link   The link to render; set to null to render a separator
-	 * @param boolean     $active True if it's an active link
-	 * @param string|null $icon   Icon class (used by some renderers, like the Bootstrap renderer)
-	 * @param string|null $parent The parent element (referenced by name)) Thsi will create a dropdown list
+	 * @param   string       $name    The text of the link
+	 * @param   string|null  $link    The link to render; set to null to render a separator
+	 * @param   boolean      $active  True if it's an active link
+	 * @param   string|null  $icon    Icon class (used by some renderers, like the Bootstrap renderer)
+	 * @param   string|null  $parent  The parent element (referenced by name)) Thsi will create a dropdown list
 	 *
 	 * @return  void
 	 */
@@ -544,10 +544,10 @@ class Toolbar
 	/**
 	 * Prefixes (some people erroneously call this "prepend" – there is no such word) a link to the link bar
 	 *
-	 * @param string      $name   The text of the link
-	 * @param string|null $link   The link to render; set to null to render a separator
-	 * @param boolean     $active True if it's an active link
-	 * @param string|null $icon   Icon class (used by some renderers, like the Bootstrap renderer)
+	 * @param   string       $name    The text of the link
+	 * @param   string|null  $link    The link to render; set to null to render a separator
+	 * @param   boolean      $active  True if it's an active link
+	 * @param   string|null  $icon    Icon class (used by some renderers, like the Bootstrap renderer)
 	 *
 	 * @return  void
 	 */
@@ -614,6 +614,69 @@ class Toolbar
 	}
 
 	/**
+	 * Return the front-end toolbar rendering flag
+	 *
+	 * @return  boolean
+	 */
+	public function getRenderFrontendButtons(): bool
+	{
+		return $this->renderFrontendButtons;
+	}
+
+	/**
+	 * @param   boolean  $renderFrontendButtons
+	 */
+	public function setRenderFrontendButtons(bool $renderFrontendButtons): void
+	{
+		$this->renderFrontendButtons = $renderFrontendButtons;
+	}
+
+	/**
+	 * Return the front-end submenu rendering flag
+	 *
+	 * @return  boolean
+	 */
+	public function getRenderFrontendSubmenu(): bool
+	{
+		return $this->renderFrontendSubmenu;
+	}
+
+	/**
+	 * @param   boolean  $renderFrontendSubmenu
+	 */
+	public function setRenderFrontendSubmenu(bool $renderFrontendSubmenu): void
+	{
+		$this->renderFrontendSubmenu = $renderFrontendSubmenu;
+	}
+
+	/**
+	 * Is the view we are rendering the toolbar for a data-aware view?
+	 *
+	 * @return  bool
+	 */
+	public function isDataView(): bool
+	{
+		if (is_null($this->isDataView))
+		{
+			$this->isDataView = false;
+			$controller       = $this->container->dispatcher->getController();
+			$view             = null;
+
+			if (is_object($controller) && ($controller instanceof Controller))
+			{
+				$view = $controller->getView();
+			}
+
+			if (is_object($view) && ($view instanceof View))
+			{
+				$this->isDataView = $view instanceof DataViewInterface;
+			}
+		}
+
+		return $this->isDataView;
+	}
+
+	/**
 	 * Automatically detects all views of the component
 	 *
 	 * @return  string[]  A list of all views, in the order to be displayed in the toolbar submenu
@@ -629,68 +692,65 @@ class Toolbar
 
 		$allFolders = $filesystem->folderFolders($searchPath);
 
-		if (!empty($allFolders))
+		foreach ($allFolders as $folder)
 		{
-			foreach ($allFolders as $folder)
+			$view = $folder;
+
+			// View already added
+			if (in_array($this->container->inflector->pluralize($view), $t_views))
 			{
-				$view = $folder;
-
-				// View already added
-				if (in_array($this->container->inflector->pluralize($view), $t_views))
-				{
-					continue;
-				}
-
-				// Do we have a 'skip.xml' file in there?
-				$files = $filesystem->folderFiles($searchPath . '/' . $view, '^skip\.xml$');
-
-				if (!empty($files))
-				{
-					continue;
-				}
-
-				// Do we have extra information about this view? (ie. ordering)
-				$meta = $filesystem->folderFiles($searchPath . '/' . $view, '^metadata\.xml$');
-
-				// Not found, do we have it inside the plural one?
-				if (!$meta)
-				{
-					$plural = $this->container->inflector->pluralize($view);
-
-					if (in_array($plural, $allFolders))
-					{
-						$view = $plural;
-						$meta = $filesystem->folderFiles($searchPath . '/' . $view, '^metadata\.xml$');
-					}
-				}
-
-				if (!empty($meta))
-				{
-					$using_meta = true;
-					$xml        = simplexml_load_file($searchPath . '/' . $view . '/' . $meta[0]);
-					$order      = (int) $xml->foflib->ordering;
-				}
-				else
-				{
-					// Next place. It's ok since the index are 0-based and count is 1-based
-
-					if (!isset($to_order))
-					{
-						$to_order = [];
-					}
-
-					$order = count($to_order);
-				}
-
-				$view = $this->container->inflector->pluralize($view);
-
-				$t_view           = new \stdClass;
-				$t_view->ordering = $order;
-				$t_view->view     = $view;
-
-				$to_order[] = $t_view;
-				$t_views[]  = $view;
+				continue;
 			}
+
+			// Do we have a 'skip.xml' file in there?
+			$files = $filesystem->folderFiles($searchPath . '/' . $view, '^skip\.xml$');
+
+			if (!empty($files))
+			{
+				continue;
+			}
+
+			// Do we have extra information about this view? (ie. ordering)
+			$meta = $filesystem->folderFiles($searchPath . '/' . $view, '^metadata\.xml$');
+
+			// Not found, do we have it inside the plural one?
+			if (!$meta)
+			{
+				$plural = $this->container->inflector->pluralize($view);
+
+				if (in_array($plural, $allFolders))
+				{
+					$view = $plural;
+					$meta = $filesystem->folderFiles($searchPath . '/' . $view, '^metadata\.xml$');
+				}
+			}
+
+			if (!empty($meta))
+			{
+				$using_meta = true;
+				$xml        = simplexml_load_file($searchPath . '/' . $view . '/' . $meta[0]);
+				$order      = (int) $xml->foflib->ordering;
+			}
+			else
+			{
+				// Next place. It's ok since the index are 0-based and count is 1-based
+
+				if (!isset($to_order))
+				{
+					$to_order = [];
+				}
+
+				$order = count($to_order);
+			}
+
+			$view = $this->container->inflector->pluralize($view);
+
+			$t_view           = new \stdClass;
+			$t_view->ordering = $order;
+			$t_view->view     = $view;
+
+			$to_order[] = $t_view;
+			$t_views[]  = $view;
 		}
 
 		$views = [];
@@ -726,72 +786,71 @@ class Toolbar
 	}
 
 	/**
-	 * Return the front-end toolbar rendering flag
+	 * Simplified default rendering without any attributes.
 	 *
-	 * @return  boolean
-	 */
-	public function getRenderFrontendButtons(): bool
-	{
-		return $this->renderFrontendButtons;
-	}
-
-	/**
-	 * @param boolean $renderFrontendButtons
-	 */
-	public function setRenderFrontendButtons(bool $renderFrontendButtons): void
-	{
-		$this->renderFrontendButtons = $renderFrontendButtons;
-	}
-
-	/**
-	 * Return the front-end submenu rendering flag
+	 * @param   array  $tasks  Array of tasks.
 	 *
-	 * @return  boolean
+	 * @return  void
 	 */
-	public function getRenderFrontendSubmenu(): bool
+	protected function renderToolbarElements(array $tasks): void
 	{
-		return $this->renderFrontendSubmenu;
-	}
-
-	/**
-	 * @param boolean $renderFrontendSubmenu
-	 */
-	public function setRenderFrontendSubmenu(bool $renderFrontendSubmenu): void
-	{
-		$this->renderFrontendSubmenu = $renderFrontendSubmenu;
-	}
-
-	/**
-	 * Is the view we are rendering the toolbar for a data-aware view?
-	 *
-	 * @return  bool
-	 */
-	public function isDataView(): bool
-	{
-		if (is_null($this->isDataView))
+		foreach ($tasks as $task)
 		{
-			$this->isDataView = false;
-			$controller       = $this->container->dispatcher->getController();
-			$view             = null;
+			$this->renderToolbarElement($task);
+		}
+	}
 
-			if (is_object($controller) && ($controller instanceof Controller))
-			{
-				$view = $controller->getView();
-			}
-
-			if (is_object($view) && ($view instanceof View))
-			{
-				$this->isDataView = $view instanceof DataViewInterface;
-			}
+	/**
+	 * Checks if the current user has enough privileges for the requested ACL privilege of a custom toolbar button.
+	 *
+	 * @param   string  $area  The ACL privilege as set up in the $this->perms object
+	 *
+	 * @return  boolean  True if the user has the ACL privilege specified
+	 */
+	protected function checkACL(string $area): bool
+	{
+		if (is_bool($area))
+		{
+			return $area;
 		}
 
-		return $this->isDataView;
+		if (in_array(strtolower($area), ['false', '0', 'no', '403']))
+		{
+			return false;
+		}
+
+		if (in_array(strtolower($area), ['true', '1', 'yes']))
+		{
+			return true;
+		}
+
+		if (in_array(strtolower($area), ['guest']))
+		{
+			return $this->container->platform->getUser()->guest;
+		}
+
+		if (in_array(strtolower($area), ['user']))
+		{
+			return !$this->container->platform->getUser()->guest;
+		}
+
+		if (empty($area))
+		{
+			return true;
+		}
+
+		if (isset($this->perms->$area))
+		{
+			return $this->perms->$area;
+		}
+
+		return false;
 	}
 
 	/**
 	 * Render the toolbar from the configuration.
 	 *
-	 * @param array $toolbar The toolbar definition
+	 * @param   array  $toolbar  The toolbar definition
 	 *
 	 * @return  void
 	 */
@@ -817,34 +876,17 @@ class Toolbar
 		// Render each element
 		foreach ($toolbar as $elementType => $elementAttributes)
 		{
-			$value = isset($elementAttributes['value']) ? (string)($elementAttributes['value']) : null;
+			$value = isset($elementAttributes['value']) ? (string) ($elementAttributes['value']) : null;
 			$this->renderToolbarElement($elementType, $value, $elementAttributes);
-		}
-
-		return;
-	}
-
-	/**
-	 * Simplified default rendering without any attributes.
-	 *
-	 * @param array $tasks Array of tasks.
-	 *
-	 * @return  void
-	 */
-	protected function renderToolbarElements(array $tasks): void
-	{
-		foreach ($tasks as $task)
-		{
-			$this->renderToolbarElement($task);
 		}
 	}
 
 	/**
 	 * Render a toolbar element.
 	 *
-	 * @param string  $type       The element type.
-	 * @param ?string $value      The title translation string for a 'title' element.
-	 * @param array   $attributes The element attributes.
+	 * @param   string  $type        The element type.
+	 * @param ?string   $value       The title translation string for a 'title' element.
+	 * @param   array   $attributes  The element attributes.
 	 *
 	 * @return  void
 	 *
@@ -882,8 +924,7 @@ class Toolbar
 
 			case 'preview':
 				$url            = isset($attributes['url']) ? $attributes['url'] : '';
-				$update_editors = isset($attributes['update_editors']) ?
-					fofStringToBool($attributes['update_editors']) : false;
+				$update_editors = fofStringToBool($attributes['update_editors'] ?? 'false');
 
 				JoomlaToolbarHelper::preview($url, $update_editors);
 				break;
@@ -895,7 +936,7 @@ class Toolbar
 				}
 
 				$ref       = $attributes['help'];
-				$com       = isset($attributes['com']) ? fofStringToBool($attributes['com']) : false;
+				$com       = fofStringToBool($attributes['com'] ?? 'false');
 				$override  = isset($attributes['override']) ? $attributes['override'] : null;
 				$component = isset($attributes['component']) ? $attributes['component'] : null;
 
@@ -931,8 +972,7 @@ class Toolbar
 				{
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'add';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_NEW';
-					$check = isset($attributes['check']) ?
-						fofStringToBool($attributes['check']) : false;
+					$check = fofStringToBool($attributes['check'] ?? 'false');
 
 					JoomlaToolbarHelper::addNew($task, $alt, $check);
 				}
@@ -961,8 +1001,7 @@ class Toolbar
 				{
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'publish';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_PUBLISH';
-					$check = isset($attributes['check']) ?
-						fofStringToBool($attributes['check']) : false;
+					$check = fofStringToBool($attributes['check'] ?? 'false');
 
 					JoomlaToolbarHelper::publish($task, $alt, $check);
 				}
@@ -989,8 +1028,7 @@ class Toolbar
 				{
 					$task  = isset($attributes['task']) ? $attributes['task'] : 'unpublish';
 					$alt   = isset($attributes['alt']) ? $attributes['alt'] : 'JTOOLBAR_UNPUBLISH';
-					$check = isset($attributes['check']) ?
-						fofStringToBool($attributes['check']) : false;
+					$check = fofStringToBool($attributes['check'] ?? 'false');
 
 					JoomlaToolbarHelper::unpublish($task, $alt, $check);
 				}
@@ -1164,52 +1202,5 @@ class Toolbar
 			default:
 				throw new UnknownButtonType($type);
 		}
-	}
-
-	/**
-	 * Checks if the current user has enough privileges for the requested ACL privilege of a custom toolbar button.
-	 *
-	 * @param string $area The ACL privilege as set up in the $this->perms object
-	 *
-	 * @return  boolean  True if the user has the ACL privilege specified
-	 */
-	protected function checkACL(string $area): bool
-	{
-		if (is_bool($area))
-		{
-			return $area;
-		}
-
-		if (in_array(strtolower($area), ['false', '0', 'no', '403']))
-		{
-			return false;
-		}
-
-		if (in_array(strtolower($area), ['true', '1', 'yes']))
-		{
-			return true;
-		}
-
-		if (in_array(strtolower($area), ['guest']))
-		{
-			return $this->container->platform->getUser()->guest;
-		}
-
-		if (in_array(strtolower($area), ['user']))
-		{
-			return !$this->container->platform->getUser()->guest;
-		}
-
-		if (empty($area))
-		{
-			return true;
-		}
-
-		if (isset($this->perms->$area))
-		{
-			return $this->perms->$area;
-		}
-
-		return false;
 	}
 }

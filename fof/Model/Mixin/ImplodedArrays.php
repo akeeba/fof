@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\Mixin;
+namespace FOF40\Model\Mixin;
 
 defined('_JEXEC') or die;
 
@@ -30,19 +30,18 @@ trait ImplodedArrays
 
 		if (empty($value))
 		{
-			return array();
+			return [];
 		}
 
 		$value = explode(',', $value);
-		$value = array_map('trim', $value);
 
-		return $value;
+		return array_map('trim', $value);
 	}
 
 	/**
 	 * Converts an array of values into a comma separated list
 	 *
-	 * @param   array  $value  The array of values
+	 * @param   array|string  $value  The array of values (or the already imploded array as a string)
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
@@ -54,8 +53,7 @@ trait ImplodedArrays
 		}
 
 		$value = array_map('trim', $value);
-		$value = implode(',', $value);
 
-		return $value;
+		return implode(',', $value);
 	}
 }

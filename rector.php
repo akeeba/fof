@@ -39,6 +39,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 	// Paths to include
 	$parameters->set(Option::PATHS, [
 		__DIR__ . '/fof',
+		__DIR__ . '/plugins',
+//		__DIR__ . '/Tests',
 	]);
 
 	/**

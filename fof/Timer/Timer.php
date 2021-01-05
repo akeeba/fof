@@ -19,21 +19,21 @@ class Timer
 	 *
 	 * @var  integer
 	 */
-	private $max_exec_time = null;
+	private $max_exec_time;
 
 	/**
 	 * Timestamp of execution start
 	 *
 	 * @var  integer
 	 */
-	private $start_time = null;
+	private $start_time;
 
 	/**
 	 * Public constructor, creates the timer object and calculates the execution
 	 * time limits.
 	 *
-	 * @param integer $max_exec_time Maximum execution time, in seconds
-	 * @param integer $runtime_bias  Runtime bias factor, as percent points of the max execution time
+	 * @param   integer  $max_exec_time  Maximum execution time, in seconds
+	 * @param   integer  $runtime_bias   Runtime bias factor, as percent points of the max execution time
 	 *
 	 */
 	public function __construct(int $max_exec_time = 5, int $runtime_bias = 75)

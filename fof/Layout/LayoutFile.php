@@ -27,7 +27,7 @@ defined('_JEXEC') or die;
 class LayoutFile extends FileLayout
 {
 	/** @var  Container  The component container */
-	public $container = null;
+	public $container;
 
 	/**
 	 * Method to finds the full real file path, checking possible overrides

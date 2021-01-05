@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 class Dispatcher implements Observable
 {
 	/** @var   Container  The container this event dispatcher is attached to */
-	protected $container = null;
+	protected $container;
 
 	/** @var   array  The observers attached to the dispatcher */
 	protected $observers = [];
@@ -25,7 +25,7 @@ class Dispatcher implements Observable
 	/**
 	 * Public constructor
 	 *
-	 * @param Container $container The container this event dispatcher is attached to
+	 * @param   Container  $container  The container this event dispatcher is attached to
 	 */
 	public function __construct(Container $container)
 	{
@@ -45,7 +45,7 @@ class Dispatcher implements Observable
 	/**
 	 * Attaches an observer to the object
 	 *
-	 * @param Observer $observer The observer to attach
+	 * @param   Observer  $observer  The observer to attach
 	 *
 	 * @return  Dispatcher  Ourselves, for chaining
 	 */
@@ -85,7 +85,7 @@ class Dispatcher implements Observable
 	/**
 	 * Detaches an observer from the object
 	 *
-	 * @param Observer $observer The observer to detach
+	 * @param   Observer  $observer  The observer to detach
 	 *
 	 * @return  Dispatcher  Ourselves, for chaining
 	 */
@@ -131,7 +131,7 @@ class Dispatcher implements Observable
 	/**
 	 * Is an observer object already registered with this dispatcher?
 	 *
-	 * @param Observer $observer The observer to check if it's attached
+	 * @param   Observer  $observer  The observer to check if it's attached
 	 *
 	 * @return  boolean
 	 */
@@ -145,7 +145,7 @@ class Dispatcher implements Observable
 	/**
 	 * Is there an observer of the specified class already registered with this dispatcher?
 	 *
-	 * @param string $className The observer class name to check if it's attached
+	 * @param   string  $className  The observer class name to check if it's attached
 	 *
 	 * @return  boolean
 	 */
@@ -157,7 +157,7 @@ class Dispatcher implements Observable
 	/**
 	 * Returns an observer attached to this behaviours dispatcher by its class name
 	 *
-	 * @param string $className The class name of the observer object to return
+	 * @param   string  $className  The class name of the observer object to return
 	 *
 	 * @return  null|Observer
 	 */
@@ -174,8 +174,8 @@ class Dispatcher implements Observable
 	/**
 	 * Triggers an event in the attached observers
 	 *
-	 * @param string $event The event to attach
-	 * @param array  $args  Arguments to the event handler
+	 * @param   string  $event  The event to attach
+	 * @param   array   $args   Arguments to the event handler
 	 *
 	 * @return  array
 	 */
@@ -244,8 +244,8 @@ class Dispatcher implements Observable
 	 * Asks each observer to handle an event based on the provided arguments. The first observer to return a non-null
 	 * result wins. This is a *very* simplistic implementation of the Chain of Command pattern.
 	 *
-	 * @param string $event The event name to handle
-	 * @param array  $args  The arguments to the event
+	 * @param   string  $event  The event name to handle
+	 * @param   array   $args   The arguments to the event
 	 *
 	 * @return  mixed  Null if the event can't be handled by any observer
 	 */

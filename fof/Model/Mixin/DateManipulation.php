@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\Mixin;
+namespace FOF40\Model\Mixin;
 
 use FOF40\Date\Date;
 use FOF40\Model\DataModel;
@@ -20,9 +20,9 @@ trait DateManipulation
 	/**
 	 * Normalise a date into SQL format
 	 *
-	 * @param   string $value   The date to normalise
-	 * @param   string $default The default date to use if the normalised date is invalid or empty (use 'now' for
-	 *                          current date/time)
+	 * @param   string  $value    The date to normalise
+	 * @param   string  $default  The default date to use if the normalised date is invalid or empty (use 'now' for
+	 *                            current date/time)
 	 *
 	 * @return  string
 	 */
@@ -56,18 +56,16 @@ trait DateManipulation
 
 		$date = new Date($value);
 
-		$value = $date->toSql();
-
-		return $value;
+		return $date->toSql();
 	}
 
 	/**
 	 * Sort the published up/down times in case they are give out of order. If publish_up equals publish_down the
 	 * foreverDate will be used for publish_down.
 	 *
-	 * @param   string $publish_up   Publish Up date
-	 * @param   string $publish_down Publish Down date
-	 * @param   string $foreverDate  See above
+	 * @param   string  $publish_up    Publish Up date
+	 * @param   string  $publish_down  Publish Down date
+	 * @param   string  $foreverDate   See above
 	 *
 	 * @return  array  (publish_up, publish_down)
 	 */
@@ -88,7 +86,7 @@ trait DateManipulation
 			$publish_down = $jDown->toSql();
 		}
 
-		return array($publish_up, $publish_down);
+		return [$publish_up, $publish_down];
 	}
 
 	/**

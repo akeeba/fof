@@ -255,9 +255,9 @@ class file_fof40InstallerScript
 	 *
 	 * @param   InstallerAdapter $parent The parent object
 	 *
-	 * @return  array  The installation status
+	 * @return  bool  The installation status
 	 */
-	protected function amIAnUpdate($parent)
+	protected function amIAnUpdate($parent): bool
 	{
 		/** @var JoomlaInstaller $grandpa */
 		$grandpa = $parent->getParent();
@@ -267,14 +267,14 @@ class file_fof40InstallerScript
 		$target = JPATH_LIBRARIES . '/fof40';
 
 		// If FOF is not really installed (someone removed the directory instead of uninstalling?) I have to install it.
-		if (!JFolder::exists($target))
+		if (!Folder::exists($target))
 		{
 			return true;
 		}
 
 		$fofVersion = array();
 
-		if (JFile::exists($target . '/version.txt'))
+		if (File::exists($target . '/version.txt'))
 		{
 			$rawData                 = @file_get_contents($target . '/version.txt');
 			$rawData                 = ($rawData === false) ? "0.0.0\n2011-01-01\n" : $rawData;
@@ -300,9 +300,7 @@ class file_fof40InstallerScript
 			'date'    => new JoomlaDate(trim($info[1])),
 		);
 
-		$haveToInstallFOF = $fofVersion['package']['date']->toUNIX() >= $fofVersion['installed']['date']->toUNIX();
-
-		return $haveToInstallFOF;
+		return $fofVersion['package']['date']->toUNIX() >= $fofVersion['installed']['date']->toUNIX();
 	}
 
 	/**
@@ -466,7 +464,7 @@ class file_fof40InstallerScript
 		{
 			if (!@mkdir($dest, 0755))
 			{
-				JFolder::create($dest, 0755);
+				Folder::create($dest, 0755);
 			}
 		}
 
@@ -530,7 +528,7 @@ class file_fof40InstallerScript
 
 			if (!@copy($sourcePath, $targetPath))
 			{
-				if (!JFile::copy($sourcePath, $targetPath))
+				if (!File::copy($sourcePath, $targetPath))
 				{
 					$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
 				}

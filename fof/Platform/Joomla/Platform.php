@@ -58,21 +58,21 @@ class Platform extends BasePlatform
 	 *
 	 * @var   bool
 	 */
-	protected static $isCLI = null;
+	protected static $isCLI;
 
 	/**
 	 * Is this an administrator application?
 	 *
 	 * @var   bool
 	 */
-	protected static $isAdmin = null;
+	protected static $isAdmin;
 
 	/**
 	 * Is this an API application?
 	 *
 	 * @var   bool
 	 */
-	protected static $isApi = null;
+	protected static $isApi;
 
 	/**
 	 * A fake session storage for CLI apps. Since CLI applications cannot have a session we are using a Registry object
@@ -80,14 +80,14 @@ class Platform extends BasePlatform
 	 *
 	 * @var   Registry
 	 */
-	protected static $fakeSession = null;
+	protected static $fakeSession;
 
 	/**
 	 * The table and table field cache object, used to speed up database access
 	 *
 	 * @var  Registry|null
 	 */
-	private $_cache = null;
+	private $_cache;
 
 	/**
 	 * Public constructor.
@@ -236,12 +236,11 @@ class Platform extends BasePlatform
 		$jversion     = new JoomlaVersion;
 		$versionParts = explode('.', $jversion->getShortVersion());
 		$majorVersion = array_shift($versionParts);
-		$suffixes     = [
+
+		return [
 			'.j' . str_replace('.', '', $jversion->getHelpVersion()),
 			'.j' . $majorVersion,
 		];
-
-		return $suffixes;
 	}
 
 	/**

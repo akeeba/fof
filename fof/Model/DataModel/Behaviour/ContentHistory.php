@@ -5,13 +5,11 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
 
 use ContenthistoryHelper;
-use FOF40\Container\Container;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
-use JDatabaseQuery;
 
 defined('_JEXEC') or die;
 
@@ -22,8 +20,8 @@ defined('_JEXEC') or die;
  */
 class ContentHistory extends Observer
 {
-    /** @var  ContentHistoryHelper */
-    protected $historyHelper;
+	/** @var  ContentHistoryHelper */
+	protected $historyHelper;
 
 	/**
 	 * The event which runs after storing (saving) data to the database
@@ -40,10 +38,10 @@ class ContentHistory extends Observer
 
 		if ($componentParams->get('save_history', 0))
 		{
-            if(!$this->historyHelper)
-            {
-                $this->historyHelper = new ContentHistoryHelper($model->getContentType());
-            }
+			if (!$this->historyHelper)
+			{
+				$this->historyHelper = new ContentHistoryHelper($model->getContentType());
+			}
 
 			$this->historyHelper->store($model);
 		}
@@ -55,7 +53,7 @@ class ContentHistory extends Observer
 	 * The event which runs before deleting a record
 	 *
 	 * @param   DataModel &$model  The model which calls this event
-	 * @param   integer   $oid  The PK value of the record to delete
+	 * @param   integer    $oid    The PK value of the record to delete
 	 *
 	 * @return  boolean  True to allow the deletion
 	 */
@@ -65,10 +63,10 @@ class ContentHistory extends Observer
 
 		if ($componentParams->get('save_history', 0))
 		{
-            if(!$this->historyHelper)
-            {
-                $this->historyHelper = new ContentHistoryHelper($model->getContentType());
-            }
+			if (!$this->historyHelper)
+			{
+				$this->historyHelper = new ContentHistoryHelper($model->getContentType());
+			}
 
 			$this->historyHelper->deleteHistory($model);
 		}

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 class Relation extends Number
 {
 	/** @var \JDatabaseQuery The COUNT subquery to filter by */
-	protected $subQuery = null;
+	protected $subQuery;
 
 	public function __construct($db, $relationName, $subQuery)
 	{
@@ -33,6 +33,6 @@ class Relation extends Number
 
 	public function getFieldName()
 	{
-		return '(' . (string)$this->subQuery . ')';
+		return '(' . $this->subQuery . ')';
 	}
 }

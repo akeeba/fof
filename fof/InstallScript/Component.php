@@ -5,19 +5,18 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\InstallScript;
+namespace FOF40\InstallScript;
 
-use FOF40\Database\Installer as DatabaseInstaller;
 use Exception;
+use FOF40\Database\Installer as DatabaseInstaller;
 use JDatabaseDriver;
-use JFile;
-use JFolder;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Menu;
-use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die;
 
@@ -56,17 +55,17 @@ class Component extends BaseInstaller
 	 *
 	 * @var array
 	 */
-	protected $uninstallation_queue = array(
+	protected $uninstallation_queue = [
 		// modules => { (folder) => { (module) }* }*
-		'modules' => array(
-			'admin' => array(),
-			'site'  => array(),
-		),
+		'modules' => [
+			'admin' => [],
+			'site'  => [],
+		],
 		// plugins => { (folder) => { (element) }* }*
-		'plugins' => array(
-			'system' => array(),
-		),
-	);
+		'plugins' => [
+			'system' => [],
+		],
+	];
 
 	/**
 	 * Obsolete files and folders to remove from the free version only. This is used when you move a feature from the
@@ -74,16 +73,16 @@ class Component extends BaseInstaller
 	 *
 	 * @var   array
 	 */
-	protected $removeFilesFree = array(
-		'files'   => array(
+	protected $removeFilesFree = [
+		'files'   => [
 			// Use pathnames relative to your site's root, e.g.
 			// 'administrator/components/com_foobar/helpers/whatever.php'
-		),
-		'folders' => array(
+		],
+		'folders' => [
 			// Use pathnames relative to your site's root, e.g.
 			// 'administrator/components/com_foobar/baz'
-		),
-	);
+		],
+	];
 
 	/**
 	 * Obsolete files and folders to remove from both paid and free releases. This is used when you refactor code and
@@ -91,26 +90,26 @@ class Component extends BaseInstaller
 	 *
 	 * @var   array
 	 */
-	protected $removeFilesAllVersions = array(
-		'files'   => array(
+	protected $removeFilesAllVersions = [
+		'files'   => [
 			// Use pathnames relative to your site's root, e.g.
 			// 'administrator/components/com_foobar/helpers/whatever.php'
-		),
-		'folders' => array(
+		],
+		'folders' => [
 			// Use pathnames relative to your site's root, e.g.
 			// 'administrator/components/com_foobar/baz'
-		),
-	);
+		],
+	];
 
 	/**
 	 * A list of scripts to be copied to the "cli" directory of the site
 	 *
 	 * @var   array
 	 */
-	protected $cliScriptFiles = array(
+	protected $cliScriptFiles = [
 		// Use just the filename, e.g.
 		// 'my-cron-script.php'
-	);
+	];
 
 	/**
 	 * The path inside your package where cli scripts are stored
@@ -152,10 +151,10 @@ class Component extends BaseInstaller
 		// Get the plugin name and folder from the class name (it's always plgFolderPluginInstallerScript) if necessary.
 		if (empty($this->componentName))
 		{
-			$class              = get_class($this);
-			$words              = preg_replace('/(\s)+/', '_', $class);
-			$words              = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $words));
-			$classParts         = explode('_', $words);
+			$class      = get_class($this);
+			$words      = preg_replace('/(\s)+/', '_', $class);
+			$words      = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $words));
+			$classParts = explode('_', $words);
 
 			$this->componentName = 'com_' . $classParts[2];
 		}
@@ -165,10 +164,12 @@ class Component extends BaseInstaller
 	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the component. This is our last chance to
 	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @param   string            $type   Installation type (install, update, discover_install)
-	 * @param   ComponentAdapter  $parent Parent object
+	 * @param   string            $type    Installation type (install, update, discover_install)
+	 * @param   ComponentAdapter  $parent  Parent object
 	 *
 	 * @return  boolean  True to let the installation proceed, false to halt the installation
+	 *
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function preflight(string $type, ComponentAdapter $parent): bool
 	{
@@ -188,7 +189,7 @@ class Component extends BaseInstaller
 		$this->clearOpcodeCaches();
 
 		// Workarounds for JoomlaInstaller issues.
-		if (in_array($type, array('install', 'discover_install')))
+		if (in_array($type, ['install', 'discover_install']))
 		{
 			// Bugfix for "Database function returned no error"
 			$this->bugfixDBFunctionReturnedNoError();
@@ -207,12 +208,12 @@ class Component extends BaseInstaller
 	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
 	 * database updates and similar housekeeping functions.
 	 *
-	 * @param   string            $type   install, update or discover_update
-	 * @param   ComponentAdapter  $parent Parent object
-	 *
-	 * @throws Exception
+	 * @param   string            $type    install, update or discover_update
+	 * @param   ComponentAdapter  $parent  Parent object
 	 *
 	 * @return  void
+	 * @throws Exception
+	 *
 	 */
 	public function postflight(string $type, ComponentAdapter $parent): void
 	{
@@ -250,7 +251,7 @@ class Component extends BaseInstaller
 		else
 		{
 			// This is the free version, remove the removeFilesAllVersions and removeFilesFree files
-			$removeFiles = array('files' => array(), 'folders' => array());
+			$removeFiles = ['files' => [], 'folders' => []];
 
 			if (isset($this->removeFilesAllVersions['files']))
 			{
@@ -318,7 +319,7 @@ class Component extends BaseInstaller
 	/**
 	 * Runs on uninstallation
 	 *
-	 * @param   ComponentAdapter  $parent The parent object
+	 * @param   ComponentAdapter  $parent  The parent object
 	 */
 	public function uninstall(ComponentAdapter $parent): void
 	{
@@ -358,12 +359,12 @@ class Component extends BaseInstaller
 		{
 			if (is_file(JPATH_ROOT . '/cli/' . $script))
 			{
-				JFile::delete(JPATH_ROOT . '/cli/' . $script);
+				File::delete(JPATH_ROOT . '/cli/' . $script);
 			}
 
 			if (is_file($src . '/' . $this->cliSourcePath . '/' . $script))
 			{
-				JFile::copy($src . '/' . $this->cliSourcePath . '/' . $script, JPATH_ROOT . '/cli/' . $script);
+				File::copy($src . '/' . $this->cliSourcePath . '/' . $script, JPATH_ROOT . '/cli/' . $script);
 			}
 		}
 	}
@@ -385,7 +386,7 @@ class Component extends BaseInstaller
 
 		$temporarySource = $parent->getParent()->getPath('source');
 
-		$copyMap = array(
+		$copyMap = [
 			// Backend component files
 			'backend'           => JPATH_ADMINISTRATOR . '/components/' . $this->componentName,
 			'admin'             => JPATH_ADMINISTRATOR . '/components/' . $this->componentName,
@@ -400,7 +401,7 @@ class Component extends BaseInstaller
 			'language/site'     => JPATH_SITE . '/language',
 			// Media files
 			'media'             => JPATH_ROOT . '/media/' . $this->componentName,
-		);
+		];
 
 		foreach ($copyMap as $partialSource => $target)
 		{
@@ -415,7 +416,9 @@ class Component extends BaseInstaller
 	/**
 	 * Override this method to display a custom component installation message if you so wish
 	 *
-	 * @param  ComponentAdapter  $parent Parent class calling us
+	 * @param   ComponentAdapter  $parent  Parent class calling us
+	 *
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	protected function renderPostInstallation(ComponentAdapter $parent): void
 	{
@@ -425,7 +428,9 @@ class Component extends BaseInstaller
 	/**
 	 * Override this method to display a custom component uninstallation message if you so wish
 	 *
-	 * @param  ComponentAdapter  $parent Parent class calling us
+	 * @param   ComponentAdapter  $parent  Parent class calling us
+	 *
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	protected function renderPostUninstallation(ComponentAdapter $parent): void
 	{
@@ -619,7 +624,7 @@ class Component extends BaseInstaller
 	/**
 	 * Removes obsolete files and folders
 	 *
-	 * @param   array $removeList The files and directories to remove
+	 * @param   array  $removeList  The files and directories to remove
 	 */
 	protected function removeFilesAndFolders(array $removeList): void
 	{
@@ -635,7 +640,7 @@ class Component extends BaseInstaller
 					continue;
 				}
 
-				JFile::delete($f);
+				File::delete($f);
 			}
 		}
 
@@ -651,7 +656,7 @@ class Component extends BaseInstaller
 					continue;
 				}
 
-				JFolder::delete($f);
+				Folder::delete($f);
 			}
 		}
 	}
@@ -659,17 +664,17 @@ class Component extends BaseInstaller
 	/**
 	 * Uninstalls obsolete subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   ComponentAdapter  $parent The parent object
+	 * @param   ComponentAdapter  $parent  The parent object
 	 *
-	 * @return  \stdClass The subextension uninstallation status
+	 * @return  \stdClass The sub-extension uninstallation status
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	protected function uninstallObsoleteSubextensions(ComponentAdapter $parent)
 	{
-		$db = JoomlaFactory::getDBO();
-
+		$db              = JoomlaFactory::getDBO();
 		$status          = new \stdClass();
-		$status->modules = array();
-		$status->plugins = array();
+		$status->modules = [];
+		$status->plugins = [];
 
 		// Modules uninstallation
 		if (isset($this->uninstallation_queue['modules']) && count($this->uninstallation_queue['modules']))
@@ -693,11 +698,11 @@ class Component extends BaseInstaller
 						{
 							$installer         = new JoomlaInstaller;
 							$result            = $installer->uninstall('module', $id, 1);
-							$status->modules[] = array(
+							$status->modules[] = [
 								'name'   => 'mod_' . $module,
 								'client' => $folder,
 								'result' => $result,
-							);
+							];
 						}
 					}
 				}
@@ -722,15 +727,16 @@ class Component extends BaseInstaller
 						$db->setQuery($sql);
 
 						$id = $db->loadResult();
+
 						if ($id)
 						{
-							$installer         = new JInstaller;
+							$installer         = new JoomlaInstaller;
 							$result            = $installer->uninstall('plugin', $id, 1);
-							$status->plugins[] = array(
+							$status->plugins[] = [
 								'name'   => 'plg_' . $plugin,
 								'group'  => $folder,
 								'result' => $result,
-							);
+							];
 						}
 					}
 				}
@@ -741,7 +747,7 @@ class Component extends BaseInstaller
 	}
 
 	/**
-	 * @param ComponentAdapter  $parent
+	 * @param   ComponentAdapter  $parent
 	 *
 	 * @return bool
 	 *
@@ -855,7 +861,7 @@ class Component extends BaseInstaller
 		/** @var \SimpleXMLElement $menuElement */
 		if ($menuElement)
 		{
-			$data                 = array();
+			$data                 = [];
 			$data['menutype']     = 'main';
 			$data['client_id']    = 1;
 			$data['title']        = (string) trim($menuElement);
@@ -873,7 +879,7 @@ class Component extends BaseInstaller
 		// No menu element was specified, Let's make a generic menu item
 		else
 		{
-			$data                 = array();
+			$data                 = [];
 			$data['menutype']     = 'main';
 			$data['client_id']    = 1;
 			$data['title']        = $option;
@@ -967,7 +973,7 @@ class Component extends BaseInstaller
 		 * Since we have created a menu item, we add it to the installation step stack
 		 * so that if we have to rollback the changes we can undo it.
 		 */
-		$parent->getParent()->pushStep(array('type' => 'menu', 'id' => $componentId));
+		$parent->getParent()->pushStep(['type' => 'menu', 'id' => $componentId]);
 
 		/*
 		 * Process SubMenus
@@ -992,7 +998,7 @@ class Component extends BaseInstaller
 		/** @var \SimpleXMLElement $child */
 		foreach ($submenu->menu as $child)
 		{
-			$data                 = array();
+			$data                 = [];
 			$data['menutype']     = 'main';
 			$data['client_id']    = 1;
 			$data['title']        = (string) trim($child);
@@ -1011,7 +1017,7 @@ class Component extends BaseInstaller
 			}
 			else
 			{
-				$request = array();
+				$request = [];
 
 				if ((string) $child->attributes()->act)
 				{
@@ -1068,7 +1074,7 @@ class Component extends BaseInstaller
 			 * Since we have created a menu item, we add it to the installation step stack
 			 * so that if we have to rollback the changes we can undo it.
 			 */
-			$parent->getParent()->pushStep(array('type' => 'menu', 'id' => $componentId));
+			$parent->getParent()->pushStep(['type' => 'menu', 'id' => $componentId]);
 		}
 
 		return true;
@@ -1077,7 +1083,7 @@ class Component extends BaseInstaller
 	/**
 	 * Make sure the Component menu items are really published!
 	 *
-	 * @param ComponentAdapter  $parent
+	 * @param   ComponentAdapter  $parent
 	 *
 	 * @return bool
 	 */
@@ -1180,7 +1186,7 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the assets table records for the component
 	 *
-	 * @param   JDatabaseDriver $db
+	 * @param   JDatabaseDriver  $db
 	 *
 	 * @return  void
 	 *
@@ -1222,7 +1228,7 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the extensions table records for the component
 	 *
-	 * @param   JDatabaseDriver $db
+	 * @param   JDatabaseDriver  $db
 	 *
 	 * @return  void
 	 *
@@ -1264,7 +1270,7 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the menu table records for the component
 	 *
-	 * @param   JDatabaseDriver $db
+	 * @param   JDatabaseDriver  $db
 	 *
 	 * @return  void
 	 *

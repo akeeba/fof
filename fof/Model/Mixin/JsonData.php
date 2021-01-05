@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\Mixin;
+namespace FOF40\Model\Mixin;
 
 defined('_JEXEC') or die;
 
@@ -30,14 +30,14 @@ trait JsonData
 
 		if (empty($value))
 		{
-			return array();
+			return [];
 		}
 
 		$value = json_decode($value, true);
 
 		if (empty($value))
 		{
-			return array();
+			return [];
 		}
 
 		return $value;
@@ -46,7 +46,7 @@ trait JsonData
 	/**
 	 * Converts and array into a JSON string
 	 *
-	 * @param   array  $value  The data
+	 * @param   array|string  $value  The data (or its JSON-encoded form)
 	 *
 	 * @return  string  The JSON string
 	 */
@@ -57,8 +57,6 @@ trait JsonData
 			return $value;
 		}
 
-		$value = json_encode($value);
-
-		return $value;
+		return json_encode($value);
 	}
 }

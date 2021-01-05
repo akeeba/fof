@@ -24,10 +24,10 @@ class LayoutHelper
 	/**
 	 * Method to render the layout.
 	 *
-	 * @param Container $container   The container of your component
-	 * @param string    $layoutFile  Dot separated path to the layout file, relative to base path
-	 * @param array     $displayData Array with values to be used inside the layout file to build displayed output
-	 * @param string    $basePath    Base path to use when loading layout files
+	 * @param   Container  $container    The container of your component
+	 * @param   string     $layoutFile   Dot separated path to the layout file, relative to base path
+	 * @param   array      $displayData  Array with values to be used inside the layout file to build displayed output
+	 * @param   string     $basePath     Base path to use when loading layout files
 	 *
 	 * @return  string
 	 */
@@ -39,9 +39,8 @@ class LayoutHelper
 		$basePath          = empty($basePath) ? null : $basePath;
 		$layout            = new LayoutFile($layoutFile, $basePath);
 		$layout->container = $container;
-		$renderedLayout    = $layout->render($displayData);
 
-		return $renderedLayout;
+		return $layout->render($displayData);
 	}
 
 }

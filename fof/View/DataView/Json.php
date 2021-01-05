@@ -17,6 +17,14 @@ defined('_JEXEC') or die;
 class Json extends Raw implements DataViewInterface
 {
 	/**
+	 * Set to true if your onBefore* methods have already populated the item, items, limitstart etc properties used to
+	 * render a JSON document.
+	 *
+	 * @var bool
+	 */
+	public $alreadyLoaded = false;
+
+	/**
 	 * Record listing offset (how many records to skip before starting showing some)
 	 *
 	 * @var   int
@@ -42,21 +50,13 @@ class Json extends Raw implements DataViewInterface
 	 *
 	 * @var   DataModel
 	 */
-	protected $item = null;
-
-	/**
-	 * Set to true if your onBefore* methods have already populated the item, items, limitstart etc properties used to
-	 * render a JSON document.
-	 *
-	 * @var bool
-	 */
-	public $alreadyLoaded = false;
+	protected $item;
 
 	/**
 	 * Overrides the default method to execute and display a template script.
 	 * Instead of loadTemplate is uses loadAnyTemplate.
 	 *
-	 * @param string $tpl The name of the template file to parse
+	 * @param   string  $tpl  The name of the template file to parse
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -76,7 +76,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * The event which runs when we are displaying the record list JSON view
 	 *
-	 * @param string $tpl The sub-template to use
+	 * @param   string  $tpl  The sub-template to use
 	 */
 	public function onBeforeBrowse($tpl = null)
 	{
@@ -174,7 +174,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * The event which runs when we are displaying a single item JSON view
 	 *
-	 * @param string $tpl The view sub-template to use
+	 * @param   string  $tpl  The view sub-template to use
 	 */
 	protected function onBeforeRead($tpl = null)
 	{
@@ -184,7 +184,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * The event which runs when we are displaying a single item JSON view
 	 *
-	 * @param string $tpl The view sub-template to use
+	 * @param   string  $tpl  The view sub-template to use
 	 */
 	protected function onAfterSave($tpl = null)
 	{
@@ -194,7 +194,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * Renders a single item JSON view
 	 *
-	 * @param string $tpl The view sub-template to use
+	 * @param   string  $tpl  The view sub-template to use
 	 */
 	protected function renderSingleItem($tpl)
 	{
@@ -262,7 +262,7 @@ class Json extends Raw implements DataViewInterface
 			}
 
 			// JSONP support
-			$callback = $this->input->get('callback', null);
+			$callback = $this->input->get('callback');
 
 			if (!empty($callback))
 			{
@@ -286,7 +286,7 @@ class Json extends Raw implements DataViewInterface
 	/**
 	 * Convert an absolute URI to a relative one
 	 *
-	 * @param string $uri The URI to convert
+	 * @param   string  $uri  The URI to convert
 	 *
 	 * @return  string  The relative URL
 	 */

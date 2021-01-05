@@ -21,8 +21,8 @@ class Models implements DomainInterface
 	/**
 	 * Parse the XML data, adding them to the $ret array
 	 *
-	 * @param SimpleXMLElement  $xml The XML data of the component's configuration area
-	 * @param array            &$ret The parsed data, in the form of a hash array
+	 * @param   SimpleXMLElement  $xml  The XML data of the component's configuration area
+	 * @param   array            &$ret  The parsed data, in the form of a hash array
 	 *
 	 * @return  void
 	 */
@@ -55,25 +55,19 @@ class Models implements DomainInterface
 			// Parse configuration
 			$optionData = $aModel->xpath('config/option');
 
-			if (!empty($optionData))
+			foreach ($optionData as $option)
 			{
-				foreach ($optionData as $option)
-				{
-					$k                                 = (string) $option['name'];
-					$ret['models'][$key]['config'][$k] = (string) $option;
-				}
+				$k                                 = (string) $option['name'];
+				$ret['models'][$key]['config'][$k] = (string) $option;
 			}
 
 			// Parse field aliases
 			$fieldData = $aModel->xpath('field');
 
-			if (!empty($fieldData))
+			foreach ($fieldData as $field)
 			{
-				foreach ($fieldData as $field)
-				{
-					$k                                 = (string) $field['name'];
-					$ret['models'][$key]['fields'][$k] = (string) $field;
-				}
+				$k                                 = (string) $field['name'];
+				$ret['models'][$key]['fields'][$k] = (string) $field;
 			}
 
 			// Parse behaviours
@@ -111,42 +105,39 @@ class Models implements DomainInterface
 			// Parse relations
 			$relationsData = $aModel->xpath('relation');
 
-			if (!empty($relationsData))
+			foreach ($relationsData as $relationData)
 			{
-				foreach ($relationsData as $relationData)
+				$type     = (string) $relationData['type'];
+				$itemName = (string) $relationData['name'];
+
+				if (empty($type) || empty($itemName))
 				{
-					$type     = (string) $relationData['type'];
-					$itemName = (string) $relationData['name'];
-
-					if (empty($type) || empty($itemName))
-					{
-						continue;
-					}
-
-					$modelClass    = (string) $relationData['foreignModelClass'];
-					$localKey      = (string) $relationData['localKey'];
-					$foreignKey    = (string) $relationData['foreignKey'];
-					$pivotTable    = (string) $relationData['pivotTable'];
-					$ourPivotKey   = (string) $relationData['pivotLocalKey'];
-					$theirPivotKey = (string) $relationData['pivotForeignKey'];
-
-					$relation = [
-						'type'              => $type,
-						'itemName'          => $itemName,
-						'foreignModelClass' => empty($modelClass) ? null : $modelClass,
-						'localKey'          => empty($localKey) ? null : $localKey,
-						'foreignKey'        => empty($foreignKey) ? null : $foreignKey,
-					];
-
-					if (!empty($ourPivotKey) || !empty($theirPivotKey) || !empty($pivotTable))
-					{
-						$relation['pivotLocalKey']   = empty($ourPivotKey) ? null : $ourPivotKey;
-						$relation['pivotForeignKey'] = empty($theirPivotKey) ? null : $theirPivotKey;
-						$relation['pivotTable']      = empty($pivotTable) ? null : $pivotTable;
-					}
-
-					$ret['models'][$key]['relations'][] = $relation;
+					continue;
 				}
+
+				$modelClass    = (string) $relationData['foreignModelClass'];
+				$localKey      = (string) $relationData['localKey'];
+				$foreignKey    = (string) $relationData['foreignKey'];
+				$pivotTable    = (string) $relationData['pivotTable'];
+				$ourPivotKey   = (string) $relationData['pivotLocalKey'];
+				$theirPivotKey = (string) $relationData['pivotForeignKey'];
+
+				$relation = [
+					'type'              => $type,
+					'itemName'          => $itemName,
+					'foreignModelClass' => empty($modelClass) ? null : $modelClass,
+					'localKey'          => empty($localKey) ? null : $localKey,
+					'foreignKey'        => empty($foreignKey) ? null : $foreignKey,
+				];
+
+				if (!empty($ourPivotKey) || !empty($theirPivotKey) || !empty($pivotTable))
+				{
+					$relation['pivotLocalKey']   = empty($ourPivotKey) ? null : $ourPivotKey;
+					$relation['pivotForeignKey'] = empty($theirPivotKey) ? null : $theirPivotKey;
+					$relation['pivotTable']      = empty($pivotTable) ? null : $pivotTable;
+				}
+
+				$ret['models'][$key]['relations'][] = $relation;
 			}
 		}
 	}
@@ -154,9 +145,9 @@ class Models implements DomainInterface
 	/**
 	 * Return a configuration variable
 	 *
-	 * @param string &$configuration Configuration variables (hashed array)
-	 * @param string  $var           The variable we want to fetch
-	 * @param mixed   $default       Default value
+	 * @param   string &$configuration  Configuration variables (hashed array)
+	 * @param   string  $var            The variable we want to fetch
+	 * @param   mixed   $default        Default value
 	 *
 	 * @return  mixed  The variable's value
 	 */
@@ -175,18 +166,16 @@ class Models implements DomainInterface
 		array_shift($parts);
 		array_shift($parts);
 
-		$ret = $this->$method($view, $configuration, $parts, $default);
-
-		return $ret;
+		return $this->$method($view, $configuration, $parts, $default);
 	}
 
 	/**
 	 * Internal method to return the magic field mapping
 	 *
-	 * @param string            $model         The model for which we will be fetching a field map
-	 * @param array  &          $configuration The configuration parameters hash array
-	 * @param array             $params        Extra options
-	 * @param string|array|null $default       Default magic field mapping; empty if not defined
+	 * @param   string             $model          The model for which we will be fetching a field map
+	 * @param   array  &           $configuration  The configuration parameters hash array
+	 * @param   array              $params         Extra options
+	 * @param   string|array|null  $default        Default magic field mapping; empty if not defined
 	 *
 	 * @return  string|array|null   Field map
 	 */
@@ -221,10 +210,10 @@ class Models implements DomainInterface
 	/**
 	 * Internal method to get model alias
 	 *
-	 * @param string      $model         The model for which we will be fetching table alias
-	 * @param array  &    $configuration The configuration parameters hash array
-	 * @param array       $params        Ignored
-	 * @param string|null $default       Default table alias
+	 * @param   string       $model          The model for which we will be fetching table alias
+	 * @param   array        $configuration  [IN/OUT] The configuration parameters hash array
+	 * @param   array        $params         Ignored
+	 * @param   string|null  $default        Default table alias
 	 *
 	 * @return  string|null  Table alias
 	 */
@@ -253,10 +242,10 @@ class Models implements DomainInterface
 	/**
 	 * Internal method to get model behaviours
 	 *
-	 * @param string     $model         The model for which we will be fetching behaviours
-	 * @param array  &   $configuration The configuration parameters hash array
-	 * @param array      $params        Unused
-	 * @param array|null $default       Default behaviour
+	 * @param   string      $model          The model for which we will be fetching behaviours
+	 * @param   array  &    $configuration  The configuration parameters hash array
+	 * @param   array       $params         Unused
+	 * @param   array|null  $default        Default behaviour
 	 *
 	 * @return  array|null  Model behaviours
 	 */
@@ -300,10 +289,10 @@ class Models implements DomainInterface
 	/**
 	 * Internal method to get model relations
 	 *
-	 * @param string     $model         The model for which we will be fetching relations
-	 * @param array  &   $configuration The configuration parameters hash array
-	 * @param array      $params        Unused
-	 * @param array|null $default       Default relations
+	 * @param   string      $model          The model for which we will be fetching relations
+	 * @param   array  &    $configuration  The configuration parameters hash array
+	 * @param   array       $params         Unused
+	 * @param   array|null  $default        Default relations
 	 *
 	 * @return  array|null   Model relations
 	 */
@@ -331,10 +320,10 @@ class Models implements DomainInterface
 	/**
 	 * Internal method to return the a configuration option for the Model.
 	 *
-	 * @param string            $model         The view for which we will be fetching a task map
-	 * @param array  &          $configuration The configuration parameters hash array
-	 * @param array             $params        Extra options; key 0 defines the option variable we want to fetch
-	 * @param string|array|null $default       Default option; null if not defined
+	 * @param   string             $model          The view for which we will be fetching a task map
+	 * @param   array  &           $configuration  The configuration parameters hash array
+	 * @param   array              $params         Extra options; key 0 defines the option variable we want to fetch
+	 * @param   string|array|null  $default        Default option; null if not defined
 	 *
 	 * @return  string|array|null  The setting for the requested option
 	 */

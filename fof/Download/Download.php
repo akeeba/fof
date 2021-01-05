@@ -21,7 +21,7 @@ class Download
 	 *
 	 * @var  Container
 	 */
-	protected $container = null;
+	protected $container;
 
 	/**
 	 * Parameters passed from the GUI when importing from URL
@@ -35,7 +35,7 @@ class Download
 	 *
 	 * @var  DownloadInterface
 	 */
-	private $adapter = null;
+	private $adapter;
 
 	/**
 	 * Additional params that will be passed to the adapter while performing the download
@@ -47,7 +47,7 @@ class Download
 	/**
 	 * Public constructor
 	 *
-	 * @param Container $c The component container
+	 * @param   Container  $c  The component container
 	 */
 	public function __construct(Container $c)
 	{
@@ -79,9 +79,92 @@ class Download
 	}
 
 	/**
+	 * This method will crawl a starting directory and get all the valid files
+	 * that will be analyzed by __construct. Then it organizes them into an
+	 * associative array.
+	 *
+	 * @param   string  $path           Folder where we should start looking
+	 * @param   array   $ignoreFolders  Folder ignore list
+	 * @param   array   $ignoreFiles    File ignore list
+	 *
+	 * @return  array   Associative array, where the `fullpath` key contains the path to the file,
+	 *                  and the `classname` key contains the name of the class
+	 */
+	protected static function getFiles(string $path, array $ignoreFolders = [], array $ignoreFiles = []): array
+	{
+		$return = [];
+
+		$files = self::scanDirectory($path, $ignoreFolders, $ignoreFiles);
+
+		// Ok, I got the files, now I have to organize them
+		foreach ($files as $file)
+		{
+			$clean = str_replace($path, '', $file);
+			$clean = trim(str_replace('\\', '/', $clean), '/');
+
+			$parts = explode('/', $clean);
+
+			$return[] = [
+				'fullpath'  => $file,
+				'classname' => '\\FOF40\\Download\\Adapter\\' . ucfirst(basename($parts[0], '.php')),
+			];
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Recursive function that will scan every directory unless it's in the
+	 * ignore list. Files that aren't in the ignore list are returned.
+	 *
+	 * @param   string  $path           Folder where we should start looking
+	 * @param   array   $ignoreFolders  Folder ignore list
+	 * @param   array   $ignoreFiles    File ignore list
+	 *
+	 * @return  array   List of all the files
+	 */
+	protected static function scanDirectory(string $path, array $ignoreFolders = [], array $ignoreFiles = []): array
+	{
+		$return = [];
+
+		$handle = @opendir($path);
+
+		if (!$handle)
+		{
+			return $return;
+		}
+
+		while (($file = readdir($handle)) !== false)
+		{
+			if ($file == '.' || $file == '..')
+			{
+				continue;
+			}
+
+			$fullpath = $path . '/' . $file;
+
+			if ((is_dir($fullpath) && in_array($file, $ignoreFolders)) || (is_file($fullpath) && in_array($file, $ignoreFiles)))
+			{
+				continue;
+			}
+
+			if (is_dir($fullpath))
+			{
+				$return = array_merge(self::scanDirectory($fullpath, $ignoreFolders, $ignoreFiles), $return);
+			}
+			else
+			{
+				$return[] = $path . '/' . $file;
+			}
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Forces the use of a specific adapter
 	 *
-	 * @param string $className The name of the class or the name of the adapter
+	 * @param   string  $className  The name of the class or the name of the adapter
 	 */
 	public function setAdapter(?string $className = null): void
 	{
@@ -126,18 +209,6 @@ class Download
 	}
 
 	/**
-	 * Sets the additional options for the adapter
-	 *
-	 * @param array $options
-	 *
-	 * @codeCoverageIgnore
-	 */
-	public function setAdapterOptions(array $options): void
-	{
-		$this->adapterOptions = $options;
-	}
-
-	/**
 	 * Returns the additional options for the adapter
 	 *
 	 * @return array
@@ -150,23 +221,15 @@ class Download
 	}
 
 	/**
-	 * Used to decode the $params array
+	 * Sets the additional options for the adapter
 	 *
-	 * @param string $key     The parameter key you want to retrieve the value for
-	 * @param mixed  $default The default value, if none is specified
+	 * @param   array  $options
 	 *
-	 * @return  mixed  The value for this parameter key
+	 * @codeCoverageIgnore
 	 */
-	private function getParam(string $key, $default = null)
+	public function setAdapterOptions(array $options): void
 	{
-		if (array_key_exists($key, $this->params))
-		{
-			return $this->params[$key];
-		}
-		else
-		{
-			return $default;
-		}
+		$this->adapterOptions = $options;
 	}
 
 	/**
@@ -176,9 +239,10 @@ class Download
 	 * to 499, NOT from 1 to 500. If you ask more bytes than there are in the file or a range which is invalid or does
 	 * not exist this method will return false.
 	 *
-	 * @param string $url  The URL to download from
-	 * @param int    $from Byte range to start downloading from. Use null (default) for start of file.
-	 * @param int    $to   Byte range to stop downloading. Use null to download the entire file ($from will be ignored!)
+	 * @param   string  $url   The URL to download from
+	 * @param   int     $from  Byte range to start downloading from. Use null (default) for start of file.
+	 * @param   int     $to    Byte range to stop downloading. Use null to download the entire file ($from will be
+	 *                         ignored!)
 	 *
 	 * @return  string  The downloaded data or null on failure
 	 */
@@ -197,7 +261,7 @@ class Download
 	/**
 	 * Performs the staggered download of file.
 	 *
-	 * @param array $params A parameters array, as sent by the user interface
+	 * @param   array  $params  A parameters array, as sent by the user interface
 	 *
 	 * @return  array  A return status array
 	 */
@@ -412,85 +476,22 @@ class Download
 	}
 
 	/**
-	 * This method will crawl a starting directory and get all the valid files
-	 * that will be analyzed by __construct. Then it organizes them into an
-	 * associative array.
+	 * Used to decode the $params array
 	 *
-	 * @param string $path          Folder where we should start looking
-	 * @param array  $ignoreFolders Folder ignore list
-	 * @param array  $ignoreFiles   File ignore list
+	 * @param   string  $key      The parameter key you want to retrieve the value for
+	 * @param   mixed   $default  The default value, if none is specified
 	 *
-	 * @return  array   Associative array, where the `fullpath` key contains the path to the file,
-	 *                  and the `classname` key contains the name of the class
+	 * @return  mixed  The value for this parameter key
 	 */
-	protected static function getFiles(string $path, array $ignoreFolders = [], array $ignoreFiles = []): array
+	private function getParam(string $key, $default = null)
 	{
-		$return = [];
-
-		$files = self::scanDirectory($path, $ignoreFolders, $ignoreFiles);
-
-		// Ok, I got the files, now I have to organize them
-		foreach ($files as $file)
+		if (array_key_exists($key, $this->params))
 		{
-			$clean = str_replace($path, '', $file);
-			$clean = trim(str_replace('\\', '/', $clean), '/');
-
-			$parts = explode('/', $clean);
-
-			$return[] = [
-				'fullpath'  => $file,
-				'classname' => '\\FOF40\\Download\\Adapter\\' . ucfirst(basename($parts[0], '.php')),
-			];
+			return $this->params[$key];
 		}
-
-		return $return;
-	}
-
-	/**
-	 * Recursive function that will scan every directory unless it's in the
-	 * ignore list. Files that aren't in the ignore list are returned.
-	 *
-	 * @param string $path          Folder where we should start looking
-	 * @param array  $ignoreFolders Folder ignore list
-	 * @param array  $ignoreFiles   File ignore list
-	 *
-	 * @return  array   List of all the files
-	 */
-	protected static function scanDirectory(string $path, array $ignoreFolders = [], array $ignoreFiles = []): array
-	{
-		$return = [];
-
-		$handle = @opendir($path);
-
-		if (!$handle)
+		else
 		{
-			return $return;
+			return $default;
 		}
-
-		while (($file = readdir($handle)) !== false)
-		{
-			if ($file == '.' || $file == '..')
-			{
-				continue;
-			}
-
-			$fullpath = $path . '/' . $file;
-
-			if ((is_dir($fullpath) && in_array($file, $ignoreFolders)) || (is_file($fullpath) && in_array($file, $ignoreFiles)))
-			{
-				continue;
-			}
-
-			if (is_dir($fullpath))
-			{
-				$return = array_merge(self::scanDirectory($fullpath, $ignoreFolders, $ignoreFiles), $return);
-			}
-			else
-			{
-				$return[] = $path . '/' . $file;
-			}
-		}
-
-		return $return;
 	}
 }
