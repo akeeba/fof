@@ -63,7 +63,7 @@ class Base32
 	{
 		$chrs = unpack('C*', $str);
 
-		return vsprintf(str_repeat('%08b', count($chrs)), $chrs);
+		return vsprintf(str_repeat('%08b', is_array($chrs) || $chrs instanceof \Countable ? count($chrs) : 0), $chrs);
 	}
 
 	/**

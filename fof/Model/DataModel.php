@@ -477,7 +477,7 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// Implements getNew($relationName)
-		if (($name == 'getNew') && count($arguments))
+		if (($name == 'getNew') && (is_array($arguments) || $arguments instanceof \Countable ? count($arguments) : 0))
 		{
 			return $this->relationManager->getNew($arguments[0]);
 		}
@@ -3406,7 +3406,7 @@ class DataModel extends Model implements TableInterface
 					break;
 				}
 
-				if (is_array($value) && (count($value) > 1))
+				if ((is_array($value) || $value instanceof \Countable ? count($value) : 0) > 1)
 				{
 					// Get the operator and value from the $value array
 					if (isset($value['operator']) && isset($value['value']))

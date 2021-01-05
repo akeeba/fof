@@ -82,35 +82,37 @@ abstract class FEFHelperBrowse
 				$btnColor = ltrim($btnColor, '-');
 			}
 
+			$html = [];
 			$html[] = '<a class="akeeba-btn--' . $btnColor . '--mini ' . ($active_class === 'publish' ? ' active' : '') . ($tip ? ' hasTooltip' : '') . '"';
 			$html[] = ' href="javascript:void(0);" onclick="return Joomla.listItemTask(\'' . $checkbox . $i . '\',\'' . $prefix . $task . '\')"';
 			$html[] = $tip ? ' title="' . $title . '"' : '';
 			$html[] = '>';
 			$html[] = '<span class="akion-' . $active_class . '" aria-hidden="true"></span>&ensp;';
 			$html[] = '</a>';
+
+			return implode($html);
 		}
-		else
+
+		$btnColor = 'grey';
+
+		if (substr($inactive_class, 0, 2) == '--')
 		{
-			$btnColor = 'grey';
-
-			if (substr($inactive_class, 0, 2) == '--')
-			{
-				[$btnColor, $inactive_class] = explode(' ', $inactive_class, 2);
-				$btnColor = ltrim($btnColor, '-');
-			}
-
-			$html[] = '<a class="akeeba-btn--' . $btnColor . '--mini disabled akeebagrid' . ($tip ? ' hasTooltip' : '') . '"';
-			$html[] = $tip ? ' title="' . $title . '"' : '';
-			$html[] = '>';
-
-			if ($active_class === 'protected')
-			{
-				$inactive_class = 'locked';
-			}
-
-			$html[] = '<span class="akion-' . $inactive_class . '"></span>&ensp;';
-			$html[] = '</a>';
+			[$btnColor, $inactive_class] = explode(' ', $inactive_class, 2);
+			$btnColor = ltrim($btnColor, '-');
 		}
+
+		$html = [];
+		$html[] = '<a class="akeeba-btn--' . $btnColor . '--mini disabled akeebagrid' . ($tip ? ' hasTooltip' : '') . '"';
+		$html[] = $tip ? ' title="' . $title . '"' : '';
+		$html[] = '>';
+
+		if ($active_class === 'protected')
+		{
+			$inactive_class = 'locked';
+		}
+
+		$html[] = '<span class="akion-' . $inactive_class . '"></span>&ensp;';
+		$html[] = '</a>';
 
 		return implode($html);
 	}
