@@ -7,6 +7,8 @@
 
 namespace FOF40\Template;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -15,8 +17,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use stdClass;
-
-defined('_JEXEC') or die;
 
 /**
  * A utility class to load view templates, media files and modules.
@@ -272,14 +272,7 @@ class Template
 		// Get the platform directories through the container
 		$platformDirs = $this->container->platform->getPlatformBaseDirs();
 
-		if ($localFile)
-		{
-			$url = rtrim($platformDirs['root'], DIRECTORY_SEPARATOR) . '/';
-		}
-		else
-		{
-			$url = $this->container->platform->URIroot();
-		}
+		$url = $localFile ? (rtrim($platformDirs['root'], DIRECTORY_SEPARATOR) . '/') : $this->container->platform->URIroot();
 
 		$altPaths = $this->getAltPaths($path);
 		$filePath = $altPaths['normal'];

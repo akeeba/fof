@@ -7,7 +7,7 @@
 
 namespace FOF40\Utils;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * Registers a fof:// stream wrapper
@@ -69,18 +69,13 @@ class Buffer
 				$hasSuhosin = defined('SUHOSIN_PATCH') ? true : -1;
 			}
 
-			if ($hasSuhosin === -1)
+			if (($hasSuhosin === -1) && function_exists('ini_get'))
 			{
-				if (function_exists('ini_get'))
+				$hasSuhosin  = false;
+				$maxIdLength = ini_get('suhosin.session.max_id_length');
+				if ($maxIdLength !== false)
 				{
-					$hasSuhosin = false;
-
-					$maxIdLength = ini_get('suhosin.session.max_id_length');
-
-					if ($maxIdLength !== false)
-					{
-						$hasSuhosin = ini_get('suhosin.session.max_id_length') !== '';
-					}
+					$hasSuhosin = ini_get('suhosin.session.max_id_length') !== '';
 				}
 			}
 

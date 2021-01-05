@@ -7,7 +7,7 @@
 
 namespace  FOF40\Utils;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * Intercept calls to PHP functions.

@@ -7,12 +7,12 @@
 
 namespace FOF40\Download;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Download\Exception\DownloadError;
 use FOF40\Timer\Timer;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 class Download
 {
@@ -451,16 +451,13 @@ class Download
 			{
 				$percent = 0;
 			}
+			elseif ($totalSize > 0)
+			{
+				$percent = 100 * ($doneSize / $totalSize);
+			}
 			else
 			{
-				if ($totalSize > 0)
-				{
-					$percent = 100 * ($doneSize / $totalSize);
-				}
-				else
-				{
-					$percent = 0;
-				}
+				$percent = 0;
 			}
 
 			// Update $retArray

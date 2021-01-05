@@ -5,17 +5,15 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
+
+defined('_JEXEC') || die;
 
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
-use JDatabaseQuery;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Asset;
-use Joomla\CMS\Table\Table;
-
-defined('_JEXEC') or die;
 
 /**
  * FOF model behavior class to add Joomla! ACL assets support
@@ -32,17 +30,17 @@ class Assets extends Observer
 		}
 
 		$assetFieldAlias = $model->getFieldAlias('asset_id');
-        $currentAssetId  = $model->getFieldValue('asset_id');
+		$currentAssetId  = $model->getFieldValue('asset_id');
 
-        unset($model->$assetFieldAlias);
+		unset($model->$assetFieldAlias);
 
 		// Create the object used for inserting/udpating data to the database
 		$fields = $model->getTableFields();
 
 		// Let's remove the asset_id field, since we unset the property above and we would get a PHP notice
-		if (isset($fields[ $assetFieldAlias ]))
+		if (isset($fields[$assetFieldAlias]))
 		{
-			unset($fields[ $assetFieldAlias ]);
+			unset($fields[$assetFieldAlias]);
 		}
 
 		// Asset Tracking
@@ -61,7 +59,7 @@ class Assets extends Observer
 
 		// Since we are using \Joomla\CMS\Table\Table, there is no way to mock it and test for failures :(
 		// @codeCoverageIgnoreStart
-		if ($error)
+		if (!empty($error))
 		{
 			throw new \Exception($error);
 		}
@@ -69,7 +67,7 @@ class Assets extends Observer
 
 		// Specify how a new or moved node asset is inserted into the tree.
 		// Since we're unsetting the table field before, this statement is always true...
-		if (empty($model->$assetFieldAlias) || $asset->parent_id != $parentId)
+		if (empty($model->$assetFieldAlias) || $asset->parent_id !== $parentId)
 		{
 			$asset->setLocation($parentId, 'last-child');
 		}
@@ -103,9 +101,9 @@ class Assets extends Observer
 			$db = $model->getDbo();
 
 			$query = $db->getQuery(true)
-			            ->update($db->qn($model->getTableName()))
-			            ->set($db->qn($assetFieldAlias) . ' = ' . (int) $model->$assetFieldAlias)
-			            ->where($db->qn($k) . ' = ' . (int) $model->$k);
+				->update($db->qn($model->getTableName()))
+				->set($db->qn($assetFieldAlias) . ' = ' . (int) $model->$assetFieldAlias)
+				->where($db->qn($k) . ' = ' . (int) $model->$k);
 
 			$db->setQuery($query)->execute();
 		}
@@ -141,18 +139,18 @@ class Assets extends Observer
 		{
 			// We have to manually remove any empty value, since they will be converted to int,
 			// and "Inherited" values will become "Denied". Joomla is doing this manually, too.
-			$rules = array();
+			$rules = [];
 
 			foreach ($rawRules as $action => $ids)
 			{
 				// Build the rules array.
-				$rules[$action] = array();
+				$rules[$action] = [];
 
 				foreach ($ids as $id => $p)
 				{
 					if ($p !== '')
 					{
-						$rules[$action][$id] = ($p == '1' || $p == 'true') ? true : false;
+						$rules[$action][$id] = $p == '1' || $p == 'true';
 					}
 				}
 			}
@@ -173,7 +171,7 @@ class Assets extends Observer
 		$k = $model->getKeyName();
 
 		// If the table is not loaded, let's try to load it with the id
-		if(!$model->$k)
+		if (!$model->$k)
 		{
 			$model->load($oid);
 		}

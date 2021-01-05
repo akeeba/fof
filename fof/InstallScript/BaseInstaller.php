@@ -7,17 +7,21 @@
 
 namespace FOF40\InstallScript;
 
+defined('_JEXEC') || die;
+
 use DirectoryIterator;
 use Exception;
+use FOF40\Container\Container;
+use FOF40\Template\Template;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
 
-defined('_JEXEC') or die;
-
 class BaseInstaller
 {
+	public $componentName;
+
 	/**
 	 * The minimum PHP version required to install this extension
 	 *
@@ -67,12 +71,9 @@ class BaseInstaller
 			return;
 		}
 
-		if (!@is_dir($dest))
+		if (!@is_dir($dest) && !@mkdir($dest, 0755))
 		{
-			if (!@mkdir($dest, 0755))
-			{
-				Folder::create($dest, 0755);
-			}
+			Folder::create($dest, 0755);
 		}
 
 		if (!@is_dir($dest))
@@ -131,7 +132,7 @@ class BaseInstaller
 				$sourceSize = @filesize($sourcePath);
 				$targetSize = @filesize($targetPath);
 
-				$mustCopy = $sourceSize != $targetSize;
+				$mustCopy = $sourceSize !== $targetSize;
 			}
 
 			if (!$mustCopy)
@@ -139,12 +140,9 @@ class BaseInstaller
 				continue;
 			}
 
-			if (!@copy($sourcePath, $targetPath))
+			if (!@copy($sourcePath, $targetPath) && !File::copy($sourcePath, $targetPath))
 			{
-				if (!File::copy($sourcePath, $targetPath))
-				{
-					$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
-				}
+				$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
 			}
 		}
 	}
@@ -541,6 +539,17 @@ class BaseInstaller
 			throw new Exception('Post-installation message definitions need to specify which extension contains their language keys', 500);
 		}
 
+		try
+		{
+			$container = Container::getInstance($this->componentName);
+		}
+		catch (Exception $e)
+		{
+			$container = Container::getInstance('com_fake');
+		}
+
+		$templateUtils = new Template($container);
+
 		// The action file and method are only required for the "action" type
 		if ($options['type'] == 'action')
 		{
@@ -549,7 +558,7 @@ class BaseInstaller
 				throw new Exception('Post-installation message definitions need an action file when they are of type "action"', 500);
 			}
 
-			$file_path = \FOFTemplateUtils::parsePath($options['action_file'], true);
+			$file_path = $templateUtils->parsePath($options['action_file'], true);
 
 			if (!@is_file($file_path))
 			{
@@ -562,12 +571,9 @@ class BaseInstaller
 			}
 		}
 
-		if ($options['type'] == 'link')
+		if (($options['type'] == 'link') && empty($options['link']))
 		{
-			if (empty($options['link']))
-			{
-				throw new Exception('Post-installation message definitions need an action (URL) when they are of type "link"', 500);
-			}
+			throw new Exception('Post-installation message definitions need an action (URL) when they are of type "link"', 500);
 		}
 
 		// The condition file and method are only required when the type is not "message"
@@ -578,7 +584,7 @@ class BaseInstaller
 				throw new Exception('Post-installation message definitions need a condition file when they are of type "' . $options['type'] . '"', 500);
 			}
 
-			$file_path = \FOFTemplateUtils::parsePath($options['condition_file'], true);
+			$file_path = $templateUtils->parsePath($options['condition_file'], true);
 
 			if (!@is_file($file_path))
 			{

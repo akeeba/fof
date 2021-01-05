@@ -7,14 +7,14 @@
 
 namespace FOF40\Update;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Model\Model;
 use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
 use Joomla\CMS\Updater\Updater as JUpdater;
 use SimpleXMLElement;
-
-defined('_JEXEC') or die;
 
 /**
  * A helper Model to interact with Joomla!'s extensions update feature
@@ -70,15 +70,7 @@ class Update extends Model
 		// Get an instance of the updater class
 		$this->updater = JUpdater::getInstance();
 
-		// Get the component name
-		if (isset($config['update_component']))
-		{
-			$this->component = $config['update_component'];
-		}
-		else
-		{
-			$this->component = $this->input->getCmd('option', '');
-		}
+		$this->component = isset($config['update_component']) ? $config['update_component'] : $this->input->getCmd('option', '');
 
 		// Get the component version
 		if (isset($config['update_version']))
@@ -297,7 +289,7 @@ class Update extends Model
 		// Make sure that the legacy key is NOT the same as the J4 key
 		$legacyKey = $this->getLicenseKey(true);
 
-		if ($legacyKey == $licenseKey)
+		if ($legacyKey === $licenseKey)
 		{
 			return;
 		}
@@ -784,7 +776,7 @@ class Update extends Model
 	 */
 	public function isValidLicenseKey(string $licenseKey): bool
 	{
-		return preg_match('/^([0-9]{1,}:)?[0-9a-f]{32}$/i', $licenseKey) === 1;
+		return preg_match('/^(\d{1,}:)?[0-9a-f]{32}$/i', $licenseKey) === 1;
 	}
 
 	/**
@@ -872,7 +864,7 @@ class Update extends Model
 			return '';
 		}
 
-		if ($suffix)
+		if ($suffix !== '')
 		{
 			$licenseKey = substr($licenseKey, 0, -strlen($suffix));
 		}
@@ -912,7 +904,7 @@ class Update extends Model
 	 */
 	protected function getManifestXML(string $element, string $type, int $client_id = 1, ?string $folder = null): SimpleXMLElement
 	{
-		$path = $client_id ? JPATH_ADMINISTRATOR : JPATH_ROOT;
+		$path = ($client_id !== 0) ? JPATH_ADMINISTRATOR : JPATH_ROOT;
 
 		switch ($type)
 		{

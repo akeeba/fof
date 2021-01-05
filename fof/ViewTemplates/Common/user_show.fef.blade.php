@@ -32,9 +32,9 @@
  * @var \FOF40\View\DataView\Raw $this
  */
 
-use FOF40\Html\FEFHelper\BrowseView;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Html\FEFHelper\BrowseView;
 
 global $akeebaSubsShowUserCache;
 

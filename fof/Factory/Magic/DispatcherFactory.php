@@ -7,9 +7,9 @@
 
 namespace FOF40\Factory\Magic;
 
-use FOF40\Dispatcher\Dispatcher;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Dispatcher\Dispatcher;
 
 /**
  * Creates a Dispatcher object instance based on the information provided by the fof.xml configuration file

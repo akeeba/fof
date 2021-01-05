@@ -7,12 +7,12 @@
 
 namespace FOF40\View\Engine;
 
+defined('_JEXEC') || die;
+
 use FOF40\Utils\Buffer;
 use FOF40\View\Compiler\CompilerInterface;
 use FOF40\View\Exception\PossiblySuhosin;
 use Joomla\CMS\Filesystem\File;
-
-defined('_JEXEC') or die;
 
 /**
  * View engine for compiling PHP template files.

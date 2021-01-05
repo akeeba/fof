@@ -7,10 +7,10 @@
 
 namespace  FOF40\View\DataView;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use Joomla\CMS\Pagination\Pagination;
-
-defined('_JEXEC') or die;
 
 interface DataViewInterface
 {

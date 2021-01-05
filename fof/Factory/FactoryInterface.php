@@ -7,6 +7,8 @@
 
 namespace FOF40\Factory;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Dispatcher;
@@ -15,8 +17,6 @@ use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
 use FOF40\View\View;
 use FOF40\View\ViewTemplateFinder;
-
-defined('_JEXEC') or die;
 
 /**
  * Interface for the MVC object factory

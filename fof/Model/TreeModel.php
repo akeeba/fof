@@ -7,6 +7,8 @@
 
 namespace FOF40\Model;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Model\DataModel\Exception\TreeIncompatibleTable;
 use FOF40\Model\DataModel\Exception\TreeInvalidLftRgtCurrent;
@@ -18,8 +20,6 @@ use FOF40\Model\DataModel\Exception\TreeRootNotFound;
 use FOF40\Model\DataModel\Exception\TreeUnexpectedPrimaryKey;
 use FOF40\Model\DataModel\Exception\TreeUnsupportedMethod;
 use Joomla\CMS\Application\ApplicationHelper;
-
-defined('_JEXEC') or die;
 
 /**
  * A DataModel which implements nested trees
@@ -648,7 +648,7 @@ class TreeModel extends DataModel
 		// Are we already the leftmost node?
 		$parentNode = $this->getParent();
 
-		if ($parentNode->lft == ($this->lft - 1))
+		if ($parentNode->lft === $this->lft - 1)
 		{
 			return $this;
 		}
@@ -687,7 +687,7 @@ class TreeModel extends DataModel
 		// Are we already the rightmost node?
 		$parentNode = $this->getParent();
 
-		if ($parentNode->rgt == ($this->rgt + 1))
+		if ($parentNode->rgt === $this->rgt + 1)
 		{
 			return $this;
 		}
@@ -1324,7 +1324,7 @@ class TreeModel extends DataModel
 			throw new TreeInvalidLftRgtCurrent;
 		}
 
-		return ($this->rgt - 1) == $this->lft;
+		return $this->rgt - 1 === $this->lft;
 	}
 
 	/**
@@ -1439,8 +1439,8 @@ class TreeModel extends DataModel
 
 		return (
 			($this->getId() == $node->getId())
-			&& ($this->lft == $node->lft)
-			&& ($this->rgt == $node->rgt)
+			&& ($this->lft === $node->lft)
+			&& ($this->rgt === $node->rgt)
 		);
 	}
 
@@ -1568,7 +1568,7 @@ class TreeModel extends DataModel
 			catch (\RuntimeException $e)
 			{
 				// If there is no root found throw an exception. Basically: your table is FUBAR.
-				throw new TreeRootNotFound($this->tableName, $this->lft);
+				throw new TreeRootNotFound($this->tableName, $this->lft, $e);
 			}
 
 			// If the above method didn't work, get all roots and select the one with the appropriate lft/rgt values
@@ -1607,7 +1607,7 @@ class TreeModel extends DataModel
 				catch (\RuntimeException $e)
 				{
 					// If there is no root found throw an exception. Basically: your table is FUBAR.
-					throw new TreeRootNotFound($this->tableName, $this->lft);
+					throw new TreeRootNotFound($this->tableName, $this->lft, $e);
 				}
 			}
 		}
@@ -1950,7 +1950,7 @@ class TreeModel extends DataModel
 				$pathComponents[$currentLevel]['rgt'] = $row[$colRgt];
 			}
 
-			if ($currentLevel == $maxLevel)
+			if ($currentLevel === $maxLevel)
 			{
 				break;
 			}

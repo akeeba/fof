@@ -7,11 +7,11 @@
 
 namespace  FOF40\Model\DataModel\Behaviour;
 
+defined('_JEXEC') || die;
+
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
-
-defined('_JEXEC') or die;
 
 /**
  * FOF model behavior class to updated the modified_by and modified_on fields on newly created records.

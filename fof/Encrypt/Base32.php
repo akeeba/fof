@@ -7,9 +7,9 @@
 
 namespace FOF40\Encrypt;
 
-use InvalidArgumentException;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use InvalidArgumentException;
 
 /**
  * Base32 encoding class, used by the TOTP
@@ -135,7 +135,7 @@ class Base32
 		preg_match_all('/.{8}/', $str, $chrs);
 		$chrs = array_map([$this, 'mapCharset'], $chrs[0]);
 
-		return join('', $chrs);
+		return implode('', $chrs);
 	}
 
 	/**

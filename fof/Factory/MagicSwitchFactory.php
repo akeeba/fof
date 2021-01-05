@@ -7,6 +7,8 @@
 
 namespace FOF40\Factory;
 
+defined('_JEXEC') || die;
+
 use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Dispatcher;
 use FOF40\Factory\Exception\ControllerNotFound;
@@ -20,8 +22,6 @@ use FOF40\Model\Model;
 use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
 use FOF40\View\View;
-
-defined('_JEXEC') or die;
 
 /**
  * Magic MVC object factory. This factory will "magically" create MVC objects even if the respective classes do not

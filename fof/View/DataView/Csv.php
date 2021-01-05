@@ -7,12 +7,12 @@
 
 namespace FOF40\View\DataView;
 
+defined('_JEXEC') or die;
+
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
 use FOF40\View\Exception\AccessForbidden;
 use Joomla\CMS\Document\Document;
-
-defined('_JEXEC') or die;
 
 class Csv extends Html implements DataViewInterface
 {

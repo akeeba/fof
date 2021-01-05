@@ -7,10 +7,10 @@
 
 namespace FOF40\Model\DataModel\Filter;
 
+defined('_JEXEC') || die;
+
 use FOF40\Model\DataModel\Filter\Exception\InvalidFieldObject;
 use FOF40\Model\DataModel\Filter\Exception\NoDatabaseObject;
-
-defined('_JEXEC') or die;
 
 abstract class AbstractFilter
 {

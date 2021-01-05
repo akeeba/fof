@@ -7,6 +7,8 @@
 
 namespace FOF40\Autoloader;
 
+defined('_JEXEC') || die;
+
 // Do not put the JEXEC or die check on this file (necessary omission for testing)
 use InvalidArgumentException;
 
@@ -36,12 +38,16 @@ class Autoloader
 		'FOF40\Utils\SelectOptions'               => 'FOF40\Html\SelectOptions',
 		'FOF40\Utils\TimezoneWrangler'            => 'FOF40\Date\TimezoneWrangler',
 	];
+
 	/** @var   Autoloader  The static instance of this autoloader */
 	private static $instance;
+
 	/** @var   array  Lengths of PSR-4 prefixes */
 	private $prefixLengths = [];
+
 	/** @var   array  Prefix to directory map */
 	private $prefixDirs = [];
+
 	/** @var   array  Fall-back directories */
 	private $fallbackDirs = [];
 
@@ -101,12 +107,12 @@ class Autoloader
 			throw new InvalidArgumentException(sprintf('%s::%s -- $paths expects a string or array', __CLASS__, __METHOD__));
 		}
 
-		if ($prefix)
+		if ($prefix !== '')
 		{
 			$prefix = ltrim($prefix, '\\');
 		}
 
-		if (!$prefix)
+		if ($prefix === '')
 		{
 			// Register directories for the root namespace.
 			if ($prepend)
@@ -184,18 +190,17 @@ class Autoloader
 	 *
 	 * @return  void
 	 *
-	 * @throws  InvalidArgumentException  When the prefix is invalid
-	 *
+	 * @throws InvalidArgumentException When the prefix is invalid
 	 * @noinspection PhpUnused
 	 */
-	public function setMap($prefix, $paths)
+	public function setMap(string $prefix, $paths)
 	{
-		if ($prefix)
+		if ($prefix !== '')
 		{
 			$prefix = ltrim($prefix, '\\');
 		}
 
-		if (!$prefix)
+		if ($prefix === '')
 		{
 			$this->fallbackDirs = (array) $paths;
 		}
@@ -287,13 +292,10 @@ class Autoloader
 		}
 
 		// FEFHelper lookup
-		if (substr($class, 0, 9) == 'FEFHelper')
+		if (substr($class, 0, 9) == 'FEFHelper' && file_exists($file = realpath(__DIR__ . '/..') . '/Utils/FEFHelper/' . strtolower(substr($class, 9)) . '.php'))
 		{
 
-			if (file_exists($file = realpath(__DIR__ . '/..') . '/Utils/FEFHelper/' . strtolower(substr($class, 9)) . '.php'))
-			{
-				return $file;
-			}
+			return $file;
 		}
 
 		// PSR-4 lookup

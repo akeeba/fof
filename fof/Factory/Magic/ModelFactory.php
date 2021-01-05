@@ -7,11 +7,11 @@
 
 namespace FOF40\Factory\Magic;
 
+defined('_JEXEC') || die;
+
 use FOF40\Factory\Exception\ModelNotFound;
 use FOF40\Model\DataModel;
 use FOF40\Model\TreeModel;
-
-defined('_JEXEC') or die;
 
 /**
  * Creates a DataModel/TreeModel object instance based on the information provided by the fof.xml configuration file

@@ -7,10 +7,10 @@
 
 namespace FOF40\Factory\Magic;
 
+defined('_JEXEC') || die;
+
 use FOF40\Controller\DataController;
 use FOF40\Factory\Exception\ControllerNotFound;
-
-defined('_JEXEC') or die;
 
 /**
  * Creates a DataControler object instance based on the information provided by the fof.xml configuration file

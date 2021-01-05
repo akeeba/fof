@@ -5,13 +5,13 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Download\Adapter;
+namespace FOF40\Download\Adapter;
+
+defined('_JEXEC') || die;
 
 use FOF40\Download\DownloadInterface;
 use FOF40\Download\Exception\DownloadError;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * A download adapter using URL fopen() wrappers
@@ -20,20 +20,12 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 {
 	public function __construct()
 	{
-		$this->priority = 100;
-		$this->supportsFileSize = false;
+		$this->priority              = 100;
+		$this->supportsFileSize      = false;
 		$this->supportsChunkDownload = true;
-		$this->name = 'fopen';
+		$this->name                  = 'fopen';
 
-		// If we are not allowed to use ini_get, we assume that URL fopen is disabled
-		if (!function_exists('ini_get'))
-		{
-			$this->isSupported = false;
-		}
-		else
-		{
-			$this->isSupported = ini_get('allow_url_fopen');
-		}
+		$this->isSupported = !function_exists('ini_get') ? false : ini_get('allow_url_fopen');
 	}
 
 	/**
@@ -48,7 +40,8 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 	 *
 	 * @param   string   $url     The remote file's URL
 	 * @param   integer  $from    Byte range to start downloading from. Use null for start of file.
-	 * @param   integer  $to      Byte range to stop downloading. Use null to download the entire file ($from is ignored)
+	 * @param   integer  $to      Byte range to stop downloading. Use null to download the entire file ($from is
+	 *                            ignored)
 	 * @param   array    $params  Additional params that will be added before performing the download
 	 *
 	 * @return  string  The raw file data retrieved from the remote URL.
@@ -70,7 +63,7 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 		if ($to < $from)
 		{
 			$temp = $to;
-			$to = $from;
+			$to   = $from;
 			$from = $temp;
 			unset($temp);
 		}
@@ -78,40 +71,40 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 
 		if (!(empty($from) && empty($to)))
 		{
-			$options = array(
-				'http'	=> array(
-					'method'	=> 'GET',
-					'header'	=> "Range: bytes=$from-$to\r\n"
-				),
-				'ssl' => array(
-					'verify_peer'   => true,
-					'cafile'        => JPATH_LIBRARIES . '/src/Http/Transport/cacert.pem',
-					'verify_depth'  => 5,
-				)
-			);
+			$options = [
+				'http' => [
+					'method' => 'GET',
+					'header' => "Range: bytes=$from-$to\r\n",
+				],
+				'ssl'  => [
+					'verify_peer'  => true,
+					'cafile'       => JPATH_LIBRARIES . '/src/Http/Transport/cacert.pem',
+					'verify_depth' => 5,
+				],
+			];
 
 			$options = array_merge($options, $params);
 
 			$context = stream_context_create($options);
-			$result = @file_get_contents($url, false, $context, $from - $to + 1);
+			$result  = @file_get_contents($url, false, $context, $from - $to + 1);
 		}
 		else
 		{
-			$options = array(
-				'http'	=> array(
-					'method'	=> 'GET',
-				),
-				'ssl' => array(
-					'verify_peer'   => true,
-					'cafile'        => JPATH_LIBRARIES . '/src/Http/Transport/cacert.pem',
-					'verify_depth'  => 5,
-				)
-			);
+			$options = [
+				'http' => [
+					'method' => 'GET',
+				],
+				'ssl'  => [
+					'verify_peer'  => true,
+					'cafile'       => JPATH_LIBRARIES . '/src/Http/Transport/cacert.pem',
+					'verify_depth' => 5,
+				],
+			];
 
 			$options = array_merge($options, $params);
 
 			$context = stream_context_create($options);
-			$result = @file_get_contents($url, false, $context);
+			$result  = @file_get_contents($url, false, $context);
 		}
 
 		global $http_response_header_test;
@@ -130,14 +123,14 @@ class Fopen extends AbstractAdapter implements DownloadInterface
 			}
 
 			$http_code = 200;
-			$nLines = count($http_response_header);
+			$nLines    = count($http_response_header);
 
 			for ($i = $nLines - 1; $i >= 0; $i--)
 			{
 				$line = $http_response_header[$i];
 				if (strncasecmp("HTTP", $line, 4) == 0)
 				{
-					$response = explode(' ', $line);
+					$response  = explode(' ', $line);
 					$http_code = $response[1];
 					break;
 				}

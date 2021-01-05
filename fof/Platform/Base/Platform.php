@@ -7,14 +7,14 @@
 
 namespace FOF40\Platform\Base;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Input\Input;
 use FOF40\Platform\PlatformInterface;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\User\User;
-
-defined('_JEXEC') or die;
 
 /**
  * Abstract implementation of the Platform integration

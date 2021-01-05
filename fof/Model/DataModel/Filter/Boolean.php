@@ -7,7 +7,7 @@
 
 namespace  FOF40\Model\DataModel\Filter;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class Boolean extends Number
 {
@@ -16,7 +16,7 @@ class Boolean extends Number
 	 *
 	 * @param   mixed  $value  The value to test for emptiness
 	 *
-	 * @return  boolean
+	 * @return  bool
 	 */
 	public function isEmpty($value)
 	{

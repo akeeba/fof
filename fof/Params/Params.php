@@ -7,10 +7,10 @@
 
 namespace FOF40\Params;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\JoomlaAbstraction\CacheCleaner;
-
-defined('_JEXEC') or die;
 
 /**
  * A helper class to quickly get the component parameters

@@ -7,9 +7,9 @@
 
 namespace  FOF40\Model\DataModel\Exception;
 
-use Exception;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use Exception;
 
 abstract class TreeInvalidLftRgt extends \RuntimeException
 {

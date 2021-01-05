@@ -7,9 +7,9 @@
 
 namespace FOF40\Event;
 
-use FOF40\Container\Container;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Container\Container;
 
 class Dispatcher implements Observable
 {

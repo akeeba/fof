@@ -7,10 +7,10 @@
 
 namespace FOF40\Model\DataModel\Relation;
 
+defined('_JEXEC') || die;
+
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Relation;
-
-defined('_JEXEC') or die;
 
 /**
  * HasMany (1-to-many) relation: this model is a parent which has zero or more children in the foreign table

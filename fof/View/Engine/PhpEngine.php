@@ -7,7 +7,7 @@
 
 namespace  FOF40\View\Engine;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * View engine for plain PHP template files (no translation).

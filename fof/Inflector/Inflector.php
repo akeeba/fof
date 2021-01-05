@@ -7,7 +7,7 @@
 
 namespace FOF40\Inflector;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * An Inflector to pluralize and singularize English nouns.
@@ -363,7 +363,7 @@ class Inflector
 		}
 
 		// If string is not in the cache, try to pluralize and singularize it.
-		return self::singularize(self::pluralize($string)) == $string;
+		return self::singularize(self::pluralize($string)) === $string;
 	}
 
 	/**
@@ -391,7 +391,7 @@ class Inflector
 		}
 
 		// If string is not in the cache, try to singularize and pluralize it.
-		return self::pluralize(self::singularize($string)) == $string;
+		return self::pluralize(self::singularize($string)) === $string;
 	}
 
 	/**

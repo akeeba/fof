@@ -9,7 +9,7 @@ namespace FOF40\Configuration;
 
 use FOF40\Container\Container;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * Reads and parses the fof.xml file in the back-end of a FOF-powered component,

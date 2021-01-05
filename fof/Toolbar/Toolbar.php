@@ -7,6 +7,8 @@
 
 namespace FOF40\Toolbar;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Toolbar\Exception\MissingAttribute;
@@ -17,8 +19,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper as JoomlaToolbarHelper;
 use Joomla\Utilities\ArrayHelper;
-
-defined('_JEXEC') or die;
 
 /**
  * The Toolbar class renders the back-end component title area and the back-
@@ -133,15 +133,7 @@ class Toolbar
 	{
 		$input = $this->container->input;
 
-		// If tmpl=component the default behaviour is to not render the toolbar
-		if ($input->getCmd('tmpl', '') == 'component')
-		{
-			$render_toolbar = false;
-		}
-		else
-		{
-			$render_toolbar = true;
-		}
+		$render_toolbar = $input->getCmd('tmpl', '') != 'component';
 
 		// If there is a render_toolbar=0 in the URL, do not render a toolbar
 		$render_toolbar = $input->getBool('render_toolbar', $render_toolbar);
@@ -584,21 +576,12 @@ class Toolbar
 			$key = strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($view);
 
 			//Do we have a translation for this key?
-			if (strtoupper(Text::_($key)) == $key)
+			if (strtoupper(Text::_($key)) === $key)
 			{
 				$altview = $this->container->inflector->isPlural($view) ? $this->container->inflector->singularize($view) : $this->container->inflector->pluralize($view);
 				$key2    = strtoupper($this->container->componentName) . '_TITLE_' . strtoupper($altview);
 
-				// Maybe we have for the alternative view?
-				if (strtoupper(Text::_($key2)) == $key2)
-				{
-					// Nope, let's use the raw name
-					$name = ucfirst($view);
-				}
-				else
-				{
-					$name = Text::_($key2);
-				}
+				$name = strtoupper(Text::_($key2)) === $key2 ? ucfirst($view) : Text::_($key2);
 			}
 			else
 			{
@@ -607,7 +590,7 @@ class Toolbar
 
 			$link = 'index.php?option=' . $this->container->componentName . '&view=' . $view;
 
-			$active = $view == $activeView;
+			$active = $view === $activeView;
 
 			$this->appendLink($name, $link, $active);
 		}
@@ -824,12 +807,12 @@ class Toolbar
 			return true;
 		}
 
-		if (in_array(strtolower($area), ['guest']))
+		if (strtolower($area) == 'guest')
 		{
 			return $this->container->platform->getUser()->guest;
 		}
 
-		if (in_array(strtolower($area), ['user']))
+		if (strtolower($area) == 'user')
 		{
 			return !$this->container->platform->getUser()->guest;
 		}

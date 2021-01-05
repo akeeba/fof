@@ -7,7 +7,7 @@
 
 namespace  FOF40\Model\DataModel\Exception;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class SpecialColumnMissing extends BaseException
 {

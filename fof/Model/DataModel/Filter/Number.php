@@ -7,7 +7,7 @@
 
 namespace FOF40\Model\DataModel\Filter;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class Number extends AbstractFilter
 {

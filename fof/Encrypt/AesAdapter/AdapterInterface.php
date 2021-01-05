@@ -7,10 +7,9 @@
 
 namespace FOF40\Encrypt\AesAdapter;
 
-// Protect from unauthorized access
-use FOF40\Utils\Phpfunc;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die();
+use FOF40\Utils\Phpfunc;
 
 /**
  * Interface for AES encryption adapters

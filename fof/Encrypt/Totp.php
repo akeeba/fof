@@ -7,7 +7,7 @@
 
 namespace FOF40\Encrypt;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class Totp
 {
@@ -60,14 +60,7 @@ class Totp
 		$this->secretLength   = $secretLength;
 		$this->pinModulo      = pow(10, $this->passCodeLength);
 
-		if (is_null($base32))
-		{
-			$this->base32 = new Base32();
-		}
-		else
-		{
-			$this->base32 = $base32;
-		}
+		$this->base32 = is_null($base32) ? new Base32() : $base32;
 	}
 
 	/**
@@ -105,7 +98,7 @@ class Totp
 
 		for ($i = -1; $i <= 1; $i++)
 		{
-			if ($this->getCode($secret, ($time + $i) * $this->timeStep) == $code)
+			if ($this->getCode($secret, ($time + $i) * $this->timeStep) === $code)
 			{
 				return true;
 			}
@@ -133,7 +126,7 @@ class Totp
 
 		$hash   = hash_hmac('sha1', $time, $secret, true);
 		$offset = ord(substr($hash, -1));
-		$offset = $offset & 0xF;
+		$offset &= 0xF;
 
 		$truncatedHash = $this->hashToInt($hash, $offset) & 0x7FFFFFFF;
 

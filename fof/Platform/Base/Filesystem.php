@@ -7,10 +7,10 @@
 
 namespace FOF40\Platform\Base;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Platform\FilesystemInterface;
-
-defined('_JEXEC') or die;
 
 abstract class Filesystem implements FilesystemInterface
 {

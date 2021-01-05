@@ -7,12 +7,12 @@
 
 namespace FOF40\Model\DataModel\Behaviour;
 
+defined('_JEXEC') || die;
+
 use FOF40\Event\Observable;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use Joomla\CMS\Helper\TagsHelper;
-
-defined('_JEXEC') or die;
 
 /**
  * FOF model behavior class to add Joomla! Tags support

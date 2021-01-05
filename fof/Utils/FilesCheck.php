@@ -7,10 +7,10 @@
 
 namespace FOF40\Utils;
 
+defined('_JEXEC') || die;
+
 use FOF40\Timer\Timer;
 use Joomla\CMS\Factory as JoomlaFactory;
-
-defined('_JEXEC') or die;
 
 /**
  * A utility class to check that your extension's files are not missing and have not been tampered with.
@@ -247,25 +247,22 @@ class FilesCheck
 				{
 					$ret['files'][] = $fileKey . ' (size ' . @filesize($filePath) . ' ≠ ' . $fileData[0] . ')';
 				}
-				else
+				elseif (function_exists('sha1_file'))
 				{
-					if (function_exists('sha1_file'))
-					{
-						$fileSha1 = @sha1_file($filePath);
+					$fileSha1 = @sha1_file($filePath);
 
-						if ($fileSha1 != $fileData[2])
-						{
-							$ret['files'][] = $fileKey . ' (SHA1 ' . $fileSha1 . ' ≠ ' . $fileData[2] . ')';
-						}
+					if ($fileSha1 != $fileData[2])
+					{
+						$ret['files'][] = $fileKey . ' (SHA1 ' . $fileSha1 . ' ≠ ' . $fileData[2] . ')';
 					}
-					elseif (function_exists('md5_file'))
-					{
-						$fileMd5 = @md5_file($filePath);
+				}
+				elseif (function_exists('md5_file'))
+				{
+					$fileMd5 = @md5_file($filePath);
 
-						if ($fileMd5 != $fileData[1])
-						{
-							$ret['files'][] = $fileKey . ' (MD5 ' . $fileMd5 . ' ≠ ' . $fileData[1] . ')';
-						}
+					if ($fileMd5 != $fileData[1])
+					{
+						$ret['files'][] = $fileKey . ' (MD5 ' . $fileMd5 . ' ≠ ' . $fileData[1] . ')';
 					}
 				}
 			}

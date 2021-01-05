@@ -7,11 +7,11 @@
 
 namespace FOF40\Download\Adapter;
 
+defined('_JEXEC') || die;
+
 use FOF40\Download\DownloadInterface;
 use FOF40\Download\Exception\DownloadError;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * A download adapter using the cURL PHP integration

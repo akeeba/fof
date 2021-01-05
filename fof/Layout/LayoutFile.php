@@ -7,10 +7,10 @@
 
 namespace FOF40\Layout;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use Joomla\CMS\Layout\FileLayout;
-
-defined('_JEXEC') or die;
 
 /**
  * Base class for rendering a display layout

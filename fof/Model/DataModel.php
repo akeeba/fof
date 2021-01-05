@@ -7,6 +7,8 @@
 
 namespace FOF40\Model;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\LockedRecord;
 use FOF40\Date\Date;
@@ -37,22 +39,16 @@ use Joomla\CMS\Table\CoreContent;
 use Joomla\CMS\Table\TableInterface;
 use Joomla\CMS\UCM\UCMContent;
 
-defined('_JEXEC') or die;
-
 /**
  * Data-aware model, implementing a convenient ORM
  *
  * Type hinting -- start
  *
- * @method $this hasOne() hasOne(string $name, string $foreignModelClass = null, string $localKey = null, string
- *         $foreignKey = null)
- * @method $this belongsTo() belongsTo(string $name, string $foreignModelClass = null, string $localKey = null, string
- *         $foreignKey = null)
- * @method $this hasMany() hasMany(string $name, string $foreignModelClass = null, string $localKey = null, string
- *         $foreignKey = null)
- * @method $this belongsToMany() belongsToMany(string $name, string $foreignModelClass = null, string $localKey = null,
- *         string $foreignKey = null, string $pivotTable = null, string $pivotLocalKey = null, string $pivotForeignKey
- *         = null)
+ *
+ * @method $this hasOne() hasOne(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
+ * @method $this belongsTo() belongsTo(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
+ * @method $this hasMany() hasMany(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null)
+ * @method $this belongsToMany() belongsToMany(string $name, string $foreignModelClass = null, string $localKey = null, string $foreignKey = null, string $pivotTable = null, string $pivotLocalKey = null, string $pivotForeignKey = null)
  *
  * @method $this filter_order() filter_order(string $orderingField)
  * @method $this filter_order_Dir() filter_order_Dir(string $direction)
@@ -393,16 +389,7 @@ class DataModel extends Model implements TableInterface
 		// Do I have to auto-fill the fields?
 		if ($this->autoFill)
 		{
-			// If I have guarded fields, I'll try to fill everything, using such fields as a "blacklist"
-			if (!empty($this->guarded))
-			{
-				$fields = array_keys($this->knownFields);
-			}
-			else
-			{
-				// Otherwise I'll fill only the fillable ones (act like having a "whitelist")
-				$fields = $this->fillable;
-			}
+			$fields = !empty($this->guarded) ? array_keys($this->knownFields) : $this->fillable;
 
 			foreach ($fields as $field)
 			{
@@ -746,14 +733,7 @@ class DataModel extends Model implements TableInterface
 
 			$prefix = $this->getDbo()->getPrefix();
 
-			if (substr($name, 0, 3) == '#__')
-			{
-				$checkName = $prefix . substr($name, 3);
-			}
-			else
-			{
-				$checkName = $name;
-			}
+			$checkName = substr($name, 0, 3) == '#__' ? $prefix . substr($name, 3) : $name;
 
 			// Iterate through all lower/uppercase permutations of the prefix if we have a prefix with at least one uppercase letter
 			if (!in_array($checkName, static::$tableCache) && preg_match('/[A-Z]/', $prefix) && (substr($name, 0, 3) == '#__'))
@@ -838,7 +818,7 @@ class DataModel extends Model implements TableInterface
 	{
 		$ret = [];
 
-		foreach ($this->knownFields as $field => $info)
+		foreach (array_keys($this->knownFields) as $field)
 		{
 			$ret[$field] = $this->getFieldValue($field);
 		}
@@ -1125,7 +1105,7 @@ class DataModel extends Model implements TableInterface
 		$dataBeforeBind          = [];
 
 		// If we have relations we keep a copy of the data before bind.
-		if (count($relationImportantFields))
+		if (count($relationImportantFields) > 0)
 		{
 			$dataBeforeBind = array_merge($this->recordData);
 		}
@@ -1136,15 +1116,7 @@ class DataModel extends Model implements TableInterface
 			$this->bind($data, $ignore);
 		}
 
-		// Is this a new record?
-		if (empty($oldPKValue))
-		{
-			$isNewRecord = true;
-		}
-		else
-		{
-			$isNewRecord = $oldPKValue != $this->getId();
-		}
+		$isNewRecord = empty($oldPKValue) ? true : $oldPKValue != $this->getId();
 
 		// Check the validity of the data
 		$this->check();
@@ -1234,7 +1206,7 @@ class DataModel extends Model implements TableInterface
 
 			unset ($dataBeforeBind);
 
-			if (count($modifiedFields))
+			if (count($modifiedFields) > 0)
 			{
 				$relationsAffected = [];
 
@@ -1299,17 +1271,7 @@ class DataModel extends Model implements TableInterface
 		// Store the model's $touches definition
 		$touches = $this->touches;
 
-		// If $relations is non-null, remove $relations from $this->touches. Since $relations will be saved, they are
-		// implicitly touched. We don't want to double-touch those records, do we?
-		if (is_array($relations))
-		{
-			$this->touches = array_diff($this->touches, $relations);
-		}
-		// Otherwise empty $this->touches completely as we'll be pushing all relations
-		else
-		{
-			$this->touches = [];
-		}
+		$this->touches = is_array($relations) ? array_diff($this->touches, $relations) : [];
 
 		// Save this record
 		$this->save($data, $orderingFilter, $ignore, false);
@@ -1369,7 +1331,7 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// Bind the source value, excluding the ignored fields.
-		foreach ($this->recordData as $k => $currentValue)
+		foreach (array_keys($this->recordData) as $k)
 		{
 			// Only process fields not in the ignore array.
 			if (!in_array($k, $ignore))
@@ -1485,7 +1447,7 @@ class DataModel extends Model implements TableInterface
 			->order($db->qn($order_field) . 'ASC, ' . $db->qn($k) . 'ASC');
 
 		// Setup the extra where and ordering clause data.
-		if ($where)
+		if (!empty($where))
 		{
 			$query->where($where);
 		}
@@ -1582,7 +1544,7 @@ class DataModel extends Model implements TableInterface
 		}
 
 		// Add the custom WHERE clause if set.
-		if ($where)
+		if (!empty($where))
 		{
 			$query->where($where);
 		}
@@ -1628,7 +1590,7 @@ class DataModel extends Model implements TableInterface
 	{
 		$totalItems = $this->count();
 
-		if (!$totalItems)
+		if ($totalItems === 0)
 		{
 			return $this;
 		}
@@ -1682,7 +1644,7 @@ class DataModel extends Model implements TableInterface
 		$this->triggerEvent('onBeforeBuildQuery', [&$query, $overrideLimits]);
 
 		// Apply custom WHERE clauses
-		if (count($this->whereClauses))
+		if (count($this->whereClauses) > 0)
 		{
 			foreach ($this->whereClauses as $clause)
 			{
@@ -1789,6 +1751,7 @@ class DataModel extends Model implements TableInterface
 
 		$db = $this->getDbo();
 		$db->setQuery($query, $limitstart, $limit);
+
 		$rawData = $db->loadAssocList();
 
 		return $rawData;
@@ -2167,14 +2130,7 @@ class DataModel extends Model implements TableInterface
 
 		foreach ($this->knownFields as $fieldName => $information)
 		{
-			if ($useDefaults)
-			{
-				$this->recordData[$fieldName] = $information->Default;
-			}
-			else
-			{
-				$this->recordData[$fieldName] = null;
-			}
+			$this->recordData[$fieldName] = $useDefaults ? $information->Default : null;
 		}
 
 		if ($resetRelations)
@@ -2268,7 +2224,7 @@ class DataModel extends Model implements TableInterface
 
 		if ($oid)
 		{
-			$this->$pkField = intval($oid);
+			$this->$pkField = (int) $oid;
 		}
 
 		if (!$this->$pkField)
@@ -2330,7 +2286,7 @@ class DataModel extends Model implements TableInterface
 				$i++;
 			}
 
-			if (count($msg))
+			if (count($msg) > 0)
 			{
 				$option  = $this->container->componentName;
 				$comName = $this->container->bareComponentName;
@@ -3564,14 +3520,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function setRules($input)
 	{
-		if ($input instanceof Rules)
-		{
-			$this->rules = $input;
-		}
-		else
-		{
-			$this->rules = new Rules($input);
-		}
+		$this->rules = $input instanceof Rules ? $input : new Rules($input);
 	}
 
 	/**
@@ -3723,7 +3672,7 @@ class DataModel extends Model implements TableInterface
 	public function loadhistory($version_id, $alias)
 	{
 		// Only attempt to check the row in if it exists.
-		if (!$version_id)
+		if (empty($version_id))
 		{
 			throw new RecordNotLoaded;
 		}
@@ -3795,7 +3744,7 @@ class DataModel extends Model implements TableInterface
 	 */
 	public function getContentType()
 	{
-		if ($this->contentType)
+		if (!empty($this->contentType))
 		{
 			return $this->contentType;
 		}
@@ -4001,7 +3950,7 @@ class DataModel extends Model implements TableInterface
 		$ucmContentTable = new CoreContent(Factory::getDbo());
 
 		$ucm     = new UCMContent($this, $alias);
-		$ucmData = $data ? $ucm->mapData($data) : $ucm->ucmData;
+		$ucmData = !empty($data) ? $ucm->mapData($data) : $ucm->ucmData;
 
 		$primaryId = $ucm->getPrimaryKey($ucmData['common']['core_type_id'], $ucmData['common']['core_content_item_id']);
 		$result    = $ucmContentTable->load($primaryId);
@@ -4109,7 +4058,7 @@ class DataModel extends Model implements TableInterface
 		// Do NOT touch Table here -- we are loading the core asset table which is a Joomla Table, not a FOF model
 		$asset = new Asset(Factory::getDbo());
 
-		if (!$asset->loadByName($name))
+		if ($asset->loadByName($name) === 0)
 		{
 			return false;
 		}
@@ -4167,7 +4116,7 @@ class DataModel extends Model implements TableInterface
 				{
 					$ret[] = $perm . $lower;
 
-					if ($lower != $upper)
+					if ($lower !== $upper)
 					{
 						$ret[] = $perm . $upper;
 					}

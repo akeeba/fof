@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use FOF40\Container\Container;
 use FOF40\Encrypt\Randval;
@@ -93,7 +93,7 @@ class PlgUserFoftoken extends JPlugin
 		}
 
 		// Get the user ID
-		$userId = isset($data->id) ? intval($data->id) : 0;
+		$userId = isset($data->id) ? (int) $data->id : 0;
 
 		// Make sure we have a positive integer user ID
 		if ($userId <= 0)
@@ -430,7 +430,7 @@ class PlgUserFoftoken extends JPlugin
 			return $response;
 		}
 
-		list($algo, $userId, $tokenHMAC) = $parts;
+		[$algo, $userId, $tokenHMAC] = $parts;
 
 		/**
 		 * Verify the HMAC algorithm described in the token is allowed
@@ -616,7 +616,7 @@ class PlgUserFoftoken extends JPlugin
 		$safeLen = strlen($knownString);
 		$userLen = strlen($userString);
 
-		if ($userLen != $safeLen)
+		if ($userLen !== $safeLen)
 		{
 			return false;
 		}
@@ -667,7 +667,7 @@ class PlgUserFoftoken extends JPlugin
 
 		$user = JFactory::getUser($userId);
 
-		if ($user->id != $userId)
+		if ($user->id !== $userId)
 		{
 			return false;
 		}

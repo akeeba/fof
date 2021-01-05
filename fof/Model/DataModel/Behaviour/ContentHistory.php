@@ -7,11 +7,11 @@
 
 namespace FOF40\Model\DataModel\Behaviour;
 
+defined('_JEXEC') || die;
+
 use ContenthistoryHelper;
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
-
-defined('_JEXEC') or die;
 
 /**
  * FOF model behavior class to add Joomla! content history support

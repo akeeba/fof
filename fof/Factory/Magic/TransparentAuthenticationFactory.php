@@ -7,9 +7,9 @@
 
 namespace FOF40\Factory\Magic;
 
-use FOF40\TransparentAuthentication\TransparentAuthentication;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\TransparentAuthentication\TransparentAuthentication;
 
 /**
  * Creates a TransparentAuthentication object instance based on the information provided by the fof.xml configuration

@@ -7,10 +7,10 @@
 
 namespace FOF40\Model\DataModel;
 
+defined('_JEXEC') || die;
+
 use FOF40\Model\DataModel;
 use FOF40\Utils\Collection as BaseCollection;
-
-defined('_JEXEC') or die;
 
 /**
  * A collection of data models. You can enumerate it like an array, use it everywhere a collection is expected (e.g. a
@@ -266,7 +266,7 @@ class Collection extends BaseCollection
 	 */
 	public function __call($name, $arguments)
 	{
-		if (!count($this))
+		if (count($this) === 0)
 		{
 			return;
 		}

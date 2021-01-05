@@ -7,6 +7,8 @@
 
 namespace FOF40\Utils;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use JDatabaseDriver;
@@ -28,6 +30,11 @@ class MediaVersion
 	 * @since 3.5.3
 	 */
 	protected static $componentVersionCache = [];
+
+	/**
+	 * @var string|mixed
+	 */
+	public $componentName;
 
 	/**
 	 * The current component's container

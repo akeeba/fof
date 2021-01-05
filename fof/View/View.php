@@ -7,6 +7,8 @@
 
 namespace FOF40\View;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Model\Model;
 use FOF40\View\Engine\EngineInterface;
@@ -15,8 +17,6 @@ use FOF40\View\Exception\EmptyStack;
 use FOF40\View\Exception\ModelNotFound;
 use FOF40\View\Exception\UnrecognisedExtension;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * Class View
@@ -353,15 +353,7 @@ class View
 	 */
 	public function get($property, $default = null, $modelName = null)
 	{
-		// If $model is null we use the default model
-		if (is_null($modelName))
-		{
-			$model = $this->defaultModel;
-		}
-		else
-		{
-			$model = $modelName;
-		}
+		$model = is_null($modelName) ? $this->defaultModel : $modelName;
 
 		// First check to make sure the model requested exists
 		if (isset($this->modelInstances[$model]))
@@ -377,30 +369,23 @@ class View
 
 				return $result;
 			}
-			else
-			{
-				$result = $this->modelInstances[$model]->$property();
 
-				if (is_null($result))
-				{
-					return $default;
-				}
+			$result = $this->modelInstances[$model]->$property();
 
-				return $result;
-			}
-		}
-		// If the model doesn't exist, try to fetch a View property
-		else
-		{
-			if (@isset($this->$property))
-			{
-				return $this->$property;
-			}
-			else
+			if (is_null($result))
 			{
 				return $default;
 			}
+
+			return $result;
 		}
+
+		if (@isset($this->$property))
+		{
+			return $this->$property;
+		}
+
+		return $default;
 	}
 
 	/**
@@ -729,28 +714,25 @@ class View
 
 				$result .= $this->loadAnyTemplate($viewTemplate, $data);
 			}
-		}
-		// If there is no data in the array, we will render the contents of the empty
-		// view. Alternatively, the "empty view" could be a raw string that begins
-		// with "raw|" for convenience and to let this know that it is a string. Or
-		// a language string starting with text|.
-		else
-		{
-			if (starts_with($empty, 'raw|'))
-			{
-				$result = substr($empty, 4);
-			}
-			elseif (starts_with($empty, 'text|'))
-			{
-				$result = Text::_(substr($empty, 5));
-			}
-			else
-			{
-				$result = $this->loadAnyTemplate($empty);
-			}
+
+			return $result;
 		}
 
-		return $result;
+		if (starts_with($empty, 'raw|'))
+		{
+			$result = substr($empty, 4);
+
+			return $result;
+		}
+
+		if (starts_with($empty, 'text|'))
+		{
+			$result = Text::_(substr($empty, 5));
+
+			return $result;
+		}
+
+		return $this->loadAnyTemplate($empty);
 	}
 
 	/**
@@ -1151,7 +1133,7 @@ class View
 	protected function addTemplatePath($path)
 	{
 		// Just force to array
-		settype($path, 'array');
+		$path = (array) $path;
 
 		// Loop through the path directories
 		foreach ($path as $dir)
@@ -1367,15 +1349,7 @@ class View
 		// Call the Joomla! plugins
 		$results = $this->container->platform->runPlugins($event, $arguments);
 
-		foreach ($results as $result)
-		{
-			if ($result === false)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return !in_array(false, $results, true);
 	}
 
 	/**

@@ -7,12 +7,12 @@
 
 namespace FOF40\Model;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Input\Input;
 use FOF40\Model\Exception\CannotGetName;
 use Joomla\CMS\Filter\InputFilter;
-
-defined('_JEXEC') or die;
 
 /**
  * Class Model
@@ -396,7 +396,7 @@ class Model
 	 */
 	public function savestate($newState)
 	{
-		$this->_savestate = $newState ? true : false;
+		$this->_savestate = $newState;
 
 		return $this;
 	}
@@ -577,16 +577,12 @@ class Model
 		{
 			return $this->state;
 		}
-		else
+
+		if (property_exists($this->state, $property))
 		{
-			if (property_exists($this->state, $property))
-			{
-				return $this->state->$property;
-			}
-			else
-			{
-				return $default;
-			}
+			return $this->state->$property;
 		}
+
+		return $default;
 	}
 }

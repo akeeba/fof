@@ -7,7 +7,7 @@
 
 namespace FOF40\Controller\Exception;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use RuntimeException;
 

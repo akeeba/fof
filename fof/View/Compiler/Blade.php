@@ -7,9 +7,9 @@
 
 namespace FOF40\View\Compiler;
 
-use FOF40\Container\Container;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Container\Container;
 
 class Blade implements CompilerInterface
 {
@@ -155,7 +155,7 @@ class Blade implements CompilerInterface
 
 		$fileData = @file_get_contents($path);
 
-		if ($path)
+		if ($path !== '')
 		{
 			$this->setPath($path);
 		}
@@ -371,7 +371,7 @@ class Blade implements CompilerInterface
 	 */
 	public function setContentTags(string $openTag, string $closeTag, bool $escaped = false): void
 	{
-		$property = ($escaped === true) ? 'escapedTags' : 'contentTags';
+		$property = $escaped ? 'escapedTags' : 'contentTags';
 
 		$this->{$property} = [preg_quote($openTag), preg_quote($closeTag)];
 	}

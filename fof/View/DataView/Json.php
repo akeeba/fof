@@ -7,12 +7,12 @@
 
 namespace FOF40\View\DataView;
 
+defined('_JEXEC') || die;
+
 use FOF40\Model\DataModel;
 use Joomla\CMS\Document\Document as JoomlaDocument;
 use Joomla\CMS\Document\JsonDocument;
 use Joomla\CMS\Uri\Uri;
-
-defined('_JEXEC') or die;
 
 class Json extends Raw implements DataViewInterface
 {
@@ -130,24 +130,10 @@ class Json extends Raw implements DataViewInterface
 
 			foreach ($this->items as $item)
 			{
-				if (is_object($item) && method_exists($item, 'toArray'))
-				{
-					$result[] = $item->toArray();
-				}
-				else
-				{
-					$result[] = $item;
-				}
+				$result[] = (is_object($item) && method_exists($item, 'toArray')) ? $item->toArray() : $item;
 			}
 
-			if (version_compare(PHP_VERSION, '5.4', 'ge'))
-			{
-				$json = json_encode($result, JSON_PRETTY_PRINT);
-			}
-			else
-			{
-				$json = json_encode($result);
-			}
+			$json = json_encode($result, JSON_PRETTY_PRINT);
 
 			// JSONP support
 			$callback = $this->input->get('callback', null, 'raw');
@@ -241,25 +227,9 @@ class Json extends Raw implements DataViewInterface
 
 		if ($hasFailed)
 		{
-			// Default JSON behaviour in case the template isn't there!
+			$data = (is_object($this->item) && method_exists($this->item, 'toArray')) ? $this->item->toArray() : $this->item;
 
-			if (is_object($this->item) && method_exists($this->item, 'toArray'))
-			{
-				$data = $this->item->toArray();
-			}
-			else
-			{
-				$data = $this->item;
-			}
-
-			if (version_compare(PHP_VERSION, '5.4', 'ge'))
-			{
-				$json = json_encode($data, JSON_PRETTY_PRINT);
-			}
-			else
-			{
-				$json = json_encode($data);
-			}
+			$json = json_encode($data, JSON_PRETTY_PRINT);
 
 			// JSONP support
 			$callback = $this->input->get('callback');

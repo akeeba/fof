@@ -11,7 +11,7 @@
  * Laravel 4 is distributed under the MIT license, see https://github.com/laravel/framework/blob/master/LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 if (!function_exists('array_add'))
 {
@@ -492,7 +492,7 @@ if (!function_exists('object_get'))
 	 */
 	function object_get($object, string $key, $default = null)
 	{
-		if (is_null($key) or trim($key) == '')
+		if (is_null($key) || trim($key) == '')
 		{
 			return $object;
 		}

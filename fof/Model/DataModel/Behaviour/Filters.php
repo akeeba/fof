@@ -7,12 +7,12 @@
 
 namespace  FOF40\Model\DataModel\Behaviour;
 
+defined('_JEXEC') || die;
+
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
 use Joomla\Registry\Registry;
-
-defined('_JEXEC') or die;
 
 class Filters extends Observer
 {

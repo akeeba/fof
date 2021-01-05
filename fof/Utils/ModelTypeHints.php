@@ -7,9 +7,9 @@
 
 namespace FOF40\Utils;
 
-use FOF40\Model\DataModel;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Model\DataModel;
 
 /**
  * Generate phpDoc type hints for the magic properties and methods of your DataModels.
@@ -215,7 +215,7 @@ class ModelTypeHints
 		array_pop($modelTypeParts);
 		$modelType = implode('\\', $modelTypeParts) . '\\';
 
-		if ($relations)
+		if ($relations !== [])
 		{
 			foreach ($relations as $relationName)
 			{

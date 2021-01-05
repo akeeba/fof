@@ -7,12 +7,12 @@
 
 namespace FOF40\Database;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use JDatabaseDriver;
 use Joomla\CMS\Filesystem\Folder;
 use SimpleXMLElement;
-
-defined('_JEXEC') or die;
 
 class Installer
 {
@@ -25,7 +25,7 @@ class Installer
 	/** @var  string  The directory where the XML schema files are stored */
 	private $xmlDirectory;
 
-	/** @var  string  Force a specific **absolute** file path for the XML schema file */
+	/** @var  string|null  Force a specific **absolute** file path for the XML schema file */
 	private $forcedFile;
 
 	/**
@@ -255,16 +255,7 @@ class Installer
 					// Do I need to automatically convert the collation of all CREATE / ALTER queries?
 					if ($autoCollationConversion)
 					{
-						if ($hasUtf8mb4Support)
-						{
-							// We have UTF8MB4 support. Convert all queries to UTF8MB4.
-							$query = $this->convertUtf8QueryToUtf8mb4($query);
-						}
-						else
-						{
-							// We do not have UTF8MB4 support. Convert all queries to plain old UTF8.
-							$query = $this->convertUtf8mb4QueryToUtf8($query);
-						}
+						$query = $hasUtf8mb4Support ? $this->convertUtf8QueryToUtf8mb4($query) : $this->convertUtf8mb4QueryToUtf8($query);
 					}
 
 					$this->db->setQuery($query);
@@ -370,7 +361,7 @@ class Installer
 		$xml = null;
 
 		// Do we have a forced file?
-		if ($this->forcedFile)
+		if (!empty($this->forcedFile))
 		{
 			$xml = $this->openAndVerify($this->forcedFile);
 
@@ -462,9 +453,7 @@ class Installer
 
 		foreach ($drivers->children() as $driverTypeTag)
 		{
-			$thisDriverType = (string) $driverTypeTag;
-
-			if ($thisDriverType == $driverType)
+			if ((string) $driverTypeTag === $driverType)
 			{
 				return $xml;
 			}
@@ -479,7 +468,7 @@ class Installer
 				// e.g. $driverType = 'mysqlistupid', $thisDriverType = 'mysqli' => driver matched
 				strpos($driverType, $thisDriverType) === 0
 				// e.g. $driverType = 'stupidmysqli', $thisDriverType = 'mysqli' => driver matched
-				|| (substr($driverType, -strlen($thisDriverType)) == $thisDriverType)
+				|| (substr($driverType, -strlen($thisDriverType)) === $thisDriverType)
 			)
 			{
 				return $xml;
@@ -564,7 +553,7 @@ class Installer
 						$coltype     = strtolower($coltype);
 						$currentType = is_string($tableColumns[$value]) ? $tableColumns[$value] : strtolower($tableColumns[$value]->Type);
 
-						$condition = ($coltype == $currentType);
+						$condition = ($coltype === $currentType);
 					}
 				}
 
@@ -959,8 +948,8 @@ class Installer
 
 			if (
 				!strpos($driverType, 'mysql') === 0
-				&& !(substr($driverType, -5) == 'mysql')
-				&& !(substr($driverType, -6) == 'mysqli')
+				&& substr($driverType, -5) != 'mysql'
+				&& substr($driverType, -6) != 'mysqli'
 			)
 			{
 				$isMySQL = false;

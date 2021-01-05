@@ -5,6 +5,8 @@
  * @license   GNU General Public License version 2, or later
  */
 
+defined('_JEXEC') || die;
+
 use Joomla\CMS\Date\Date as JoomlaDate;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filesystem\File;
@@ -13,8 +15,6 @@ use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Extension;
-
-defined('_JEXEC') or die();
 
 if (class_exists('file_fof40InstallerScript', false))
 {
@@ -28,6 +28,7 @@ if (class_exists('file_fof40InstallerScript', false))
  */
 class file_fof40InstallerScript
 {
+	public $removeFiles;
 	/**
 	 * The minimum PHP version required to install this extension
 	 *
@@ -239,7 +240,7 @@ class file_fof40InstallerScript
 		// Check dependencies on FOF
 		$dependencyCount = count($this->getDependencies('fof40'));
 
-		if ($dependencyCount)
+		if ($dependencyCount !== 0)
 		{
 			$msg = "<p>You have $dependencyCount extension(s) depending on this version of FOF. The package cannot be uninstalled unless these extensions are uninstalled first.</p>";
 
@@ -467,12 +468,9 @@ class file_fof40InstallerScript
 			return;
 		}
 
-		if (!@is_dir($dest))
+		if (!@is_dir($dest) && !@mkdir($dest, 0755))
 		{
-			if (!@mkdir($dest, 0755))
-			{
-				Folder::create($dest, 0755);
-			}
+			Folder::create($dest, 0755);
 		}
 
 		if (!@is_dir($dest))
@@ -525,7 +523,7 @@ class file_fof40InstallerScript
 				$sourceSize = @filesize($sourcePath);
 				$targetSize = @filesize($targetPath);
 
-				$mustCopy = $sourceSize != $targetSize;
+				$mustCopy = $sourceSize !== $targetSize;
 			}
 
 			if (!$mustCopy)
@@ -533,12 +531,9 @@ class file_fof40InstallerScript
 				continue;
 			}
 
-			if (!@copy($sourcePath, $targetPath))
+			if (!@copy($sourcePath, $targetPath) && !File::copy($sourcePath, $targetPath))
 			{
-				if (!File::copy($sourcePath, $targetPath))
-				{
-					$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
-				}
+				$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
 			}
 		}
 	}

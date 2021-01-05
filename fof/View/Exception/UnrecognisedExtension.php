@@ -7,11 +7,11 @@
 
 namespace  FOF40\View\Exception;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use InvalidArgumentException;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * Exception thrown when we can't figure out which engine to use for a view template

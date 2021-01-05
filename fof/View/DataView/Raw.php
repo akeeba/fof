@@ -7,6 +7,8 @@
 
 namespace FOF40\View\DataView;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Collection;
@@ -16,8 +18,6 @@ use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\Registry\Registry;
-
-defined('_JEXEC') or die;
 
 /**
  * View for a raw data-driven view
@@ -199,7 +199,7 @@ class Raw extends View implements DataViewInterface
 			'delete'    => true,
 		];
 
-		foreach ($additionalPermissions as $localKey => $joomlaPermission)
+		foreach (array_keys($additionalPermissions) as $localKey)
 		{
 			$permissions[$localKey] = true;
 		}
@@ -251,14 +251,7 @@ class Raw extends View implements DataViewInterface
 		{
 			$app = JoomlaFactory::getApplication();
 
-			if (method_exists($app, 'get'))
-			{
-				$defaultLimit = $app->get('list_limit');
-			}
-			else
-			{
-				$defaultLimit = 20;
-			}
+			$defaultLimit = method_exists($app, 'get') ? $app->get('list_limit') : 20;
 		}
 
 		$this->lists->limitStart = $model->getState('limitstart', 0, 'int');
@@ -333,24 +326,21 @@ class Raw extends View implements DataViewInterface
 		$model = $this->getModel();
 
 		// It seems that I can't edit records, maybe I can edit only this one due asset tracking?
-		if (!$this->permissions->edit || !$this->permissions->editown)
+		if ((!$this->permissions->edit || !$this->permissions->editown) && $model)
 		{
-			if ($model)
+			// Ok, record is tracked, let's see if I can this record
+			if ($model->isAssetsTracked())
 			{
-				// Ok, record is tracked, let's see if I can this record
-				if ($model->isAssetsTracked())
+				$platform = $this->container->platform;
+
+				if (!$this->permissions->edit)
 				{
-					$platform = $this->container->platform;
+					$this->permissions->edit = $platform->authorise('core.edit', $model->getAssetName());
+				}
 
-					if (!$this->permissions->edit)
-					{
-						$this->permissions->edit = $platform->authorise('core.edit', $model->getAssetName());
-					}
-
-					if (!$this->permissions->editown)
-					{
-						$this->permissions->editown = $platform->authorise('core.edit.own', $model->getAssetName());
-					}
+				if (!$this->permissions->editown)
+				{
+					$this->permissions->editown = $platform->authorise('core.edit.own', $model->getAssetName());
 				}
 			}
 		}

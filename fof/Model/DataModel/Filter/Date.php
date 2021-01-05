@@ -7,7 +7,7 @@
 
 namespace FOF40\Model\DataModel\Filter;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class Date extends Text
 {
@@ -110,14 +110,7 @@ class Date extends Text
 			return '';
 		}
 
-		if ($interval['sign'] == '+')
-		{
-			$function = 'DATE_ADD';
-		}
-		else
-		{
-			$function = 'DATE_SUB';
-		}
+		$function = $interval['sign'] == '+' ? 'DATE_ADD' : 'DATE_SUB';
 
 		$extra = '';
 

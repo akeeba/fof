@@ -7,7 +7,7 @@
 
 namespace  FOF40\Model\Mixin;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use Joomla\CMS\Language\Text;
 use RuntimeException;

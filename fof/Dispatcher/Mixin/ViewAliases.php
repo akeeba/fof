@@ -7,11 +7,11 @@
 
 namespace FOF40\Dispatcher\Mixin;
 
+defined('_JEXEC') || die;
+
 // Protect from unauthorized access
 use FOF40\Dispatcher\Dispatcher;
 use Joomla\CMS\Uri\Uri;
-
-defined('_JEXEC') or die();
 
 /**
  * Lets you create view aliases. When you access a view alias the real view is loaded instead. You can optionally have

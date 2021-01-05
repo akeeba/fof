@@ -9,7 +9,7 @@ namespace FOF40\Configuration\Domain;
 
 use SimpleXMLElement;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * Configuration parser for the Container-specific settings

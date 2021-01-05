@@ -9,7 +9,7 @@ namespace  FOF40\Configuration\Domain;
 
 use SimpleXMLElement;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * The Interface of a FOF configuration domain class. The methods are used to parse and

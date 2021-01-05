@@ -7,10 +7,10 @@
 
 namespace  FOF40\Model\Exception;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * Exception thrown when we can't get a Controller's name

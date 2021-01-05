@@ -7,13 +7,13 @@
 
 namespace FOF40\InstallScript;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Database\Installer as DatabaseInstaller;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Installer\Adapter\ModuleAdapter;
 use Joomla\CMS\Log\Log;
-
-defined('_JEXEC') or die;
 
 // In case FOF's autoloader is not present yet, e.g. new installation
 if (!class_exists('FOF40\\InstallScript\\BaseInstaller', true))
@@ -206,7 +206,7 @@ class Module extends BaseInstaller
 
 			$ignored = [];
 
-			if ($source == $temporarySource)
+			if ($source === $temporarySource)
 			{
 				$ignored = [
 					'index.html', 'index.htm', 'LICENSE.txt', 'license.txt', 'readme.htm', 'readme.html', 'README.md',

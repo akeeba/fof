@@ -7,9 +7,9 @@
 
 namespace FOF40\Render;
 
-use FOF40\Container\Container;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Container\Container;
 
 /**
  * Renderer class for use with Akeeba FEF

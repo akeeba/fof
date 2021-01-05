@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 // Load FOF if not already loaded
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))

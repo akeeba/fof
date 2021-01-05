@@ -7,9 +7,9 @@
 
 namespace FOF40\Controller\Mixin;
 
-use FOF40\Controller\Controller;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Controller\Controller;
 
 /**
  * Force a Controller to allow access to specific tasks only, no matter which tasks are already defined in this

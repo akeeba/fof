@@ -7,7 +7,7 @@
 
 namespace FOF40\Update;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class Joomla extends Extension
 {
@@ -77,10 +77,10 @@ class Joomla extends Extension
 		}
 
 		// Sanitise version numbers
-		$sameVersion    = $jVersion == $currentVersion;
+		$sameVersion    = $jVersion === $currentVersion;
 		$jVersion       = $this->sanitiseVersion($jVersion);
 		$currentVersion = $this->sanitiseVersion($currentVersion);
-		$sameVersion    = $sameVersion || ($jVersion == $currentVersion);
+		$sameVersion    = $sameVersion || ($jVersion === $currentVersion);
 
 		// Get the base version
 		$baseVersion = substr($jVersion, 0, 3);
@@ -166,7 +166,7 @@ class Joomla extends Extension
 		{
 			$ret['upgrade'] = 'lts';
 		}
-		elseif ($baseVersion == $current_minimum)
+		elseif ($baseVersion === $current_minimum)
 		{
 			$ret['upgrade'] = $ret['lts'] ? 'lts' : 'sts';
 		}
@@ -267,7 +267,7 @@ class Joomla extends Extension
 		if ($alphaQualifierPosition !== false)
 		{
 			$betaRevision = substr($test, $alphaQualifierPosition + 6);
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = 1;
 			}
@@ -276,7 +276,7 @@ class Joomla extends Extension
 		elseif ($betaQualifierPosition !== false)
 		{
 			$betaRevision = substr($test, $betaQualifierPosition + 5);
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = 1;
 			}
@@ -286,7 +286,7 @@ class Joomla extends Extension
 		{
 			$betaRevision = substr($test, $betaQualifierPosition2 + 5);
 
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = 1;
 			}
@@ -296,7 +296,7 @@ class Joomla extends Extension
 		elseif ($rcQualifierPosition !== false)
 		{
 			$betaRevision = substr($test, $rcQualifierPosition + 5);
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = 1;
 			}
@@ -306,7 +306,7 @@ class Joomla extends Extension
 		{
 			$betaRevision = substr($test, $rcQualifierPosition2 + 3);
 
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = 1;
 			}
@@ -317,7 +317,7 @@ class Joomla extends Extension
 		{
 			$betaRevision = substr($test, $rcQualifierPosition3 + 5);
 
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = 1;
 			}
@@ -327,7 +327,7 @@ class Joomla extends Extension
 		elseif ($devQualifiedPosition !== false)
 		{
 			$betaRevision = substr($test, $devQualifiedPosition + 6);
-			if (!$betaRevision)
+			if ($betaRevision === '')
 			{
 				$betaRevision = '';
 			}

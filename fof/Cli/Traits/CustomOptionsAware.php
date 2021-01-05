@@ -7,6 +7,8 @@
 
 namespace FOF40\Cli\Traits;
 
+defined('_JEXEC') || die;
+
 use JFilterInput;
 use Joomla\CMS\Filter\InputFilter;
 

@@ -7,14 +7,14 @@
 
 namespace FOF40\Render;
 
+defined('_JEXEC') || die;
+
 use Fakeapp\Site\Toolbar\Toolbar;
 use FOF40\Container\Container;
 use JHtmlSidebar;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\Toolbar as JoomlaToolbar;
-
-defined('_JEXEC') or die;
 
 /**
  * Renderer class for use with Joomla! 4.x

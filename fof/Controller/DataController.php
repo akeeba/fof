@@ -7,6 +7,8 @@
 
 namespace FOF40\Controller;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\ItemNotFound;
@@ -19,8 +21,6 @@ use FOF40\View\DataView\DataViewInterface;
 use FOF40\View\View;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
-
-defined('_JEXEC') or die;
 
 /**
  * Database-aware Controller
@@ -350,7 +350,7 @@ class DataController extends Controller
 		catch (Exception $e)
 		{
 			// Redirect on error
-			if ($customURL = $this->input->getBase64('returnurl', ''))
+			if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 			{
 				$customURL = base64_decode($customURL);
 			}
@@ -405,7 +405,7 @@ class DataController extends Controller
 		$id      = $this->input->get('id', 0, 'int');
 		$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_SAVED');
 
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -448,7 +448,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -484,7 +484,7 @@ class DataController extends Controller
 
 		$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_SAVED');
 
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -511,7 +511,7 @@ class DataController extends Controller
 
 		$textKey = strtoupper($this->container->componentName . '_LBL_' . $this->container->inflector->singularize($this->view) . '_SAVED');
 
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -558,7 +558,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -603,7 +603,7 @@ class DataController extends Controller
 				catch (LockedRecord $e)
 				{
 					// Redirect to the display task
-					if ($customURL = $this->input->getBase64('returnurl', ''))
+					if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 					{
 						$customURL = base64_decode($customURL);
 					}
@@ -621,7 +621,7 @@ class DataController extends Controller
 		$this->container->platform->setSessionVar($sessionKey, null, $this->container->componentName);
 
 		// Redirect to the display task
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -670,7 +670,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -727,7 +727,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -784,7 +784,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -841,7 +841,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -890,7 +890,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -937,7 +937,7 @@ class DataController extends Controller
 			// Several methods could throw exceptions, so let's wrap everything in a try-catch
 			try
 			{
-				if ($n = count($ids))
+				if (($n = count($ids)) !== 0)
 				{
 					for ($i = 0; $i < $n; $i++)
 					{
@@ -975,7 +975,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -1024,7 +1024,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -1080,7 +1080,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -1166,19 +1166,16 @@ class DataController extends Controller
 		{
 			$ids = $cid;
 		}
+		elseif (empty($id))
+		{
+			if (!empty($kid))
+			{
+				$ids = [$kid];
+			}
+		}
 		else
 		{
-			if (empty($id))
-			{
-				if (!empty($kid))
-				{
-					$ids = [$kid];
-				}
-			}
-			else
-			{
-				$ids = [$id];
-			}
+			$ids = [$id];
 		}
 
 		if ($loadRecord && !empty($ids))
@@ -1206,7 +1203,7 @@ class DataController extends Controller
 		$alias     = $this->container->componentName . '.' . $this->view;
 		$returnUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -1434,12 +1431,7 @@ class DataController extends Controller
 				$owner_id = (int) $model->getFieldValue('created_by', null);
 
 				// If the owner matches 'me' then do the test.
-				if ($owner_id == $platform->getUser()->id)
-				{
-					return true;
-				}
-
-				return false;
+				return $owner_id === $platform->getUser()->id;
 			}
 		}
 
@@ -1495,7 +1487,7 @@ class DataController extends Controller
 		}
 
 		// Redirect
-		if ($customURL = $this->input->getBase64('returnurl', ''))
+		if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 		{
 			$customURL = base64_decode($customURL);
 		}
@@ -1541,7 +1533,7 @@ class DataController extends Controller
 			catch (LockedRecord $e)
 			{
 				// Redirect to the display task
-				if ($customURL = $this->input->getBase64('returnurl', ''))
+				if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 				{
 					$customURL = base64_decode($customURL);
 				}
@@ -1607,7 +1599,7 @@ class DataController extends Controller
 			// Redirect on error
 			$id = $model->getId();
 
-			if ($customURL = $this->input->getBase64('returnurl', ''))
+			if (($customURL = $this->input->getBase64('returnurl', '') ?? '') !== '')
 			{
 				$customURL = base64_decode($customURL);
 			}

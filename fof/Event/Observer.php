@@ -7,10 +7,10 @@
 
 namespace FOF40\Event;
 
+defined('_JEXEC') || die;
+
 use ReflectionMethod;
 use ReflectionObject;
-
-defined('_JEXEC') or die;
 
 class Observer
 {

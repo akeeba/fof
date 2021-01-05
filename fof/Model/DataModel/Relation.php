@@ -7,10 +7,10 @@
 
 namespace FOF40\Model\DataModel;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-
-defined('_JEXEC') or die;
 
 abstract class Relation
 {

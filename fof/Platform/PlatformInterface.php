@@ -7,6 +7,8 @@
 
 namespace FOF40\Platform;
 
+defined('_JEXEC') || die;
+
 use DateTimeZone;
 use Exception;
 use FOF40\Container\Container;
@@ -18,8 +20,6 @@ use Joomla\CMS\Language\Language;
 use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
 use JsonSerializable;
-
-defined('_JEXEC') or die;
 
 /**
  * Part of the FOF Platform Abstraction Layer. It implements everything that

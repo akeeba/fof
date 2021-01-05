@@ -7,11 +7,11 @@
 
 namespace FOF40\Render;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use Joomla\Registry\Registry;
 use stdClass;
-
-defined('_JEXEC') or die;
 
 /**
  * Base class for other render classes

@@ -7,10 +7,10 @@
 
 namespace FOF40\Encrypt;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Utils\Phpfunc;
-
-defined('_JEXEC') or die;
 
 /**
  * Data encryption service for FOF-based components.

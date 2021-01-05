@@ -7,9 +7,9 @@
 
 namespace  FOF40\Model\DataModel\Relation;
 
-use FOF40\Model\DataModel;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Model\DataModel;
 
 /**
  * BelongsTo (reverse 1-to-1 or 1-to-many) relation: this model is a child which belongs to the foreign table

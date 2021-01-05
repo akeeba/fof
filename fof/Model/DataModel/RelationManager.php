@@ -7,9 +7,9 @@
 
 namespace FOF40\Model\DataModel;
 
-use FOF40\Model\DataModel;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Model\DataModel;
 
 class RelationManager
 {
@@ -108,7 +108,7 @@ class RelationManager
 	{
 		$this->parentModel = $parentModel;
 
-		if (count($this->relations))
+		if (count($this->relations) > 0)
 		{
 			foreach ($this->relations as $relation)
 			{

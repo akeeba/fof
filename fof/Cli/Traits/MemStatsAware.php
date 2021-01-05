@@ -7,6 +7,8 @@
 
 namespace FOF40\Cli\Traits;
 
+defined('_JEXEC') || die;
+
 /**
  * Memory statistics
  *

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Isset_\IssetOnPropertyObjectToPropertyExistsRector;
 use Rector\Core\Configuration\Option;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector;
@@ -24,8 +25,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 	// Define what rule sets will be applied
 	$parameters->set(Option::SETS, [
 //		SetList::DEAD_CODE,
-	    SetList::EARLY_RETURN,
-//		SetList::CODE_QUALITY,
+//	    SetList::EARLY_RETURN,
+		SetList::CODE_QUALITY,
 //		SetList::PHP_52,
 //		SetList::PHP_53,
 //		SetList::PHP_54,
@@ -69,11 +70,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 	 * Paths and rectors to exclude.
 	 */
 	$parameters->set(Option::EXCLUDE_RECTORS, [
+		// This Rector seems to die consistently in Rector 0.8
+		IssetOnPropertyObjectToPropertyExistsRector::class,
+
 		// WATCH OUT! This does crazy things, like convert $ret['ErrorException'] to $ret[\ErrorException::class] which
 		// is unfortunate and messes everything up.
 		StringClassNameToClassConstantRector::class,
 
 		AddDefaultValueForUndefinedVariableRector::class,
+
 	]);
 
 	// get services (needed for register a single rule)

@@ -7,10 +7,9 @@
 
 namespace FOF40\Encrypt;
 
-// Protect from unauthorized access
-use FOF40\Utils\Phpfunc;
+defined('_JEXEC') || die();
 
-defined('_JEXEC') or die();
+use FOF40\Utils\Phpfunc;
 
 /**
  * Generates cryptographically-secure random values.
@@ -26,8 +25,8 @@ class Randval implements RandvalInterface
 	 *
 	 * Constructor.
 	 *
-	 * @param Phpfunc $phpfunc An object to intercept PHP function calls;
-	 *                         this makes testing easier.
+	 * @param   Phpfunc  $phpfunc  An object to intercept PHP function calls;
+	 *                             this makes testing easier.
 	 *
 	 */
 	public function __construct(Phpfunc $phpfunc = null)
@@ -44,7 +43,7 @@ class Randval implements RandvalInterface
 	 *
 	 * Returns a cryptographically secure random value.
 	 *
-	 * @param integer $bytes How many bytes to return
+	 * @param   integer  $bytes  How many bytes to return
 	 *
 	 * @return  string
 	 */
@@ -67,7 +66,7 @@ class Randval implements RandvalInterface
 	/**
 	 * Generate random bytes. Adapted from Joomla! 3.2.
 	 *
-	 * @param integer $length Length of the random data to generate
+	 * @param   integer  $length  Length of the random data to generate
 	 *
 	 * @return  string  Random binary data
 	 */
@@ -153,7 +152,7 @@ class Randval implements RandvalInterface
 					$duration += $microEnd - $microStart;
 				}
 
-				$duration = $duration / $samples;
+				$duration /= $samples;
 
 				/*
 				 * Based on the average time, determine the total rounds so that
@@ -195,7 +194,7 @@ class Randval implements RandvalInterface
 	/**
 	 * Return a randomly generated password using safe characters (a-z, A-Z, 0-9).
 	 *
-	 * @param int $length How many characters long should the password be. Default is 64.
+	 * @param   int  $length  How many characters long should the password be. Default is 64.
 	 *
 	 * @return  string
 	 *

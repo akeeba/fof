@@ -7,10 +7,10 @@
 
 namespace  FOF40\Model\DataModel\Exception;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 class TreeInvalidLftRgtParent extends TreeInvalidLftRgt
 {

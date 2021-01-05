@@ -7,7 +7,7 @@
 
 namespace FOF40\View\Compiler;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 interface CompilerInterface
 {

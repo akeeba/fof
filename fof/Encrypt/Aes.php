@@ -7,11 +7,11 @@
 
 namespace FOF40\Encrypt;
 
+defined('_JEXEC') || die;
+
 use FOF40\Encrypt\AesAdapter\AdapterInterface;
 use FOF40\Encrypt\AesAdapter\OpenSSL;
 use FOF40\Utils\Phpfunc;
-
-defined('_JEXEC') or die;
 
 /**
  * A simple abstraction to AES encryption
@@ -92,12 +92,7 @@ class Aes
 
 		$algorightms = $phpfunc->hash_algos();
 
-		if (!in_array('sha256', $algorightms))
-		{
-			return false;
-		}
-
-		return true;
+		return in_array('sha256', $algorightms);
 	}
 
 	/**
@@ -194,7 +189,7 @@ class Aes
 			$passLength = mb_strlen($key, 'ASCII');
 		}
 
-		if ($passLength != $blockSize)
+		if ($passLength !== $blockSize)
 		{
 			$iterations = 1000;
 			$salt       = $this->adapter->resizeKey($iv, 16);

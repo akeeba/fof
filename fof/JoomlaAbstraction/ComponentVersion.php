@@ -7,11 +7,11 @@
 
 namespace  FOF40\JoomlaAbstraction;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use Joomla\CMS\Factory as JoomlaFactory;
 use SimpleXMLElement;
-
-defined('_JEXEC') or die;
 
 /**
  * Retrieve the version of a component from the cached XML manifest or, if it's not present, the version recorded in the
@@ -68,11 +68,11 @@ abstract class ComponentVersion
 	 *
 	 * @param   string  $component  The component's bname
 	 *
-	 * @return  string  The component version or null if none is defined
+	 * @return  string|null  The component version or null if none is defined
 	 *
 	 * @since   3.1.5
 	 */
-	private static function getVersionFromDatabase(string $component): string
+	private static function getVersionFromDatabase(string $component): ?string
 	{
 		$db      = JoomlaFactory::getDbo();
 		$query   = $db->getQuery(true)

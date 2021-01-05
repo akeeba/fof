@@ -7,10 +7,10 @@
 
 namespace FOF40\Factory\Magic;
 
+defined('_JEXEC') || die;
+
 use FOF40\Factory\Exception\ViewNotFound;
 use FOF40\View\View;
-
-defined('_JEXEC') or die;
 
 /**
  * Creates a DataModel/TreeModel object instance based on the information provided by the fof.xml configuration file

@@ -7,8 +7,7 @@
 
 namespace FOF40\Encrypt\AesAdapter;
 
-// Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('_JEXEC') || die();
 
 /**
  * Abstract AES encryption class
@@ -37,7 +36,7 @@ abstract class AbstractAdapter
 			$keyLength = mb_strlen($key, 'ASCII');
 		}
 
-		if ($keyLength == $size)
+		if ($keyLength === $size)
 		{
 			return $key;
 		}
@@ -72,7 +71,7 @@ abstract class AbstractAdapter
 			$stringSize = mb_strlen($string, 'ASCII');
 		}
 
-		if ($stringSize == $blockSize)
+		if ($stringSize === $blockSize)
 		{
 			return '';
 		}

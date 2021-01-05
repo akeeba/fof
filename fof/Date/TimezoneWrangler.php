@@ -7,13 +7,13 @@
 
 namespace FOF40\Date;
 
+defined('_JEXEC') || die;
+
 use DateTime;
 use DateTimeZone;
 use Exception;
 use FOF40\Container\Container;
 use Joomla\CMS\User\User;
-
-defined('_JEXEC') or die;
 
 /**
  * A helper class to wrangle timezones, as used by Joomla!.
@@ -121,7 +121,7 @@ class TimezoneWrangler
 			$oldTZ = $this->forcedTimezone->getName();
 		}
 
-		if ($oldTZ == $forcedTimezone->getName())
+		if ($oldTZ === $forcedTimezone->getName())
 		{
 			return;
 		}

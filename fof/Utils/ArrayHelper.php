@@ -7,7 +7,7 @@
 
 namespace FOF40\Utils;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * ArrayHelper is an array utility class for doing all sorts of odds and ends with arrays.
@@ -74,14 +74,7 @@ final class ArrayHelper
 
 		foreach ($array as $k => $v)
 		{
-			if ($recursive && is_array($v))
-			{
-				$obj->$k = static::toObject($v, $class);
-			}
-			else
-			{
-				$obj->$k = $v;
-			}
+			$obj->$k = ($recursive && is_array($v)) ? static::toObject($v, $class) : $v;
 		}
 
 		return $obj;
@@ -233,14 +226,14 @@ final class ArrayHelper
 			case 'INT':
 			case 'INTEGER':
 				// Only use the first integer value
-				@preg_match('/-?[0-9]+/', $result, $matches);
+				@preg_match('/-?\d+/', $result, $matches);
 				$result = @(int) $matches[0];
 				break;
 
 			case 'FLOAT':
 			case 'DOUBLE':
 				// Only use the first floating point value
-				@preg_match('/-?[0-9]+(\.[0-9]+)?/', $result, $matches);
+				@preg_match('/-?\d+(\.\d+)?/', $result, $matches);
 				$result = @(float) $matches[0];
 				break;
 
@@ -494,7 +487,7 @@ final class ArrayHelper
 
 		foreach ($array as $k => $v)
 		{
-			$key = $prefix ? $prefix . $separator . $k : $k;
+			$key = $prefix ? ($prefix . $separator . $k) : $k;
 
 			if (is_object($v) || is_array($v))
 			{
@@ -530,14 +523,7 @@ final class ArrayHelper
 			{
 				if (!$regex || preg_match($regex, $k))
 				{
-					if ($recurse)
-					{
-						$result[$k] = self::arrayFromObject($v, $recurse, $regex);
-					}
-					else
-					{
-						$result[$k] = $v;
-					}
+					$result[$k] = $recurse ? self::arrayFromObject($v, $recurse, $regex) : $v;
 				}
 			}
 

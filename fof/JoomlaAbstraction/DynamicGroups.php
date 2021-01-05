@@ -7,9 +7,9 @@
 
 namespace  FOF40\JoomlaAbstraction;
 
-use FOF40\Container\Container;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Container\Container;
 
 /**
  * Dynamic user to user group assignment.

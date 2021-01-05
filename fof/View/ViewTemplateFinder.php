@@ -7,11 +7,11 @@
 
 namespace  FOF40\View;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use Joomla\CMS\Language\Text;
 use RuntimeException;
-
-defined('_JEXEC') or die;
 
 /**
  * Locates the appropriate template file for a view

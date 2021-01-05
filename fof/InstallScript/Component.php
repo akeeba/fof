@@ -7,6 +7,8 @@
 
 namespace FOF40\InstallScript;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Database\Installer as DatabaseInstaller;
 use JDatabaseDriver;
@@ -17,8 +19,6 @@ use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Menu;
-
-defined('_JEXEC') or die;
 
 // In case FOF's autoloader is not present yet, e.g. new installation
 if (!class_exists('FOF40\\InstallScript\\BaseInstaller', true))
@@ -687,7 +687,7 @@ class Component extends BaseInstaller
 		{
 			foreach ($this->uninstallation_queue['modules'] as $folder => $modules)
 			{
-				if (count($modules))
+				if (count($modules) > 0)
 				{
 					foreach ($modules as $module)
 					{
@@ -720,7 +720,7 @@ class Component extends BaseInstaller
 		{
 			foreach ($this->uninstallation_queue['plugins'] as $folder => $plugins)
 			{
-				if (count($plugins))
+				if (count($plugins) > 0)
 				{
 					foreach ($plugins as $plugin)
 					{
@@ -877,7 +877,7 @@ class Component extends BaseInstaller
 			$data['published']    = 0;
 			$data['parent_id']    = 1;
 			$data['component_id'] = $componentId;
-			$data['img']          = ((string) $menuElement->attributes()->img) ? (string) $menuElement->attributes()->img : 'class:component';
+			$data['img']          = ((string) $menuElement->attributes()->img !== '') ? (string) $menuElement->attributes()->img : 'class:component';
 			$data['home']         = 0;
 			$data['path']         = '';
 			$data['params']       = '';
@@ -1013,11 +1013,11 @@ class Component extends BaseInstaller
 			$data['published']    = 0;
 			$data['parent_id']    = $parent_id;
 			$data['component_id'] = $componentId;
-			$data['img']          = ((string) $child->attributes()->img) ? (string) $child->attributes()->img : 'class:component';
+			$data['img']          = ((string) $child->attributes()->img !== '') ? (string) $child->attributes()->img : 'class:component';
 			$data['home']         = 0;
 
 			// Set the sub menu link
-			if ((string) $child->attributes()->link)
+			if ((string) $child->attributes()->link !== '')
 			{
 				$data['link'] = 'index.php?' . $child->attributes()->link;
 			}
@@ -1025,37 +1025,37 @@ class Component extends BaseInstaller
 			{
 				$request = [];
 
-				if ((string) $child->attributes()->act)
+				if ((string) $child->attributes()->act !== '')
 				{
 					$request[] = 'act=' . $child->attributes()->act;
 				}
 
-				if ((string) $child->attributes()->task)
+				if ((string) $child->attributes()->task !== '')
 				{
 					$request[] = 'task=' . $child->attributes()->task;
 				}
 
-				if ((string) $child->attributes()->controller)
+				if ((string) $child->attributes()->controller !== '')
 				{
 					$request[] = 'controller=' . $child->attributes()->controller;
 				}
 
-				if ((string) $child->attributes()->view)
+				if ((string) $child->attributes()->view !== '')
 				{
 					$request[] = 'view=' . $child->attributes()->view;
 				}
 
-				if ((string) $child->attributes()->layout)
+				if ((string) $child->attributes()->layout !== '')
 				{
 					$request[] = 'layout=' . $child->attributes()->layout;
 				}
 
-				if ((string) $child->attributes()->sub)
+				if ((string) $child->attributes()->sub !== '')
 				{
 					$request[] = 'sub=' . $child->attributes()->sub;
 				}
 
-				$qstring      = (count($request)) ? '&' . implode('&', $request) : '';
+				$qstring      = (count($request) > 0) ? '&' . implode('&', $request) : '';
 				$data['link'] = 'index.php?option=' . $option . $qstring;
 			}
 

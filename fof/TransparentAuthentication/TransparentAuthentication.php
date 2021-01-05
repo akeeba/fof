@@ -7,12 +7,12 @@
 
 namespace FOF40\TransparentAuthentication;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use FOF40\Encrypt\Aes;
 use FOF40\Encrypt\Totp;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * Retrieves the values for transparent authentication from the request

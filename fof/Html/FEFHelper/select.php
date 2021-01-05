@@ -5,11 +5,11 @@
  * @license   GNU General Public License version 2, or later
  */
 
+defined('_JEXEC') || die;
+
 use FOF40\Utils\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 /**
  * Custom JHtml (HTMLHelper) class. Offers selects compatible with Akeeba Frontend Framework (FEF)
@@ -44,20 +44,20 @@ abstract class FEFHelperSelect
 	/**
 	 * Generates a yes/no radio list.
 	 *
-	 * @param string $name     The value of the HTML name attribute
-	 * @param array  $attribs  Additional HTML attributes for the `<select>` tag
-	 * @param string $selected The key that is selected
-	 * @param string $yes      Language key for Yes
-	 * @param string $no       Language key for no
-	 * @param mixed  $id       The id for the field or false for no id
+	 * @param   string  $name      The value of the HTML name attribute
+	 * @param   array   $attribs   Additional HTML attributes for the `<select>` tag
+	 * @param   string  $selected  The key that is selected
+	 * @param   string  $yes       Language key for Yes
+	 * @param   string  $no        Language key for no
+	 * @param   mixed   $id        The id for the field or false for no id
 	 *
 	 * @return  string  HTML for the radio list
 	 *
 	 * @see     JFormFieldRadio
 	 */
-	public static function booleanlist($name, $attribs = array(), $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
+	public static function booleanlist($name, $attribs = [], $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
 	{
-		$options     = [
+		$options = [
 			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.option', '0', \Joomla\CMS\Language\Text::_($no)),
 			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.option', '1', \Joomla\CMS\Language\Text::_($yes)),
 		];
@@ -69,9 +69,9 @@ abstract class FEFHelperSelect
 	/**
 	 * Generates an HTML selection list.
 	 *
-	 * @param array   $data          An array of objects, arrays, or scalars.
-	 * @param string  $name          The value of the HTML name attribute.
-	 * @param mixed   $attribs       Additional HTML attributes for the `<select>` tag. This
+	 * @param   array    $data       An array of objects, arrays, or scalars.
+	 * @param   string   $name       The value of the HTML name attribute.
+	 * @param   mixed    $attribs    Additional HTML attributes for the `<select>` tag. This
 	 *                               can be an array of attributes, or an array of options. Treated as options
 	 *                               if it is the last argument passed. Valid options are:
 	 *                               Format options, see {@see HTMLHelper::$formatOptions}.
@@ -82,12 +82,12 @@ abstract class FEFHelperSelect
 	 *                               Defaults to the same as the name.
 	 *                               list.select, string|array: Identifies one or more option elements
 	 *                               to be selected, based on the option key values.
-	 * @param string  $optKey        The name of the object variable for the option value. If
+	 * @param   string   $optKey     The name of the object variable for the option value. If
 	 *                               set to null, the index of the value array is used.
-	 * @param string  $optText       The name of the object variable for the option text.
-	 * @param mixed   $selected      The key that is selected (accepts an array or a string).
-	 * @param mixed   $idtag         Value of the field id or null by default
-	 * @param boolean $translate     True to translate
+	 * @param   string   $optText    The name of the object variable for the option text.
+	 * @param   mixed    $selected   The key that is selected (accepts an array or a string).
+	 * @param   mixed    $idtag      Value of the field id or null by default
+	 * @param   boolean  $translate  True to translate
 	 *
 	 * @return  string  HTML for the select list.
 	 *
@@ -146,9 +146,9 @@ abstract class FEFHelperSelect
 	/**
 	 * Generates a grouped HTML selection list from nested arrays.
 	 *
-	 * @param array  $data        An array of groups, each of which is an array of options.
-	 * @param string $name        The value of the HTML name attribute
-	 * @param array  $options     Options, an array of key/value pairs. Valid options are:
+	 * @param   array   $data     An array of groups, each of which is an array of options.
+	 * @param   string  $name     The value of the HTML name attribute
+	 * @param   array   $options  Options, an array of key/value pairs. Valid options are:
 	 *                            Format options, {@see HTMLHelper::$formatOptions}.
 	 *                            Selection options. See {@see HTMLHelper::options()}.
 	 *                            group.id: The property in each group to use as the group id
@@ -288,15 +288,15 @@ abstract class FEFHelperSelect
 	/**
 	 * Generates a selection list of integers.
 	 *
-	 * @param integer $start        The start integer
-	 * @param integer $end          The end integer
-	 * @param integer $inc          The increment
-	 * @param string  $name         The value of the HTML name attribute
-	 * @param mixed   $attribs      Additional HTML attributes for the `<select>` tag, an array of
+	 * @param   integer  $start     The start integer
+	 * @param   integer  $end       The end integer
+	 * @param   integer  $inc       The increment
+	 * @param   string   $name      The value of the HTML name attribute
+	 * @param   mixed    $attribs   Additional HTML attributes for the `<select>` tag, an array of
 	 *                              attributes, or an array of options. Treated as options if it is the last
 	 *                              argument passed.
-	 * @param mixed   $selected     The key that is selected
-	 * @param string  $format       The printf format to be applied to the number
+	 * @param   mixed    $selected  The key that is selected
+	 * @param   string   $format    The printf format to be applied to the number
 	 *
 	 * @return  string   HTML for the select list
 	 */
@@ -342,9 +342,9 @@ abstract class FEFHelperSelect
 	/**
 	 * Create an object that represents an option in an option list.
 	 *
-	 * @param string  $value       The value of the option
-	 * @param string  $text        The text for the option
-	 * @param mixed   $optKey      If a string, the returned object property name for
+	 * @param   string   $value    The value of the option
+	 * @param   string   $text     The text for the option
+	 * @param   mixed    $optKey   If a string, the returned object property name for
 	 *                             the value. If an array, options. Valid options are:
 	 *                             attr: String|array. Additional attributes for this option.
 	 *                             Defaults to none.
@@ -362,9 +362,9 @@ abstract class FEFHelperSelect
 	 *                             option.text: The property that will hold the the displayed text.
 	 *                             Defaults to "text". If set to null, the option array is assumed to be a
 	 *                             list of displayable scalars.
-	 * @param string  $optText     The property that will hold the the displayed text. This
+	 * @param   string   $optText  The property that will hold the the displayed text. This
 	 *                             parameter is ignored if an options array is passed.
-	 * @param boolean $disable     Not used.
+	 * @param   boolean  $disable  Not used.
 	 *
 	 * @return  stdClass
 	 */
@@ -433,8 +433,8 @@ abstract class FEFHelperSelect
 	 * Generates the option tags for an HTML select list (with no select tag
 	 * surrounding the options).
 	 *
-	 * @param array   $arr            An array of objects, arrays, or values.
-	 * @param mixed   $optKey         If a string, this is the name of the object variable for
+	 * @param   array    $arr         An array of objects, arrays, or values.
+	 * @param   mixed    $optKey      If a string, this is the name of the object variable for
 	 *                                the option value. If null, the index of the array of objects is used. If
 	 *                                an array, this is a set of options, as key/value pairs. Valid options are:
 	 *                                -Format options, {@see HTMLHelper::$formatOptions}.
@@ -464,9 +464,9 @@ abstract class FEFHelperSelect
 	 *                                -option.text: The property that will hold the the displayed text.
 	 *                                Defaults to "text". If set to null, the option array is assumed to be a
 	 *                                list of displayable scalars.
-	 * @param string  $optText        The name of the object variable for the option text.
-	 * @param mixed   $selected       The key that is selected (accepts an array or a string)
-	 * @param boolean $translate      Translate the option values.
+	 * @param   string   $optText     The name of the object variable for the option text.
+	 * @param   mixed    $selected    The key that is selected (accepts an array or a string)
+	 * @param   boolean  $translate   Translate the option values.
 	 *
 	 * @return  string  HTML for the select list
 	 */
@@ -740,9 +740,9 @@ abstract class FEFHelperSelect
 	/**
 	 * Creates two radio buttons styled with FEF to appear as a YES/NO switch
 	 *
-	 * @param string $name     Name of the field
-	 * @param string $selected Selected field
-	 * @param array  $attribs  Additional attributes to add to the switch
+	 * @param   string  $name      Name of the field
+	 * @param   string  $selected  Selected field
+	 * @param   array   $attribs   Additional attributes to add to the switch
 	 *
 	 * @return    string    The HTML for the switch
 	 */
@@ -752,16 +752,13 @@ abstract class FEFHelperSelect
 		{
 			$attribs = ['class' => 'akeeba-toggle'];
 		}
+		elseif (isset($attribs['class']))
+		{
+			$attribs['class'] .= ' akeeba-toggle';
+		}
 		else
 		{
-			if (isset($attribs['class']))
-			{
-				$attribs['class'] .= ' akeeba-toggle';
-			}
-			else
-			{
-				$attribs['class'] = 'akeeba-toggle';
-			}
+			$attribs['class'] = 'akeeba-toggle';
 		}
 
 		$temp = '';

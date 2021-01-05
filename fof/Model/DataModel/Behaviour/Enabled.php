@@ -7,11 +7,11 @@
 
 namespace FOF40\Model\DataModel\Behaviour;
 
+defined('_JEXEC') || die;
+
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
 use JDatabaseQuery;
-
-defined('_JEXEC') or die;
 
 /**
  * FOF model behavior class to filter access to items based on the enabled status

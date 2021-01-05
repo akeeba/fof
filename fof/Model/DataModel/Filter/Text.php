@@ -7,7 +7,7 @@
 
 namespace  FOF40\Model\DataModel\Filter;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class Text extends AbstractFilter
 {
@@ -67,7 +67,7 @@ class Text extends AbstractFilter
 		
 		if (is_array($value) || is_object($value))
 		{
-			settype($value, 'array');
+			$value = (array) $value;
 			
 			$db    = $this->db;
 			$value = array_map(array($db, 'quote'), $value);

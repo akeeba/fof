@@ -7,11 +7,11 @@
 
 namespace FOF40\Date;
 
+defined('_JEXEC') || die;
+
 use DateTime;
 use DateTimeZone;
 use JDatabaseDriver;
-
-defined('_JEXEC') or die;
 
 /**
  * This decorator will get any DateTime descendant and turn it into a FOF40\Date\Date compatible class. If the methods
@@ -33,14 +33,7 @@ class DateDecorator extends Date
 
 	public function __construct(string $date = 'now', $tz = null)
 	{
-		if (is_object($date) && ($date instanceof DateTime))
-		{
-			$this->decorated = $date;
-		}
-		else
-		{
-			$this->decorated = new Date($date, $tz);
-		}
+		$this->decorated = (is_object($date) && ($date instanceof DateTime)) ? $date : new Date($date, $tz);
 
 		$timestamp = $this->decorated->toISO8601(true);
 

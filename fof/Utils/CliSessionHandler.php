@@ -5,7 +5,9 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Utils;
+namespace FOF40\Utils;
+
+defined('_JEXEC') || die;
 
 use FOF40\Encrypt\Randval;
 use JSessionHandlerInterface;

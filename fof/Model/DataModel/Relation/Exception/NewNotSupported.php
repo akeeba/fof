@@ -7,7 +7,7 @@
 
 namespace  FOF40\Model\DataModel\Relation\Exception;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 class NewNotSupported extends \Exception
 {

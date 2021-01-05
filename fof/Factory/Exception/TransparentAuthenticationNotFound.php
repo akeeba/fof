@@ -7,11 +7,11 @@
 
 namespace FOF40\Factory\Exception;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use Joomla\CMS\Language\Text;
 use RuntimeException;
-
-defined('_JEXEC') or die;
 
 class TransparentAuthenticationNotFound extends RuntimeException
 {

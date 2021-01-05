@@ -7,6 +7,8 @@
 
 namespace FOF40\Factory;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
@@ -23,8 +25,6 @@ use FOF40\TransparentAuthentication\TransparentAuthentication;
 use FOF40\View\View;
 use FOF40\View\ViewTemplateFinder;
 use RuntimeException;
-
-defined('_JEXEC') or die;
 
 /**
  * MVC object factory. This implements the basic functionality, i.e. creating MVC objects only if the classes exist in

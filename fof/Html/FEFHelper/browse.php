@@ -5,6 +5,8 @@
  * @license   GNU General Public License version 2, or later
  */
 
+defined('_JEXEC') || die;
+
 use FOF40\Html\FEFHelper\BrowseView;
 use FOF40\Model\DataModel;
 use FOF40\Utils\ArrayHelper;
@@ -14,8 +16,6 @@ use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
-
-defined('_JEXEC') or die;
 
 /**
  * Custom JHtml (HTMLHelper) class. Offers browse view controls compatible with Akeeba Frontend
@@ -240,7 +240,7 @@ abstract class FEFHelperBrowse
 			$tip = empty($tips) ? false : implode('<br />', $tips);
 
 			// Add tips and special titles
-			foreach ($states as $key => $state)
+			foreach (array_keys($states) as $key)
 			{
 				// Create special titles for published items
 				if ($key == 1)
@@ -528,7 +528,7 @@ HTML;
 		$icon      = ['akion-android-arrow-dropup', 'akion-android-arrow-dropdown'];
 		$index     = (int) ($direction === 'desc');
 
-		if ($order != $selected)
+		if ($order !== $selected)
 		{
 			$direction = $new_direction;
 		}
@@ -555,7 +555,7 @@ HTML;
 			$html .= Text::_($title);
 		}
 
-		if ($order == $selected)
+		if ($order === $selected)
 		{
 			$html .= '<span class="' . $icon[$index] . '"></span>';
 		}
@@ -791,7 +791,7 @@ HTML;
 		$viewNameSingular   = $model->getContainer()->inflector->singularize($model->getName());
 		$viewNamePlural     = $model->getContainer()->inflector->pluralize($model->getName());
 
-		foreach ($model->getFields() as $field => $fieldDescriptor)
+		foreach (array_keys($model->getFields()) as $field)
 		{
 			$possibleKeys = [
 				$componentName . '_' . $viewNamePlural . '_FIELD_' . $field,

@@ -7,10 +7,10 @@
 
 namespace FOF40\Render;
 
+defined('_JEXEC') || die;
+
 use FOF40\Container\Container;
 use stdClass;
-
-defined('_JEXEC') or die;
 
 interface RenderInterface
 {

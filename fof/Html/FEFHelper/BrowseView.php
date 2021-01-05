@@ -7,7 +7,7 @@
 
 namespace FOF40\Html\FEFHelper;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use FOF40\Container\Container;
 use FOF40\Html\SelectOptions;
@@ -65,7 +65,7 @@ abstract class BrowseView
 
 			foreach ($keys as $key)
 			{
-				if (Text::_($key) != $key)
+				if (Text::_($key) !== $key)
 				{
 					return $key;
 				}
@@ -481,7 +481,7 @@ abstract class BrowseView
 			// E.g. form field type tag sends $this->value as array
 			if ($params['multiple'] && is_array($currentValue))
 			{
-				if (!count($currentValue))
+				if (count($currentValue) === 0)
 				{
 					$currentValue[] = '';
 				}
@@ -583,14 +583,14 @@ abstract class BrowseView
 		{
 			$backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
 
-			if (count($backtrace) == $lastNumberOfEntries)
+			if (count($backtrace) === $lastNumberOfEntries)
 			{
 				throw new \RuntimeException(__METHOD__ . ": Cannot retrieve FOF View from call stack. You are either calling me from a non-FEF extension or your PHP is broken.");
 			}
 
 			$lastNumberOfEntries = count($backtrace);
 
-			if ($skip)
+			if ($skip !== 0)
 			{
 				$backtrace = array_slice($backtrace, $skip);
 			}
@@ -674,33 +674,30 @@ abstract class BrowseView
 			}
 
 			// Make sure the class exists
-			if (class_exists($source_class, true))
+			// ...and so does the option
+			if (class_exists($source_class, true) && in_array($source_method, get_class_methods($source_class)))
 			{
-				// ...and so does the option
-				if (in_array($source_method, get_class_methods($source_class)))
+				// Get the data from the class
+				if ($source_format == 'optionsobject')
 				{
-					// Get the data from the class
-					if ($source_format == 'optionsobject')
-					{
-						$options = array_merge($options, $source_class::$source_method());
-					}
-					else
-					{
-						$source_data = $source_class::$source_method();
+					$options = array_merge($options, $source_class::$source_method());
+				}
+				else
+				{
+					$source_data = $source_class::$source_method();
 
-						// Loop through the data and prime the $options array
-						foreach ($source_data as $k => $v)
+					// Loop through the data and prime the $options array
+					foreach ($source_data as $k => $v)
+					{
+						$key   = (empty($source_key) || ($source_key == '*')) ? $k : @$v[$source_key];
+						$value = (empty($source_value) || ($source_value == '*')) ? $v : @$v[$source_value];
+
+						if ($source_translate)
 						{
-							$key   = (empty($source_key) || ($source_key == '*')) ? $k : @$v[$source_key];
-							$value = (empty($source_value) || ($source_value == '*')) ? $v : @$v[$source_value];
-
-							if ($source_translate)
-							{
-								$value = Text::_($value);
-							}
-
-							$options[] = HTMLHelper::_('FEFHelper.select.option', $key, $value, 'value', 'text');
+							$value = Text::_($value);
 						}
+
+						$options[] = HTMLHelper::_('FEFHelper.select.option', $key, $value, 'value', 'text');
 					}
 				}
 			}
@@ -749,7 +746,7 @@ abstract class BrowseView
 			[$componentName, $mName] = explode('.', $mName, 2);
 		}
 
-		if ($componentName != $container->componentName)
+		if ($componentName !== $container->componentName)
 		{
 			$container = Container::getInstance($componentName);
 		}
@@ -797,7 +794,7 @@ abstract class BrowseView
 			$langKey     = strtoupper($model->getContainer()->componentName . '_TITLE_' . $model->getName());
 			$placeholder = Text::_($langKey);
 
-			if ($langKey != $placeholder)
+			if ($langKey !== $placeholder)
 			{
 				$params['none'] = '&mdash; ' . $placeholder . ' &mdash;';
 			}
@@ -882,14 +879,14 @@ abstract class BrowseView
 		{
 			$backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit);
 
-			if (count($backtrace) == $lastNumberOfEntries)
+			if (count($backtrace) === $lastNumberOfEntries)
 			{
 				throw new \RuntimeException(__METHOD__ . ": Cannot retrieve FOF container from call stack. You are either calling me from a non-FEF extension or your PHP is broken.");
 			}
 
 			$lastNumberOfEntries = count($backtrace);
 
-			if ($skip)
+			if ($skip !== 0)
 			{
 				$backtrace = array_slice($backtrace, $skip);
 			}
@@ -912,8 +909,6 @@ abstract class BrowseView
 			$skip  = $limit;
 			$limit += 2;
 		}
-
-		throw new \RuntimeException(__METHOD__ . ": Cannot retrieve FOF container from call stack. You are either calling me from a non-FEF extension or your PHP is broken.");
 	}
 
 }

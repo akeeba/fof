@@ -7,6 +7,8 @@
 
 namespace FOF40\Container;
 
+defined('_JEXEC') || die;
+
 use FOF40\Autoloader\Autoloader;
 use FOF40\Configuration\Configuration;
 use FOF40\Dispatcher\Dispatcher;
@@ -29,8 +31,6 @@ use JDatabaseDriver;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Session\Session;
 use Joomla\Input\Input as JoomlaInput;
-
-defined('_JEXEC') or die;
 
 /**
  * Dependency injection container for FOF-powered components.
@@ -238,14 +238,7 @@ class Container extends ContainerBase
 				{
 					$class = $c->getNamespacePrefix() . 'Factory\\' . $c['factoryClass'];
 
-					if (class_exists($class))
-					{
-						$c['factoryClass'] = $class;
-					}
-					else
-					{
-						$c['factoryClass'] = '\\FOF40\\Factory\\' . ucfirst($c['factoryClass']) . 'Factory';
-					}
+					$c['factoryClass'] = class_exists($class) ? $class : '\\FOF40\\Factory\\' . ucfirst($c['factoryClass']) . 'Factory';
 				}
 
 				if (!class_exists($c['factoryClass'], true))
@@ -377,7 +370,7 @@ class Container extends ContainerBase
 
 					$info = $o->getInformation();
 
-					if (!$info->enabled)
+					if (($info->enabled ?? []) === [])
 					{
 						continue;
 					}
@@ -628,14 +621,7 @@ class Container extends ContainerBase
 		unset($tmpConfig);
 		unset($tmpContainer);
 
-		if (class_exists($class, true))
-		{
-			$container = new $class($values);
-		}
-		else
-		{
-			$container = new Container($values);
-		}
+		$container = class_exists($class, true) ? new $class($values) : new Container($values);
 
 		if (!is_null($mediaVersion))
 		{
@@ -687,7 +673,7 @@ END;
 
 		// Special case: if the frontend and backend paths are identical, we don't use the Site and Admin namespace
 		// suffixes after $this->componentNamespace (so you may use FOF with WebApplication apps)
-		if ($this->frontEndPath == $this->backEndPath)
+		if ($this->frontEndPath === $this->backEndPath)
 		{
 			$frontEndNamespace = '\\' . $this->componentNamespace . '\\';
 			$backEndNamespace  = '\\' . $this->componentNamespace . '\\';

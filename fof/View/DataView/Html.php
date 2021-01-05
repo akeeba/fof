@@ -7,12 +7,12 @@
 
 namespace FOF40\View\DataView;
 
+defined('_JEXEC') || die;
+
 use FOF40\Render\RenderInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Language\Text;
-
-defined('_JEXEC') or die;
 
 class Html extends Raw implements DataViewInterface
 {
@@ -45,14 +45,7 @@ class Html extends Raw implements DataViewInterface
 		$params = $app->getParams($option);
 
 		// Set the default value for page_heading
-		if ($menu)
-		{
-			$params->def('page_heading', $params->get('page_title', $menu->title));
-		}
-		else
-		{
-			$params->def('page_heading', Text::_($default));
-		}
+		$params->def('page_heading', ($menu !== null) ? $params->get('page_title', $menu->title) : Text::_($default));
 
 		// Set the document title
 		$title    = $params->get('page_title', '');

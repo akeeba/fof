@@ -7,7 +7,7 @@
 
 namespace FOF40\Event;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 /**
  * Interface Observable

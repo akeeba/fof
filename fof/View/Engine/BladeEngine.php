@@ -7,9 +7,9 @@
 
 namespace  FOF40\View\Engine;
 
-use FOF40\View\View;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\View\View;
 
 /**
  * View engine for compiling PHP template files.

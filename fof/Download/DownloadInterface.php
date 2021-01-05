@@ -7,9 +7,9 @@
 
 namespace FOF40\Download;
 
-use FOF40\Download\Exception\DownloadError;
+defined('_JEXEC') || die;
 
-defined('_JEXEC') or die;
+use FOF40\Download\Exception\DownloadError;
 
 /**
  * Interface DownloadInterface

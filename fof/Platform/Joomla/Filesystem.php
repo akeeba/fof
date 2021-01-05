@@ -7,12 +7,12 @@
 
 namespace FOF40\Platform\Joomla;
 
+defined('_JEXEC') || die;
+
 use FOF40\Platform\Base\Filesystem as BaseFilesystem;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
-
-defined('_JEXEC') or die;
 
 /**
  * Abstraction for Joomla! filesystem API

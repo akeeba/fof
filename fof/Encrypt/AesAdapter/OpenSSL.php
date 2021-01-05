@@ -7,11 +7,10 @@
 
 namespace FOF40\Encrypt\AesAdapter;
 
-// Protect from unauthorized access
+defined('_JEXEC') || die;
+
 use FOF40\Encrypt\Randval;
 use FOF40\Utils\Phpfunc;
-
-defined('_JEXEC') or die();
 
 class OpenSSL extends AbstractAdapter implements AdapterInterface
 {
@@ -167,12 +166,7 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 
 		$algorightms = $phpfunc->hash_algos();
 
-		if (!in_array('sha256', $algorightms))
-		{
-			return false;
-		}
-
-		return true;
+		return in_array('sha256', $algorightms);
 	}
 
 	/**

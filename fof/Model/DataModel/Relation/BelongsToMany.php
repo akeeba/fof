@@ -7,10 +7,10 @@
 
 namespace FOF40\Model\DataModel\Relation;
 
+defined('_JEXEC') || die;
+
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Relation;
-
-defined('_JEXEC') or die;
 
 /**
  * BelongsToMany (many-to-many) relation: one or more records of this model are related to one or more records in the

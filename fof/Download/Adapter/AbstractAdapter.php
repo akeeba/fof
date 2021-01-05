@@ -7,10 +7,10 @@
 
 namespace  FOF40\Download\Adapter;
 
+defined('_JEXEC') || die;
+
 use FOF40\Download\DownloadInterface;
 use FOF40\Download\Exception\DownloadError;
-
-defined('_JEXEC') or die;
 
 abstract class AbstractAdapter implements DownloadInterface
 {

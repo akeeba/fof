@@ -7,6 +7,8 @@
 
 namespace FOF40\Controller;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Exception\CannotGetName;
@@ -22,8 +24,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-
-defined('_JEXEC') or die;
+use stdClass;
 
 /**
  * Class Controller
@@ -120,7 +121,7 @@ class Controller
 	/**
 	 * URL for redirection.
 	 *
-	 * @var    string
+	 * @var    string|null
 	 */
 	protected $redirect;
 
@@ -503,14 +504,7 @@ class Controller
 			// Set up a cache ID based on component, view, task and user group assignment
 			$user = $this->container->platform->getUser();
 
-			if ($user->guest)
-			{
-				$groups = [];
-			}
-			else
-			{
-				$groups = $user->groups;
-			}
+			$groups = $user->guest ? [] : $user->groups;
 
 			$userId = $user->guest ? 0 : $user->id;
 
@@ -550,14 +544,7 @@ class Controller
 
 				$registeredurlparams = null;
 
-				if (!empty($app->registeredurlparams))
-				{
-					$registeredurlparams = $app->registeredurlparams;
-				}
-				else
-				{
-					$registeredurlparams = new \stdClass;
-				}
+				$registeredurlparams = !empty($app->registeredurlparams) ? $app->registeredurlparams : new stdClass;
 
 				foreach ($urlparams as $key => $value)
 				{
@@ -650,7 +637,7 @@ class Controller
 			$config['modelTemporaryInstance'] = true;
 			$controllerName                   = $this->getName();
 
-			if ($controllerName != $modelName)
+			if ($controllerName !== $modelName)
 			{
 				$config['hash_view'] = $controllerName;
 			}
@@ -814,7 +801,7 @@ class Controller
 	 */
 	public function redirect(): bool
 	{
-		if ($this->redirect)
+		if (!empty($this->redirect))
 		{
 			$this->container->platform->redirect($this->redirect, 301, $this->message, $this->messageType);
 
@@ -1164,15 +1151,7 @@ class Controller
 		// Call the Joomla! plugins
 		$results = $this->container->platform->runPlugins($event, $arguments);
 
-		foreach ($results as $result)
-		{
-			if ($result === false)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return !in_array(false, $results, true);
 	}
 
 	/**
@@ -1201,12 +1180,12 @@ class Controller
 			return true;
 		}
 
-		if (in_array(strtolower($area), ['guest']))
+		if (strtolower($area) == 'guest')
 		{
 			return $this->container->platform->getUser()->guest;
 		}
 
-		if (in_array(strtolower($area), ['user']))
+		if (strtolower($area) == 'user')
 		{
 			return !$this->container->platform->getUser()->guest;
 		}

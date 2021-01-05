@@ -7,13 +7,13 @@
 
 namespace FOF40\Dispatcher;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Dispatcher\Exception\AccessForbidden;
 use FOF40\TransparentAuthentication\TransparentAuthentication;
-
-defined('_JEXEC') or die;
 
 /**
  * A generic MVC dispatcher
@@ -297,15 +297,7 @@ class Dispatcher
 		// Call the Joomla! plugins
 		$results = $this->container->platform->runPlugins($event, $arguments);
 
-		foreach ($results as $result)
-		{
-			if ($result === false)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return !in_array(false, $results, true);
 	}
 
 	/**

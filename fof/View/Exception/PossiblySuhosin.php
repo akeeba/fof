@@ -7,11 +7,11 @@
 
 namespace FOF40\View\Exception;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use Joomla\CMS\Language\Text;
 use RuntimeException;
-
-defined('_JEXEC') or die;
 
 /**
  * Exception thrown when the access to the requested resource is forbidden under the current execution context

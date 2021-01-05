@@ -7,10 +7,10 @@
 
 namespace FOF40\Model\Mixin;
 
+defined('_JEXEC') || die;
+
 use FOF40\Date\Date;
 use FOF40\Model\DataModel;
-
-defined('_JEXEC') or die;
 
 /**
  * Trait for date manipulations commonly used in models

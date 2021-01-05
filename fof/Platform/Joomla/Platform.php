@@ -7,6 +7,8 @@
 
 namespace FOF40\Platform\Joomla;
 
+defined('_JEXEC') || die;
+
 use ActionlogsModelActionlog;
 use DateTime;
 use DateTimeZone;
@@ -41,8 +43,6 @@ use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\CMS\User\UserHelper;
 use Joomla\CMS\Version as JoomlaVersion;
 use Joomla\Registry\Registry;
-
-defined('_JEXEC') or die;
 
 /**
  * Part of the FOF Platform Abstraction Layer.
@@ -267,14 +267,7 @@ class Platform extends BasePlatform
 				$path = $this->isBackend() ? 'administrator/templates/' : 'templates/';
 			}
 
-			if (substr($component, 0, 7) == 'media:/')
-			{
-				$directory = 'media/' . substr($component, 7);
-			}
-			else
-			{
-				$directory = 'html/' . $component;
-			}
+			$directory = (substr($component, 0, 7) == 'media:/') ? ('media/' . substr($component, 7)) : ('html/' . $component);
 
 			$path .= $this->getTemplate() .
 				'/' . $directory;
@@ -296,14 +289,7 @@ class Platform extends BasePlatform
 	 */
 	public function loadTranslations(string $component): void
 	{
-		if ($this->isBackend())
-		{
-			$paths = [JPATH_ROOT, JPATH_ADMINISTRATOR];
-		}
-		else
-		{
-			$paths = [JPATH_ADMINISTRATOR, JPATH_ROOT];
-		}
+		$paths = $this->isBackend() ? [JPATH_ROOT, JPATH_ADMINISTRATOR] : [JPATH_ADMINISTRATOR, JPATH_ROOT];
 
 		$jlang = $this->getLanguage();
 		$jlang->load($component, $paths[0], 'en-GB', true);
@@ -501,14 +487,7 @@ class Platform extends BasePlatform
 			$app = null;
 		}
 
-		if (!is_null($app) && method_exists($app, 'getUserState'))
-		{
-			$old_state = $app->getUserState($key, $default);
-		}
-		else
-		{
-			$old_state = null;
-		}
+		$old_state = (!is_null($app) && method_exists($app, 'getUserState')) ? $app->getUserState($key, $default) : null;
 
 		$cur_state = (!is_null($old_state)) ? $old_state : $default;
 		$new_state = $input->get($request, null, $type);
@@ -617,7 +596,7 @@ class Platform extends BasePlatform
 		$ret = JoomlaFactory::getUser()->authorise($action, $assetname);
 
 		// Work around Joomla returning null instead of false in some cases.
-		return $ret ? true : false;
+		return (bool) $ret;
 	}
 
 	/**
@@ -832,14 +811,7 @@ class Platform extends BasePlatform
 					$response->email    = $user->email;
 					$response->fullname = $user->name;
 
-					if ($this->isBackend())
-					{
-						$response->language = $user->getParam('admin_language');
-					}
-					else
-					{
-						$response->language = $user->getParam('language');
-					}
+					$response->language = $this->isBackend() ? $user->getParam('admin_language') : $user->getParam('language');
 
 					$response->status        = Authentication::STATUS_SUCCESS;
 					$response->error_message = '';

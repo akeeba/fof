@@ -7,14 +7,14 @@
 
 namespace FOF40\Input;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use JFilterInput;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\Input\Input as JoomlaInput;
 use ReflectionObject;
-
-defined('_JEXEC') or die;
 
 class Input extends JoomlaInput
 {

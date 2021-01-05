@@ -7,12 +7,12 @@
 
 namespace FOF40\Update;
 
+defined('_JEXEC') || die;
+
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Download\Download;
 use SimpleXMLElement;
-
-defined('_JEXEC') or die;
 
 class Collection
 {
