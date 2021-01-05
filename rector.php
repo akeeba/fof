@@ -26,10 +26,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 	$parameters->set(Option::SETS, [
 //		SetList::DEAD_CODE,
 //	    SetList::EARLY_RETURN,
-		SetList::CODE_QUALITY,
+//		SetList::CODE_QUALITY,
 //		SetList::PHP_52,
 //		SetList::PHP_53,
-//		SetList::PHP_54,
+		SetList::PHP_54,
 //		SetList::PHP_55,
 //		SetList::PHP_56,
 //		SetList::PHP_70,

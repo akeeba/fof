@@ -175,7 +175,7 @@ class PlgUserFoftoken extends JPlugin
 
 		// Add the registration fields to the form.
 		$this->loadLanguage();
-		JForm::addFormPath(dirname(__FILE__) . '/foftoken');
+		JForm::addFormPath(__DIR__ . '/foftoken');
 		$form->loadFile('foftoken', false);
 
 		return true;

@@ -41,7 +41,7 @@ class Component extends BaseInstaller
 	 *
 	 * @var   string
 	 */
-	protected $componentName = '';
+	public $componentName = '';
 
 	/**
 	 * The title of the component (printed on installation and uninstallation messages)

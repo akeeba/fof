@@ -341,7 +341,7 @@ class Container extends ContainerBase
 				$filesystem = $c->filesystem;
 
 				// Try loading the stock renderers shipped with F0F
-				$path        = dirname(__FILE__) . '/../Render/';
+				$path        = __DIR__ . '/../Render/';
 				$renderFiles = $filesystem->folderFiles($path, '.php');
 				$renderer    = null;
 				$priority    = 0;

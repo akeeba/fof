@@ -132,7 +132,6 @@ class Plugin extends BaseInstaller
 		 */
 		// Add ourselves to the list of extensions depending on FOF40
 		// $this->addDependency('fof40', $this->getDependencyName());
-
 		// Install or update database
 		$schemaPath = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
 
@@ -180,6 +179,7 @@ class Plugin extends BaseInstaller
 		 */
 		// Remove ourselves from the list of extensions depending on FOF40
 		// $this->removeDependency('fof40', $this->getDependencyName());
+
 	}
 
 	/**
