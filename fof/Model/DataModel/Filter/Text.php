@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Filter;
+namespace FOF40\Model\DataModel\Filter;
 
 defined('_JEXEC') || die;
 
@@ -15,7 +15,7 @@ class Text extends AbstractFilter
 	 * Constructor
 	 *
 	 * @param   \JDatabaseDriver  $db     The database object
-	 * @param   object  $field  The field informations as taken from the db
+	 * @param   object            $field  The field information as taken from the db
 	 */
 	public function __construct($db, $field)
 	{
@@ -64,13 +64,13 @@ class Text extends AbstractFilter
 		{
 			return '';
 		}
-		
+
 		if (is_array($value) || is_object($value))
 		{
 			$value = (array) $value;
-			
+
 			$db    = $this->db;
-			$value = array_map(array($db, 'quote'), $value);
+			$value = array_map([$db, 'quote'], $value);
 
 			return '(' . $this->getFieldName() . ' IN (' . implode(',', $value) . '))';
 		}
@@ -137,9 +137,9 @@ class Text extends AbstractFilter
 	/**
 	 * Dummy method; this search makes no sense for text fields
 	 *
-	 * @param   mixed    $from     Ignored
-	 * @param   mixed    $interval Ignored
-	 * @param   boolean  $include  Ignored
+	 * @param   mixed    $from      Ignored
+	 * @param   mixed    $interval  Ignored
+	 * @param   boolean  $include   Ignored
 	 *
 	 * @return  string  Empty string
 	 */

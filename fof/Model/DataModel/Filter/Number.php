@@ -31,7 +31,7 @@ class Number extends AbstractFilter
 	 * $from < VALUE < $to
 	 *
 	 * @param   mixed    $from     The lowest value to compare to
-	 * @param   mixed    $to       The higherst value to compare to
+	 * @param   mixed    $to       The highest value to compare to
 	 * @param   boolean  $include  Should we include the boundaries in the search?
 	 *
 	 * @return  string  The SQL where clause for this search
@@ -69,7 +69,7 @@ class Number extends AbstractFilter
 	 * (VALUE < $from) || (VALUE > $to)
 	 *
 	 * @param   mixed    $from     The lowest value of the excluded range
-	 * @param   mixed    $to       The higherst value of the excluded range
+	 * @param   mixed    $to       The highest value of the excluded range
 	 * @param   boolean  $include  Should we include the boundaries in the search?
 	 *
 	 * @return  string  The SQL where clause for this search
@@ -147,7 +147,7 @@ class Number extends AbstractFilter
 	 * $from < VALUE < $to
 	 *
 	 * @param   mixed    $from     The lowest value to compare to
-	 * @param   mixed    $to       The higherst value to compare to
+	 * @param   mixed    $to       The highest value to compare to
 	 * @param   boolean  $include  Should we include the boundaries in the search?
 	 *
 	 * @return  string  The SQL where clause for this search

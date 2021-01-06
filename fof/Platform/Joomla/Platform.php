@@ -398,12 +398,12 @@ class Platform extends BasePlatform
 	 * Returns an object to handle dates
 	 *
 	 * @param   mixed                     $time      The initial time
-	 * @param   DateTimeZone|string|null  $tzOffest  The timezone offset
+	 * @param   DateTimeZone|string|null  $tzOffset  The timezone offset
 	 * @param   bool                      $locale    Should I try to load a specific class for current language?
 	 *
 	 * @return  Date object
 	 */
-	public function getDate(string $time = 'now', $tzOffest = null, $locale = true): Date
+	public function getDate(string $time = 'now', $tzOffset = null, $locale = true): Date
 	{
 		if (!is_string($time) && (!is_object($time) || !($time instanceof DateTime)))
 		{
@@ -418,13 +418,13 @@ class Platform extends BasePlatform
 				$time = time();
 			}
 
-			$coreObject = JoomlaFactory::getDate($time, $tzOffest);
+			$coreObject = JoomlaFactory::getDate($time, $tzOffset);
 
 			return new DateDecorator($coreObject);
 		}
 		else
 		{
-			return new Date($time, $tzOffest);
+			return new Date($time, $tzOffset);
 		}
 	}
 

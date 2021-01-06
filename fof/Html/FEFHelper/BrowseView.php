@@ -563,7 +563,7 @@ abstract class BrowseView
 	 */
 	public static function getViewFromBacktrace(): View
 	{
-		// In case we are on a braindead host
+		// In case we are on a brain-dead host
 		if (!function_exists('debug_backtrace'))
 		{
 			throw new \RuntimeException("Your host has disabled the <code>debug_backtrace</code> PHP function. Please ask them to re-enable it. It's required for running this software.");
@@ -859,7 +859,7 @@ abstract class BrowseView
 	 */
 	private static function getContainerFromBacktrace(): Container
 	{
-		// In case we are on a braindead host
+		// In case we are on a brain-dead host
 		if (!function_exists('debug_backtrace'))
 		{
 			throw new \RuntimeException("Your host has disabled the <code>debug_backtrace</code> PHP function. Please ask them to re-enable it. It's required for running this software.");

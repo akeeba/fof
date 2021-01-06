@@ -3536,7 +3536,7 @@ class DataModel extends Model implements TableInterface
 	/**
 	 * Method to manually set this record as ACL asset or not.
 	 * We have to do this since the automatic check is made in the constructor, but here we can't set any alias.
-	 * So, even if you have an alias for `asset_id`, it wouldn't be reconized and assets won't be tracked.
+	 * So, even if you have an alias for `asset_id`, it wouldn't be recognized and assets won't be tracked.
 	 *
 	 * @param $state
 	 */

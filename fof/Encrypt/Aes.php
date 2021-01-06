@@ -90,9 +90,9 @@ class Aes
 			return false;
 		}
 
-		$algorightms = $phpfunc->hash_algos();
+		$algorithms = $phpfunc->hash_algos();
 
-		return in_array('sha256', $algorightms);
+		return in_array('sha256', $algorithms);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class Aes
 		$iv_size = $this->adapter->getBlockSize();
 		$strLen  = function_exists('mb_strlen') ? mb_strlen($stringToDecrypt, 'ASCII') : strlen($stringToDecrypt);
 
-		// If the string is not big enough to have an Intialization Vector in front then, clearly, it is not encrypted.
+		// If the string is not big enough to have an Initialization Vector in front then, clearly, it is not encrypted.
 		if ($strLen < $iv_size)
 		{
 			return '';

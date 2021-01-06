@@ -880,7 +880,7 @@ class Update extends Model
 	 *
 	 * @param   string  $licenseKey  The license key
 	 *
-	 * @return  string  The extra_query string to append to a downlaod URL to implement the license key
+	 * @return  string  The extra_query string to append to a download URL to implement the license key
 	 */
 	protected function getExtraQueryStringLegacy(string $licenseKey): string
 	{

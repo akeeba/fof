@@ -79,7 +79,7 @@ class Raw extends View implements DataViewInterface
 		}
 
 		$listOrder       = $this->escape($model->getState('filter_order', null, 'cmd'));
-		$listDirn        = $this->escape($model->getState('filter_order_Dir', null, 'cmd'));
+		$listDir         = $this->escape($model->getState('filter_order_Dir', null, 'cmd'));
 		$saveOrder       = $listOrder == $model->getFieldAlias('ordering');
 		$saveOrderingUrl = '';
 
@@ -88,7 +88,7 @@ class Raw extends View implements DataViewInterface
 			$saveOrderingUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->getName() . '&task=saveorder&format=json';
 			$helper          = version_compare(JVERSION, '3.999.999', 'le') ? 'sortablelist.sortable' : 'draggablelist.draggable';
 
-			HtmlHelper::_($helper, 'itemsList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+			HtmlHelper::_($helper, 'itemsList', 'adminForm', strtolower($listDir), $saveOrderingUrl);
 		}
 
 		return [

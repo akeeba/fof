@@ -6,7 +6,7 @@
  */
 
 
-namespace FOF40\Tests\DataModel\AbstracFilter;
+namespace FOF40\Tests\DataModel\AbstractFilter;
 
 use FOF40\Model\DataModel\Filter\AbstractFilter;
 use FOF40\Tests\Helpers\DatabaseTest;
@@ -39,7 +39,7 @@ class AbstractFilterTest extends DatabaseTest
 		$filter = new FilterStub($db, $field);
 
 		$this->assertEquals('test', ReflectionHelper::getValue($filter, 'name'), 'AbstractFilter::__construct Failed to set the field name');
-		$this->assertEquals('test', ReflectionHelper::getValue($filter, 'type'), 'AbstractFilter::__construct Failed to set the fiel type');
+		$this->assertEquals('test', ReflectionHelper::getValue($filter, 'type'), 'AbstractFilter::__construct Failed to set the field type');
 	}
 
 	/**

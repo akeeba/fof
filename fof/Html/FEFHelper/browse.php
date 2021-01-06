@@ -82,7 +82,7 @@ abstract class FEFHelperBrowse
 				$btnColor = ltrim($btnColor, '-');
 			}
 
-			$html = [];
+			$html   = [];
 			$html[] = '<a class="akeeba-btn--' . $btnColor . '--mini ' . ($active_class === 'publish' ? ' active' : '') . ($tip ? ' hasTooltip' : '') . '"';
 			$html[] = ' href="javascript:void(0);" onclick="return Joomla.listItemTask(\'' . $checkbox . $i . '\',\'' . $prefix . $task . '\')"';
 			$html[] = $tip ? ' title="' . $title . '"' : '';
@@ -101,7 +101,7 @@ abstract class FEFHelperBrowse
 			$btnColor = ltrim($btnColor, '-');
 		}
 
-		$html = [];
+		$html   = [];
 		$html[] = '<a class="akeeba-btn--' . $btnColor . '--mini disabled akeebagrid' . ($tip ? ' hasTooltip' : '') . '"';
 		$html[] = $tip ? ' title="' . $title . '"' : '';
 		$html[] = '>';
@@ -703,13 +703,13 @@ JS;
 		}
 
 		// Static hidden text labels
-		$limitLabel    = Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');
-		$orderingDescr = Text::_('JFIELD_ORDERING_DESC');
-		$sortByLabel   = Text::_('JGLOBAL_SORT_BY');
+		$limitLabel   = Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');
+		$orderingDecr = Text::_('JFIELD_ORDERING_DESC');
+		$sortByLabel  = Text::_('JGLOBAL_SORT_BY');
 
 		// Order direction dropdown
 		$directionSelect = HTMLHelper::_('FEFHelper.select.genericlist', [
-			''     => $orderingDescr,
+			''     => $orderingDecr,
 			'asc'  => Text::_('JGLOBAL_ORDER_ASCENDING'),
 			'desc' => Text::_('JGLOBAL_ORDER_DESCENDING'),
 		], 'directionTable', [
@@ -744,7 +744,7 @@ JS;
 
 		<div class="akeeba-filter-element akeeba-form-group">
 			<label for="directionTable" class="element-invisible">
-				$orderingDescr
+				$orderingDecr
 			</label>
 			$directionSelect
 		</div>

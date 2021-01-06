@@ -70,7 +70,7 @@ if (array_key_exists('REQUEST_METHOD', $_SERVER))
 	die('This is a command line script. You are not allowed to access it over the web.');
 }
 
-// Work around some misconfigured servers which print out notices
+// Work around some badly configured servers which print out notices
 if (function_exists('error_reporting'))
 {
 	$oldLevel = error_reporting(E_ERROR | E_NOTICE | E_DEPRECATED);

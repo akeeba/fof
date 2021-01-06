@@ -465,9 +465,9 @@ class Installer
 			$thisDriverType = (string) $driverTypeTag;
 
 			if (
-				// e.g. $driverType = 'mysqlistupid', $thisDriverType = 'mysqli' => driver matched
+				// e.g. $driverType = 'mysqlisilly', $thisDriverType = 'mysqli' => driver matched
 				strpos($driverType, $thisDriverType) === 0
-				// e.g. $driverType = 'stupidmysqli', $thisDriverType = 'mysqli' => driver matched
+				// e.g. $driverType = 'sillymysqli', $thisDriverType = 'mysqli' => driver matched
 				|| (substr($driverType, -strlen($thisDriverType)) === $thisDriverType)
 			)
 			{

@@ -21,7 +21,7 @@ it abstracts the main entry point of your component through a Dispatcher. Two fu
 concept of automatically generated Events for most public methods in Controllers, Models and Views as well as the
 support of Blade templates, in a form that's similar (but not identical) to the Blade template language used by Laravel.
 When used right, FOF lets you separate your application into independent, logically organised layers of code which
-promote seperation of concerns and maintainability. FOF is not about code purism and doesn't care about it; it's about
+promote separation of concerns and maintainability. FOF is not about code purism and doesn't care about it; it's about
 empowering developers to write smaller, more robust code in a smaller amount of time than with traditional Joomla MVC.
 
 FOF has been in continuous development since 2011. Many of the features and concepts it introduced, such as the service

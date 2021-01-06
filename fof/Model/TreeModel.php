@@ -141,7 +141,7 @@ class TreeModel extends DataModel
 			$table->bind($this->getData());
 			$subNodes = $table->getDescendants();
 
-			// Delete all subnodes (goes through the model to trigger the observers)
+			// Delete all sub-nodes (goes through the model to trigger the observers)
 			if (!empty($subNodes))
 			{
 				/** @var TreeModel $item */
@@ -151,7 +151,7 @@ class TreeModel extends DataModel
 					// We have to do in this way, since a previous child could have changed our lft and rgt values
 					if (!$item->forceDelete($item->$k))
 					{
-						// A subnode failed or prevents the delete, continue deleting other nodes,
+						// A sub-node failed or prevents the delete, continue deleting other nodes,
 						// but preserve the current node (ie the parent)
 						$result = false;
 					}
@@ -781,7 +781,7 @@ class TreeModel extends DataModel
 				->where($left . ' >= ' . $db->q($newSibLeft));
 			$db->setQuery($query)->execute();
 
-			// Move node and subnodes
+			// Move node and sub-nodes
 			$moveRight = $newSibLeft - $myLeft;
 
 			$query = $db->getQuery(true)
@@ -886,7 +886,7 @@ class TreeModel extends DataModel
 				->where($right . ' > ' . $db->q($newSibRight));
 			$db->setQuery($query)->execute();
 
-			// Move node and subnodes
+			// Move node and sub-nodes
 			$moveRight = ($sibRight > $myRight) ? $sibRight - $myRight : $sibRight - $myRight + $myWidth;
 
 			$query = $db->getQuery(true)
@@ -1034,7 +1034,7 @@ class TreeModel extends DataModel
 				->where($left . ' > ' . $db->q($newParentLeft));
 			$db->setQuery($query)->execute();
 
-			// Move node and subnodes
+			// Move node and sub-nodes
 			$moveRight = $newParentLeft - $myLeft + 1;
 
 			$query = $db->getQuery(true)
@@ -1138,7 +1138,7 @@ class TreeModel extends DataModel
 				->where($right . ' >= ' . $db->q($newLeft));
 			$db->setQuery($query)->execute();
 
-			// Move node and subnodes
+			// Move node and sub-nodes
 			$moveRight = ($parentRight > $myRight) ? $parentRight - $myRight - 1 : $parentRight - $myRight - 1 + $myWidth;
 
 			$query = $db->getQuery(true)
@@ -1775,11 +1775,11 @@ class TreeModel extends DataModel
 	 *
 	 * @param   string  $column
 	 * @param   null    $key
-	 * @param   string  $seperator
+	 * @param   string  $separator
 	 *
 	 * @return array
 	 */
-	public function getNestedList($column = 'title', $key = null, $seperator = '  ')
+	public function getNestedList($column = 'title', $key = null, $separator = '  ')
 	{
 		$db = $this->getDbo();
 
@@ -1819,7 +1819,7 @@ class TreeModel extends DataModel
 		{
 			foreach ($tempResults as $row)
 			{
-				$ret[$row[$key]] = str_repeat($seperator, $row['depth']) . $row[$column];
+				$ret[$row[$key]] = str_repeat($separator, $row['depth']) . $row[$column];
 			}
 		}
 

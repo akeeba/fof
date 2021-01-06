@@ -1,36 +1,5 @@
 [ ] Refactor classes to include parameter and return value type hints
-    [X] Autoloader
-    [X] Cli
-    [X] Configuration
-    [X] Container
-    [X] Database
-    [X] Date
-    [X] Dispatcher
-    [X] Download
-    [X] Encrypt
-    [X] Event
-    [X] Factory
-    [X] Inflector
-    [X] Input
-    [X] Layout
-    [X] Params
-    [X] Platform
-    [X] Render
-    [X] Template
-    [X] Timer
-    [X] Toolbar
-    [X] TransparentAuthentication
-    [X] Update
-    [X] Utils
-    [X] Date::TimezoneWrangler
-    [X] JoomlaAbstraction
-    [X] Html
-    [X] InstallScript
-    [X] IP
-    [X] Controller
     [ ] View
-        [X] Exception/
-        [X] Compiler/
         [ ] Engine/
         [ ] DataView/
         [ ] View
@@ -38,17 +7,9 @@
     [ ] Model
 
 
-[ ] Test ViewTemplateFinder
-
-
 [ ] Encrypt: unit test EncryptService
 
-
 [ ] Encrypt: can I add Sodium support to replace the defunct mcrypt support?
-
-
-[ ] Input: provide custom implementation for CLI and files
-
 
 [ ] Each renderer should add FEF extensions for the following elements:
 
@@ -68,6 +29,3 @@ The default implementation can go through JHtml, I guess?
 
 
 [ ] Rewrite scaffolding (Layout) to produce Blade templates
-
-
-[ ] Transparent authentication: must use tokens (link it to work to be done in J4?)

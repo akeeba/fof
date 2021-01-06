@@ -1156,7 +1156,7 @@ class Component extends BaseInstaller
 
 		if (is_null($rootItemId))
 		{
-			// Dude. Dude! Duuuuuuude! The alias is borked, too?! Find it by component ID.
+			// The alias is borked, too?! Find it by component ID.
 			$rootItemId = null;
 			$query      = $db->getQuery(true)
 				->select($db->qn('id'))

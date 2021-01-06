@@ -30,13 +30,13 @@ class ViewTemplateFinder
 	/** @var  string  Default layout's name (default: "default") */
 	protected $defaultLayout = 'default';
 
-	/** @var  string  Default subtemplate name (default: empty) */
+	/** @var  string  Default sub-template name (default: empty) */
 	protected $defaultTpl = '';
 
 	/** @var  bool  Should I only look in the specified view (true) or also the pluralised/singularised (false) */
 	protected $strictView = true;
 
-	/** @var  bool  Should I only look for the defined subtemplate or also no subtemplate? */
+	/** @var  bool  Should I only look for the defined sub-template or also no sub-template? */
 	protected $strictTpl = true;
 
 	/** @var  bool  Should  Should I only look for this layout or also the default layout? */
@@ -119,10 +119,10 @@ class ViewTemplateFinder
 	 * component        string  The name of the component, e.g. com_something
 	 * view             string  The name of the view
 	 * layout           string  The name of the layout
-	 * tpl              string  The name of the subtemplate
+	 * tpl              string  The name of the sub-template
 	 * strictView       bool    Should I only look in the specified view, or should I look in the pluralised/singularised view as well?
 	 * strictLayout     bool    Should I only look for this layout, or also for the default layout?
-	 * strictTpl        bool    Should I only look for this subtemplate or also for no subtemplate?
+	 * strictTpl        bool    Should I only look for this sub-template or also for no sub-template?
 	 * sidePrefix       string  The application side prefix (site, admin, auto, any)
 	 *
 	 * @param   array  $parameters  See above
@@ -472,7 +472,7 @@ class ViewTemplateFinder
 	}
 
 	/**
-	 * Returns the default subtemplate name
+	 * Returns the default sub-template name
 	 *
 	 * @return  string
 	 *
@@ -484,7 +484,7 @@ class ViewTemplateFinder
 	}
 
 	/**
-	 * Sets the default subtemplate name
+	 * Sets the default sub-template name
 	 *
 	 * @param  string  $defaultTpl
 	 *
@@ -527,7 +527,7 @@ class ViewTemplateFinder
 
 	/**
 	 * Returns the "strict template" flag. When the flag is false we will look for a view template with or without the
-	 * subtemplate defined in getViewTemplateUris. If it's true we will only look for the subtemplate specified.
+	 * sub-template defined in getViewTemplateUris. If it's true we will only look for the sub-template specified.
 	 *
 	 * @return boolean
 	 *
@@ -540,7 +540,7 @@ class ViewTemplateFinder
 
 	/**
 	 * Sets the "strict template" flag. When the flag is false we will look for a view template with or without the
-	 * subtemplate defined in getViewTemplateUris. If it's true we will only look for the subtemplate specified.
+	 * sub-template defined in getViewTemplateUris. If it's true we will only look for the sub-template specified.
 	 *
 	 * @param   boolean  $strictTpl
 	 *

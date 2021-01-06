@@ -72,7 +72,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 
 	/**
 	 * Collapse the collection items into a single array. This assumes that the Collection is composed of arrays. We
-	 * are essentially merging all of these arrays and creting a new Collection out of them.
+	 * are essentially merging all of these arrays and creating a new Collection out of them.
 	 *
 	 * If $this->items = [ ['a','b'], ['c','d'], ['e'] ] after collapse it becomes [ 'a','b','c','d','e' ]
 	 *
@@ -99,7 +99,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public function diff($items): Collection
 	{
-		return new static(array_diff($this->items, $this->getArrayableItems($items)));
+		return new static(array_diff($this->items, $this->getIterableItemsAsArray($items)));
 	}
 
 	/**
@@ -260,7 +260,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public function intersect($items): Collection
 	{
-		return new static(array_intersect($this->items, $this->getArrayableItems($items)));
+		return new static(array_intersect($this->items, $this->getIterableItemsAsArray($items)));
 	}
 
 	/**
@@ -317,7 +317,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 */
 	public function merge($items): Collection
 	{
-		return new static(array_merge($this->items, $this->getArrayableItems($items)));
+		return new static(array_merge($this->items, $this->getIterableItemsAsArray($items)));
 	}
 
 	/**
@@ -751,7 +751,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
 	 *
 	 * @return array
 	 */
-	private function getArrayableItems($items): array
+	private function getIterableItemsAsArray($items): array
 	{
 		if ($items instanceof Collection)
 		{

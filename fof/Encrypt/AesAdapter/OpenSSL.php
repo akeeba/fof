@@ -152,16 +152,16 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 			return false;
 		}
 
-		$algorightms = $phpfunc->openssl_get_cipher_methods();
+		$algorithms = $phpfunc->openssl_get_cipher_methods();
 
-		if (!in_array('aes-128-cbc', $algorightms))
+		if (!in_array('aes-128-cbc', $algorithms))
 		{
 			return false;
 		}
 
-		$algorightms = $phpfunc->hash_algos();
+		$algorithms = $phpfunc->hash_algos();
 
-		return in_array('sha256', $algorightms);
+		return in_array('sha256', $algorithms);
 	}
 
 	/**
