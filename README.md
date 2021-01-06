@@ -15,7 +15,7 @@ Unlike other PHP frameworks you may have used, FOF is not standalone. It is desi
 abstracting most of the differences between different Joomla releases so you can write better code, faster, focusing
 only on what matters: your business logic.
 
-FOF uses the MVC pattern as its fundamental building block, just like Joomla. Unlike Joomla, it extends the concept by
+FOF uses the MVC pattern as its fundamental building block, just like Joomla. Unlike Joomla 3, it extends the concept by
 adding one Container per component (for the purists: it's really a Service Locator but let's not split hairs). Moreover,
 it abstracts the main entry point of your component through a Dispatcher. Two further important differences are the
 concept of automatically generated Events for most public methods in Controllers, Models and Views as well as the
@@ -25,21 +25,21 @@ promote seperation of concerns and maintainability. FOF is not about code purism
 empowering developers to write smaller, more robust code in a smaller amount of time than with traditional Joomla MVC.
 
 FOF has been in continuous development since 2011. Many of the features and concepts it introduced, such as the service
-locator and the data-driven Model, have already been ported into Joomla 4 itself. Still, FOF proper is a major asset to
-developers as it offers abstraction of Joomla API changes and features which haven't and probably won't make it into
-Joomla itself.
+locator and the data-driven Model, have already been ported into Joomla 4 itself — at least to an extent. Still, FOF 
+itself is a major asset to developers as it offers abstraction of Joomla API changes and features which haven't and 
+probably won't make it into Joomla itself.
 
 All of the extensions written by Akeeba Ltd make use of FOF. That is to say, as long as we exist as a company you can be
 fairly certain FOF will be maintained and developed further. 
 
 ## Requirements
 
-FOF 4 requires Joomla 3.8 or later and PHP 7.0 or later. It will not work on older Joomla and PHP versions.
+FOF 4 requires Joomla 3.9 or later and PHP 7.2 or later. It will not work on older Joomla and PHP versions.
 
 ## FOF 2.x, 3.x, 4.x and Joomla 3
 
 Joomla 3 includes a very, **VERY** old version of FOF we have stopped developing in 2015 and declared End of Life in 
-2016. Please don't use that! That's what FOF looked liked in the early 2010's. This repository has a far better, much 
+2016. Please don't use that! That's what FOF looked liked a decade or so ago. This repository has a far better, much 
 newer version. And, yes, both versions can run side by side.
 
 This warrants an explanation of the extensions you see in the Extensions, Manage page with FOF in their name:
@@ -64,7 +64,7 @@ This warrants an explanation of the extensions you see in the Extensions, Manage
 
 ## FOF and Joomla 4
 
-Joomla 4, thankfully, no longer includes the ancient version of FOF Joomla 3 shipped with. You can use the latest 
+Joomla 4, thankfully, no longer includes the ancient FOF 2.x version Joomla 3 shipped with. You can use the latest 
 version of FOF 4 with Joomla 4.
 
 **Important!** We only work towards full compatibility with _stable_ versions of Joomla. Using FOF with pre-release
@@ -74,4 +74,20 @@ as possible.
 
 ## Using FOF for your extensions
 
-If you want to use FOF to build your extensions and include it with them please read our Wiki for more information. 
+If you want to use FOF to build your extensions and include it with them please read our Wiki for more information. Be a
+good fellow developer and take care NOT to overwrite newer versions of FOF or use a modified version under the FOF40
+namespace (which would cause all extensions using FOF proper to fail loading). 
+
+Developers caught violating this clause and causing problems with their fellow developers and our clients will face consequences. At first, they will be given a warning. Failure to comply will result in public shaming and active measures in FOF-based software and FOF itself including but not limited to blacklisting your namespace prefixes and forced removal of your extensions when FOF proper is installed on a site.
+
+If you want to use a custom version of FOF or pin your extensions to an older version of FOF you can always create a custom distribution if you abide by the following simple rules:
+
+* Change the namespace prefix from `FOF40\` to something else, e.g. `AcmeCorp\FOF40\` (where `AcmeCorp\` is the usual namespace prefix used in your software).
+* Change the installation path from `JPATH_LIBRARIES . '/fof40'` to a custom location e.g. `JPATH_LIBRARIES . '/acmecorp_fof40'` or `JPATH_ADMINISTRATOR . '/components/com_acme/fof40'`.
+* If you install it as a package you MUST change its name and publisher. You CAN NOT use the strings "Akeeba" or "FOF" in your name, description or publisher names.
+* Do NOT use the `#__akeeba_common` table to handle version dependencies (you need to modify `script.fof.php`).
+* Notify your clients that your software is using a _modified_ version of the Akeeba FOF framework and that your modified version is neither published nor supported by Akeeba Ltd.
+* Per the software license, you cannot remove our copyright from the files but you MUST add your own copyright, stating that the file is derivative work.
+* Per the software license, your customised copy of FOF must be published under the same license: GNU General Public License version 3 or, at your option, any later version.
+
+These changes will take you all of half an hour and ensure that you are not going to be interfering with any other developer's software.
