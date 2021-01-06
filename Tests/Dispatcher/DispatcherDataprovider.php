@@ -61,6 +61,25 @@ class DispatcherDataprovider
 			],
 		];
 
+		$data['Data passed in the input (using akview), no default view'] = [
+			[
+				'mock' => [
+					'defaultView' => null,
+					'input'       => [
+						'akview' => 'foobars',
+						'layout' => 'default',
+					],
+				],
+			],
+			[
+				'case'          => 'Data passed in the input (using akview), no default view',
+				'defaultView'   => null,
+				'view'          => 'foobars',
+				'layout'        => 'default',
+				'containerView' => 'foobars',
+			],
+		];
+
 		return $data;
 	}
 

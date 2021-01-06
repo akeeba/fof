@@ -10,8 +10,8 @@
 use FOF40\Autoloader\Autoloader;
 use FOF40\Tests\Helpers\TravisLogger;
 use Joomla\CMS\Factory as JoomlaFactory;
-use Joomla\CMS\Session\Session;
 use Joomla\CMS\Input\Cli as JoomlaInputCli;
+use Joomla\CMS\Session\Session;
 
 define('_JEXEC', 1);
 define('JDEBUG', 0);
@@ -69,7 +69,7 @@ if (version_compare(PHP_VERSION, '5.4.0', 'lt'))
 @date_default_timezone_set('UTC');
 
 $jversion_test = getenv('JVERSION_TEST') ? getenv('JVERSION_TEST') : 'staging';
-$isTravis = getenv('TRAVIS');
+$isTravis      = getenv('TRAVIS');
 
 TravisLogger::log(4, 'Including environment info. Joomla version: ' . $jversion_test);
 
@@ -165,7 +165,7 @@ $config = null;
 
 foreach ($files as $file)
 {
-	if (!file_exists($file) || !is_file($file) ||!is_readable($file))
+	if (!file_exists($file) || !is_file($file) || !is_readable($file))
 	{
 		continue;
 	}
@@ -190,6 +190,7 @@ $config->set('host', $fofTestConfig['host']);
 $config->set('user', $fofTestConfig['user']);
 $config->set('password', $fofTestConfig['password']);
 $config->set('db', $fofTestConfig['db']);
+$config->set('prefix', 'jos_');
 $config->set('tmp_path', JPATH_ROOT . '/tmp');
 $config->set('log_path', JPATH_ROOT . '/logs');
 // Despite its name, this is the session STORAGE, NOT the session HANDLER. Because that somehow makes sense. NOT.
@@ -211,6 +212,10 @@ try
 {
 	TravisLogger::log(4, 'Checking if core tables are there');
 	$db->setQuery('SHOW COLUMNS FROM `jos_assets`')->execute();
+}
+catch (JDatabaseExceptionConnecting $e)
+{
+	throw $e;
 }
 catch (Exception $e)
 {
