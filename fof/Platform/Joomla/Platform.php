@@ -739,8 +739,6 @@ class Platform extends BasePlatform
 	 */
 	public function loginUser(array $authInfo): bool
 	{
-		JLoader::import('joomla.user.authentication');
-
 		$options = ['remember' => false];
 
 		$response         = new AuthenticationResponse();
