@@ -117,7 +117,7 @@ class Date extends DateTime
 
 		// On PHP 7.1 and later use an integer timestamp, without microseconds, to preserve backwards compatibility.
 		// See http://php.net/manual/en/migration71.incompatible.php#migration71.incompatible.datetime-microseconds
-		if ($date === 'now' && version_compare(PHP_VERSION, '7.1.0', '>='))
+		if ($date === 'now')
 		{
 			$date = time();
 		}

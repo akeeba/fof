@@ -49,7 +49,7 @@ class Randval implements RandvalInterface
 	 */
 	public function generate(int $bytes = 32): string
 	{
-		if ($this->phpfunc->extension_loaded('openssl') && (version_compare(PHP_VERSION, '5.3.4') >= 0 || IS_WIN))
+		if ($this->phpfunc->extension_loaded('openssl') && IS_WIN)
 		{
 			$strong    = false;
 			$randBytes = openssl_random_pseudo_bytes($bytes, $strong);

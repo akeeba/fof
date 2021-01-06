@@ -655,12 +655,6 @@ class BaseInstaller
 	 */
 	protected function _applyPostInstallationMessages(): void
 	{
-		// Make sure it's Joomla! 3.2.0 or later
-		if (!version_compare(JVERSION, '3.2.0', 'ge'))
-		{
-			return;
-		}
-
 		// Make sure there are post-installation messages
 		if (empty($this->postInstallationMessages))
 		{
@@ -706,12 +700,6 @@ class BaseInstaller
 	 */
 	protected function uninstallPostInstallationMessages(): void
 	{
-		// Make sure it's Joomla! 3.2.0 or later
-		if (!version_compare(JVERSION, '3.2.0', 'ge'))
-		{
-			return;
-		}
-
 		// Make sure there are post-installation messages
 		if (empty($this->postInstallationMessages))
 		{

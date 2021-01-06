@@ -27,8 +27,7 @@ class Joomla3 extends Joomla
 	public function __construct(Container $container)
 	{
 		$this->priority = 55;
-		$this->enabled  = version_compare(JVERSION, '3.0', 'ge') &&
-			version_compare(JVERSION, '3.9.999', 'le');
+		$this->enabled  = version_compare(JVERSION, '3.9.999', 'le');
 
 		parent::__construct($container);
 	}

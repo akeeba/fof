@@ -460,10 +460,7 @@ class Component extends BaseInstaller
 			 * which means that our menu deleting code would break them! So we don't run this code in newer Joomla!
 			 * versions any more.
 			 */
-			if (version_compare(JVERSION, '3.6.9999', 'le'))
-			{
-				$this->deleteComponentMenuRecord($db);
-			}
+			$this->deleteComponentMenuRecord($db);
 		}
 		catch (Exception $exc)
 		{

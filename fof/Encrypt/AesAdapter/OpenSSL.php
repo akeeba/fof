@@ -36,16 +36,11 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 	{
 		/**
 		 * PHP 5.4 and later replaced the $raw_data parameter with the $options parameter. Instead of a boolean we need
-		 * to pass some flags. Here you go.
-		 *
-		 * Since PHP 5.3 does NOT have the relevant constants we must NOT run this bit of code under PHP 5.3.
+		 * to pass some flags.
 		 *
 		 * See http://stackoverflow.com/questions/24707007/using-openssl-raw-data-param-in-openssl-decrypt-with-php-5-3#24707117
 		 */
-		if (version_compare(PHP_VERSION, '7.2.0', 'ge'))
-		{
-			$this->openSSLOptions = OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING;
-		}
+		$this->openSSLOptions = OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING;
 	}
 
 	public function setEncryptionMode(string $mode = 'cbc'): void

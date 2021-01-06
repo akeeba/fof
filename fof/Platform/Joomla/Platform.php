@@ -1383,12 +1383,6 @@ class Platform extends BasePlatform
 	 */
 	private function bugfixJoomlaCachePlugin(): void
 	{
-		// Only Joomla! 3.7 and later is broken.
-		if (version_compare(JVERSION, '3.6.999', 'le'))
-		{
-			return;
-		}
-
 		// Only do something when the System - Cache plugin is activated
 		if (!class_exists('PlgSystemCache'))
 		{

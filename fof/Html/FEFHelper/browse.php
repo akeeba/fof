@@ -405,9 +405,7 @@ abstract class FEFHelperBrowse
 
 			if ($dndOrderingActive)
 			{
-				$joomla35IsBroken = version_compare(JVERSION, '3.5.0', 'ge') ? 'style="display: none"' : '';
-
-				$html .= '<input type="text" name="order[]" ' . $joomla35IsBroken . ' size="5" class="' . $class . ' text-area-order" value="' . $order . '" />';
+				$html .= '<input type="text" name="order[]" style="display: none" size="5" class="' . $class . ' text-area-order" value="' . $order . '" />';
 			}
 
 			$html .= '</div>';

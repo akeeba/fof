@@ -517,7 +517,7 @@ class Update extends Model
 		// Get the #__update_sites columns
 		$columns = $db->getTableColumns('#__update_sites', true);
 
-		if (version_compare(JVERSION, '3.0.0', 'lt') || !array_key_exists('extra_query', $columns))
+		if (!array_key_exists('extra_query', $columns))
 		{
 			unset($update_site['extra_query']);
 		}
