@@ -935,7 +935,7 @@ class ToolbarDataprovider
 
 	public static function getTestIsDataView()
 	{
-		$data[] = [
+		$data["The disptacher doesn't return a controller"] = [
 			[
 				'mock' => [
 					'getController' => false,
@@ -949,7 +949,7 @@ class ToolbarDataprovider
 			],
 		];
 
-		$data[] = [
+		$data["The controller doesn't return a view"] = [
 			[
 				'mock' => [
 					'getController' => true,
@@ -963,7 +963,7 @@ class ToolbarDataprovider
 			],
 		];
 
-		$data[] = [
+		$data["The view is not a data-aware one"] = [
 			[
 				'mock' => [
 					'getController' => true,
@@ -977,7 +977,7 @@ class ToolbarDataprovider
 			],
 		];
 
-		$data[] = [
+		$data["The view is a data-aware one"] = [
 			[
 				'mock' => [
 					'getController' => true,
@@ -991,17 +991,31 @@ class ToolbarDataprovider
 			],
 		];
 
-		$data[] = [
+		$data["Result is cached (TRUE)"] = [
 			[
 				'mock' => [
 					'getController' => false,
 					'getView'       => null,
-					'cache'         => 'dummy',
+					'cache'         => true,
 				],
 			],
 			[
 				'case'   => "Result is cached",
-				'result' => 'dummy',
+				'result' => true,
+			],
+		];
+
+		$data["Result is cached (FALSE)"] = [
+			[
+				'mock' => [
+					'getController' => false,
+					'getView'       => null,
+					'cache'         => false,
+				],
+			],
+			[
+				'case'   => "Result is cached",
+				'result' => false,
 			],
 		];
 

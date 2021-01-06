@@ -7,6 +7,7 @@
 
 
 // Required to load FOF and Joomla!
+use FOF40\Autoloader\Autoloader;
 use FOF40\Tests\Helpers\TravisLogger;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Session\Session;
@@ -36,9 +37,9 @@ if (!class_exists('FOF40\\Autoloader\\Autoloader'))
 require_once __DIR__ . '/../fof/Utils/helpers.php';
 
 // Tell the FOF autoloader where to load test classes from (very useful for stubs!)
-\FOF40\Autoloader\Autoloader::getInstance()->addMap('FOF40\\Tests\\', __DIR__);
-\FOF40\Autoloader\Autoloader::getInstance()->addMap('Fakeapp\\', __DIR__ . '/Stubs/Fakeapp');
-\FOF40\Autoloader\Autoloader::getInstance()->addMap('Dummyapp\\', __DIR__ . '/Stubs/Dummyapp');
+Autoloader::getInstance()->addMap('FOF40\\Tests\\', __DIR__);
+Autoloader::getInstance()->addMap('Fakeapp\\', __DIR__ . '/Stubs/Fakeapp');
+Autoloader::getInstance()->addMap('Dummyapp\\', __DIR__ . '/Stubs/Dummyapp');
 
 TravisLogger::reset();
 TravisLogger::log(4, 'Log reset');
@@ -55,9 +56,8 @@ TravisLogger::log(4, 'Autoloader included');
 
 // Don't report strict errors. This is needed because sometimes a test complains about arguments passed as reference
 ini_set('zend.ze1_compatibility_mode', '0');
-error_reporting(E_ALL & ~E_STRICT);
-//error_reporting(E_ERROR | E_DEPRECATED);
 ini_set('display_errors', 1);
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 
 // Fix magic quotes on PHP 5.3
 if (version_compare(PHP_VERSION, '5.4.0', 'lt'))

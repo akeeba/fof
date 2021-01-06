@@ -13,6 +13,7 @@ use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\TestContainer;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'AccessDataprovider.php';
 
@@ -60,11 +61,13 @@ class AccessTest extends DatabaseTest
 	{
 		$container       = new TestContainer();
 		$platform        = $container->platform;
-		$platform::$user = new ClosureHelper([
-			'getAuthorisedViewLevels' => function () use ($test) {
-				return $test['mock']['userAccess'];
-			},
-		]);
+		$platform::$user = $this->getMockBuilder(User::class)
+			->setMethods(['getAuthorisedViewLevels'])
+			->getMock();
+		$platform::$user
+			->expects($this->any())
+			->method('getAuthorisedViewLevels')
+			->willReturn($test['mock']['userAccess']);
 
 		$config = [
 			'idFieldName' => $test['tableid'],

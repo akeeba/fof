@@ -14,6 +14,7 @@ use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'GenericDataprovider.php';
 
@@ -879,11 +880,13 @@ class DataModelGenericTest extends DatabaseTest
 		$msg = 'DataModel::applyAccessFiltering %s - Case: ' . $check['case'];
 
 		$platform        = static::$container->platform;
-		$platform::$user = new ClosureHelper([
-			'getAuthorisedViewLevels' => function () {
-				return [5, 10];
-			},
-		]);
+		$platform::$user = $this->getMockBuilder(User::class)
+			->setMethods(['getAuthorisedViewLevels'])
+			->getMock();
+		$platform::$user
+			->expects($this->any())
+			->method('getAuthorisedViewLevels')
+			->willReturn([5, 10]);
 
 		$config = [
 			'idFieldName' => $test['tableid'],

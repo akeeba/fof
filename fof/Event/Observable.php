@@ -21,18 +21,18 @@ interface Observable
 	 *
 	 * @param Observer $observer The observer to attach
 	 *
-	 * @return  Observable  Ourselves, for chaining
+	 * @return  static  Ourselves, for chaining
 	 */
-	public function attach(Observer $observer): Observable;
+	public function attach(Observer $observer);
 
 	/**
 	 * Detaches an observer from the object
 	 *
 	 * @param Observer $observer The observer to detach
 	 *
-	 * @return  Observable  Ourselves, for chaining
+	 * @return  static  Ourselves, for chaining
 	 */
-	public function detach(Observer $observer): Observable;
+	public function detach(Observer $observer);
 
 	/**
 	 * Triggers an event in the attached observers

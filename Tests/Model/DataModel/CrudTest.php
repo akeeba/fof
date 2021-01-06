@@ -15,6 +15,7 @@ use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'CrudDataprovider.php';
 
@@ -45,9 +46,10 @@ class DataModelCrudTest extends DatabaseTest
 		$modelEvents = $events;
 
 		// I need to fake the user id, since in CLI I don't have one
-		$container       = new TestContainer();
-		$platform        = $container->platform;
-		$platform::$user = (object) ['id' => 99];
+		$container           = new TestContainer();
+		$platform            = $container->platform;
+		$platform::$user     = new User(99);
+		$platform::$user->id = 99;
 
 		$config = [
 			'idFieldName' => $test['table_id'],
@@ -231,6 +233,8 @@ class DataModelCrudTest extends DatabaseTest
 					{
 						$params[1] = $test['mock']['beforeDisp'];
 					}
+
+					return [];
 				}
 			);
 

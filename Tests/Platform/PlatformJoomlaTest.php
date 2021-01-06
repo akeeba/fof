@@ -443,7 +443,7 @@ class PlatformJoomlaTest extends FOFTestCase
 			$pRef->setAccessible(true);
 			$decorated = $pRef->getValue($date);
 
-			$this->assertInstanceOf('\Joomla\CMS\Date\Date', $decorated, "$case -- The decorated property must be a \Joomla\CMS\Date\Date object");
+			$this->assertInstanceOf('FOF40\Date\Date', $decorated, "$case -- The decorated property must be a \FOF40\Date\Date object");
 		}
 	}
 }

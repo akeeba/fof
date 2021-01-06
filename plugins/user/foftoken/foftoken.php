@@ -19,7 +19,7 @@ use Joomla\CMS\Form\Form as JForm;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin as JPlugin;
 
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
+if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
 {
 	return;
 }

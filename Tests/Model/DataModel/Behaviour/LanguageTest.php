@@ -15,6 +15,7 @@ use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\Language\Language as JoomlaLanguage;
 
 require_once 'LanguageDataprovider.php';
 
@@ -56,13 +57,13 @@ class LanguageTest extends DatabaseTest
 
 		$platform            = static::$container->platform;
 		$platform::$isAdmin  = $test['mock']['admin'];
-		$platform::$language = function () {
-			return new ClosureHelper([
-				'getTag' => function () {
-					return 'en-GB';
-				},
-			]);
-		};
+		$platform::$language = $this->getMockBuilder(JoomlaLanguage::class)
+			->setMethods(['getTag'])
+			->getMock();
+		$platform::$language
+			->expects($this->any())
+			->method('getTag')
+			->willReturn('en-GB');
 
 		$model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
 			->setMethods(['blacklistFilters'])
@@ -125,13 +126,13 @@ class LanguageTest extends DatabaseTest
 		];
 
 		$platform            = static::$container->platform;
-		$platform::$language = function () {
-			return new ClosureHelper([
-				'getTag' => function () {
-					return 'en-GB';
-				},
-			]);
-		};
+		$platform::$language = $this->getMockBuilder(JoomlaLanguage::class)
+			->setMethods(['getTag'])
+			->getMock();
+		$platform::$language
+			->expects($this->any())
+			->method('getTag')
+			->willReturn('en-GB');
 
 		$model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
 			->setMethods(['reset'])

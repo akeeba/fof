@@ -34,7 +34,7 @@ class MagicMethodsDataprovider
 				'fields'       => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -91,7 +91,7 @@ class MagicMethodsDataprovider
 				'fields'       => [
 					'fakeapp_test_id' => (object) [
 						'Field'      => 'fakeapp_test_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',

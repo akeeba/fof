@@ -40,7 +40,7 @@
  *
  * defined('JPATH_LIBRARIES') || die ('This script must be placed in or run from the cli folder of your site.');
  *
- * require_once JPATH_LIBRARIES . '/fof30/Cli/Application.php';
+ * require_once JPATH_LIBRARIES . '/fof40/Cli/Application.php';
  * // Boilerplate -- END
  *
  * Create a class which extends FOFCliApplication and implements doExecute, e.g.

@@ -15,6 +15,7 @@ use FOF40\Model\DataModel\Relation\BelongsToMany;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'BelongsToManyDataprovider.php';
 
@@ -120,8 +121,9 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 	 */
 	public function testSaveAll()
 	{
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 42];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(42);
+		$platform::$user->id = 42;
 
 		$model = new Groups(static::$container);
 		$model->find(1);
@@ -175,8 +177,9 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 	 */
 	public function testCaseAddNewRelatedItem()
 	{
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 42];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(42);
+		$platform::$user->id = 42;
 
 		$model = new Groups(static::$container);
 		$model->belongsToMany('parts', 'Parts');
@@ -219,8 +222,9 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 	 */
 	public function testCaseAddExistingRelatedItem()
 	{
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 42];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(42);
+		$platform::$user->id = 42;
 
 		$model = new Groups(static::$container);
 		$model->belongsToMany('parts', 'Parts');
@@ -251,8 +255,9 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 	public function testCaseAddExistingRelatedItemToNewRecord()
 	{
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 42];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(42);
+		$platform::$user->id = 42;
 
 		$model = new Groups(static::$container);
 		$model->belongsToMany('parts', 'Parts');
@@ -280,8 +285,9 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 	public function testCaseAddNewRelatedItemToNewRecord()
 	{
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 42];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(42);
+		$platform::$user->id = 42;
 
 		$model = new Groups(static::$container);
 		$model->belongsToMany('parts', 'Parts');
@@ -310,8 +316,9 @@ WHERE `pivotTable`.`fakeapp_group_id` =`#__fakeapp_groups`.`fakeapp_group_id`';
 
 	public function testCaseDeleteRelatedItemFromExistingRecord()
 	{
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 42];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(42);
+		$platform::$user->id = 42;
 
 		$model = new Groups(static::$container);
 		$model->belongsToMany('parts', 'Parts');

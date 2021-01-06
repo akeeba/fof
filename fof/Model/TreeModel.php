@@ -1568,7 +1568,7 @@ class TreeModel extends DataModel
 			catch (\RuntimeException $e)
 			{
 				// If there is no root found throw an exception. Basically: your table is FUBAR.
-				throw new TreeRootNotFound($this->tableName, $this->lft, $e);
+				throw new TreeRootNotFound($this->tableName, $this->lft, 500, $e);
 			}
 
 			// If the above method didn't work, get all roots and select the one with the appropriate lft/rgt values
@@ -1607,7 +1607,7 @@ class TreeModel extends DataModel
 				catch (\RuntimeException $e)
 				{
 					// If there is no root found throw an exception. Basically: your table is FUBAR.
-					throw new TreeRootNotFound($this->tableName, $this->lft, $e);
+					throw new TreeRootNotFound($this->tableName, $this->lft, 500, $e);
 				}
 			}
 		}

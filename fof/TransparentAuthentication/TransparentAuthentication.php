@@ -590,7 +590,9 @@ class TransparentAuthentication
 			$otp             = $totp->getCode($this->totpKey, $time);
 			$this->cryptoKey = hash('sha256', $this->totpKey . $otp);
 
-			$aes = new Aes($this->cryptoKey);
+			$aes = new Aes();
+			$aes->setPassword($this->cryptoKey);
+
 			try
 			{
 				$ret = $aes->decryptString($encryptedData);

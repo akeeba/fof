@@ -15,6 +15,7 @@ use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
 
 require_once 'PageParametersToStateDataprovider.php';
@@ -33,13 +34,6 @@ class PageParametersToStateTest extends DatabaseTest
 		parent::setUp();
 
 		$this->saveFactoryState();
-	}
-
-	protected function tearDown()
-	{
-		$this->restoreFactoryState();
-
-		parent::tearDown();
 	}
 
 	/**
@@ -67,8 +61,9 @@ class PageParametersToStateTest extends DatabaseTest
 		/** @var \FOF40\Tests\Helpers\TestJoomlaPlatform $platform */
 		$platform                           = $container->platform;
 		$platform::$isAdmin                 = $test['mock']['admin'];
-		$platform::$user                    = (object) ['id' => 99];
 		$platform::$getUserStateFromRequest = 'do_not_mock';
+		$platform::$user                    = new User(99);
+		$platform::$user->id                = 99;
 
 		$model = new DataModelStub($container, $config);
 
@@ -95,5 +90,12 @@ class PageParametersToStateTest extends DatabaseTest
 		{
 			$this->assertEquals($value, $model->getState($key), sprintf($msg, 'Failed to set the correct value for the key: ' . $key));
 		}
+	}
+
+	protected function tearDown()
+	{
+		$this->restoreFactoryState();
+
+		parent::tearDown();
 	}
 }

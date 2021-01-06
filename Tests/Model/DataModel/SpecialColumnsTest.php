@@ -16,6 +16,7 @@ use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Date\Date as JoomlaDate;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'SpecialColumnsDataprovider.php';
 
@@ -233,9 +234,11 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 		$after  = 0;
 		$msg    = 'DataModel::lock %s - Case: ' . $check['case'];
 
-		$container       = new TestContainer();
-		$platform        = $container->platform;
-		$platform::$user = (object) ['id' => $test['mock']['user_id']];
+		$container           = new TestContainer();
+		$platform            = $container->platform;
+		$platform::$user     = new User($test['mock']['user_id']);
+		$platform::$user->id = $test['mock']['user_id'];
+
 
 		$config = [
 			'idFieldName' => $test['tableid'],
@@ -413,9 +416,10 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	{
 		$msg = 'DataModel::touch %s - Case: ' . $check['case'];
 
-		$container       = new TestContainer();
-		$platform        = $container->platform;
-		$platform::$user = (object) ['id' => $test['mock']['user_id']];
+		$container           = new TestContainer();
+		$platform            = $container->platform;
+		$platform::$user     = new User($test['mock']['user_id']);
+		$platform::$user->id = $test['mock']['user_id'];
 
 		$config = [
 			'idFieldName' => $test['tableid'],

@@ -14,7 +14,7 @@ class LayoutFileTestProvider
 {
 	public static function getTestGetPath()
 	{
-		$fakeBase      = realpath(__DIR__ . '/../_data/layout/layout');
+		$fakeBase      = realpath(__DIR__ . '/../_data/layout/layouts');
 		$templateBase  = realpath(__DIR__ . '/../_data/layout/templates/system/html/layouts');
 		$platformSetup = [
 			'templateSuffixes' => ['.fof'],

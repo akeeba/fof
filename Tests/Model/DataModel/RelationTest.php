@@ -15,6 +15,7 @@ use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Helpers\TestContainer;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'RelationDataprovider.php';
 
@@ -37,7 +38,8 @@ class DataModelRealtionTest extends DatabaseTest
 		// I need to fake the user id, since in CLI I don't have one
 		$container       = new TestContainer();
 		$platform        = $container->platform;
-		$platform::$user = (object) ['id' => 99];
+		$platform::$user = new User(99);
+		$platform::$user->id = 99;
 
 		$config = [
 			'autoChecks'  => false,

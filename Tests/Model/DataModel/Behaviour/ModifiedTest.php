@@ -10,6 +10,7 @@ namespace FOF40\Tests\DataModel;
 
 use FOF40\Model\DataModel\Behaviour\Modified;
 use FOF40\Tests\Helpers\DatabaseTest;
+use Joomla\CMS\User\User;
 
 require_once 'ModifiedDataprovider.php';
 
@@ -32,8 +33,9 @@ class ModifiedTest extends DatabaseTest
 			'tableName'   => '#__foftest_foobars',
 		];
 
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 99];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(99);
+		$platform::$user->id = 99;
 
 		$model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
 			->setMethods(['addSkipCheckField'])
@@ -67,8 +69,9 @@ class ModifiedTest extends DatabaseTest
 			'aliasFields' => $test['aliases'],
 		];
 
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 99];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(99);
+		$platform::$user->id = 99;
 
 		$model = $this->getMockBuilder('\\FOF40\\Tests\\Stubs\\Model\\DataModelStub')
 			->setMethods(['isLocked'])

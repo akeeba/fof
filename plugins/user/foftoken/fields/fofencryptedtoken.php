@@ -9,7 +9,7 @@ use Joomla\CMS\Factory;
 
 defined('_JEXEC') || die;
 
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
+if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/FOF40/include.php'))
 {
 	return;
 }

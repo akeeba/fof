@@ -13,6 +13,7 @@ use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ReflectionHelper;
 use FOF40\Tests\Stubs\Model\DataModelStub;
 use Joomla\CMS\Factory as JoomlaFactory;
+use Joomla\CMS\User\User;
 
 require_once 'EnabledDataprovider.php';
 
@@ -64,8 +65,9 @@ class EnabledTest extends DatabaseTest
 			'tableName'   => $test['table'],
 		];
 
-		$platform        = static::$container->platform;
-		$platform::$user = (object) ['id' => 99];
+		$platform            = static::$container->platform;
+		$platform::$user     = new User(99);
+		$platform::$user->id = 99;
 
 		$model = $this->getMockBuilder('FOF40\Tests\Stubs\Model\DataModelStub')
 			->setMethods(['reset', 'getFieldValue'])

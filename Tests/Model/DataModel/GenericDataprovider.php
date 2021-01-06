@@ -23,7 +23,7 @@ class DataModelGenericDataprovider
 				'result' => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -60,7 +60,7 @@ class DataModelGenericDataprovider
 				'result' => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -111,7 +111,7 @@ class DataModelGenericDataprovider
 				'result' => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -148,7 +148,7 @@ class DataModelGenericDataprovider
 				'result' => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -187,7 +187,7 @@ class DataModelGenericDataprovider
 				'result' => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -226,7 +226,7 @@ class DataModelGenericDataprovider
 				'result' => [
 					'foftest_bare_id' => (object) [
 						'Field'      => 'foftest_bare_id',
-						'Type'       => 'int(11)',
+						'Type'       => 'int',
 						'Collation'  => null,
 						'Null'       => 'NO',
 						'Key'        => 'PRI',
@@ -2509,7 +2509,7 @@ class DataModelGenericDataprovider
 				'value' => null,
 				'info'  => (object) [
 					'Field'      => 'foftest_bare_id',
-					'Type'       => 'int(11)',
+					'Type'       => 'int',
 					'Collation'  => null,
 					'Null'       => 'NO',
 					'Key'        => 'PRI',

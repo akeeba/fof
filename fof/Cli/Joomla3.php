@@ -55,7 +55,7 @@ abstract class FOFCliApplicationJoomla3 extends CliApplication
 		JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
 
 		// Load FOF
-		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 		{
 			throw new RuntimeException('Cannot load FOF', 500);
 		}

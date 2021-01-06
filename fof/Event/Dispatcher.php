@@ -47,9 +47,9 @@ class Dispatcher implements Observable
 	 *
 	 * @param   Observer  $observer  The observer to attach
 	 *
-	 * @return  Dispatcher  Ourselves, for chaining
+	 * @return  static  Ourselves, for chaining
 	 */
-	public function attach(Observer $observer): Observable
+	public function attach(Observer $observer)
 	{
 		$className = get_class($observer);
 
@@ -87,9 +87,9 @@ class Dispatcher implements Observable
 	 *
 	 * @param   Observer  $observer  The observer to detach
 	 *
-	 * @return  Dispatcher  Ourselves, for chaining
+	 * @return  static  Ourselves, for chaining
 	 */
-	public function detach(Observer $observer): Observable
+	public function detach(Observer $observer)
 	{
 		$className = get_class($observer);
 

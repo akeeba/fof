@@ -17,7 +17,6 @@ use Joomla\Registry\Registry;
 
 /**
  * Class MediaVersion
- * @package FOF30\Utils
  *
  * @since   3.5.3
  */

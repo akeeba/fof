@@ -396,7 +396,7 @@ class Model
 	 */
 	public function savestate($newState)
 	{
-		$this->_savestate = $newState;
+		$this->_savestate = (bool) $newState;
 
 		return $this;
 	}

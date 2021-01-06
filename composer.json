@@ -27,13 +27,9 @@
       "role": "Lead Developer"
     }
   ],
-  "require-KILLME": {
-    "phpunit/phpunit": "~5.7",
-    "phpunit/dbunit": "~2.0",
-    "mockery/mockery": "~0.9.5"
-  },
   "require-dev": {
     "mikey179/vfsstream": "2.0.x-dev",
+    "mockery/mockery": "~0.9.5",
     "rector/rector": "^0.8"
   },
   "autoload": {
