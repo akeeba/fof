@@ -9,26 +9,29 @@ namespace FOF40\Render;
 
 defined('_JEXEC') || die;
 
-use Fakeapp\Site\Toolbar\Toolbar;
 use FOF40\Container\Container;
+use FOF40\Toolbar\Toolbar;
 use JHtmlSidebar;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\Toolbar as JoomlaToolbar;
 
 /**
- * Renderer class for use with Joomla! 4.x
+ * Renderer class for use with Joomla! 3.x and 4.x
  *
  * Renderer options
  *
+ * wrapper_id              The ID of the wrapper DIV. Default: akeeba-renderjoomla
  * linkbar_style           Style for linkbars: joomla3|classic. Default: joomla3
  * remove_wrapper_classes  Comma-separated list of classes to REMOVE from the container
  * add_wrapper_classes     Comma-separated list of classes to ADD to the container
  *
  * @package FOF40\Render
+ * @since   3.6.0
  */
 class Joomla extends RenderBase implements RenderInterface
 {
+	/** @inheritDoc */
 	public function __construct(Container $container)
 	{
 		$this->priority = 30;
@@ -185,7 +188,7 @@ class Joomla extends RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbar_classic($view, $task)
+	protected function renderLinkbar_classic(string $view, string $task): void
 	{
 		$platform = $this->container->platform;
 
@@ -307,7 +310,7 @@ class Joomla extends RenderBase implements RenderInterface
 					{
 						$class = $link['active'] ? 'active' : '';
 
-						$href = $link['link'] ?: '#';
+						$href = $link['link'] ? $link['link'] : '#';
 
 						echo "<a href=\"$href\" class=\"nav-link $class\">{$link['name']}</a>";
 					}
@@ -330,7 +333,7 @@ class Joomla extends RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	protected function renderLinkbar_joomla(string $view, string $task)
+	protected function renderLinkbar_joomla(string $view, string $task): void
 	{
 		$platform = $this->container->platform;
 
@@ -355,7 +358,7 @@ class Joomla extends RenderBase implements RenderInterface
 	/**
 	 * Render the linkbar
 	 *
-	 * @param   Toolbar  $toolbar  A toolbar object
+	 * @param   Toolbar  $toolbar  An FOF toolbar object
 	 *
 	 * @return  void
 	 */
@@ -458,17 +461,6 @@ class Joomla extends RenderBase implements RenderInterface
 
 			if ($button !== false)
 			{
-				/**
-				 * if (method_exists($button, 'fetchId'))
-				 * {
-				 * $id = call_user_func_array(array(&$button, 'fetchId'), $node);
-				 * }
-				 * else
-				 * {
-				 * $id = null;
-				 * }
-				 * /**/
-
 				$action    = call_user_func_array([&$button, 'fetchButton'], $node);
 				$action    = str_replace('class="toolbar"', 'class="toolbar btn"', $action);
 				$action    = str_replace('<span ', '<i ', $action);
@@ -494,6 +486,8 @@ class Joomla extends RenderBase implements RenderInterface
 	 */
 	protected function openPageWrapper(array $classes): void
 	{
+		$this->setOption('wrapper_id', $this->getOption('wrapper_id', 'akeeba-renderjoomla'));
+
 		$classes[] = 'akeeba-renderer-joomla';
 
 		parent::openPageWrapper($classes);

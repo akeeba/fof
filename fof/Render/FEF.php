@@ -15,6 +15,8 @@ use FOF40\Container\Container;
  * Renderer class for use with Akeeba FEF
  *
  * Renderer options
+ *
+ * wrapper_id           The ID of the wrapper DIV. Default: akeeba-rendered-fef
  * linkbar_style        Style for linkbars: joomla3|classic. Default: joomla3
  * load_fef             Load FEF CSS and JS? Set to false if you are loading it outside the renderer. Default: true
  * fef_reset            Should I reset the CSS styling for basic HTML elements inside the FEF container? Default: true
@@ -129,11 +131,13 @@ class FEF extends Joomla
 		}
 
 		$addClasses = array_map('trim', $addClasses);
-
 		$customClasses = implode(' ', array_unique(array_merge($classes, $addClasses)));
 
+		$id = $this->getOption('wrapper_id', 'akeeba-renderer-fef');
+		$id = empty($id) ? "" : sprintf(' id="%s"', $id);
+
 		echo <<< HTML
-<div id="akeeba-renderer-fef" class="akeeba-renderer-fef $customClasses">
+<div id="akeeba-renderer-fef" class="akeeba-renderer-fef $customClasses"$id>
 
 HTML;
 	}

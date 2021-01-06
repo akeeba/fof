@@ -16,6 +16,7 @@ use FOF40\Container\Container;
  *
  * Renderer options
  *
+ * wrapper_id              The ID of the wrapper DIV. Default: akeeba-renderjoomla
  * linkbar_style           Style for linkbars: joomla3|classic. Default: joomla3
  * remove_wrapper_classes  Comma-separated list of classes to REMOVE from the container
  * add_wrapper_classes     Comma-separated list of classes to ADD to the container

@@ -68,7 +68,6 @@ class file_fof40InstallerScript
 	 */
 	protected $removeFilesAllVersions = [
 		'files'   => [
-			'Download/Adapter/cacert.pem',
 		],
 		'folders' => [
 		],

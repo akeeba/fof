@@ -11,14 +11,17 @@ defined('_JEXEC') || die;
 
 use FOF40\Container\Container;
 use Joomla\Registry\Registry;
+use LogicException;
 use stdClass;
 
 /**
  * Base class for other render classes
+ *
+ * @package FOF40\Render
+ * @since   3.0.0
  */
 abstract class RenderBase implements RenderInterface
 {
-
 	/** @var   Container|null  The container we are attached to */
 	protected $container;
 
@@ -45,7 +48,7 @@ abstract class RenderBase implements RenderInterface
 	 * Set a renderer option (depends on the renderer)
 	 *
 	 * @param   string  $key    The name of the option to set
-	 * @param   string  $value  The value of the option
+	 * @param   mixed   $value  The value of the option
 	 *
 	 * @return  void
 	 */
@@ -135,7 +138,7 @@ abstract class RenderBase implements RenderInterface
 	 */
 	function renderCategoryLinkbar(): void
 	{
-		throw new \LogicException(sprintf('Renderer class %s must implement the %s method', get_class($this), __METHOD__));
+		throw new LogicException(sprintf('Renderer class %s must implement the %s method', get_class($this), __METHOD__));
 	}
 
 	/**
@@ -174,12 +177,14 @@ abstract class RenderBase implements RenderInterface
 			$addClasses = explode(',', $addClasses);
 		}
 
-		$addClasses = array_map('trim', $addClasses);
-
+		$addClasses    = array_map('trim', $addClasses);
 		$customClasses = implode(' ', array_unique(array_merge($classes, $addClasses)));
 
+		$id = $this->getOption('wrapper_id', null);
+		$id = empty($id) ? "" : sprintf(' id="%s"', $id);
+
 		echo <<< HTML
-<div class="$customClasses">
+<div class="$customClasses"$id>
 
 HTML;
 	}
