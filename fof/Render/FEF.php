@@ -53,8 +53,8 @@ class FEF extends Joomla
 	/**
 	 * Echoes any HTML to show before the view template. We override it to load the CSS files required for FEF.
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -71,7 +71,7 @@ class FEF extends Joomla
 			if ($useDarkMode != 0)
 			{
 				$this->container->template->addCSS('media://fef/css/dark.min.css');
-				$this->container->template->addJS('media://fef/js/darkmode.min.js');
+				$this->container->template->addJS('media://fef/js/darkmode.min.js', true);
 			}
 		}
 
@@ -82,7 +82,7 @@ class FEF extends Joomla
 	/**
 	 * Opens the FEF styling wrapper element. Our component's output will be inside this wrapper.
 	 *
-	 * @param array $classes An array of additional CSS classes to add to the outer page wrapper element.
+	 * @param   array  $classes  An array of additional CSS classes to add to the outer page wrapper element.
 	 *
 	 * @return  void
 	 */
@@ -130,7 +130,7 @@ class FEF extends Joomla
 			$addClasses = explode(',', $addClasses);
 		}
 
-		$addClasses = array_map('trim', $addClasses);
+		$addClasses    = array_map('trim', $addClasses);
 		$customClasses = implode(' ', array_unique(array_merge($classes, $addClasses)));
 
 		$id = $this->getOption('wrapper_id', 'akeeba-renderer-fef');
