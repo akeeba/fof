@@ -60,7 +60,8 @@ class PlgUserFoftoken extends CMSPlugin
 	 * @var  array
 	 */
 	private $allowedContexts = [
-		'com_users.profile', 'com_users.user', 'com_users.registration', 'com_admin.profile',
+		'com_users.profile', 'com_users.user', 'com_admin.profile',
+		// 'com_users.registration',
 	];
 
 	/**
@@ -163,6 +164,33 @@ class PlgUserFoftoken extends CMSPlugin
 			// We suppress any database error. It means we get no token saved by default.
 		}
 
+		/**
+		 * Modify the data for display in the user profile view page in the frontend.
+		 *
+		 * It's important to note that we deliberately not register HTMLHelper methods to do the
+		 * same (unlike e.g. the actionlogs system plugin) because the names of our fields are too
+		 * generic and we run the risk of creating naming clashes. Instead, we manipulate the data
+		 * directly.
+		 */
+		if (($context === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		{
+			$pluginData = $data->{$this->profileKeyPrefix} ?? [];
+			$enabled    = $pluginData['enabled'] ?? false;
+			$token      = $pluginData['token'] ?? '';
+
+			$pluginData['enabled'] = Text::_('JDISABLED');
+			$pluginData['token']   = '';
+
+			if ($enabled)
+			{
+				$algo                  = $this->getAlgorithmFromFormFile();
+				$pluginData['enabled'] = Text::_('JENABLED');
+				$pluginData['token']   = $this->getTokenForDisplay($userId, $token, $algo);
+			}
+
+			$data->{$this->profileKeyPrefix} = $pluginData;
+		}
+
 		return true;
 	}
 
@@ -199,6 +227,12 @@ class PlgUserFoftoken extends CMSPlugin
 		$this->loadLanguage();
 		JForm::addFormPath(__DIR__ . '/foftoken');
 		$form->loadFile('foftoken', false);
+
+		// Remove the Reset field when displaying the user profile form
+		if (($form->getName() === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		{
+			$form->removeField('reset', 'foftoken');
+		}
 
 		return true;
 	}
@@ -574,6 +608,77 @@ class PlgUserFoftoken extends CMSPlugin
 		$response->language      = $user->get('language');
 
 		return $response;
+	}
+
+	/**
+	 * Get the token algorithm as defined in the form file
+	 *
+	 * We use a simple RegEx match instead of loading the form for better performance.
+	 *
+	 * @return  string  The configured algorithm, 'sha256' as a fallback if none is found.
+	 */
+	private function getAlgorithmFromFormFile(): string
+	{
+		$algo = 'sha256';
+
+		$file     = __DIR__ . '/foftoken/foftoken.xml';
+		$contents = @file_get_contents($file);
+
+		if ($contents === false)
+		{
+			return $algo;
+		}
+
+		if (preg_match('/\s*algo=\s*"\s*([a-z0-9]+)\s*"/i', $contents, $matches) !== 1)
+		{
+			return $algo;
+		}
+
+		return $matches[1];
+	}
+
+	/**
+	 * Returns the token formatted suitably for the user to copy.
+	 *
+	 * @param   integer  $userId     The user id for token
+	 * @param   string   $tokenSeed  The token seed data stored in the database
+	 * @param   string   $algorithm  The hashing algorithm to use for the token (default: sha256)
+	 *
+	 * @return  string
+	 */
+	private function getTokenForDisplay(int $userId, string $tokenSeed, string $algorithm = 'sha256'): string
+	{
+		if (empty($tokenSeed))
+		{
+			return '';
+		}
+
+		try
+		{
+			$siteSecret = $this->app->get('secret');
+		}
+		catch (\Exception $e)
+		{
+			$jConfig    = JFactory::getConfig();
+			$siteSecret = $jConfig->get('secret');
+		}
+
+		// NO site secret? You monster!
+		if (empty($siteSecret))
+		{
+			return '';
+		}
+
+		$rawToken  = base64_decode($tokenSeed);
+		$tokenHash = hash_hmac($algorithm, $rawToken, $siteSecret);
+		$message   = base64_encode("$algorithm:$userId:$tokenHash");
+
+		if ($userId != JFactory::getUser()->id)
+		{
+			$message = '';
+		}
+
+		return $message;
 	}
 
 	/**
