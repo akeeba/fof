@@ -205,9 +205,8 @@ class Input extends JoomlaInput
 			{
 				/**
 				 * @noinspection PhpDeprecationInspection
-				 * @noinspection PhpUndefinedClassConstantInspection
 				 */
-				$safeHtmlFilter = JFilterInput::getInstance([], [], JFilterInput::TAGS_BLACKLIST, JFilterInput::ATTR_BLACKLIST);
+				$safeHtmlFilter = JFilterInput::getInstance([], [], 1, 1);
 			}
 
 			$var = $safeHtmlFilter->clean($var, $type);
