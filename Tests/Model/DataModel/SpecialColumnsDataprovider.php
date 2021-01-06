@@ -378,7 +378,7 @@ class SpecialColumnsDataprovider
 
 	public static function getTestUnlock()
 	{
-		$data[] = [
+		$data['Table without locking support'] = [
 			[
 				'tableid' => 'foftest_bare_id',
 				'table'   => '#__foftest_bares',
@@ -389,11 +389,12 @@ class SpecialColumnsDataprovider
 				'after'      => 0,
 				'dispatcher' => 0,
 				'locked_by'  => null,
+				'zero_date'  => true,
 				'locked_on'  => null,
 			],
 		];
 
-		$data[] = [
+		$data['Table with locking support, user_id passed'] = [
 			[
 				'tableid' => 'foftest_foobar_id',
 				'table'   => '#__foftest_foobars',
@@ -404,11 +405,12 @@ class SpecialColumnsDataprovider
 				'after'      => 1,
 				'dispatcher' => 2,
 				'locked_by'  => 0,
+				'zero_date'  => true,
 				'locked_on'  => true,
 			],
 		];
 
-		$data[] = [
+		$data['Table with locking support, user_id not passed'] = [
 			[
 				'tableid' => 'foftest_foobar_id',
 				'table'   => '#__foftest_foobars',
@@ -419,11 +421,12 @@ class SpecialColumnsDataprovider
 				'after'      => 1,
 				'dispatcher' => 2,
 				'locked_by'  => 0,
+				'zero_date'  => true,
 				'locked_on'  => true,
 			],
 		];
 
-		$data[] = [
+		$data['Table with only the locked_by field'] = [
 			[
 				'tableid' => 'id',
 				'table'   => '#__foftest_lockedby',
@@ -434,11 +437,12 @@ class SpecialColumnsDataprovider
 				'after'      => 1,
 				'dispatcher' => 2,
 				'locked_by'  => 0,
+				'zero_date'  => true,
 				'locked_on'  => null,
 			],
 		];
 
-		$data[] = [
+		$data['Table with only the locked_on field'] = [
 			[
 				'tableid' => 'id',
 				'table'   => '#__foftest_lockedon',
@@ -449,6 +453,7 @@ class SpecialColumnsDataprovider
 				'after'      => 1,
 				'dispatcher' => 2,
 				'locked_by'  => null,
+				'zero_date'  => false,
 				'locked_on'  => true,
 			],
 		];

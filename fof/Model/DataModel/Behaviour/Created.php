@@ -5,13 +5,12 @@
  * @license   GNU General Public License version 2, or later
  */
 
-namespace  FOF40\Model\DataModel\Behaviour;
+namespace FOF40\Model\DataModel\Behaviour;
 
 defined('_JEXEC') || die;
 
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
-use JDatabaseQuery;
 
 /**
  * FOF model behavior class to updated the created_by and created_on fields on newly created records.
@@ -44,14 +43,14 @@ class Created extends Observer
 		// Handle the created_on field
 		if ($model->hasField('created_on'))
 		{
-			$nullDate = $model->getDbo()->getNullDate();
+			$nullDate   = $model->isNullableField('created_on') ? null : $model->getDbo()->getNullDate();
 			$created_on = $model->getFieldValue('created_on');
 
 			if (empty($created_on) || ($created_on == $nullDate))
 			{
 				$model->setFieldValue('created_on', $model->getContainer()->platform->getDate()->toSql(false, $model->getDbo()));
 
-				$createdOnField = $model->getFieldAlias('created_on');
+				$createdOnField              = $model->getFieldAlias('created_on');
 				$dataObject->$createdOnField = $model->getFieldValue('created_on');
 			}
 		}
@@ -65,7 +64,7 @@ class Created extends Observer
 			{
 				$model->setFieldValue('created_by', $model->getContainer()->platform->getUser()->id);
 
-				$createdByField = $model->getFieldAlias('created_by');
+				$createdByField              = $model->getFieldAlias('created_by');
 				$dataObject->$createdByField = $model->getFieldValue('created_by');
 			}
 		}

@@ -8,6 +8,7 @@
 
 namespace FOF40\Tests\DataModel;
 
+use FOF40\Model\DataModel;
 use FOF40\Tests\Helpers\ClosureHelper;
 use FOF40\Tests\Helpers\DatabaseTest;
 use FOF40\Tests\Helpers\ObserverClosure;
@@ -21,8 +22,8 @@ use Joomla\CMS\User\User;
 require_once 'SpecialColumnsDataprovider.php';
 
 /**
- * @covers      FOF40\Model\DataModel::<protected>
- * @covers      FOF40\Model\DataModel::<private>
+ * @covers      \FOF40\Model\DataModel::<protected>
+ * @covers      \FOF40\Model\DataModel::<private>
  * @package     FOF40\Tests\DataModel
  */
 class DataModelSpecialColumnsTest extends DatabaseTest
@@ -30,8 +31,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelReorder
-	 * @covers          FOF40\Model\DataModel::reorder
-	 * @dataProvider    SpecialColumnsDataprovider::getTestReorder
+	 * @covers          \FOF40\Model\DataModel::reorder
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestReorder
 	 */
 	public function testReorder($test, $check)
 	{
@@ -103,7 +104,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelReorder
-	 * @covers          FOF40\Model\DataModel::reorder
+	 * @covers          \FOF40\Model\DataModel::reorder
 	 */
 	public function testReorderException()
 	{
@@ -121,8 +122,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelMove
-	 * @covers          FOF40\Model\DataModel::move
-	 * @dataProvider    SpecialColumnsDataprovider::getTestMove
+	 * @covers          \FOF40\Model\DataModel::move
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestMove
 	 */
 	public function testMove($test, $check)
 	{
@@ -206,8 +207,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelMove
-	 * @covers          FOF40\Model\DataModel::move
-	 * @dataProvider    SpecialColumnsDataprovider::getTestMoveException
+	 * @covers          \FOF40\Model\DataModel::move
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestMoveException
 	 */
 	public function testMoveException($test, $check)
 	{
@@ -225,8 +226,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelLock
-	 * @covers          FOF40\Model\DataModel::lock
-	 * @dataProvider    SpecialColumnsDataprovider::getTestLock
+	 * @covers          \FOF40\Model\DataModel::lock
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestLock
 	 */
 	public function testLock($test, $check)
 	{
@@ -275,6 +276,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 
 		ReflectionHelper::setValue($model, 'behavioursDispatcher', $dispatcher);
 
+		/** @var DataModel $model */
 		$result = $model->lock($test['user_id']);
 
 		$locked_by = $model->getFieldValue('locked_by');
@@ -299,7 +301,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelLock
-	 * @covers          FOF40\Model\DataModel::lock
+	 * @covers          \FOF40\Model\DataModel::lock
 	 */
 	public function testLockException()
 	{
@@ -317,8 +319,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelUnlock
-	 * @covers          FOF40\Model\DataModel::unlock
-	 * @dataProvider    SpecialColumnsDataprovider::getTestUnlock
+	 * @covers          \FOF40\Model\DataModel::unlock
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestUnlock
 	 */
 	public function testUnlock($test, $check)
 	{
@@ -378,20 +380,20 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 		$this->assertEquals($check['locked_by'], $locked_by, sprintf($msg, 'Failed to set the locking user'));
 
 		// The time is calculated on the fly, so I can only check if it's null or not
-		if ($check['locked_on'])
+		if ($check['locked_on'] && ($check['zero_date'] ?? true))
 		{
 			$this->assertEquals($db->getNullDate(), $locked_on, sprintf($msg, 'Failed to set the locking time'));
+
+			return;
 		}
-		else
-		{
-			$this->assertNull($locked_on, sprintf($msg, 'Failed to set the locking time'));
-		}
+
+		$this->assertNull($locked_on, sprintf($msg, 'Failed to set the locking time'));
 	}
 
 	/**
 	 * @group           DataModel
 	 * @group           DataModelUnlock
-	 * @covers          FOF40\Model\DataModel::unlock
+	 * @covers          \FOF40\Model\DataModel::unlock
 	 */
 	public function testUnlockException()
 	{
@@ -409,8 +411,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelTouch
-	 * @covers          FOF40\Model\DataModel::touch
-	 * @dataProvider    SpecialColumnsDataprovider::getTestTouch
+	 * @covers          \FOF40\Model\DataModel::touch
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestTouch
 	 */
 	public function testTouch($test, $check)
 	{
@@ -434,6 +436,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 		$model->method('save')->willReturn(null);
 		$model->method('getId')->willReturn(1);
 
+		/** @var DataModel $model */
 		$result = $model->touch($test['user_id']);
 
 		$modified_by = $model->getFieldValue('modified_by');
@@ -456,7 +459,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelTouch
-	 * @covers          FOF40\Model\DataModel::touch
+	 * @covers          \FOF40\Model\DataModel::touch
 	 */
 	public function testTouchException()
 	{
@@ -474,8 +477,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelCheckIn
-	 * @covers          FOF40\Model\DataModel::checkIn
-	 * @dataProvider    SpecialColumnsDataprovider::getTestCheckIn
+	 * @covers          \FOF40\Model\DataModel::checkIn
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestCheckIn
 	 */
 	public function testCheckIn($test, $check)
 	{
@@ -512,6 +515,7 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 			$this->setExpectedException($check['exception']);
 		}
 
+		/** @var DataModel $model */
 		if ($test['load'])
 		{
 			$model->find($test['load']);
@@ -525,8 +529,8 @@ class DataModelSpecialColumnsTest extends DatabaseTest
 	/**
 	 * @group           DataModel
 	 * @group           DataModelIsLocked
-	 * @covers          FOF40\Model\DataModel::isLocked
-	 * @dataProvider    SpecialColumnsDataprovider::getTestIsLocked
+	 * @covers          \FOF40\Model\DataModel::isLocked
+	 * @dataProvider    \SpecialColumnsDataprovider::getTestIsLocked
 	 */
 	public function testIsLocked($test, $check)
 	{
