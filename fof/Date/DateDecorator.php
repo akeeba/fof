@@ -109,7 +109,12 @@ class DateDecorator extends Date
 
 	public function format($format, bool $local = false, bool $translate = true): string
 	{
-		return $this->decorated->format($format, $local, $translate);
+		if (($this->decorated instanceof Date) || ($this->decorated instanceof \Joomla\CMS\Date\Date))
+		{
+			return $this->decorated->format($format, $local, $translate);
+		}
+
+		return $this->decorated->format($format);
 	}
 
 	public function getOffsetFromGmt(bool $hours = false): float
