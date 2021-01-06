@@ -12,6 +12,7 @@ defined('_JEXEC') || die;
 use FOF40\Container\Container;
 use FOF40\Model\Model;
 use FOF40\View\Engine\EngineInterface;
+use FOF40\View\Engine\PhpEngine;
 use FOF40\View\Exception\CannotGetName;
 use FOF40\View\Exception\EmptyStack;
 use FOF40\View\Exception\ModelNotFound;
@@ -236,6 +237,7 @@ class View
 		// Apply the viewEngineMap
 		if (isset($config['viewEngineMap']))
 		{
+			// If the overrides are a string convert it to an array first.
 			if (!is_array($config['viewEngineMap']))
 			{
 				$temp                    = explode(',', $config['viewEngineMap']);
@@ -258,7 +260,34 @@ class View
 				}
 			}
 
+			/**
+			 * We want to always have a sane fallback to plain .php template files at the end of the view engine stack.
+			 * For this to happen to we need to remove it from the current stack, disallow overriding it in the
+			 * viewEngineMap overrides, merge the overrides and then add the fallback at the very end of the stack.
+			 *
+			 * In previous versions we didn't do that which had two side effects:
+			 * 1. It was no longer a fallback, it was in the middle of the stack
+			 * 2. Any new template engines using a .something.php extension wouldn't work, see
+			 *    https://github.com/akeeba/fof/issues/694
+			 */
+
+			// Do not allow overriding the fallback .php handler
+			if (isset($config['viewEngineMap']['.php']))
+			{
+				unset ($config['viewEngineMap']['.php']);
+			}
+
+			// Temporarily remove the fallback .php handler
+			$phpHandler = $this->viewEngineMap['.php'] ?? PhpEngine::class;
+			unset ($this->viewEngineMap['.php']);
+
+			// Add the overrides
 			$this->viewEngineMap = array_merge($this->viewEngineMap, $config['viewEngineMap']);
+
+			// Push the fallback .php handler to the end of the view engine map stack
+			$this->viewEngineMap = array_merge($this->viewEngineMap, [
+				'.php' => $phpHandler
+			]);
 		}
 
 		// Set the ViewFinder
