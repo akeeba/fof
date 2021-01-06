@@ -42,13 +42,13 @@ fail gracefully instead of causing your site to crash and burn.
 	</description>
 	<creationDate>##DATE##</creationDate>
 	<author>Nicholas K. Dionysopoulos / Akeeba Ltd</author>
-	<authorEmail>nicholas@akeebabackup.com</authorEmail>
-	<authorUrl>https://www.akeebabackup.com</authorUrl>
+	<authorEmail>nicholas@akeeba.com</authorEmail>
+	<authorUrl>https://www.akeeba.com</authorUrl>
 	<copyright>Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
 	<license>GNU GPL v3 or later</license>
 	<version>##VERSION##</version>
 	<packager>Akeeba Ltd</packager>
-	<packagerurl>https://www.AkeebaBackup.com/download.html</packagerurl>
+	<packagerurl>https://www.akeeba.com/download.html</packagerurl>
 
 	<fileset>
 		<files folder="fof" target="libraries/fof40">
@@ -104,6 +104,6 @@ fail gracefully instead of causing your site to crash and burn.
 	<scriptfile>script.fof.php</scriptfile>
 
     <updateservers>
-        <server type="extension" priority="1" name="FOF 4.x">http://cdn.akeebabackup.com/updates/fof4_file.xml</server>
+        <server type="extension" priority="1" name="FOF 4.x">http://cdn.akeeba.com/updates/fof4_file.xml</server>
     </updateservers>
 </extension>
