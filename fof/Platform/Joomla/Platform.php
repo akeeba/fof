@@ -1144,14 +1144,38 @@ class Platform extends BasePlatform
 	 */
 	public function setSessionVar(string $name, $value = null, string $namespace = 'default'): void
 	{
+		// CLI
 		if ($this->isCli() && !class_exists('FOFApplicationCLI'))
 		{
-			self::$fakeSession->set("$namespace.$name", $value);
+			static::$fakeSession->set("$namespace.$name", $value);
 
 			return;
 		}
 
-		$this->container->session->set($name, $value, $namespace);
+		// Joomla 3
+		if (version_compare(JVERSION, '3.9999.9999', 'le'))
+		{
+			$this->container->session->set($name, $value, $namespace);
+		}
+
+		// Joomla 4
+		if (empty($namespace))
+		{
+			$this->container->session->set($name, $value);
+
+			return;
+		}
+
+		$registry = $this->container->session->get('registry');
+
+		if (is_null($registry))
+		{
+			$registry = new Registry();
+
+			$this->container->session->set('registry', $registry);
+		}
+
+		$registry->set($namespace . '.' . $name, $value);
 	}
 
 	/**
@@ -1165,12 +1189,34 @@ class Platform extends BasePlatform
 	 */
 	public function getSessionVar(string $name, $default = null, $namespace = 'default')
 	{
+		// CLI
 		if ($this->isCli() && !class_exists('FOFApplicationCLI'))
 		{
-			return self::$fakeSession->get("$namespace.$name", $default);
+			return static::$fakeSession->get("$namespace.$name", $default);
 		}
 
-		return $this->container->session->get($name, $default, $namespace);
+		// Joomla 3
+		if (version_compare(JVERSION, '3.9999.9999', 'le'))
+		{
+			return $this->container->session->get($name, $default, $namespace);
+		}
+
+		// Joomla 4
+		if (empty($namespace))
+		{
+			return $this->container->session->get($name, $default);
+		}
+
+		$registry = $this->container->session->get('registry');
+
+		if (is_null($registry))
+		{
+			$registry = new Registry();
+
+			$this->container->session->set('registry', $registry);
+		}
+
+		return $registry->get($namespace . '.' . $name, $default);
 	}
 
 	/**
