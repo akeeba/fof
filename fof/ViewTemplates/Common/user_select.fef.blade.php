@@ -84,6 +84,7 @@ $url = 'index.php' . $uri->toString(['query']);
 	'readonly' => $readonly,
 	'required' => $required,
 	'onchange' => $onchange,
+	'dataAttribute' => '',
 	])
 
 @endif
