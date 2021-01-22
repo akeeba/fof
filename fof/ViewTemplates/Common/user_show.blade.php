@@ -34,7 +34,9 @@ defined('_JEXEC') || die;
  * @var \FOF30\View\DataView\Raw $this
  */
 
-use FOF30\Html\FEFHelper\BrowseView;global $akeebaSubsShowUserCache;
+use FOF30\Utils\FEFHelper\BrowseView;
+
+global $akeebaSubsShowUserCache;
 
 if (!isset($akeebaSubsShowUserCache))
 {

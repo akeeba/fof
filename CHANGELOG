@@ -1,6 +1,7 @@
 FOF 3.7.2
 ================================================================================
 # [HIGH] Cache Cleaner was broken in Joomla 4
+# [HIGH] Common user show view template: fixed unknown class
 
 FOF 3.7.1
 ================================================================================
