@@ -1,3 +1,7 @@
+FOF 3.8.0
+================================================================================
+~ Replaced random string generator with random_bytes(), the preferred way in PHP 7 and later
+
 FOF 3.7.4
 ================================================================================
 # [MEDIUM] CacheCleaner failure in CLI applications
