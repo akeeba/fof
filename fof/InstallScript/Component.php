@@ -219,11 +219,7 @@ class Component extends BaseInstaller
 	{
 		// Add ourselves to the list of extensions depending on FOF40
 		$this->addDependency('fof40', $this->componentName);
-
-		if ($this->hasDependency('fof30', $this->componentName))
-		{
-			$this->removeDependency('fof30', $this->componentName);
-		}
+		$this->removeDependency('fof30', $this->componentName);
 
 		// Install or update database
 		$dbInstaller = new DatabaseInstaller(JoomlaFactory::getDbo(),
@@ -314,6 +310,9 @@ class Component extends BaseInstaller
 
 		// Clear the opcode caches again - in case someone accessed the extension while the files were being upgraded.
 		$this->clearOpcodeCaches();
+
+		// Finally, see if FOF 3.x is obsolete and remove it.
+		$this->uninstallFOF3IfNecessary();
 	}
 
 	/**
@@ -334,13 +333,11 @@ class Component extends BaseInstaller
 		// Uninstall post-installation messages on Joomla! 3.2 and later
 		$this->uninstallPostInstallationMessages();
 
-		// Remove ourselves from the list of extensions depending on FOF40
+		// Remove ourselves from the list of extensions depending of FOF 4
 		$this->removeDependency('fof40', $this->componentName);
 
-		if ($this->hasDependency('fof30', $this->componentName))
-		{
-			$this->removeDependency('fof30', $this->componentName);
-		}
+		// Uninstall FOF 4 if nothing else depends on it
+		$this->uninstallFOF4IfNecessary();
 
 		// Show the post-uninstallation page
 		$this->renderPostUninstallation($parent);

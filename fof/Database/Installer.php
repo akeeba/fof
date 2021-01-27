@@ -12,6 +12,7 @@ defined('_JEXEC') || die;
 use Exception;
 use JDatabaseDriver;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\Database\DatabaseDriver;
 use SimpleXMLElement;
 
 class Installer
@@ -31,10 +32,10 @@ class Installer
 	/**
 	 * Public constructor
 	 *
-	 * @param   JDatabaseDriver  $db         The database driver we're going to use to install the tables
-	 * @param   string           $directory  The directory holding the XML schema update files
+	 * @param   JDatabaseDriver|DatabaseDriver  $db         The database driver we're going to use to install the tables
+	 * @param   string                          $directory  The directory holding the XML schema update files
 	 */
-	public function __construct(JDatabaseDriver $db, string $directory)
+	public function __construct($db, string $directory)
 	{
 		$this->db = $db;
 

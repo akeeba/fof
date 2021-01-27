@@ -124,14 +124,12 @@ class Plugin extends BaseInstaller
 	 */
 	public function postflight(string $type, PluginAdapter $parent): void
 	{
-		/**
-		 * We are not doing dependency tracking for modules and plugins because of the way Joomla package uninstallation
-		 * works. FOF's uninstall() method would get called before the extensions are uninstalled, therefore its
-		 * uninstallation would fail and make the entire package uninstallation to fail (the package is impossible to
-		 * uninstall).
-		 */
 		// Add ourselves to the list of extensions depending on FOF40
-		// $this->addDependency('fof40', $this->getDependencyName());
+		$dependencyName = $this->getDependencyName();
+
+		$this->addDependency('fof40', $dependencyName);
+		$this->removeDependency('fof30', $dependencyName);
+
 		// Install or update database
 		$schemaPath = $parent->getParent()->getPath('source') . '/' . $this->schemaXmlPath;
 
@@ -149,6 +147,9 @@ class Plugin extends BaseInstaller
 
 		// Clear the opcode caches again - in case someone accessed the extension while the files were being upgraded.
 		$this->clearOpcodeCaches();
+
+		// Finally, see if FOF 3.x is obsolete and remove it.
+		$this->uninstallFOF3IfNecessary();
 	}
 
 	/**
@@ -171,15 +172,14 @@ class Plugin extends BaseInstaller
 		// Uninstall post-installation messages on Joomla! 3.2 and later
 		$this->uninstallPostInstallationMessages();
 
-		/**
-		 * We are not doing dependency tracking for modules and plugins because of the way Joomla package uninstallation
-		 * works. FOF's uninstall() method would get called before the extensions are uninstalled, therefore its
-		 * uninstallation would fail and make the entire package uninstallation to fail (the package is impossible to
-		 * uninstall).
-		 */
 		// Remove ourselves from the list of extensions depending on FOF40
-		// $this->removeDependency('fof40', $this->getDependencyName());
+		$dependencyName = $this->getDependencyName();
 
+		// Remove ourselves from the list of extensions depending of FOF 4
+		$this->removeDependency('fof40', $dependencyName);
+
+		// Uninstall FOF 4 if nothing else depends on it
+		$this->uninstallFOF4IfNecessary();
 	}
 
 	/**

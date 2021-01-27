@@ -212,19 +212,6 @@ class file_fof40InstallerScript
 
 		// Clear op-code caches
 		$this->clearOpcodeCaches();
-
-		// Get the extension ID of the FOF library package
-		$libID = $this->getOldFOF4LibraryExtensionID();
-
-		// If I have an obsolete FOF library package...
-		if (!empty($libID))
-		{
-			// Remove the FOF library package update site
-			$this->removeUpdateSiteFor($libID);
-
-			// Remove the FOF library package extension record
-			$this->removeExtension($libID);
-		}
 	}
 
 	/**
@@ -601,111 +588,6 @@ class file_fof40InstallerScript
 		elseif (function_exists('apc_clear_cache'))
 		{
 			@apc_clear_cache();
-		}
-	}
-
-	/**
-	 * Return the extension ID of the old FOF 3 "library" type extension.
-	 *
-	 * @return  int|null
-	 */
-	protected function getOldFOF4LibraryExtensionID()
-	{
-		$db = JoomlaFactory::getDbo();
-
-		// If there are multiple #__extensions record, keep one of them
-		$query = $db->getQuery(true);
-		$query->select('extension_id')
-			->from('#__extensions')
-			->where($db->qn('type') . ' = ' . $db->q('library'))
-			->where($db->qn('element') . ' = ' . $db->q('lib_fof40'));
-		$db->setQuery($query);
-
-		try
-		{
-			return $db->loadResult();
-		}
-		catch (Exception $exc)
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * Remove the update site for the provided extension ID
-	 *
-	 * @param   int  $id  The extension ID
-	 */
-	protected function removeUpdateSiteFor($id)
-	{
-		$db    = JoomlaFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->qn('update_site_id'))
-			->from($db->qn('#__update_sites_extensions'))
-			->where($db->qn('extension_id') . ' = ' . $db->q($id));
-
-		try
-		{
-			$siteId = $db->setQuery($query)->loadResult();
-		}
-		catch (Exception $e)
-		{
-			return;
-		}
-
-		if (empty($siteId))
-		{
-			return;
-		}
-
-		$query = $db->getQuery(true)
-			->delete($db->qn('#__update_sites'))
-			->where($db->qn('update_site_id') . ' = ' . $db->q($siteId));
-
-		try
-		{
-			$db->setQuery($query)->execute();
-		}
-		catch (Exception $e)
-		{
-			return;
-		}
-
-		$query = $db->getQuery(true)
-			->delete($db->qn('#__update_sites_extensions'))
-			->where($db->qn('update_site_id') . ' = ' . $db->q($siteId));
-
-		try
-		{
-			$db->setQuery($query)->execute();
-		}
-		catch (Exception $e)
-		{
-			return;
-		}
-	}
-
-	protected function removeExtension($id)
-	{
-		/** @var Extension $extension */
-		$extension = new Extension(JoomlaFactory::getDbo());
-		$extension->load($id);
-
-		$keyName  = $extension->getKeyName();
-		$loadedID = $extension->get($keyName, 0);
-
-		if ($loadedID != $id)
-		{
-			return;
-		}
-
-		try
-		{
-			$extension->delete($id);
-		}
-		catch (Exception $e)
-		{
-			return;
 		}
 	}
 

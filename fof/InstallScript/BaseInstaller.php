@@ -16,7 +16,9 @@ use FOF40\Template\Template;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
+use Throwable;
 
 class BaseInstaller
 {
@@ -742,6 +744,120 @@ class BaseInstaller
 		catch (Exception $e)
 		{
 			return;
+		}
+	}
+
+	/**
+	 * Uninstalls FOF 3 if nothing else depends on it.
+	 *
+	 * @return  void
+	 */
+	protected function uninstallFOF3IfNecessary()
+	{
+		// Only uninstall FOF 3.x when no other software depends on it still.
+		if (count($this->getDependencies('fof30')) !== 0)
+		{
+			return;
+		}
+
+		// We will look for both legacy lib_fof30 and newer file_fof30 package types
+		$packages = [
+			'library' => 'lib_fof30',
+			'file'    => 'file_fof30',
+		];
+
+		$db = JoomlaFactory::getDbo();
+
+		foreach ($packages as $type => $element)
+		{
+			// Get the extension ID for the FOF 3.x package we're uninstalling
+			$query = $db->getQuery(true);
+			$query->select('extension_id')
+				->from('#__extensions')
+				->where($db->qn('type') . ' = ' . $db->q($type))
+				->where($db->qn('element') . ' = ' . $db->q($element));
+			$db->setQuery($query);
+
+			try
+			{
+				$id = $db->loadResult();
+			}
+			catch (Exception $exc)
+			{
+				continue;
+			}
+
+			// Was the extension installed anyway?
+			if (empty($id))
+			{
+				continue;
+			}
+
+			// Okay, try to uninstall it. Failure is always an option.
+			try
+			{
+				(new JoomlaInstaller)->uninstall($type, $id);
+			}
+			catch (Throwable $e)
+			{
+				continue;
+			}
+		}
+	}
+
+	/**
+	 * Uninstalls FOF 4 if nothing else depends on it.
+	 *
+	 * @return  void
+	 */
+	protected function uninstallFOF4IfNecessary()
+	{
+		// Only uninstall FOF 3.x when no other software depends on it still.
+		if (count($this->getDependencies('fof40')) !== 0)
+		{
+			return;
+		}
+
+		$packages = [
+			'file'    => 'file_fof40',
+		];
+
+		$db = JoomlaFactory::getDbo();
+
+		foreach ($packages as $type => $element)
+		{
+			// Get the extension ID for the FOF 3.x package we're uninstalling
+			$query = $db->getQuery(true);
+			$query->select('extension_id')
+				->from('#__extensions')
+				->where($db->qn('type') . ' = ' . $db->q($type))
+				->where($db->qn('element') . ' = ' . $db->q($element));
+			$db->setQuery($query);
+
+			try
+			{
+				$id = $db->loadResult();
+			}
+			catch (Exception $exc)
+			{
+				continue;
+			}
+
+			// Was the extension installed anyway?
+			if (empty($id))
+			{
+				continue;
+			}
+
+			// Okay, try to uninstall it. Failure is always an option.
+			try
+			{
+				(new JoomlaInstaller)->uninstall($type, $id);
+			}
+			catch (Throwable $e)
+			{
+				continue;
+			}
 		}
 	}
 }
