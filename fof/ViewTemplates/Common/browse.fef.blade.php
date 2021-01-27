@@ -11,7 +11,7 @@ defined('_JEXEC') || die;
  * Template for Browse views using the FEF renderer
  *
  * Use this by extending it (I'm using -at- instead of the actual at-sign)
- * -at-extends('any:lib_fof30/Common/browse')
+ * -at-extends('any:lib_fof40/Common/browse')
  *
  * Override the following sections in your Blade template:
  *
@@ -120,11 +120,11 @@ $ajaxOrderingSupport = $this->hasAjaxOrderingSupport();
         @yield('browse-table-footer')
         </tfoot>
         <tbody
-                @if(($ajaxOrderingSupport !== false) && $ajaxOrderingSupport['saveOrder'])
+                @if(!is_null($ajaxOrderingSupport) && $ajaxOrderingSupport['saveOrder'])
                 class="js-draggable"
                 data-url="{{ $ajaxOrderingSupport['saveOrderURL'] }}"
                 data-direction="{{ strtolower($this->getModel()->getState('filter_order_Dir', null, 'cmd')) }}"
-                data-nested="{{ ($this->getModel() instanceof \FOF30\Model\TreeModel) ? 'true' : 'false' }}"
+                data-nested="{{ ($this->getModel() instanceof \FOF40\Model\TreeModel) ? 'true' : 'false' }}"
                 @endif
         >
         @unless(count($this->items))
