@@ -80,7 +80,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  mixed  The parameter value
 	 */
-	function getOption(string $key, ?string $default = null): string
+	function getOption(string $key, $default = null)
 	{
 		return $this->optionsRegistry->get($key, $default);
 	}

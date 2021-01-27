@@ -17,7 +17,7 @@ interface RenderInterface
 	/**
 	 * Public constructor
 	 *
-	 * @param Container $container The container we are attached to
+	 * @param   Container  $container  The container we are attached to
 	 */
 	function __construct(Container $container);
 
@@ -31,8 +31,8 @@ interface RenderInterface
 	/**
 	 * Echoes any HTML to show before the view template
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -41,8 +41,8 @@ interface RenderInterface
 	/**
 	 * Echoes any HTML to show after the view template
 	 *
-	 * @param string $view The current view
-	 * @param string $task The current task
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
 	 *
 	 * @return  void
 	 */
@@ -63,8 +63,8 @@ interface RenderInterface
 	/**
 	 * Set a renderer option (depends on the renderer)
 	 *
-	 * @param string $key   The name of the option to set
-	 * @param string $value The value of the option
+	 * @param   string  $key    The name of the option to set
+	 * @param   string  $value  The value of the option
 	 *
 	 * @return  void
 	 */
@@ -73,7 +73,7 @@ interface RenderInterface
 	/**
 	 * Set multiple renderer options at once (depends on the renderer)
 	 *
-	 * @param array $options The options to set as key => value pairs
+	 * @param   array  $options  The options to set as key => value pairs
 	 *
 	 * @return  void
 	 */
@@ -82,10 +82,10 @@ interface RenderInterface
 	/**
 	 * Get the value of a renderer option
 	 *
-	 * @param string      $key     The name of the parameter
-	 * @param string|null $default The default value to return if the parameter is not set
+	 * @param   string  $key      The name of the parameter
+	 * @param   mixed   $default  The default value to return if the parameter is not set
 	 *
-	 * @return  string|null  The parameter value
+	 * @return  mixed  The parameter value
 	 */
-	function getOption(string $key, ?string $default = null): string;
+	function getOption(string $key, $default = null);
 }

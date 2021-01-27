@@ -149,16 +149,18 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string The compiled result
 	 */
-	public function compile(string $path, array $forceParams = []): string
+	public function compile(?string $path, array $forceParams = []): string
 	{
+		if (empty($path))
+		{
+			return '';
+		}
+
 		$this->footer = [];
 
 		$fileData = @file_get_contents($path);
 
-		if ($path !== '')
-		{
-			$this->setPath($path);
-		}
+		$this->setPath($path);
 
 		return $this->compileString($fileData);
 	}
@@ -564,7 +566,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEach(string $expression): string
+	protected function compileEach(?string $expression): string
 	{
 		return "<?php echo \$this->renderEach{$expression}; ?>";
 	}
@@ -576,7 +578,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileYield(string $expression): string
+	protected function compileYield(?string $expression): string
 	{
 		return "<?php echo \$this->yieldContent{$expression}; ?>";
 	}
@@ -600,7 +602,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileSection(string $expression): string
+	protected function compileSection(?string $expression): string
 	{
 		return "<?php \$this->startSection{$expression}; ?>";
 	}
@@ -612,7 +614,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileAppend(string $expression): string
+	protected function compileAppend(?string $expression): string
 	{
 		return "<?php \$this->appendSection(); ?>";
 	}
@@ -624,7 +626,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndsection(string $expression): string
+	protected function compileEndsection(?string $expression): string
 	{
 		return "<?php \$this->stopSection(); ?>";
 	}
@@ -636,7 +638,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileStop(string $expression): string
+	protected function compileStop(?string $expression): string
 	{
 		return "<?php \$this->stopSection(); ?>";
 	}
@@ -648,7 +650,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileOverwrite(string $expression): string
+	protected function compileOverwrite(?string $expression): string
 	{
 		return "<?php \$this->stopSection(true); ?>";
 	}
@@ -660,7 +662,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileUnless(string $expression): string
+	protected function compileUnless(?string $expression): string
 	{
 		return "<?php if ( ! $expression): ?>";
 	}
@@ -672,7 +674,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndunless(string $expression): string
+	protected function compileEndunless(?string $expression): string
 	{
 		return "<?php endif; ?>";
 	}
@@ -684,7 +686,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileRepeatable(string $expression): string
+	protected function compileRepeatable(?string $expression): string
 	{
 		$expression = trim($expression, '()');
 		$parts      = explode(',', $expression, 2);
@@ -702,7 +704,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndRepeatable(string $expression): string
+	protected function compileEndRepeatable(?string $expression): string
 	{
 		return "<?php }; ?>";
 	}
@@ -714,7 +716,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileYieldRepeatable(string $expression): string
+	protected function compileYieldRepeatable(?string $expression): string
 	{
 		$expression = trim($expression, '()');
 		$parts      = explode(',', $expression, 2);
@@ -732,7 +734,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileLang(string $expression): string
+	protected function compileLang(?string $expression): string
 	{
 		return "<?php echo \\Joomla\\CMS\\Language\\Text::_$expression; ?>";
 	}
@@ -744,7 +746,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileSprintf(string $expression): string
+	protected function compileSprintf(?string $expression): string
 	{
 		return "<?php echo \\Joomla\\CMS\\Language\\Text::sprintf$expression; ?>";
 	}
@@ -760,7 +762,7 @@ class Blade implements CompilerInterface
 	 * @see Text::plural()
 	 *
 	 */
-	protected function compilePlural(string $expression): string
+	protected function compilePlural(?string $expression): string
 	{
 		return "<?php echo \\Joomla\\CMS\\Language\\Text::plural$expression; ?>";
 	}
@@ -772,7 +774,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileToken(string $expression): string
+	protected function compileToken(?string $expression): string
 	{
 		return "<?php echo \$this->container->platform->getToken(true); ?>";
 	}
@@ -784,7 +786,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileElse(string $expression): string
+	protected function compileElse(?string $expression): string
 	{
 		return "<?php else: ?>";
 	}
@@ -796,7 +798,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileFor(string $expression): string
+	protected function compileFor(?string $expression): string
 	{
 		return "<?php for{$expression}: ?>";
 	}
@@ -808,7 +810,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileForeach(string $expression): string
+	protected function compileForeach(?string $expression): string
 	{
 		return "<?php foreach{$expression}: ?>";
 	}
@@ -820,7 +822,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileForelse(string $expression): string
+	protected function compileForelse(?string $expression): string
 	{
 		$empty = '$__empty_' . ++$this->forelseCounter;
 
@@ -834,7 +836,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileIf(string $expression): string
+	protected function compileIf(?string $expression): string
 	{
 		return "<?php if{$expression}: ?>";
 	}
@@ -846,7 +848,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileElseif(string $expression): string
+	protected function compileElseif(?string $expression): string
 	{
 		return "<?php elseif{$expression}: ?>";
 	}
@@ -858,7 +860,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEmpty(string $expression): string
+	protected function compileEmpty(?string $expression): string
 	{
 		$empty = '$__empty_' . $this->forelseCounter--;
 
@@ -872,7 +874,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileWhile(string $expression): string
+	protected function compileWhile(?string $expression): string
 	{
 		return "<?php while{$expression}: ?>";
 	}
@@ -884,7 +886,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndwhile(string $expression): string
+	protected function compileEndwhile(?string $expression): string
 	{
 		return "<?php endwhile; ?>";
 	}
@@ -896,7 +898,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndfor(string $expression): string
+	protected function compileEndfor(?string $expression): string
 	{
 		return "<?php endfor; ?>";
 	}
@@ -908,7 +910,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndforeach(string $expression): string
+	protected function compileEndforeach(?string $expression): string
 	{
 		return "<?php endforeach; ?>";
 	}
@@ -920,7 +922,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndif(string $expression): string
+	protected function compileEndif(?string $expression): string
 	{
 		return "<?php endif; ?>";
 	}
@@ -932,7 +934,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEndforelse(string $expression): string
+	protected function compileEndforelse(?string $expression): string
 	{
 		return "<?php endif; ?>";
 	}
@@ -944,7 +946,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileExtends(string $expression): string
+	protected function compileExtends(?string $expression): string
 	{
 		if (starts_with($expression, '('))
 		{
@@ -965,7 +967,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileInclude(string $expression): string
+	protected function compileInclude(?string $expression): string
 	{
 		if (starts_with($expression, '('))
 		{
@@ -982,7 +984,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileJlayout(string $expression): string
+	protected function compileJlayout(?string $expression): string
 	{
 		if (starts_with($expression, '('))
 		{
@@ -999,7 +1001,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileStack(string $expression): string
+	protected function compileStack(?string $expression): string
 	{
 		return "<?php echo \$this->yieldContent{$expression}; ?>";
 	}
@@ -1011,7 +1013,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compilePush(string $expression): string
+	protected function compilePush(?string $expression): string
 	{
 		return "<?php \$this->startSection{$expression}; ?>";
 	}
@@ -1023,7 +1025,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return  string
 	 */
-	protected function compileEndpush(string $expression): string
+	protected function compileEndpush(?string $expression): string
 	{
 		return "<?php \$this->appendSection(); ?>";
 	}
@@ -1035,7 +1037,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileRoute(string $expression): string
+	protected function compileRoute(?string $expression): string
 	{
 		return "<?php echo \$this->container->template->route{$expression}; ?>";
 	}
@@ -1047,7 +1049,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileCss(string $expression): string
+	protected function compileCss(?string $expression): string
 	{
 		return "<?php \$this->addCssFile{$expression}; ?>";
 	}
@@ -1059,7 +1061,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileInlineCss(string $expression): string
+	protected function compileInlineCss(?string $expression): string
 	{
 		return "<?php \$this->addCssInline{$expression}; ?>";
 	}
@@ -1071,7 +1073,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileInlineJs(string $expression): string
+	protected function compileInlineJs(?string $expression): string
 	{
 		return "<?php \$this->addJavascriptInline{$expression}; ?>";
 	}
@@ -1083,7 +1085,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileJs(string $expression): string
+	protected function compileJs(?string $expression): string
 	{
 		return "<?php \$this->addJavascriptFile{$expression}; ?>";
 	}
@@ -1095,7 +1097,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileJhtml(string $expression): string
+	protected function compileJhtml(?string $expression): string
 	{
 		return "<?php echo \\Joomla\\CMS\\HTML\\HTMLHelper::_{$expression}; ?>";
 	}
@@ -1109,7 +1111,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @since 3.3.0
 	 */
-	protected function compileSortgrid(string $expression): string
+	protected function compileSortgrid(?string $expression): string
 	{
 		return "<?php echo FOF40\Html\FEFHelper\BrowseView::sortGrid{$expression} ?>";
 	}
@@ -1123,7 +1125,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @since 3.3.0
 	 */
-	protected function compileFieldtitle(string $expression): string
+	protected function compileFieldtitle(?string $expression): string
 	{
 		return "<?php echo FOF40\Html\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
 	}
@@ -1138,7 +1140,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @since 3.3.0
 	 */
-	protected function compileModelfilter(string $expression): string
+	protected function compileModelfilter(?string $expression): string
 	{
 		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::modelFilter{$expression} ?>";
 	}
@@ -1152,7 +1154,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @since 3.3.0
 	 */
-	protected function compileSelectfilter(string $expression): string
+	protected function compileSelectfilter(?string $expression): string
 	{
 		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::selectFilter{$expression} ?>";
 	}
@@ -1167,7 +1169,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @since 3.3.0
 	 */
-	protected function compileSearchfilter(string $expression): string
+	protected function compileSearchfilter(?string $expression): string
 	{
 		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::searchFilter{$expression} ?>";
 	}
@@ -1179,7 +1181,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileMedia(string $expression): string
+	protected function compileMedia(?string $expression): string
 	{
 		return "<?php echo \$this->container->template->parsePath{$expression}; ?>";
 	}
@@ -1191,7 +1193,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileModules(string $expression): string
+	protected function compileModules(?string $expression): string
 	{
 		return "<?php echo \$this->container->template->loadPosition{$expression}; ?>";
 	}
@@ -1203,7 +1205,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileModule(string $expression): string
+	protected function compileModule(?string $expression): string
 	{
 		return "<?php echo \$this->container->template->loadModule{$expression}; ?>";
 	}
@@ -1215,7 +1217,7 @@ class Blade implements CompilerInterface
 	 *
 	 * @return string
 	 */
-	protected function compileEditor(string $expression): string
+	protected function compileEditor(?string $expression): string
 	{
 		return '<?php echo \\Joomla\\CMS\\Editor\\Editor::getInstance($this->container->platform->getConfig()->get(\'editor\', \'tinymce\'))' .
 			'->display' . $expression . '; ?>';
