@@ -68,7 +68,7 @@ class SelectOptions
 	 */
 	public static function getOptions(string $type, array $params = []): array
 	{
-		if ((substr($type, 0, 1) == '_') || !method_exists(__CLASS__, $type))
+		if ((substr($type, 0, 1) == '_') || !method_exists(__CLASS__, '_api_' . $type))
 		{
 			throw new \InvalidArgumentException(__CLASS__ . "does not support option type '$type'.");
 		}
