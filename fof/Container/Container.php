@@ -67,7 +67,7 @@ use Joomla\Input\Input as JoomlaInput;
  *            FOF40\Factory\BasicFactory
  * @property  string                   $platformClass      Platform classname, default
  *            FOF40\Platform\Joomla\Platform
- * @property-read  MediaVersion        $mediaVersion       A version string for media files in forms.
+ * @property  MediaVersion             $mediaVersion       A version string for media files in forms.
  *
  * @property-read  Configuration       $appConfig          The application configuration registry
  * @property-read  Blade               $blade              The Blade view template compiler engine

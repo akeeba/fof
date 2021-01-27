@@ -456,15 +456,15 @@ class Controller
 	 * YOU MUST NOT USE THIS TASK DIRECTLY IN A URL. It is supposed to be
 	 * used ONLY inside your code. In the URL, use task=browse instead.
 	 *
-	 * @param   bool    $cachable   Is this view cacheable?
-	 * @param   bool    $urlparams  Add your safe URL parameters (see further down in the code)
-	 * @param   string  $tpl        The name of the template file to parse
+	 * @param   bool        $cachable   Is this view cacheable?
+	 * @param   array|null  $urlparams  Add your safe URL parameters (see further down in the code)
+	 * @param   string      $tpl        The name of the template file to parse
 	 *
 	 * @return  void
 	 *
 	 * @throws Exception
 	 */
-	public function display(bool $cachable = false, bool $urlparams = false, ?string $tpl = null): void
+	public function display(bool $cachable = false, ?array $urlparams = null, ?string $tpl = null): void
 	{
 		$document = $this->container->platform->getDocument();
 
