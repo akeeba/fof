@@ -25,7 +25,4 @@ The default implementation can go through JHtml, I guess?
 [ ] MAYBE Blade keywords for common form elements, e.g @startEditWrapper / @endEditWrapper, @label, @startEditField / @endEditField, @checkBoxField -- defined by each Renderer
 
 
-[ ] Maybe: add Joomla 3 common Blade templates?
-
-
 [ ] Rewrite scaffolding (Layout) to produce Blade templates
