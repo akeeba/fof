@@ -21,7 +21,6 @@ use FOF40\Platform\Base\Platform as BasePlatform;
 use InvalidArgumentException;
 use JDatabaseDriver;
 use JEventDispatcher;
-use JLoader;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CliApplication;
 use Joomla\CMS\Application\CliApplication as JApplicationCli;
@@ -127,6 +126,8 @@ class Platform extends BasePlatform
 	 * @return  void
 	 *
 	 * @throws  Exception
+	 *
+	 * @deprecated 5.0 Use showErrorPage with a real exception instead
 	 */
 	public function raiseError(int $code, string $message): void
 	{

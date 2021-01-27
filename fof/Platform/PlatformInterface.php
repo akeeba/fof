@@ -52,6 +52,8 @@ interface PlatformInterface
 	 * @return  void
 	 *
 	 * @throws  Exception
+	 *
+	 * @deprecated 5.0
 	 */
 	public function raiseError(int $code, string $message): void;
 

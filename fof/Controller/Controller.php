@@ -14,6 +14,7 @@ use FOF40\Container\Container;
 use FOF40\Controller\Exception\CannotGetName;
 use FOF40\Controller\Exception\TaskNotFound;
 use FOF40\Model\Model;
+use FOF40\View\Exception\AccessForbidden;
 use FOF40\View\View;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Cache\Cache;
@@ -1060,7 +1061,7 @@ class Controller
 
 		if (!$hasToken)
 		{
-			$platform->raiseError(403, Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+			$platform->showErrorPage(new AccessForbidden(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN')));
 
 			return false;
 		}
