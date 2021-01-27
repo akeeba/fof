@@ -366,7 +366,7 @@ class Platform extends BasePlatform
 			return JoomlaFactory::getApplication()->getIdentity() ?? new User();
 		}
 
-		return JoomlaFactory::getContainer()->get(UserFactoryInterface::class)->loadUserByUsername($id) ?? new User();
+		return JoomlaFactory::getContainer()->get(UserFactoryInterface::class)->loadUserById($id) ?? new User();
 	}
 
 	/**
