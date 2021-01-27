@@ -255,7 +255,7 @@ abstract class BrowseView
 	 *
 	 * @param   string  $name          Field name
 	 * @param   string  $modelName     The name of the model, e.g. "items" or "com_foobar.items"
-	 * @param   string  $currentValue  The currently selected value
+	 * @param   mixed   $currentValue  The currently selected value
 	 * @param   array   $params        Passed to optionsFromModel and genericSelect
 	 * @param   array   $modelState    Optional state variables to pass to the model
 	 * @param   array   $options       Any HTMLHelper select options you want to add in front of the model's returned
@@ -269,7 +269,7 @@ abstract class BrowseView
 	 *
 	 * @since 3.3.0
 	 */
-	public static function modelSelect(string $name, string $modelName, string $currentValue, array $params = [],
+	public static function modelSelect(string $name, string $modelName, $currentValue, array $params = [],
 	                                   array $modelState = [], array $options = []): string
 	{
 		$params = array_merge([
@@ -399,16 +399,16 @@ abstract class BrowseView
 	 * - readonly Render as a readonly field with hidden inputs? Overrides 'disabled'. Default: false
 	 * - onchange Custom onchange handler. Overrides fof.autosubmit. Default: NULL (use fof.autosubmit).
 	 *
-	 * @param   string       $name
-	 * @param   array        $options
-	 * @param   string|null  $currentValue
-	 * @param   array        $params
+	 * @param   string  $name
+	 * @param   array   $options
+	 * @param   mixed   $currentValue
+	 * @param   array   $params
 	 *
 	 * @return string
 	 *
 	 * @since 3.3.0
 	 */
-	public static function genericSelect(string $name, array $options, ?string $currentValue, array $params = []): string
+	public static function genericSelect(string $name, array $options, $currentValue, array $params = []): string
 	{
 		$params = array_merge([
 			'format.depth'   => 0,
