@@ -5,11 +5,13 @@
  * @license     GNU GPL version 3 or later
  */
 
+defined('_JEXEC') || die;
+
 /**
  * Template for Browse views using the FEF renderer
  *
  * Use this by extending it (I'm using -at- instead of the actual at-sign)
- * -at-extends('any:lib_fof40/Common/browse')
+ * -at-extends('any:lib_fof30/Common/browse')
  *
  * Override the following sections in your Blade template:
  *
@@ -42,47 +44,44 @@
  *      not be removed.
  *
  * Do not override any other section. The overridden sections should be closed with -at-override instead of -at-stop.
- */
+ *//** @var  \FOF40\View\DataView\Html  $this */
 
-defined('_JEXEC') or die();
-
-/** @var  FOF40\View\DataView\Html  $this */
-
+$ajaxOrderingSupport = $this->hasAjaxOrderingSupport();
 ?>
 
 {{-- Allow tooltips, used in grid headers --}}
-@if(version_compare(JVERSION, '3.999.999', 'le'))
-@jhtml('behavior.tooltip')
+@if (version_compare(JVERSION, '3.999.999', 'le'))
+    @jhtml('behavior.tooltip')
 @endif
 {{-- Allow SHIFT+click to select multiple rows --}}
 @jhtml('behavior.multiselect')
 
 
 @section('browse-filters')
-{{-- Filters above the table. --}}
+    {{-- Filters above the table. --}}
 @stop
 
 @section('browse-table-header')
-{{-- Table header. Column headers and optional filters displayed above the column headers. --}}
+    {{-- Table header. Column headers and optional filters displayed above the column headers. --}}
 @stop
 
 @section('browse-table-body-norecords')
-{{-- Table body shown when no records are present. --}}
-<tr>
-    <td colspan="99">
-        @lang($this->getContainer()->componentName . '_COMMON_NORECORDS')
-    </td>
-</tr>
+    {{-- Table body shown when no records are present. --}}
+    <tr>
+        <td colspan="99">
+            @lang($this->getContainer()->componentName . '_COMMON_NORECORDS')
+        </td>
+    </tr>
 @stop
 
 @section('browse-table-body-withrecords')
-{{-- Table body shown when records are present. --}}
-<?php $i = 0; ?>
-@foreach($this->items as $row)
-<tr>
-    {{-- You need to implement me! --}}
-</tr>
-@endforeach
+    {{-- Table body shown when records are present. --}}
+	<?php $i = 0; ?>
+    @foreach($this->items as $row)
+        <tr>
+            {{-- You need to implement me! --}}
+        </tr>
+    @endforeach
 @stop
 
 @section('browse-table-footer')
@@ -107,11 +106,11 @@ defined('_JEXEC') or die();
         <div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             @yield('browse-filters')
         </div>
-		<div class="akeeba-filter-bar akeeba-filter-bar--right">
-			@jhtml('FEFHelp.browse.orderjs', $this->lists->order)
-			@jhtml('FEFHelp.browse.orderheader', $this)
-		</div>
-	</section>
+        <div class="akeeba-filter-bar akeeba-filter-bar--right">
+            @jhtml('FEFHelp.browse.orderjs', $this->lists->order)
+            @jhtml('FEFHelp.browse.orderheader', $this)
+        </div>
+    </section>
 
     <table class="akeeba-table akeeba-table--striped--hborder--hover" id="itemsList">
         <thead>
@@ -120,11 +119,18 @@ defined('_JEXEC') or die();
         <tfoot>
         @yield('browse-table-footer')
         </tfoot>
-        <tbody>
+        <tbody
+                @if(($ajaxOrderingSupport !== false) && $ajaxOrderingSupport['saveOrder'])
+                class="js-draggable"
+                data-url="{{ $ajaxOrderingSupport['saveOrderURL'] }}"
+                data-direction="{{ strtolower($this->getModel()->getState('filter_order_Dir', null, 'cmd')) }}"
+                data-nested="{{ ($this->getModel() instanceof \FOF30\Model\TreeModel) ? 'true' : 'false' }}"
+                @endif
+        >
         @unless(count($this->items))
-        @yield('browse-table-body-norecords')
+            @yield('browse-table-body-norecords')
         @else
-        @yield('browse-table-body-withrecords')
+            @yield('browse-table-body-withrecords')
         @endunless
         </tbody>
     </table>
