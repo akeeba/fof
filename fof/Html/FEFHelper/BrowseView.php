@@ -301,7 +301,7 @@ abstract class BrowseView
 	 * @since 3.3.0
 	 */
 	public static function modelOptionName(string $value, ?string $modelName = null, array $params = [],
-	                                       array $modelState = [], array $options = []): string
+	                                       array $modelState = [], array $options = []): ?string
 	{
 		if (!isset($params['cache']))
 		{
@@ -329,8 +329,7 @@ abstract class BrowseView
 	 *
 	 * @return  mixed   The label of the currently selected option
 	 */
-	public static function getOptionName($selected, array $data, string $optKey = 'value', string $optText = 'text',
-	                                     bool $selectFirst = true): string
+	public static function getOptionName($selected, array $data, string $optKey = 'value', string $optText = 'text', bool $selectFirst = true): ?string
 	{
 		$ret = null;
 

@@ -46,7 +46,7 @@ abstract class FEFHelpSelect
 	 *
 	 * @param   string  $name      The value of the HTML name attribute
 	 * @param   array   $attribs   Additional HTML attributes for the `<select>` tag
-	 * @param   string  $selected  The key that is selected
+	 * @param   mixed   $selected  The key that is selected
 	 * @param   string  $yes       Language key for Yes
 	 * @param   string  $no        Language key for no
 	 * @param   mixed   $id        The id for the field or false for no id
@@ -465,7 +465,7 @@ abstract class FEFHelpSelect
 	 *
 	 * @return  stdClass
 	 */
-	public static function option(string $value, string $text = '', $optKey = 'value', string $optText = 'text',
+	public static function option(?string $value, string $text = '', $optKey = 'value', string $optText = 'text',
 	                              bool $disable = false)
 	{
 		$options = [
@@ -838,12 +838,12 @@ abstract class FEFHelpSelect
 	 * Creates two radio buttons styled with FEF to appear as a YES/NO switch
 	 *
 	 * @param   string  $name      Name of the field
-	 * @param   string  $selected  Selected field
+	 * @param   mixed   $selected  Selected field
 	 * @param   array   $attribs   Additional attributes to add to the switch
 	 *
 	 * @return    string    The HTML for the switch
 	 */
-	public static function booleanswitch(string $name, string $selected, array $attribs = []): string
+	public static function booleanswitch(string $name, $selected, array $attribs = []): string
 	{
 		if (empty($attribs))
 		{
