@@ -590,7 +590,7 @@ abstract class BrowseView
 
 			$lastNumberOfEntries = count($backtrace);
 
-			if ($skip !== 0)
+			if ($skip)
 			{
 				$backtrace = array_slice($backtrace, $skip);
 			}
@@ -611,8 +611,6 @@ abstract class BrowseView
 			$skip  = $limit;
 			$limit += 2;
 		}
-
-		throw new \RuntimeException(__METHOD__ . ": Cannot retrieve FOF View from call stack. You are either calling me from a non-FEF extension or your PHP is broken.");
 	}
 
 	/**
