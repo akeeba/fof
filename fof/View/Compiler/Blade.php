@@ -1113,7 +1113,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileSortgrid(?string $expression): string
 	{
-		return "<?php echo FOF40\Html\FEFHelper\BrowseView::sortGrid{$expression} ?>";
+		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::sortGrid{$expression} ?>";
 	}
 
 	/**
@@ -1127,7 +1127,7 @@ class Blade implements CompilerInterface
 	 */
 	protected function compileFieldtitle(?string $expression): string
 	{
-		return "<?php echo FOF40\Html\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
+		return "<?php echo \FOF40\Html\FEFHelper\BrowseView::fieldLabel{$expression} ?>";
 	}
 
 	/**
