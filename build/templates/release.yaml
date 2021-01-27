@@ -60,6 +60,6 @@ updates:
     connection: s3
     directory: '/updates'
     stream: 27
-    base_name: 'fof3_file'
+    base_name: 'fof4_file'
     formats:
       - 'xml'
