@@ -11,7 +11,6 @@ defined('_JEXEC') || die;
 
 use FOF40\Encrypt\AesAdapter\AdapterInterface;
 use FOF40\Encrypt\AesAdapter\OpenSSL;
-use FOF40\Utils\Phpfunc;
 
 /**
  * A simple abstraction to AES encryption
@@ -47,9 +46,8 @@ class Aes
 	 * Initialise the AES encryption object.
 	 *
 	 * @param   string   $mode     Encryption mode. Can be ebc or cbc. We recommend using cbc.
-	 * @param   Phpfunc  $phpfunc  For testing
 	 */
-	public function __construct(string $mode = 'cbc', Phpfunc $phpfunc = null)
+	public function __construct(string $mode = 'cbc')
 	{
 		$this->adapter = new OpenSSL();
 
@@ -61,36 +59,31 @@ class Aes
 	 *
 	 * @return boolean
 	 */
-	public static function isSupported(Phpfunc $phpfunc = null): bool
+	public static function isSupported(): bool
 	{
-		if (!is_object($phpfunc) || !($phpfunc instanceof $phpfunc))
-		{
-			$phpfunc = new Phpfunc();
-		}
-
 		$adapter = new OpenSSL();
 
-		if (!$adapter->isSupported($phpfunc))
+		if (!$adapter->isSupported())
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('base64_encode'))
+		if (!\function_exists('base64_encode'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('base64_decode'))
+		if (!\function_exists('base64_decode'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('hash_algos'))
+		if (!\function_exists('hash_algos'))
 		{
 			return false;
 		}
 
-		$algorithms = $phpfunc->hash_algos();
+		$algorithms = \hash_algos();
 
 		return in_array('sha256', $algorithms);
 	}

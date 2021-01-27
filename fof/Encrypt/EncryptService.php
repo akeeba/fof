@@ -10,7 +10,6 @@ namespace FOF40\Encrypt;
 defined('_JEXEC') || die;
 
 use FOF40\Container\Container;
-use FOF40\Utils\Phpfunc;
 
 /**
  * Data encryption service for FOF-based components.
@@ -64,14 +63,13 @@ class EncryptService
 	 * EncryptService constructor.
 	 *
 	 * @param Container $c       The FOF component container
-	 * @param Phpfunc   $phpFunc For use in unit tests
 	 *
 	 * @since   3.3.2
 	 */
-	public function __construct(Container $c, Phpfunc $phpFunc)
+	public function __construct(Container $c)
 	{
 		$this->container = $c;
-		$this->initialize($phpFunc);
+		$this->initialize();
 	}
 
 	/**
@@ -127,13 +125,11 @@ class EncryptService
 	/**
 	 * Initialize the AES cryptography object
 	 *
-	 * @param Phpfunc $phpFunc used for testing
-	 *
 	 * @return  void
 	 * @since   3.3.2
 	 *
 	 */
-	private function initialize(Phpfunc $phpFunc = null): void
+	private function initialize(): void
 	{
 		if (is_object($this->aes))
 		{
@@ -147,12 +143,7 @@ class EncryptService
 			return;
 		}
 
-		if (is_null($phpFunc))
-		{
-			$phpFunc = new Phpfunc();
-		}
-
-		$this->aes = new Aes('cbc', $phpFunc);
+		$this->aes = new Aes('cbc');
 		$this->aes->setPassword($password);
 	}
 
@@ -264,8 +255,7 @@ class EncryptService
 			return;
 		}
 
-		$phpFunc      = new Phpfunc();
-		$randval      = new Randval($phpFunc);
+		$randval      = new Randval();
 		$secretKey    = $randval->getRandomPassword(64);
 		$constantName = $this->getConstantName();
 

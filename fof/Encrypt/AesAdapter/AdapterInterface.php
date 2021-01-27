@@ -9,8 +9,6 @@ namespace FOF40\Encrypt\AesAdapter;
 
 defined('_JEXEC') || die;
 
-use FOF40\Utils\Phpfunc;
-
 /**
  * Interface for AES encryption adapters
  */
@@ -69,5 +67,5 @@ interface AdapterInterface
 	 *
 	 * @return  bool
 	 */
-	public function isSupported(Phpfunc $phpfunc = null): bool;
+	public function isSupported(): bool;
 }

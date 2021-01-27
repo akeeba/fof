@@ -25,7 +25,6 @@ use FOF40\Template\Template;
 use FOF40\Toolbar\Toolbar;
 use FOF40\TransparentAuthentication\TransparentAuthentication as TransparentAuth;
 use FOF40\Utils\MediaVersion;
-use FOF40\Utils\Phpfunc;
 use FOF40\View\Compiler\Blade;
 use JDatabaseDriver;
 use Joomla\CMS\Factory as JoomlaFactory;
@@ -450,7 +449,7 @@ class Container extends ContainerBase
 		if (!isset($this['crypto']))
 		{
 			$this['crypto'] = function (Container $c) {
-				return new EncryptService($c, new Phpfunc());
+				return new EncryptService($c);
 			};
 		}
 	}

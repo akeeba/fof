@@ -10,7 +10,6 @@ namespace FOF40\Encrypt\AesAdapter;
 defined('_JEXEC') || die;
 
 use FOF40\Encrypt\Randval;
-use FOF40\Utils\Phpfunc;
 
 class OpenSSL extends AbstractAdapter implements AdapterInterface
 {
@@ -110,56 +109,51 @@ class OpenSSL extends AbstractAdapter implements AdapterInterface
 		return openssl_decrypt($cipherText, $this->method, $key, $this->openSSLOptions, $iv);
 	}
 
-	public function isSupported(Phpfunc $phpfunc = null): bool
+	public function isSupported(): bool
 	{
-		if (!is_object($phpfunc) || !($phpfunc instanceof $phpfunc))
-		{
-			$phpfunc = new Phpfunc();
-		}
-
-		if (!$phpfunc->function_exists('openssl_get_cipher_methods'))
+		if (!\function_exists('openssl_get_cipher_methods'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('openssl_random_pseudo_bytes'))
+		if (!\function_exists('openssl_random_pseudo_bytes'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('openssl_cipher_iv_length'))
+		if (!\function_exists('openssl_cipher_iv_length'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('openssl_encrypt'))
+		if (!\function_exists('openssl_encrypt'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('openssl_decrypt'))
+		if (!\function_exists('openssl_decrypt'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('hash'))
+		if (!\function_exists('hash'))
 		{
 			return false;
 		}
 
-		if (!$phpfunc->function_exists('hash_algos'))
+		if (!\function_exists('hash_algos'))
 		{
 			return false;
 		}
 
-		$algorithms = $phpfunc->openssl_get_cipher_methods();
+		$algorithms = \openssl_get_cipher_methods();
 
 		if (!in_array('aes-128-cbc', $algorithms))
 		{
 			return false;
 		}
 
-		$algorithms = $phpfunc->hash_algos();
+		$algorithms = \hash_algos();
 
 		return in_array('sha256', $algorithms);
 	}

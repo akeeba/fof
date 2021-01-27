@@ -159,8 +159,7 @@ class CliSessionHandler implements JSessionHandlerInterface
 
 	private function makeId()
 	{
-		$phpfunc = new Phpfunc();
-		$rand    = new Randval($phpfunc);
+		$rand    = new Randval();
 
 		$this->id = md5($rand->generate(32));
 	}
