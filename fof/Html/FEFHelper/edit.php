@@ -14,11 +14,11 @@ use Joomla\CMS\Factory as JoomlaFactory;
  * Custom JHtml (HTMLHelper) class. Offers edit (form) view controls compatible with Akeeba Frontend
  * Framework (FEF).
  *
- * Call these methods as HTMLHelper::_('FEFHelper.edit.methodName', $parameter1, $parameter2, ...)
+ * Call these methods as HTMLHelper::_('FEFHelp.edit.methodName', $parameter1, $parameter2, ...)
  */
-abstract class FEFHelperEdit
+abstract class FEFHelpEdit
 {
-	public static function editor(string $fieldName, string $value, array $params = []): string
+	public static function editor(string $fieldName, ?string $value, array $params = []): string
 	{
 		$params = array_merge([
 			'id'         => null,

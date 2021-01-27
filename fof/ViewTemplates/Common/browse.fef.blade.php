@@ -51,7 +51,9 @@ defined('_JEXEC') or die();
 ?>
 
 {{-- Allow tooltips, used in grid headers --}}
+@if(version_compare(JVERSION, '3.999.999', 'le'))
 @jhtml('behavior.tooltip')
+@endif
 {{-- Allow SHIFT+click to select multiple rows --}}
 @jhtml('behavior.multiselect')
 
@@ -106,8 +108,8 @@ defined('_JEXEC') or die();
             @yield('browse-filters')
         </div>
 		<div class="akeeba-filter-bar akeeba-filter-bar--right">
-			@jhtml('FEFHelper.browse.orderjs', $this->lists->order)
-			@jhtml('FEFHelper.browse.orderheader', $this)
+			@jhtml('FEFHelp.browse.orderjs', $this->lists->order)
+			@jhtml('FEFHelp.browse.orderheader', $this)
 		</div>
 	</section>
 

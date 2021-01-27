@@ -21,11 +21,11 @@ use Joomla\CMS\Pagination\Pagination;
  * Custom JHtml (HTMLHelper) class. Offers browse view controls compatible with Akeeba Frontend
  * Framework (FEF).
  *
- * Call these methods as HTMLHelper::_('FEFHelper.browse.methodName', $parameter1, $parameter2, ...)
+ * Call these methods as HTMLHelper::_('FEFHelp.browse.methodName', $parameter1, $parameter2, ...)
  *
  * @noinspection PhpIllegalPsrClassPathInspection
  */
-abstract class FEFHelperBrowse
+abstract class FEFHelpBrowse
 {
 	/**
 	 * Returns an action button on the browse view's table
@@ -612,7 +612,7 @@ HTML;
 	 *
 	 * @return string
 	 */
-	public static function orderjs(string $orderBy, bool $return = false): string
+	public static function orderjs(string $orderBy, bool $return = false): ?string
 	{
 		$js = <<< JS
 
@@ -648,6 +648,8 @@ JS;
 		{
 			// If we have no application, well, not having table sorting JS is the least of your worries...
 		}
+
+		return null;
 	}
 
 	/**
@@ -708,7 +710,7 @@ JS;
 		$sortByLabel  = Text::_('JGLOBAL_SORT_BY');
 
 		// Order direction dropdown
-		$directionSelect = HTMLHelper::_('FEFHelper.select.genericlist', [
+		$directionSelect = HTMLHelper::_('FEFHelp.select.genericlist', [
 			''     => $orderingDecr,
 			'asc'  => Text::_('JGLOBAL_ORDER_ASCENDING'),
 			'desc' => Text::_('JGLOBAL_ORDER_DESCENDING'),
@@ -723,7 +725,7 @@ JS;
 
 		// Sort by field dropdown
 
-		$sortTable = HTMLHelper::_('FEFHelper.select.genericlist', array_merge([
+		$sortTable = HTMLHelper::_('FEFHelp.select.genericlist', array_merge([
 			'' => Text::_('JGLOBAL_SORT_BY'),
 		], $sortFields), 'sortTable', [
 			'id'          => 'sortTable',

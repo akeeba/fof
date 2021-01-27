@@ -296,4 +296,10 @@ The following methods have had their return type changed:
 
 In FOF 3 you could set the useHypermedia property to true to automatically inject HAL metadata to the JSON output. However, the HAL specification has not been updated since 2013. We don't really see it being much used in the wild or supported by frameworks consuming JSON data. A better suited replacement would be JSON-LD (JSON for Linking Data, a W3C standard) but it's not possible to automatically derive the context the format calls for. In fact, writing a FOF wrapper around it would make it far more complicated to use than if we just let you override the JSON output through a Json View class and / or a suitable JSON view template!
 
-As a result we removed the HAL support from FOF and ask you to implement whichever JSON metadata scheme you want yourself.  
+As a result we removed the HAL support from FOF and ask you to implement whichever JSON metadata scheme you want yourself.
+
+## Renamed HTML helpers
+
+FOF 3 has a set of handy FEF helpers, acessible through Joomla's HTMLHelper with the `FEFHelper.` prefix. The prefix has been changed to `FEFHelp.` to allow FOF 3 and FOF 4 to run side by side.
+
+You **must** upgrade your code to use the new prefix. The old one will call the FOF 3 helpers (if FOF 3 is loaded) or fail to load any helper at all. In both cases your extensions break.

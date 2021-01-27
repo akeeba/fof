@@ -292,9 +292,8 @@ class Autoloader
 		}
 
 		// FEFHelper lookup
-		if (substr($class, 0, 9) == 'FEFHelper' && file_exists($file = realpath(__DIR__ . '/..') . '/Utils/FEFHelper/' . strtolower(substr($class, 9)) . '.php'))
+		if (substr($class, 0, 7) == 'FEFHelp' && file_exists($file = realpath(__DIR__ . '/..') . '/Html/FEFHelper/' . strtolower(substr($class, 7)) . '.php'))
 		{
-
 			return $file;
 		}
 

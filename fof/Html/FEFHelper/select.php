@@ -14,11 +14,11 @@ use Joomla\CMS\Language\Text;
 /**
  * Custom JHtml (HTMLHelper) class. Offers selects compatible with Akeeba Frontend Framework (FEF)
  *
- * Call these methods as HTMLHelper::_('FEFHelper.select.methodName', $parameter1, $parameter2, ...)
+ * Call these methods as HTMLHelper::_('FEFHelp.select.methodName', $parameter1, $parameter2, ...)
  *
  * @noinspection PhpIllegalPsrClassPathInspection
  */
-abstract class FEFHelperSelect
+abstract class FEFHelpSelect
 {
 	/**
 	 * Default values for options. Organized by option group.
@@ -58,12 +58,12 @@ abstract class FEFHelperSelect
 	public static function booleanlist($name, $attribs = [], $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
 	{
 		$options = [
-			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.option', '0', \Joomla\CMS\Language\Text::_($no)),
-			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.option', '1', \Joomla\CMS\Language\Text::_($yes)),
+			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelp.select.option', '0', \Joomla\CMS\Language\Text::_($no)),
+			\Joomla\CMS\HTML\HTMLHelper::_('FEFHelp.select.option', '1', \Joomla\CMS\Language\Text::_($yes)),
 		];
 		$attribs = array_merge(['forSelect' => 1], $attribs);
 
-		return \Joomla\CMS\HTML\HTMLHelper::_('FEFHelper.select.radiolist', $options, $name, $attribs, 'value', 'text', (int) $selected, $id);
+		return \Joomla\CMS\HTML\HTMLHelper::_('FEFHelp.select.radiolist', $options, $name, $attribs, 'value', 'text', (int) $selected, $id);
 	}
 
 	/**
@@ -190,7 +190,7 @@ abstract class FEFHelperSelect
 	 *
 	 */
 	public static function genericlist(array $data, string $name, ?array $attribs = null, string $optKey = 'value',
-	                                   string $optText = 'text', ?string $selected = null, $idtag = false,
+	                                   string $optText = 'text', $selected = null, $idtag = false,
 	                                   bool $translate = false): string
 	{
 		// Set default options
@@ -398,7 +398,7 @@ abstract class FEFHelperSelect
 	 * @return  string   HTML for the select list
 	 */
 	public static function integerlist(int $start, int $end, int $inc, string $name, ?array $attribs = null,
-	                                   ?string $selected = null, string $format = ''): string
+	                                   $selected = null, string $format = ''): string
 	{
 		// Set default options
 		$options = array_merge(HTMLHelper::$formatOptions, ['format.depth' => 0, 'option.format' => '', 'id' => null]);
@@ -433,7 +433,7 @@ abstract class FEFHelperSelect
 		// Tell genericlist() to use array keys
 		$options['option.key'] = null;
 
-		return HTMLHelper::_('FEFHelper.select.genericlist', $data, $name, $options);
+		return HTMLHelper::_('FEFHelp.select.genericlist', $data, $name, $options);
 	}
 
 	/**
@@ -465,7 +465,7 @@ abstract class FEFHelperSelect
 	 *
 	 * @return  stdClass
 	 */
-	public static function option(string $value, string $text = '', string $optKey = 'value', string $optText = 'text',
+	public static function option(string $value, string $text = '', $optKey = 'value', string $optText = 'text',
 	                              bool $disable = false)
 	{
 		$options = [
@@ -567,7 +567,7 @@ abstract class FEFHelperSelect
 	 *
 	 * @return  string  HTML for the select list
 	 */
-	public static function options(array $arr, string $optKey = 'value', string $optText = 'text',
+	public static function options(array $arr, $optKey = 'value', string $optText = 'text',
 	                               ?string $selected = null, bool $translate = false): string
 	{
 		$options = array_merge(
@@ -761,7 +761,7 @@ abstract class FEFHelperSelect
 	 * @param   string   $attribs    Additional HTML attributes for the `<select>` tag
 	 * @param   mixed    $optKey     The key that is selected
 	 * @param   string   $optText    The name of the object variable for the option value
-	 * @param   string   $selected   The name of the object variable for the option text
+	 * @param   mixed    $selected   The name of the object variable for the option text
 	 * @param   boolean  $idtag      Value of the field id or null by default
 	 * @param   boolean  $translate  True if options will be translated
 	 *

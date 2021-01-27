@@ -109,7 +109,7 @@ abstract class BrowseView
 			$langKey = self::fieldLabelKey($field);
 		}
 
-		return HTMLHelper::_('FEFHelper.browse.sort', $langKey, $field, $view->getLists()->order_Dir, $view->getLists()->order, $view->getTask());
+		return HTMLHelper::_('FEFHelp.browse.sort', $langKey, $field, $view->getLists()->order_Dir, $view->getLists()->order, $view->getTask());
 	}
 
 	/**
@@ -468,7 +468,7 @@ abstract class BrowseView
 
 		if (!empty($params['list.none']))
 		{
-			array_unshift($options, HTMLHelper::_('FEFHelper.select.option', '', Text::_($params['list.none'])));
+			array_unshift($options, HTMLHelper::_('FEFHelp.select.option', '', Text::_($params['list.none'])));
 		}
 
 		$html = [];
@@ -476,7 +476,7 @@ abstract class BrowseView
 		// Create a read-only list (no name) with hidden input(s) to store the value(s).
 		if ($params['readonly'])
 		{
-			$html[] = HTMLHelper::_('FEFHelper.select.genericlist', $options, $name, $params);
+			$html[] = HTMLHelper::_('FEFHelp.select.genericlist', $options, $name, $params);
 
 			// E.g. form field type tag sends $this->value as array
 			if ($params['multiple'] && is_array($currentValue))
@@ -499,7 +499,7 @@ abstract class BrowseView
 		else
 			// Create a regular list.
 		{
-			$html[] = HTMLHelper::_('FEFHelper.select.genericlist', $options, $name, $params);
+			$html[] = HTMLHelper::_('FEFHelp.select.genericlist', $options, $name, $params);
 		}
 
 		return implode($html);
@@ -695,7 +695,7 @@ abstract class BrowseView
 							$value = Text::_($value);
 						}
 
-						$options[] = HTMLHelper::_('FEFHelper.select.option', $key, $value, 'value', 'text');
+						$options[] = HTMLHelper::_('FEFHelp.select.option', $key, $value, 'value', 'text');
 					}
 				}
 			}
@@ -800,11 +800,11 @@ abstract class BrowseView
 
 		if (!empty($params['none']))
 		{
-			$options[] = HTMLHelper::_('FEFHelper.select.option', null, Text::_($params['none']));
+			$options[] = HTMLHelper::_('FEFHelp.select.option', null, Text::_($params['none']));
 
 			if ($params['none_as_zero'])
 			{
-				$options[] = HTMLHelper::_('FEFHelper.select.option', 0, Text::_($params['none']));
+				$options[] = HTMLHelper::_('FEFHelp.select.option', 0, Text::_($params['none']));
 			}
 		}
 
@@ -837,7 +837,7 @@ abstract class BrowseView
 				$value = Text::_($value);
 			}
 
-			$options[] = HTMLHelper::_('FEFHelper.select.option', $item->{$params['key_field']}, $value);
+			$options[] = HTMLHelper::_('FEFHelp.select.option', $item->{$params['key_field']}, $value);
 		}
 
 		if ($cache)
