@@ -399,16 +399,16 @@ abstract class BrowseView
 	 * - readonly Render as a readonly field with hidden inputs? Overrides 'disabled'. Default: false
 	 * - onchange Custom onchange handler. Overrides fof.autosubmit. Default: NULL (use fof.autosubmit).
 	 *
-	 * @param          $name
-	 * @param   array  $options
-	 * @param          $currentValue
-	 * @param   array  $params
+	 * @param   string       $name
+	 * @param   array        $options
+	 * @param   string|null  $currentValue
+	 * @param   array        $params
 	 *
 	 * @return string
 	 *
 	 * @since 3.3.0
 	 */
-	public static function genericSelect(string $name, array $options, string $currentValue, array $params = []): string
+	public static function genericSelect(string $name, array $options, ?string $currentValue, array $params = []): string
 	{
 		$params = array_merge([
 			'format.depth'   => 0,
