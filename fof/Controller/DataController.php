@@ -33,9 +33,9 @@ class DataController extends Controller
 	 * Variables that should be taken in account while working with the cache. You can set them in Controller
 	 * constructor or inside onBefore* methods
 	 *
-	 * @var false|array
+	 * @var  null|array
 	 */
-	protected $cacheParams = false;
+	protected $cacheParams = null;
 
 	/**
 	 * An associative array for required ACL privileges per task. For example:
@@ -233,6 +233,7 @@ class DataController extends Controller
 		$this->getModel()->savestate($saveState);
 
 		// Display the view
+		$this->cacheParams = $this->cacheParams ?: null;
 		$this->display(in_array('browse', $this->cacheableTasks), $this->cacheParams);
 	}
 
@@ -274,6 +275,7 @@ class DataController extends Controller
 		}
 
 		// Display the view
+		$this->cacheParams = $this->cacheParams ?: null;
 		$this->display(in_array('read', $this->cacheableTasks), $this->cacheParams);
 	}
 
@@ -315,6 +317,7 @@ class DataController extends Controller
 		}
 
 		// Display the view
+		$this->cacheParams = $this->cacheParams ?: null;
 		$this->display(in_array('add', $this->cacheableTasks), $this->cacheParams);
 	}
 
@@ -382,6 +385,7 @@ class DataController extends Controller
 		}
 
 		// Display the view
+		$this->cacheParams = $this->cacheParams ?: null;
 		$this->display(in_array('edit', $this->cacheableTasks), $this->cacheParams);
 	}
 
