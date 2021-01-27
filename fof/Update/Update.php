@@ -54,9 +54,9 @@ class Update extends Model
 	 * update_sitename        The update site's name (description)
 	 * update_paramskey        The component parameters key which holds the license key in J3 (and a copy of it in J4)
 	 *
-	 * @param   array  $config
+	 * @param   array|Container|\ArrayAccess  $config
 	 */
-	public function __construct(array $config = [])
+	public function __construct($config = [])
 	{
 		$container = Container::getInstance('com_FOOBAR');
 
