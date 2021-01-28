@@ -28,7 +28,7 @@ class Created extends Observer
 	 *
 	 * @param   DataModel  $model
 	 */
-	public function onBeforeCheck(&$model)
+	public function onBeforeCheck(DataModel &$model)
 	{
 		$model->addSkipCheckField('created_on');
 		$model->addSkipCheckField('created_by');
@@ -38,7 +38,7 @@ class Created extends Observer
 	 * @param   DataModel  $model
 	 * @param   \stdClass  $dataObject
 	 */
-	public function onBeforeCreate(&$model, &$dataObject)
+	public function onBeforeCreate(DataModel &$model, &$dataObject)
 	{
 		// Handle the created_on field
 		if ($model->hasField('created_on'))

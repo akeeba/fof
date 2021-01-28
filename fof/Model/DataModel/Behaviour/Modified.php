@@ -29,7 +29,7 @@ class Modified extends Observer
 	 *
 	 * @param   DataModel  $model
 	 */
-	public function onBeforeCheck(&$model)
+	public function onBeforeCheck(DataModel &$model)
 	{
 		$model->addSkipCheckField('modified_on');
 		$model->addSkipCheckField('modified_by');
@@ -39,7 +39,7 @@ class Modified extends Observer
 	 * @param   DataModel  $model
 	 * @param   \stdClass  $dataObject
 	 */
-	public function onBeforeUpdate(&$model, &$dataObject)
+	public function onBeforeUpdate(DataModel &$model, &$dataObject)
 	{
 		// Make sure we're not modifying a locked record
 		$userId = $model->getContainer()->platform->getUser()->id;

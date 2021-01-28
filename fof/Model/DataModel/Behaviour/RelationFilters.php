@@ -11,6 +11,7 @@ defined('_JEXEC') || die;
 
 use FOF40\Event\Observer;
 use FOF40\Model\DataModel;
+use JDatabaseQuery;
 use Joomla\Registry\Registry;
 
 class RelationFilters extends Observer
@@ -20,11 +21,11 @@ class RelationFilters extends Observer
 	 * automatic query filters based on model relations.
 	 *
 	 * @param   DataModel  &$model  The model which calls this event
-	 * @param   \JDatabaseQuery      &$query  The query we are manipulating
+	 * @param   JDatabaseQuery      &$query  The query we are manipulating
 	 *
 	 * @return  void
 	 */
-	public function onAfterBuildQuery(&$model, &$query)
+	public function onAfterBuildQuery(DataModel &$model, JDatabaseQuery &$query)
 	{
 		$relationFilters = $model->getRelationFilters();
 

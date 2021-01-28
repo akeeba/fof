@@ -29,7 +29,7 @@ class Access extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onAfterBuildQuery(&$model, &$query)
+	public function onAfterBuildQuery(DataModel &$model, JDatabaseQuery &$query)
 	{
 		// Make sure the field actually exists
 		if (!$model->hasField('access'))
@@ -45,11 +45,11 @@ class Access extends Observer
 	 * filters.
 	 *
 	 * @param   DataModel &$model  The model which was called
-	 * @param   array     &$keys   The keys used to locate the record which was loaded
+	 * @param   mixed     &$keys   The keys used to locate the record which was loaded
 	 *
 	 * @return  void
 	 */
-	public function onAfterLoad(&$model, &$keys)
+	public function onAfterLoad(DataModel &$model, &$keys)
 	{
 		// Make sure we have a DataModel
 		if (!($model instanceof DataModel))

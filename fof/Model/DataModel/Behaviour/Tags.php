@@ -39,7 +39,7 @@ class Tags extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onBeforeCreate(&$model, &$dataObject)
+	public function onBeforeCreate(DataModel &$model, &$dataObject)
 	{
 		$tagField = $model->getBehaviorParam('tagFieldName', 'tags');
 
@@ -54,7 +54,7 @@ class Tags extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onBeforeUpdate(&$model, &$dataObject)
+	public function onBeforeUpdate(DataModel &$model, &$dataObject)
 	{
 		$tagField = $model->getBehaviorParam('tagFieldName', 'tags');
 
@@ -70,7 +70,7 @@ class Tags extends Observer
 	 *
 	 * @throws  \Exception  Error message if failed to store tags
 	 */
-	public function onAfterSave(&$model)
+	public function onAfterSave(DataModel &$model)
 	{
 		$tagField = $model->getBehaviorParam('tagFieldName', 'tags');
 
@@ -110,7 +110,7 @@ class Tags extends Observer
 	 *
 	 * @throws  \Exception  Error message if failed to detele tags
 	 */
-	public function onAfterDelete(&$model, $oid)
+	public function onAfterDelete(DataModel &$model, $oid)
 	{
 		$this->tagsHelper->typeAlias = $model->getContentType();
 
@@ -129,7 +129,7 @@ class Tags extends Observer
 	 * @return  void
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onAfterBind(&$model, &$data)
+	public function onAfterBind(DataModel &$model, &$data)
 	{
 		$tagField = $model->getBehaviorParam('tagFieldName', 'tags');
 
@@ -151,7 +151,7 @@ class Tags extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onAfterPublish(&$model)
+	public function onAfterPublish(DataModel &$model)
 	{
 		$model->updateUcmContent();
 	}
@@ -163,7 +163,7 @@ class Tags extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onAfterUnpublish(&$model)
+	public function onAfterUnpublish(DataModel &$model)
 	{
 		$model->updateUcmContent();
 	}

@@ -30,7 +30,7 @@ class ContentHistory extends Observer
 	 *
 	 * @return  boolean  True to allow saving without an error
 	 */
-	public function onAfterSave(&$model)
+	public function onAfterSave(DataModel &$model)
 	{
 		$model->checkContentType();
 
@@ -57,7 +57,7 @@ class ContentHistory extends Observer
 	 *
 	 * @return  boolean  True to allow the deletion
 	 */
-	public function onBeforeDelete(&$model, $oid)
+	public function onBeforeDelete(DataModel &$model, $oid)
 	{
 		$componentParams = $model->getContainer()->params;
 
@@ -81,7 +81,7 @@ class ContentHistory extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onAfterPublish(&$model)
+	public function onAfterPublish(DataModel &$model)
 	{
 		$model->updateUcmContent();
 	}
@@ -93,7 +93,7 @@ class ContentHistory extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onAfterUnpublish(&$model)
+	public function onAfterUnpublish(DataModel &$model)
 	{
 		$model->updateUcmContent();
 	}

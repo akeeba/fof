@@ -25,7 +25,7 @@ class Filters extends Observer
 	 *
 	 * @return  void
 	 */
-	public function onAfterBuildQuery(&$model, &$query)
+	public function onAfterBuildQuery(DataModel &$model, JDatabaseQuery &$query)
 	{
 		$tableKey = $model->getIdFieldName();
 		$db = $model->getDbo();
