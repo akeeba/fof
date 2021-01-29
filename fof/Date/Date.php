@@ -87,13 +87,13 @@ class Date extends DateTime
 	/**
 	 * Constructor.
 	 *
-	 * @param   string               $date  String in a format accepted by strtotime(), defaults to "now".
+	 * @param   string|null          $date  String in a format accepted by strtotime(), defaults to "now".
 	 * @param   string|DateTimeZone  $tz    Time zone to be used for the date. Might be a string or a DateTimeZone
 	 *                                      object.
 	 *
 	 * @throws Exception
 	 */
-	public function __construct(string $date = 'now', $tz = null)
+	public function __construct(?string $date = 'now', $tz = null)
 	{
 		// Create the base GMT and server time zone objects.
 		if (empty(self::$gmt) || empty(self::$stz))
@@ -117,7 +117,7 @@ class Date extends DateTime
 
 		// On PHP 7.1 and later use an integer timestamp, without microseconds, to preserve backwards compatibility.
 		// See http://php.net/manual/en/migration71.incompatible.php#migration71.incompatible.datetime-microseconds
-		if ($date === 'now')
+		if (($date === 'now') || empty($date))
 		{
 			$date = time();
 		}
