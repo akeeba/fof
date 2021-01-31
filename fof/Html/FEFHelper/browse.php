@@ -517,14 +517,14 @@ HTML;
 	 *
 	 * @since   3.3.0
 	 */
-	public static function sort(string $title, string $order, string $direction = 'asc', string $selected = '',
+	public static function sort(string $title, string $order, ?string $direction = 'asc', string $selected = '',
 	                            ?string $task = null, string $new_direction = 'asc', string $tip = '',
 	                            ?string $form = null): string
 	{
 		HTMLHelper::_('behavior.core');
 		HTMLHelper::_('bootstrap.popover');
 
-		$direction = strtolower($direction);
+		$direction = strtolower($direction ?? 'asc');
 		$icon      = ['akion-android-arrow-dropup', 'akion-android-arrow-dropdown'];
 		$index     = (int) ($direction === 'desc');
 
