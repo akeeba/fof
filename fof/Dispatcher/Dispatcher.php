@@ -197,7 +197,7 @@ class Dispatcher
 			}
 		}
 
-		if (($status === false))
+		if ($status === false)
 		{
 			if ($this->container->platform->isCli())
 			{
