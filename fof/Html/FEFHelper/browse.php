@@ -364,11 +364,13 @@ abstract class FEFHelpBrowse
 	 *
 	 * @return string
 	 */
-	public static function order(string $orderingField, string $order, string $class = 'input-sm',
+	public static function order(string $orderingField, ?string $order, string $class = 'input-sm',
 	                             string $icon = 'akion-android-more-vertical',
 	                             string $inactiveIcon = 'akion-android-more-vertical',
 	                             DataViewInterface $view = null): string
 	{
+		$order = $order ?? 'asc';
+
 		/** @var \FOF40\View\DataView\Html $view */
 		if (is_null($view))
 		{
