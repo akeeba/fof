@@ -337,4 +337,34 @@ class AesTest extends FOFTestCase
 			$this->markTestSkipped('OpenSSL is not supported on this system');
 		}
 	}
+
+	/**
+	 * Tests whether content encrypted with FOF3 can be decrypted.
+	 *
+	 * This is the same test as FOF4, cross-checking we didn't cock something up.
+	 *
+	 * @covers \FOF30\Encrypt\Aes
+	 *
+	 * @return  void
+	 */
+	public function testCryptCrossCompatibility()
+	{
+		$password = 'jPwIOTJdPrUYPNuYFXHIi1YmnlYNOCkdxS1BN5tAr7Ebc7jRXb6OCpaKLXIy3geQ';
+		$clearText = 'The quick brown fox jumped over the lazy dog';
+		$fof3EncryptedCBC = '/I7Fmu3gy1bOb3OhGyz5rfN3mG9wAuFh68bCSwkgGNfW0xZHsoX9ALnbaHcpuN9eFNJU0Pjt7TakC0G00X8+qg==';
+		$fof3EncryptedEBC = 'kWY6hJ/a+xkh9xoMLStw5fakqrWOdKrg57sXRK9BOjDlkJoxQ7AbBQELR2BUOS975QNquFJoG4XGYhVsTg8r6A==';
+
+		$aes   = new Aes('', 128, 'cbc');
+		$aes->setPassword($password);
+		$decrypted = rtrim($aes->decryptString($fof3EncryptedCBC), "\0");
+
+		$this->assertEquals($clearText, $decrypted, "Cannot decrypt a string encrypted with CBC on FOF 3 using the same key");
+
+		$aes   = new Aes('', 128, 'ebc');
+		$aes->setPassword($password);
+		$decrypted = rtrim($aes->decryptString($fof3EncryptedEBC), "\0");
+
+		$this->assertEquals($clearText, $decrypted, "Cannot decrypt a string encrypted with EBC on FOF 3 using the same key");
+	}
+
 }
