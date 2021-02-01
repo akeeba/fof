@@ -29,6 +29,24 @@ interface RenderInterface
 	function getInformation(): stdClass;
 
 	/**
+	 * Performs initialisation.
+	 *
+	 * This is where you load your CSS and JavaScript frameworks. Only load the common code that the view's static
+	 * assets will definitely depend on.
+	 *
+	 * This runs at the top of the View's display() method, before ony onBefore* handlers. Any files inserted to the
+	 * Joomla document / WebAssetManager by this method CAN plausibly be removed by code in the view or any view event
+	 * handlers in plugins.
+	 *
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
+	 *
+	 * @return  void
+	 * @since   4.0.0
+	 */
+	function initialise(string $view, string $task): void;
+
+	/**
 	 * Echoes any HTML to show before the view template
 	 *
 	 * @param   string  $view  The current view

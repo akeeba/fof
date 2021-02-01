@@ -52,7 +52,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function setOption(string $key, string $value): void
+	public function setOption(string $key, string $value): void
 	{
 		$this->optionsRegistry->set($key, $value);
 	}
@@ -64,7 +64,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function setOptions(array $options): void
+	public function setOptions(array $options): void
 	{
 		foreach ($options as $key => $value)
 		{
@@ -80,7 +80,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  mixed  The parameter value
 	 */
-	function getOption(string $key, $default = null)
+	public function getOption(string $key, $default = null)
 	{
 		return $this->optionsRegistry->get($key, $default);
 	}
@@ -90,7 +90,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  stdClass
 	 */
-	function getInformation(): stdClass
+	public function getInformation(): stdClass
 	{
 		$classParts = explode('\\', get_class($this));
 
@@ -102,6 +102,27 @@ abstract class RenderBase implements RenderInterface
 	}
 
 	/**
+	 * Performs initialisation.
+	 *
+	 * This is where you load your CSS and JavaScript frameworks. Only load the common code that the view's static
+	 * assets will definitely depend on.
+	 *
+	 * This runs at the top of the View's display() method, before ony onBefore* handlers. Any files inserted to the
+	 * Joomla document / WebAssetManager by this method CAN plausibly be removed by code in the view or any view event
+	 * handlers in plugins.
+	 *
+	 * @param   string  $view  The current view
+	 * @param   string  $task  The current task
+	 *
+	 * @return  void
+	 * @since   4.0.0
+	 */
+	public function initialise(string $view, string $task): void
+	{
+		$this->loadCustomCss();
+	}
+
+	/**
 	 * Echoes any HTML to show before the view template
 	 *
 	 * @param   string  $view  The current view
@@ -109,9 +130,8 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function preRender(string $view, string $task): void
+	public function preRender(string $view, string $task): void
 	{
-		$this->loadCustomCss();
 	}
 
 	/**
@@ -122,7 +142,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function postRender(string $view, string $task): void
+	public function postRender(string $view, string $task): void
 	{
 	}
 
@@ -136,7 +156,7 @@ abstract class RenderBase implements RenderInterface
 	 *
 	 * @return  void
 	 */
-	function renderCategoryLinkbar(): void
+	public function renderCategoryLinkbar(): void
 	{
 		throw new LogicException(sprintf('Renderer class %s must implement the %s method', get_class($this), __METHOD__));
 	}

@@ -90,6 +90,15 @@ class Html extends Raw implements DataViewInterface
 		return $title;
 	}
 
+	protected function initialise(): void
+	{
+		$view = $this->getName();
+		$task = $this->task;
+
+		$renderer = $this->container->renderer;
+		$renderer->initialise($view, $task);
+	}
+
 	/**
 	 * Runs before rendering the view template, echoing HTML to put before the
 	 * view template's generated HTML
@@ -98,7 +107,7 @@ class Html extends Raw implements DataViewInterface
 	 *
 	 * @throws \Exception
 	 */
-	protected function preRender()
+	protected function preRender(): void
 	{
 		$view = $this->getName();
 		$task = $this->task;
@@ -130,7 +139,7 @@ class Html extends Raw implements DataViewInterface
 	 *
 	 * @throws \Exception
 	 */
-	protected function postRender()
+	protected function postRender(): void
 	{
 		$view = $this->getName();
 		$task = $this->task;

@@ -50,15 +50,7 @@ class FEF extends Joomla
 		$this->enabled  = class_exists('AkeebaFEFHelper');
 	}
 
-	/**
-	 * Echoes any HTML to show before the view template. We override it to load the CSS files required for FEF.
-	 *
-	 * @param   string  $view  The current view
-	 * @param   string  $task  The current task
-	 *
-	 * @return  void
-	 */
-	function preRender(string $view, string $task): void
+	public function initialise(string $view, string $task): void
 	{
 		$useReset    = $this->getOption('fef_reset', true);
 		$useFEF      = $this->getOption('load_fef', true);
@@ -74,9 +66,12 @@ class FEF extends Joomla
 			}
 		}
 
-		parent::preRender($view, $task);
-	}
+		// Unlike the Joomla renderer we do NOT load jQuery unless explicitly enabled
+		$loadJQuery = $this->getOption('load_jquery', false);
+		$this->setOption('load_jquery', $loadJQuery ? 1 : 0);
 
+		parent::initialise($view, $task);
+	}
 
 	/**
 	 * Opens the FEF styling wrapper element. Our component's output will be inside this wrapper.

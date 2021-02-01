@@ -499,6 +499,8 @@ class View
 	 */
 	public function display($tpl = null)
 	{
+		$this->initialise();
+
 		$eventName = 'onBefore' . ucfirst($this->doTask);
 		$this->triggerEvent($eventName, [$tpl]);
 
@@ -1382,12 +1384,25 @@ class View
 	}
 
 	/**
-	 * Runs before rendering the view template, echoing HTML to put before the
-	 * view template's generated HTML
+	 * Runs before rendering the view template, echoing HTML to put before the view template's generated HTML.
+	 *
+	 * This method runs **before** executing the OnBefore* view events.
 	 *
 	 * @return void
 	 */
-	protected function preRender()
+	protected function initialise(): void
+	{
+
+	}
+
+	/**
+	 * Runs before rendering the view template, echoing HTML to put before the view template's generated HTML.
+	 *
+	 * This method runs **after** executing the OnBefore* view events.
+	 *
+	 * @return void
+	 */
+	protected function preRender(): void
 	{
 		// You need to implement this in children classes
 	}
@@ -1398,7 +1413,7 @@ class View
 	 *
 	 * @return  void
 	 */
-	protected function postRender()
+	protected function postRender(): void
 	{
 		// You need to implement this in children classes
 	}
