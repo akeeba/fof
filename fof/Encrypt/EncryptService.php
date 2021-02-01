@@ -96,13 +96,14 @@ class EncryptService
 	/**
 	 * Decrypt the ciphertext, prefixed by ###AES128###, and return the plaintext.
 	 *
-	 * @param string $data The ciphertext, prefixed by ###AES128###
+	 * @param   string  $data    The ciphertext, prefixed by ###AES128###
+	 * @param   bool    $legacy  Use legacy key expansion? Use it to decrypt data encrypted with FOF 3.
 	 *
 	 * @return  string  The plaintext data
 	 *
 	 * @since   3.3.2
 	 */
-	public function decrypt(string $data): string
+	public function decrypt(string $data, bool $legacy = false): string
 	{
 		if (substr($data, 0, 12) != '###AES128###')
 		{
@@ -116,7 +117,7 @@ class EncryptService
 			return $data;
 		}
 
-		$decrypted = $this->aes->decryptString($data, true);
+		$decrypted = $this->aes->decryptString($data, true, $legacy);
 
 		// Decrypted data is null byte padded. We have to remove the padding before proceeding.
 		return rtrim($decrypted, "\0");

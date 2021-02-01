@@ -133,10 +133,11 @@ class Aes
 	 * @param   string  $stringToDecrypt  The ciphertext to decrypt. The first 16 bytes of the raw string must contain
 	 *                                    the IV (initialisation vector).
 	 * @param   bool    $base64encoded    Should I Base64-decode the data before decryption?
+	 * @param   bool    $legacy           Use legacy key expansion? Use it to decrypt date encrypted with FOF 3.
 	 *
 	 * @return   string  The plain text string
 	 */
-	public function decryptString(string $stringToDecrypt, bool $base64encoded = true): string
+	public function decryptString(string $stringToDecrypt, bool $base64encoded = true, bool $legacy = false): string
 	{
 		if ($base64encoded)
 		{
@@ -155,7 +156,7 @@ class Aes
 
 		// Get the IV, the key and decrypt the string
 		$iv  = substr($stringToDecrypt, 0, $iv_size);
-		$key = $this->getExpandedKey($iv_size, $iv);
+		$key = $this->getExpandedKey($iv_size, $iv, $legacy);
 
 		return $this->adapter->decrypt($stringToDecrypt, $key);
 	}
@@ -169,12 +170,13 @@ class Aes
 	 * @param   int     $blockSize  Block size in bytes. This should always be 16 since we only deal with 128-bit AES
 	 *                              here.
 	 * @param   string  $iv         The initial vector. Use Randval::generate($blockSize)
+	 * @param   bool    $legacy     Use legacy key expansion? Only ever use to decrypt data encrypted with FOF 3.
 	 *
 	 * @return string
 	 */
-	public function getExpandedKey(int $blockSize, string $iv): string
+	public function getExpandedKey(int $blockSize, string $iv, bool $legacy = false): string
 	{
-		$key        = $this->key;
+		$key        = $legacy ? $this->legacyKey($this->key) : $this->key;
 		$passLength = strlen($key);
 
 		if (function_exists('mb_strlen'))
@@ -188,6 +190,41 @@ class Aes
 			$salt       = $this->adapter->resizeKey($iv, 16);
 			$key        = hash_pbkdf2('sha256', $this->key, $salt, $iterations, $blockSize, true);
 		}
+
+		return $key;
+	}
+
+	/**
+	 * Process the password the same way FOF 3 did.
+	 *
+	 * This is a very bad idea. It would get a password, calculate its SHA-256 and throw half of it away. The rest was
+	 * used as the encryption key. In FOF 4 we use a far more sane key expansion using PKKDF2 with SHA-256 and 1000
+	 * rounds.
+	 *
+	 * @param   $password
+	 *
+	 * @return  string
+	 * @since   4.0.0
+	 */
+	private function legacyKey($password): string
+	{
+		$passLength = strlen($password);
+
+		if (function_exists('mb_strlen'))
+		{
+			$passLength = mb_strlen($password, 'ASCII');
+		}
+
+		if ($passLength === 32)
+		{
+			return $password;
+		}
+
+		// Legacy mode was doing something stupid, requiring a key of 32 bytes. DO NOT USE LEGACY MODE!
+		// Legacy mode: use the sha256 of the password
+		$key = hash('sha256', $password, true);
+		// We have to trim or zero pad the password (we end up throwing half of it away in Rijndael-128 / AES...)
+		$key = $this->adapter->resizeKey($key, $this->adapter->getBlockSize());
 
 		return $key;
 	}

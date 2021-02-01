@@ -272,6 +272,31 @@ As a result of the above we changed the following methods:
 Moreover, we have removed the unused $strength parameter from Encrypt\Aes and also modified 
 Encrypt\AesAdapter\AdapterInterface::setEncryptionMode accordingly.
 
+### The EncryptService uses PBKDF2 with 1000 rounds of SHA-256 by default
+
+In FOF 3 the EncryptService (the `crypto` service in the container) used a very bad key expansion policy. It would take
+your long password, calculate its SHA-256, throw half of it away(!) and use the remainder as the AES-128 key. This was
+not very secure.
+
+In FOF 4 we use PBKDF2 using 1000 rounds of SHA-256 for key expansion, i.e. convert a password to a usable key for
+AES-128 encryption. However, this is incompatible with the old way and your data cannot be decrypted as-is.
+
+The `crypto` service's decrypt() method accepts a second parameter which allows you to decrypt legacy data. We recommend
+using it like this, e.g. for JSON-encoded data:
+
+```php
+// Try decrypting using the modern method first
+$decrypted = @json_decode($this->container->crypto->decrypt($encrypted), true);
+
+// Try decrypting with the legacy method if the previous attempt failed
+if (!is_array($decrypted))
+{
+    $decrypted = @json_decode($this->container->crypto->decrypt($encrypted, true), true);
+}
+
+// Check for failure to decrypt the data as you'd always do, consume the decrypted data if it's valid.
+```
+
 ## PHP 7.2 and method declarations
 
 Since the minimum version has been raised to PHP 7.2 we are also changing the method declarations to include parameter
