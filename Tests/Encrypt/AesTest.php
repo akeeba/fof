@@ -59,54 +59,11 @@ class AesTest extends FOFTestCase
 			'sha256',
 		];
 
-		// Create a mock php function with all prerequisites met
-		$phpfunc = new MockPhpfunc();
-		$phpfunc->setFunctions($functions_enabled);
-		$phpfunc->setOpenSSLAlgorithms($algorithms);
-		$phpfunc->setHashAlgorithms($hashAlgos);
-
 		// Just for code coverage
 		$this->assertNotNull(Aes::isSupported());
 
 		// All prerequisites met = supported
-		$this->assertTrue(Aes::isSupported($phpfunc), 'All prerequisites met = supported');
-
-		// No hash algorithms = not supported
-		$phpfunc->setHashAlgorithms([]);
-		$this->assertFalse(Aes::isSupported($phpfunc), 'No hash algorithms = not supported');
-		$phpfunc->setHashAlgorithms($hashAlgos);
-
-		// No OpenSSL algorithms = not supported
-		$phpfunc->setOpenSSLAlgorithms([]);
-		$this->assertFalse(Aes::isSupported($phpfunc), 'No OpenSSL algorithms = not supported');
-		$phpfunc->setOpenSSLAlgorithms($algorithms);
-
-		// No required functions available = not supported
-		$phpfunc->setFunctions([]);
-		$this->assertFalse(Aes::isSupported($phpfunc), 'No required functions available = not supported');
-		$phpfunc->setFunctions($functions_enabled);
-
-		// Test with diminishing amounts of supported OpenSSL algos (=not supported) – for code coverage
-		$temp = $algorithms;
-
-		while (!empty($temp))
-		{
-			array_pop($temp);
-			$phpfunc->setOpenSSLAlgorithms($temp);
-			$this->assertFalse(Aes::isSupported($phpfunc));
-		}
-
-		$phpfunc->setOpenSSLAlgorithms($algorithms);
-
-		// Test with diminishing amounts of supported functions (=not supported) – for code coverage
-		$temp = $functions_enabled;
-
-		while (!empty($temp))
-		{
-			array_pop($temp);
-			$phpfunc->setFunctions($temp);
-			$this->assertFalse(Aes::isSupported($phpfunc));
-		}
+		$this->assertTrue(Aes::isSupported(), 'All prerequisites met = supported');
 	}
 
 	/**
@@ -119,23 +76,10 @@ class AesTest extends FOFTestCase
 			$this->markTestSkipped('OpenSSL is not supported on this system');
 		}
 
-		$phpfunc = new MockPhpfunc();
-		$phpfunc->setFunctions([
-			'openssl_get_cipher_methods',
-			'openssl_random_pseudo_bytes',
-			'openssl_cipher_iv_length',
-			'openssl_encrypt',
-			'openssl_decrypt',
-			'hash',
-			'hash_algos',
-			'base64_encode',
-			'base64_decode',
-		]);
-
 		// Regular string
-		$str = 'THATISINSANE';
+		$str = 'This is a regular string';
 
-		$aes = new Aes('cbc', $phpfunc);
+		$aes = new Aes('cbc');
 		$aes->setPassword('x123456789012345678901234567890x');
 		$es  = $aes->encryptString($str, true);
 		$ds  = $aes->decryptString($es, true);
@@ -171,23 +115,10 @@ class AesTest extends FOFTestCase
 			$this->markTestSkipped('OpenSSL is not supported on this system');
 		}
 
-		$phpfunc = new MockPhpfunc();
-		$phpfunc->setFunctions([
-			'openssl_get_cipher_methods',
-			'openssl_random_pseudo_bytes',
-			'openssl_cipher_iv_length',
-			'openssl_encrypt',
-			'openssl_decrypt',
-			'hash',
-			'hash_algos',
-			'base64_encode',
-			'base64_decode',
-		]);
-
 		// Regular string
-		$str = 'THATISINSANE';
+		$str = 'This is a regular string';
 
-		$aes = new Aes('ecb', $phpfunc);
+		$aes = new Aes('ecb');
 		$aes->setPassword('x123456789012345678901234567890x');
 		$es  = $aes->encryptString($str, true);
 		$ds  = $aes->decryptString($es, true);
@@ -214,7 +145,7 @@ class AesTest extends FOFTestCase
 	}
 
 	/**
-	 * Tests whether content encrypted with one adapter can be decrypted with another adapter
+	 * Tests whether content encrypted with FOF3 can be decrypted with FOF4
 	 *
 	 * @covers \FOF40\Encrypt\Aes
 	 *
@@ -222,6 +153,21 @@ class AesTest extends FOFTestCase
 	 */
 	public function testCryptCrossCompatibility()
 	{
-		$this->markTestSkipped('Reimplement this test once we add more adapters');
+		$password = 'jPwIOTJdPrUYPNuYFXHIi1YmnlYNOCkdxS1BN5tAr7Ebc7jRXb6OCpaKLXIy3geQ';
+		$clearText = 'The quick brown fox jumped over the lazy dog';
+		$fof3EncryptedCBC = '/I7Fmu3gy1bOb3OhGyz5rfN3mG9wAuFh68bCSwkgGNfW0xZHsoX9ALnbaHcpuN9eFNJU0Pjt7TakC0G00X8+qg==';
+		$fof3EncryptedEBC = 'kWY6hJ/a+xkh9xoMLStw5fakqrWOdKrg57sXRK9BOjDlkJoxQ7AbBQELR2BUOS975QNquFJoG4XGYhVsTg8r6A==';
+
+		$aes   = new Aes('cbc');
+		$aes->setPassword($password);
+		$decrypted = rtrim($aes->decryptString($fof3EncryptedCBC), "\0");
+
+		$this->assertEquals($clearText, $decrypted, "Cannot decrypt a string encrypted with CBC on FOF 3 using the same key");
+
+		$aes   = new Aes('ebc');
+		$aes->setPassword($password);
+		$decrypted = rtrim($aes->decryptString($fof3EncryptedEBC), "\0");
+
+		$this->assertEquals($clearText, $decrypted, "Cannot decrypt a string encrypted with EBC on FOF 3 using the same key");
 	}
 }

@@ -238,10 +238,10 @@ class DataControllertest extends DatabaseTest
 		$container = new TestContainer([
 			'componentName' => 'com_fakeapp',
 			'session'       => new ClosureHelper([
-				'set' => function ($self, $key, $value, $namespace) use (&$sessionMock) {
+				'set' => function ($self, $key, $value = null, $namespace = 'default') use (&$sessionMock) {
 					$sessionMock[$namespace . '.' . $key] = $value;
 				},
-				'get' => function ($self, $key, $default, $namespace) use (&$sessionMock) {
+				'get' => function ($self, $key, $default = null, $namespace = 'default') use (&$sessionMock) {
 					$key = $namespace . '.' . $key;
 
 					if (isset($sessionMock[$key]))
@@ -303,10 +303,10 @@ class DataControllertest extends DatabaseTest
 				'returnurl' => $test['mock']['returnurl'] ? base64_encode($test['mock']['returnurl']) : '',
 			]),
 			'session'       => new ClosureHelper([
-				'set' => function ($self, $key, $value, $namespace) use (&$sessionMock) {
+				'set' => function ($self, $key, $value = null, $namespace = 'default') use (&$sessionMock) {
 					$sessionMock[$namespace . '.' . $key] = $value;
 				},
-				'get' => function ($self, $key, $default, $namespace) use (&$sessionMock) {
+				'get' => function ($self, $key, $default = null, $namespace = 'default') use (&$sessionMock) {
 					$key = $namespace . '.' . $key;
 
 					if (isset($sessionMock[$key]))
@@ -519,7 +519,7 @@ class DataControllertest extends DatabaseTest
 				'returnurl' => $test['mock']['returnurl'] ? base64_encode($test['mock']['returnurl']) : '',
 			]),
 			'session'       => new ClosureHelper([
-				'set' => function ($self, $key, $value, $namespace) use (&$sessionMock) {
+				'set' => function ($self, $key, $value = null, $namespace = 'default') use (&$sessionMock) {
 					$sessionMock[$namespace . '.' . $key] = $value;
 				},
 			]),

@@ -611,7 +611,7 @@ class View
 
 		if ($result instanceof \Exception)
 		{
-			$this->container->platform->showErrorPage($e);
+			$this->container->platform->showErrorPage($result);
 		}
 
 		return $result;
