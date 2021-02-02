@@ -406,8 +406,10 @@ class Platform extends BasePlatform
 	 *
 	 * @return  Date object
 	 */
-	public function getDate(string $time = 'now', $tzOffset = null, $locale = true): Date
+	public function getDate(?string $time = 'now', $tzOffset = null, $locale = true): Date
 	{
+		$time = $time ?? $this->getDbo()->getNullDate() ?? 'now';
+
 		if (!is_string($time) && (!is_object($time) || !($time instanceof DateTime)))
 		{
 			throw new InvalidArgumentException(sprintf('%s::%s -- $time expects a string or a DateTime object', __CLASS__, __METHOD__));

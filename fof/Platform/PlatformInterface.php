@@ -242,7 +242,7 @@ interface PlatformInterface
 	 *
 	 * @return  Date object
 	 */
-	public function getDate(string $time = 'now', $tzOffset = null, $locale = true): Date;
+	public function getDate(?string $time = 'now', $tzOffset = null, $locale = true): Date;
 
 	/**
 	 * Return the Language instance of the CMS/application
