@@ -18,7 +18,9 @@ use FOF40\Container\Container;
  *
  * wrapper_id           The ID of the wrapper DIV. Default: akeeba-rendered-fef
  * linkbar_style        Style for linkbars: joomla3|classic. Default: joomla3
- * load_fef             Load FEF CSS and JS? Set to false if you are loading it outside the renderer. Default: true
+ * load_fef             Load FEF CSS? Set to false if you are loading it outside the renderer. Default: true
+ * load_fef_js          Load FEF JS? Set to false if you are loading it outside the rendered. Default: true
+ * load_fef_js_minimal  Load the minimal FEF JS (without features depending on FEF CSS)? Default: inverse of load_fef
  * fef_reset            Should I reset the CSS styling for basic HTML elements inside the FEF container? Default: true
  * fef_dark             Should I load the FEF Dark Mode CSS and supporting JS? Default: 0 (no). Options: 1 (yes and
  *                      activate immediately), -1 (include dark.css but not enable by default, also enables auto mode
@@ -52,17 +54,22 @@ class FEF extends Joomla
 
 	public function initialise(string $view, string $task): void
 	{
-		$useReset    = $this->getOption('fef_reset', true);
-		$useFEF      = $this->getOption('load_fef', true);
+		$useReset    = $this->getOption('fef_reset', 1);
+		$useFefCss   = $this->getOption('load_fef', 1);
+		$useFefJs    = $this->getOption('load_fef_js', 1);
+		$minimalJs   = $this->getOption('load_fef_js_minimal', $useFefCss ? 0 : 1);
 		$useDarkMode = $this->getOption('fef_dark', 0);
 
-		if ($useFEF && class_exists('AkeebaFEFHelper'))
+		if (class_exists('AkeebaFEFHelper'))
 		{
-			\AkeebaFEFHelper::load($useReset);
-
-			if ($useDarkMode != 0)
+			if ($useFefCss)
 			{
-				$this->container->template->addCSS('media://fef/css/dark.min.css');
+				\AkeebaFEFHelper::loadCSSFramework($useReset, $useDarkMode != 0);
+			}
+
+			if ($useFefJs)
+			{
+				\AkeebaFEFHelper::loadJSFramework($minimalJs);
 			}
 		}
 
