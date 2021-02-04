@@ -1,13 +1,15 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
-// Required to load FOF and Joomla!
+use FOF30\Autoloader\Autoloader;
+use FOF30\Database\Installer;
 use FOF30\Tests\Helpers\TravisLogger;
 
+// Required to load FOF and Joomla!
 define('_JEXEC', 1);
 define('JDEBUG', 0);
 
@@ -32,9 +34,9 @@ if (!class_exists('FOF30\\Autoloader\\Autoloader'))
 require_once __DIR__ . '/../fof/Utils/helpers.php';
 
 // Tell the FOF autoloader where to load test classes from (very useful for stubs!)
-\FOF30\Autoloader\Autoloader::getInstance()->addMap('FOF30\\Tests\\', __DIR__);
-\FOF30\Autoloader\Autoloader::getInstance()->addMap('Fakeapp\\', __DIR__ . '/Stubs/Fakeapp');
-\FOF30\Autoloader\Autoloader::getInstance()->addMap('Dummyapp\\', __DIR__ . '/Stubs/Dummyapp');
+Autoloader::getInstance()->addMap('FOF30\\Tests\\', __DIR__);
+Autoloader::getInstance()->addMap('Fakeapp\\', __DIR__ . '/Stubs/Fakeapp');
+Autoloader::getInstance()->addMap('Dummyapp\\', __DIR__ . '/Stubs/Dummyapp');
 
 TravisLogger::reset();
 TravisLogger::log(4, 'Log reset');
@@ -53,12 +55,6 @@ TravisLogger::log(4, 'Autoloader included');
 ini_set('zend.ze1_compatibility_mode', '0');
 error_reporting(E_ALL & ~E_STRICT);
 ini_set('display_errors', 1);
-
-// Fix magic quotes on PHP 5.3
-if (version_compare(PHP_VERSION, '5.4.0', 'lt'))
-{
-	ini_set('magic_quotes_runtime', 0);
-}
 
 // Fixed timezone to preserve our sanity
 @date_default_timezone_set('UTC');
@@ -155,6 +151,7 @@ $config->set('host', $fofTestConfig['host']);
 $config->set('user', $fofTestConfig['user']);
 $config->set('password', $fofTestConfig['password']);
 $config->set('db', $fofTestConfig['db']);
+$config->set('prefix', 'jos_');
 $config->set('tmp_path', JPATH_ROOT . '/tmp');
 $config->set('log_path', JPATH_ROOT . '/logs');
 // Despite its name, this is the session STORAGE, NOT the session HANDLER. Because that somehow makes sense. NOT.
@@ -163,9 +160,9 @@ $config->set('session_handler', 'none');
 // We need to set up the JSession object
 require_once 'Stubs/Session/FakeSession.php';
 $sessionHandler = new JSessionHandlerFake();
-$session = JSession::getInstance('none', array(), $sessionHandler);
-$input = new JInputCli();
-$dispatcher = new JEventDispatcher();
+$session        = JSession::getInstance('none', [], $sessionHandler);
+$input          = new JInputCli();
+$dispatcher     = new JEventDispatcher();
 $session->initialise($input, $dispatcher);
 JFactory::$session = $session;
 
@@ -176,6 +173,10 @@ try
 {
 	TravisLogger::log(4, 'Checking if core tables are there');
 	$db->setQuery('SHOW COLUMNS FROM `jos_assets`')->execute();
+}
+catch (JDatabaseExceptionConnecting $e)
+{
+	throw $e;
 }
 catch (Exception $e)
 {
@@ -210,8 +211,24 @@ catch (Exception $e)
 TravisLogger::log(4, 'Create test specific tables');
 
 // Let's use our class to create the schema
-$importer = new \FOF30\Database\Installer(JFactory::getDbo(), JPATH_TESTS . '/Stubs/schema');
+$importer = new Installer(JFactory::getDbo(), JPATH_TESTS . '/Stubs/schema');
 $importer->updateSchema();
 unset($importer);
 
 TravisLogger::log(4, 'Boostrap ended');
+
+/**
+ * The Joomla DB driver throws warnings on destruction if error reporting includes E_WARNING.
+ *
+ * The correct way to debug failing tests is using phpStorm which does report the stacktrace even when error reporting
+ * is disabled. Therefore allowing the global PHP configuration to affect the unit tests is a bad idea.
+ */
+error_reporting(0);
+
+/**
+ * We need to include the configuration.php file for Joomla to find the JConfig class.
+ *
+ * There are obviously more elegant ways to do that but I don't want to (re)implement the CLI application code just to
+ * run unit tests.
+ */
+require_once JPATH_SITE . '/configuration.php';

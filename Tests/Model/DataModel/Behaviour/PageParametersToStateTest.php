@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -79,7 +79,7 @@ class PageParametersToStateTest extends DatabaseTest
         $pageparams = new PageParametersToState($dispatcher);
 
         $fakeApp = new ClosureHelper(array(
-            'getPageParameters' => function() use($test){
+            'getParams' => function() use($test){
                 return new \JRegistry($test['params']);
             }
         ));

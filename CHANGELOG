@@ -1,3 +1,50 @@
+FOF 3.7.2
+================================================================================
++ Joomla HTMLHelper::_('FEFHelper.select.smartlist') for J3 and J4 searchable drop-downs
+~ Vastly improved user selection field common template, covering J3 and J4 with and without FEF
+# [HIGH] Cache Cleaner was broken in Joomla 4
+# [HIGH] Common user show view template: fixed unknown class
+
+FOF 3.7.1
+================================================================================
+- Remove PHP 7.1 support, add PHP 8.0 support
+# [MEDIUM] Can't use view template engines which use `.something.php` extensions [gh-694]
+# [HIGH] Session storage issues on Joomla 4 beta 6 after major change in how the session works
+
+FOF 3.7.0
+================================================================================
++ Support akview and aktask as alternatives to view and task [gh-692]
++ Improved support for nullable DATETIME fields
++ 'nullable' condition for the database installer
+# [LOW] DataController: successful copy message when no items were selected
+# [LOW] Accidental optional before required parameter in FOF30\Utils\FEFHelper\BrowseView
+
+FOF 3.6.2
+================================================================================
+
+# [HIGH] Joomla 4 changed the names of class constants without prior notice, causing a massive backwards compatibility break
+~ FEF Renderer: do not load dark mode JavaScript (it's not used)
+
+FOF 3.6.1
+================================================================================
+
+~ Dummy scaffolding options in the Factory to prevent upgrades from freaking out
+
+FOF 3.6.0
+================================================================================
++ Automatic template suffixes based on Joomla! version _and_ renderer used
++ Platform now has an isApi() method to detect the Joomla! 4 API application
++ Joomla 4 console application now treated the same way as a Joomla CLI application
+- Removed obsolete CLI tool
+- Removed deprecated Form package and Scaffolding feature
+- Removed the LESS package
+- Removed the HAL package and the ability of the JSON view to render HAL documents natively
+- Removed mcrypt support
+~ Drop support for PHP 5.6, 7.0
+~ Drop support for PHP Joomla! 3.8
+~ Renderer changes
+# [LOW] Joomla 4 broke b/c with the Controller's setRedirect
+
 FOF 3.5.4
 ================================================================================
 + Draggable reordering support in Joomla 4

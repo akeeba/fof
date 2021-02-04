@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -43,7 +43,7 @@ class DataControllerStub extends DataController
         {
             $func = $this->mockedMethods[$method];
 
-            // Let's pass an instance of ourself, so we can manipulate other closures
+            // Let's pass an instance of ourselves, so we can manipulate other closures
             array_unshift($args, $this);
 
             return call_user_func_array($func, $args);

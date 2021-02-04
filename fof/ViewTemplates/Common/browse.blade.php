@@ -1,9 +1,11 @@
 <?php
 /**
  * @package     FOF
- * @copyright   Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright   Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license     GNU GPL version 3 or later
  */
+
+defined('_JEXEC') || die;
 
 /**
  * Template for Browse views using the FEF renderer
@@ -42,11 +44,7 @@
  *      not be removed.
  *
  * Do not override any other section. The overridden sections should be closed with -at-override instead of -at-stop.
- */
-
-defined('_JEXEC') or die();
-
-/** @var  FOF30\View\DataView\Html  $this */
+ *//** @var  FOF30\View\DataView\Html  $this */
 
 $ajaxOrderingSupport = $this->hasAjaxOrderingSupport();
 ?>

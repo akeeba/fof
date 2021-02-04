@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -41,7 +41,7 @@ class RelationStub extends Relation
     }
 
     /**
-     * Returns the count subquery for DataModel's has() and whereHas() methods.
+     * Returns the count sub-query for DataModel's has() and whereHas() methods.
      */
     public function getCountSubquery()
     {

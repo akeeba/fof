@@ -8,13 +8,13 @@ that you learned with Joomla.
 
 ## Requirements
 
-FOF 4 requires Joomla 3.8 or later and PHP 5.6 or later. It will not work on older Joomla and PHP versions.
+FOF 3.6 and later requires Joomla 3.9 or later and PHP 7.1 or later. It will not work on older Joomla and PHP versions.
 
 ## FOF 2.x, 3.x and Joomla 3
 
 Joomla 3 includes a very, **VERY** old version of FOF we have stopped developing in 2015 and declared End of Life in 
 2016. Please don't use that! That's what FOF looked liked in the early 2010's. This repository has a far better, much 
-newer version. And, yes, both versions can run side by side.
+newer version. And yes; both versions can run side by side.
 
 This warrants an explanation of the extensions you see in the Extensions, Manage page with FOF in their name:
 
@@ -22,7 +22,7 @@ This warrants an explanation of the extensions you see in the Extensions, Manage
   `libraries/fof`. It cannot and MUST NOT be removed. If you delete it your site will break – this is still used by some
   core Joomla components, including Two Factor Authentication. 
 * **F0F** (type: Library). Note that this is F-zero-F. That's an old version of FOF 2.x, renamed so it can run next to
-  Joomla's even more outdated version. [It was a rather complicated affair](https://www.akeebabackup.com/news/1558-info-about-fof-and-f0f.html).
+  Joomla's even more outdated version. [It was a rather complicated affair](https://www.akeeba.com/news/1558-info-about-fof-and-f0f.html).
   It's installed in `libraries/f0f` (f-zero-f). It should no longer be necessary but please do check first if you have
   any very old extension still using it.
 * **file_fof30** (type: File). This is the current version of FOF 3. It's installed in  `libraries/fof30`. Do NOT remove
@@ -33,8 +33,7 @@ This warrants an explanation of the extensions you see in the Extensions, Manage
   will break your site.
 * **User - FOF Token Management** (type: Plugin). This will be shipped with our extensions in 2020 to manage token
   authentication for JSON API calls in Joomla 3. Please do not remove if you're using any Akeeba-branded extension.
-  Also, cool fact: this code has already been contributed to Joomla 4 for its brand new API application, meaning all
-  developers can use it automatically, without having to use FOF for their extensions.
+  Also, cool fact: this code has already been contributed to Joomla 4 for its brand new API application.
 
 ## FOF and Joomla 4
 
@@ -49,3 +48,15 @@ as possible.
 ## Using FOF for your extensions
 
 If you want to use FOF to build your extensions and include it with them please read our Wiki for more information.
+
+## Mind the deprecated / removed stuff!
+
+While our original goal was to follow semantic versioning, a combination of reasons led to us deciding to remove features in a backwards incompatible manner without bumping the major version of FOF.
+
+Backwards incompatible changes and major new features are detailed in the [`UPGRADE NOTES.md`](UPGRADE NOTES.md) in FOF's repository.
+
+The following features present in earlier versions of FOF 3 are scheduled for removal:
+
+* `FOF30\Utils\FEFHelper\Html`. Use `FEFHelper.browse` through Joomla's `HtmlHelper` class instead.
+* `FOF30\Utils\StringHelper`. Use the replacements advised in the docblocks.
+* `FOF30\Utils\InstallScript`. Use `FOF30\Utils\InstallScript\Component` instead.

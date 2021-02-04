@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -21,17 +21,6 @@ require_once 'SwitchFactoryDataprovider.php';
  */
 class SwitchFactoryTest extends FOFTestCase
 {
-    /**
-     * @group           SwitchFactory
-     * @covers          FOF30\Factory\SwitchFactory::__construct
-     */
-    public function test__construct()
-    {
-        $factory = new SwitchFactory(static::$container);
-
-        $this->assertTrue(ReflectionHelper::getValue($factory, 'formLookupInOtherSide'));
-    }
-
     /**
      * @group           SwitchFactory
      * @covers          FOF30\Factory\SwitchFactory::controller

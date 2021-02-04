@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -149,7 +149,7 @@ class FOFTestCase extends ApplicationTestCase
 	 * will also fail because we assume you were testing to see that an error did occur when it was
 	 * supposed to.
 	 *
-	 * If passed without argument, the array is initialized if it hsn't been already
+	 * If passed without argument, the array is initialized if it hasn't been already
 	 *
 	 * @param   mixed  $error  The JException object to expect.
 	 *

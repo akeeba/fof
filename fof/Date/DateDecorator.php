@@ -1,16 +1,16 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
 namespace FOF30\Date;
 
+defined('_JEXEC') || die;
+
 use DateTime;
 use JDatabaseDriver;
-
-defined('_JEXEC') or die;
 
 /**
  * This decorator will get any DateTime descendant and turn it into a FOF30\Date\Date compatible class. If the methods
@@ -109,7 +109,12 @@ class DateDecorator extends Date
 
 	public function format($format, $local = false, $translate = true)
 	{
-		return $this->decorated->format($format, $local, $translate);
+		if (($this->decorated instanceof Date) || ($this->decorated instanceof \Joomla\CMS\Date\Date))
+		{
+			return $this->decorated->format($format, $local, $translate);
+		}
+
+		return $this->decorated->format($format);
 	}
 
 	public function getOffsetFromGmt($hours = false)

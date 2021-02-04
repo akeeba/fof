@@ -1,23 +1,26 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') || die;
 
 use FOF30\Container\Container;
 use FOF30\Encrypt\Randval;
 use FOF30\Utils\ArrayHelper;
 use FOF30\Utils\Phpfunc;
+use Joomla\CMS\Application\BaseApplication;
+use Joomla\CMS\Application\CliApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Authentication\Authentication;
 use Joomla\CMS\Authentication\AuthenticationResponse;
 use Joomla\CMS\Factory as JFactory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Form\Form as JForm;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Plugin\CMSPlugin as JPlugin;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
 {
@@ -29,16 +32,36 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
  *
  * Allows users to manage their API access tokens for FOF-powered extensions. The token can be used with FOF's
  * Transparent Authentication.
+ *
+ * The token can be provided in one of three ways:
+ * - Authorization: Bearer <token> HTTP header. The Bearer string is case-sensitive and the space is required.
+ * - X-FOF-Token: <token> HTTP header. Recommended.
+ * - _fofToken GET parameter in the URL. Strongly NOT recommended because it leaks the token in the access log.
  */
-class PlgUserFoftoken extends JPlugin
+class PlgUserFoftoken extends CMSPlugin
 {
+	/**
+	 * Joomla database object
+	 *
+	 * @var  JDatabaseDriver
+	 */
+	protected $db;
+
+	/**
+	 * Joomla application object
+	 *
+	 * @var  BaseApplication|CMSApplication|CliApplication
+	 */
+	protected $app;
+
 	/**
 	 * Joomla XML form contexts where we need to inject our token management interface.
 	 *
 	 * @var  array
 	 */
 	private $allowedContexts = [
-		'com_users.profile', 'com_users.user', 'com_users.registration', 'com_admin.profile',
+		'com_users.profile', 'com_users.user', 'com_admin.profile',
+		// 'com_users.registration',
 	];
 
 	/**
@@ -118,7 +141,7 @@ class PlgUserFoftoken extends JPlugin
 
 		try
 		{
-			$db    = JFactory::getDbo();
+			$db    = $this->db;
 			$query = $db->getQuery(true)
 				->select([
 					$db->qn('profile_key'), $db->qn('profile_value'),
@@ -141,7 +164,105 @@ class PlgUserFoftoken extends JPlugin
 			// We suppress any database error. It means we get no token saved by default.
 		}
 
+		/**
+		 * Modify the data for display in the user profile view page in the frontend.
+		 *
+		 * It's important to note that we deliberately not register HTMLHelper methods to do the
+		 * same (unlike e.g. the actionlogs system plugin) because the names of our fields are too
+		 * generic and we run the risk of creating naming clashes. Instead, we manipulate the data
+		 * directly.
+		 */
+		if (($context === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		{
+			$pluginData = $data->{$this->profileKeyPrefix} ?? [];
+			$enabled    = $pluginData['enabled'] ?? false;
+			$token      = $pluginData['token'] ?? '';
+
+			$pluginData['enabled'] = Text::_('JDISABLED');
+			$pluginData['token']   = '';
+
+			if ($enabled)
+			{
+				$algo                  = $this->getAlgorithmFromFormFile();
+				$pluginData['enabled'] = Text::_('JENABLED');
+				$pluginData['token']   = $this->getTokenForDisplay($userId, $token, $algo);
+			}
+
+			$data->{$this->profileKeyPrefix} = $pluginData;
+		}
+
 		return true;
+	}
+
+	/**
+	 * Get the token algorithm as defined in the form file
+	 *
+	 * We use a simple RegEx match instead of loading the form for better performance.
+	 *
+	 * @return  string  The configured algorithm, 'sha256' as a fallback if none is found.
+	 */
+	private function getAlgorithmFromFormFile(): string
+	{
+		$algo = 'sha256';
+
+		$file     = __DIR__ . '/foftoken/foftoken.xml';
+		$contents = @file_get_contents($file);
+
+		if ($contents === false)
+		{
+			return $algo;
+		}
+
+		if (preg_match('/\s*algo=\s*"\s*([a-z0-9]+)\s*"/i', $contents, $matches) !== 1)
+		{
+			return $algo;
+		}
+
+		return $matches[1];
+	}
+
+	/**
+	 * Returns the token formatted suitably for the user to copy.
+	 *
+	 * @param   integer  $userId     The user id for token
+	 * @param   string   $tokenSeed  The token seed data stored in the database
+	 * @param   string   $algorithm  The hashing algorithm to use for the token (default: sha256)
+	 *
+	 * @return  string
+	 */
+	private function getTokenForDisplay(int $userId, string $tokenSeed, string $algorithm = 'sha256'): string
+	{
+		if (empty($tokenSeed))
+		{
+			return '';
+		}
+
+		try
+		{
+			$siteSecret = $this->app->get('secret');
+		}
+		catch (\Exception $e)
+		{
+			$jConfig    = JFactory::getConfig();
+			$siteSecret = $jConfig->get('secret');
+		}
+
+		// NO site secret? You monster!
+		if (empty($siteSecret))
+		{
+			return '';
+		}
+
+		$rawToken  = base64_decode($tokenSeed);
+		$tokenHash = hash_hmac($algorithm, $rawToken, $siteSecret);
+		$message   = base64_encode("$algorithm:$userId:$tokenHash");
+
+		if ($userId != JFactory::getUser()->id)
+		{
+			$message = '';
+		}
+
+		return $message;
 	}
 
 	/**
@@ -177,6 +298,12 @@ class PlgUserFoftoken extends JPlugin
 		$this->loadLanguage();
 		JForm::addFormPath(dirname(__FILE__) . '/foftoken');
 		$form->loadFile('foftoken', false);
+
+		// Remove the Reset field when displaying the user profile form
+		if (($form->getName() === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		{
+			$form->removeField('reset', 'foftoken');
+		}
 
 		return true;
 	}
@@ -215,6 +342,18 @@ class PlgUserFoftoken extends JPlugin
 		// No FOF token data. Set the $noToken flag which results in a new token being generated.
 		if (!isset($data[$this->profileKeyPrefix]))
 		{
+			/**
+			 * Is the user being saved programmatically, without passing the user profile information? In this case I
+			 * do not want to accidentally try to generate a new token!
+			 *
+			 * We determine that by examining whether the FOF token field exists. If it does but it wasn't passed when
+			 * saving the user I know it's a programmatic user save and I have to ignore it.
+			 */
+			if ($this->hasTokenProfileFields($userId))
+			{
+				return true;
+			}
+
 			$noToken                       = true;
 			$data[$this->profileKeyPrefix] = [];
 		}
@@ -256,7 +395,7 @@ class PlgUserFoftoken extends JPlugin
 		}
 
 		// Remove existing FOF Token user profile values
-		$db    = JFactory::getDbo();
+		$db    = $this->db;
 		$query = $db->getQuery(true)
 			->delete($db->qn('#__user_profiles'))
 			->where($db->qn('user_id') . ' = ' . $db->q($userId))
@@ -287,12 +426,12 @@ class PlgUserFoftoken extends JPlugin
 	}
 
 	/**
-	 * Remove the FOF token when the user account is deleted from the datase.
+	 * Remove the FOF token when the user account is deleted from the database.
 	 *
 	 * This event is called after the user data is deleted from the database.
 	 *
 	 * @param   array    $user     Holds the user data
-	 * @param   boolean  $success  True if user was succesfully stored in the database
+	 * @param   boolean  $success  True if user was successfully stored in the database
 	 * @param   string   $msg      Message
 	 *
 	 * @return  bool
@@ -315,7 +454,7 @@ class PlgUserFoftoken extends JPlugin
 
 		try
 		{
-			$db    = JFactory::getDbo();
+			$db    = $this->db;
 			$query = $db->getQuery(true)
 				->delete($db->qn('#__user_profiles'))
 				->where($db->qn('user_id') . ' = ' . $db->q($userId))
@@ -344,18 +483,40 @@ class PlgUserFoftoken extends JPlugin
 	{
 		$token = '';
 
-		// Check for HTTP header "Authentication: Bearer <token>"
-		if (isset($_SERVER['HTTP_AUTHENTICATION']))
-		{
-			$authHeader = $_SERVER['HTTP_AUTHENTICATION'];
+		/**
+		 * First look for an HTTP Authorization header with the following format:
+		 * Authorization: Bearer <token>
+		 * Do keep in mind that Bearer is **case-sensitive**. Whitespace between Bearer and the
+		 * token, as well as any whitespace following the token is discarded.
+		 */
+		$authHeader = $this->app->input->server->get('HTTP_AUTHORIZATION', '', 'string');
 
-			if (substr($authHeader, 0, 7) == 'Bearer ')
+		// Apache specific fixes. See https://github.com/symfony/symfony/issues/19693
+		if (empty($authHeader) && \PHP_SAPI === 'apache2handler'
+			&& function_exists('apache_request_headers') && apache_request_headers() !== false)
+		{
+			$apacheHeaders = array_change_key_case(apache_request_headers(), CASE_LOWER);
+
+			if (array_key_exists('authorization', $apacheHeaders))
 			{
-				$parts  = explode(' ', $authHeader, 2);
-				$token  = $parts[1];
-				$filter = InputFilter::getInstance();
-				$token  = $filter->clean($token, 'BASE64');
+				$filter     = \Joomla\CMS\Filter\InputFilter::getInstance();
+				$authHeader = $filter->clean($apacheHeaders['authorization'], 'STRING');
 			}
+		}
+
+		// Check for HTTP header "Authentication: Bearer <token>"
+		if (!empty($authHeader) && substr($authHeader, 0, 7) == 'Bearer ')
+		{
+			$parts  = explode(' ', $authHeader, 2);
+			$token  = $parts[1];
+			$filter = InputFilter::getInstance();
+			$token  = $filter->clean($token, 'BASE64');
+		}
+
+		// Check for HTTP header "X-FOF-Token: <token>"
+		if (empty($token))
+		{
+			$token = $this->app->input->server->get('HTTP_X_FOF_TOKEN', '', 'string');
 		}
 
 		// Check for _fofToken query param
@@ -425,7 +586,7 @@ class PlgUserFoftoken extends JPlugin
 			return $response;
 		}
 
-		list($algo, $userId, $tokenHMAC) = $parts;
+		[$algo, $userId, $tokenHMAC] = $parts;
 
 		/**
 		 * Verify the HMAC algorithm described in the token is allowed
@@ -442,7 +603,7 @@ class PlgUserFoftoken extends JPlugin
 		 */
 		try
 		{
-			$siteSecret = JFactory::getApplication()->get('secret');
+			$siteSecret = $this->app->get('secret');
 		}
 		catch (Exception $e)
 		{
@@ -516,6 +677,39 @@ class PlgUserFoftoken extends JPlugin
 	}
 
 	/**
+	 * Does the user have the FOF Token profile fields?
+	 *
+	 * @param   int|null  $userId  The user we're interested in
+	 *
+	 * @return  bool  True if the user has FOF Token profile fields
+	 */
+	private function hasTokenProfileFields(?int $userId): bool
+	{
+		if (is_null($userId) || ($userId <= 0))
+		{
+			return false;
+		}
+
+		$db = $this->db;
+		$q  = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->qn('#__user_profiles'))
+			->where($db->qn('user_id') . ' = ' . $userId)
+			->where($db->qn('profile_key') . ' = ' . $db->q($this->profileKeyPrefix . '.token'));
+
+		try
+		{
+			$numRows = $db->setQuery($q)->loadResult() ?? 0;
+		}
+		catch (Exception $e)
+		{
+			return false;
+		}
+
+		return $numRows > 0;
+	}
+
+	/**
 	 * Returns an array with the default profile field values.
 	 *
 	 * This is used when saving the form data of a user (new or existing) without a token already set.
@@ -544,7 +738,7 @@ class PlgUserFoftoken extends JPlugin
 	{
 		try
 		{
-			$db    = JFactory::getDbo();
+			$db    = $this->db;
 			$query = $db->getQuery(true)
 				->select($db->qn('profile_value'))
 				->from($db->qn('#__user_profiles'))
@@ -570,7 +764,7 @@ class PlgUserFoftoken extends JPlugin
 	{
 		try
 		{
-			$db    = JFactory::getDbo();
+			$db    = $this->db;
 			$query = $db->getQuery(true)
 				->select($db->qn('profile_value'))
 				->from($db->qn('#__user_profiles'))

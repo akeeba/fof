@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -85,7 +85,6 @@ class ControllerTest extends ApplicationTestCase
         $this->assertEquals($check['name'], $name, sprintf($msg, 'Failed to set the name'));
         $this->assertEquals($check['autoroute'], $autoRoute, sprintf($msg, 'Failed to set the autoRouting'));
         $this->assertEquals($check['csrf'], $csrf, sprintf($msg, 'Failed to set the CSRF protection'));
-
     }
 
     /**
@@ -505,7 +504,7 @@ class ControllerTest extends ApplicationTestCase
 
         ReflectionHelper::setValue($controller, 'redirect', $test['mock']['redirect']);
 
-        // Let's save current app istances, I'll have to restore them later
+        // Let's save current app instances, I'll have to restore them later
         if(is_object(\JFactory::$application))
         {
             $oldapp = clone \JFactory::$application;
@@ -521,7 +520,7 @@ class ControllerTest extends ApplicationTestCase
 
         \JFactory::$application = $oldapp;
 
-        // If the redirection has been invoked, I have to nullify the result. In the real world I would be immediatly
+        // If the redirection has been invoked, I have to nullify the result. In the real world I would be immediately
         // redirected to another page.
         if($counter)
         {

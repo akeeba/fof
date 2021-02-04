@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   FOF
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 2, or later
  */
 
@@ -80,7 +80,7 @@ class DataModelCrudTest extends DatabaseTest
         $dispatcher = $model->getBehavioursDispatcher();
 
         // Let's attach a custom observer, so I can mock and check all the calls performed by the dispatcher
-        // P.A. The object is immediatly attached to the dispatcher, so I don't need to manually do that
+        // P.A. The object is immediately attached to the dispatcher, so I don't need to manually do that
         new ObserverClosure($dispatcher, array(
             'onBeforeSave' => function(&$subject, &$data) use ($test, &$dispEvents){
                 if($test['mock']['blankId']){
@@ -419,7 +419,7 @@ class DataModelCrudTest extends DatabaseTest
         $dispatcher = $model->getBehavioursDispatcher();
 
         // Let's attach a custom observer, so I can mock and check all the calls performed by the dispatcher
-        // P.A. The object is immediatly attached to the dispatcher, so I don't need to manually do that
+        // P.A. The object is immediately attached to the dispatcher, so I don't need to manually do that
         new ObserverClosure($dispatcher, array(
             'onBeforeLoad' => function(&$subject, &$keys) use ($test, &$beforeDisp){
                 if(!is_null($test['mock']['keys'])){
@@ -739,7 +739,7 @@ class DataModelCrudTest extends DatabaseTest
     /**
      * @group           DataModel
      * @group           DataModelCanDelete
-     * @covers          FOF30\Model\DataModel::canDelete
+     * @covers          \FOF30\Model\DataModel::canDelete
      * @dataProvider    DataModelCrudDataprovider::getTestCanDelete
      */
     public function testCanDelete($test, $check)
