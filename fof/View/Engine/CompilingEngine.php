@@ -145,7 +145,7 @@ abstract class CompilingEngine extends AbstractEngine implements EngineInterface
 		$prefix = array_shift($pathParts);
 
 		// If it's a legacy view, View, Views, or views prefix remove the 'tmpl' part
-		if ($prefix != 'ViewTemplates')
+		if (($prefix !== 'ViewTemplates') && ($prefix !== 'tmpl'))
 		{
 			unset($pathParts[1]);
 		}

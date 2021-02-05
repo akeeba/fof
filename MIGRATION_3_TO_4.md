@@ -104,6 +104,18 @@ A lot of the work done on FOF 3.4 and 4.0 revolves around using Akeeba Frontend 
 use it, and we do not have public documentation for it. If you do choose to use it please make sure that you are
 installing it the same way as FOF 4 (see above).
 
+## View template locations
+
+FOF 4 accepts the following directories under the component area's root folder for the view templates of a view named `Example` and they are searched in this order:
+
+* `ViewTemplates/Example` FOF 3 compatible. Deprecated.
+* `views/Example` Joomla 4 compatible — recommended
+* `view/Example/tmpl` Joomla 1.x, 2.x, 3.x compatible — NOT recommended and will be removed in FOF 5.
+
+The view template overrides in **all** cases are located in `<TEMPLATE FOLDER>/html/Example`, following the standard Joomla 1.5 or later convention. Template overrides have priority over extension files.
+
+The view template files can either be Blade (extension `.blade.php`, recommended) or pure PHP view templates (extension `.php`).
+
 ## Common Blade view templates
 
 FOF 4 ships with a ViewTemplates folder which contains common view templates. They use per-renderer extensions (see
