@@ -1,3 +1,11 @@
+FOF 3.7.3
+================================================================================
+~ Releasing the previous version without changes, due to server and CDN issues which resulted in inconsistent updates
++ Joomla HTMLHelper::_('FEFHelper.select.smartlist') for J3 and J4 searchable drop-downs
+~ Vastly improved user selection field common template, covering J3 and J4 with and without FEF
+# [HIGH] Cache Cleaner was broken in Joomla 4
+# [HIGH] Common user show view template: fixed unknown class
+
 FOF 3.7.2
 ================================================================================
 + Joomla HTMLHelper::_('FEFHelper.select.smartlist') for J3 and J4 searchable drop-downs
