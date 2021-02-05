@@ -99,6 +99,25 @@ class ViewManifestMigration
 				continue;
 			}
 
+			// Delete the metadata.xml and tmpl/*.xml files in the corresponding `views` subfolder
+			$killLegacyFile = $dest . '/' . $folderItem->getFilename() . '/metadata.xml';
+			$killLegacyFolder = $dest . '/' . $folderItem->getFilename() . '/tmpl';
+
+			if (!@is_file($killLegacyFile))
+			{
+				File::delete($killLegacyFile);
+			}
+
+			if (@file_exists($killLegacyFolder) && @is_dir($killLegacyFolder))
+			{
+				$files = Folder::files($killLegacyFolder, '\.xml$', false, true);
+
+				if (!empty($files))
+				{
+					File::delete($files);
+				}
+			}
+
 			$filesIterator = new \DirectoryIterator($folderItem->getPathname());
 
 			/** @var \DirectoryIterator $fileItem */
@@ -114,7 +133,8 @@ class ViewManifestMigration
 					continue;
 				}
 
-				$destPath     = $dest . '/' . $folderItem->getFilename();
+				$destPath     = $dest . '/' . $folderItem->getFilename() . (($fileItem->getFilename() == 'metadata.xml') ? '' : '/tmpl');
+
 				$destPathName = $destPath . '/' . $fileItem->getFilename();
 
 				Folder::create($destPath);
