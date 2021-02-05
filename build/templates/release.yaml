@@ -58,7 +58,7 @@ updates:
   -
     title: 'FOF 3.x Updates'
     connection: s3
-    directory: '/updates'
+    directory: 'updates'
     stream: 27
     base_name: 'fof3_file'
     formats:
