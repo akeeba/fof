@@ -285,16 +285,14 @@ class ViewTemplateFinder
 		// Add the requested side of the application
 		$requestedAdmin = ($parts['admin'] == -1) ? $isAdmin : $parts['admin'];
 
-		$paths[] = ($requestedAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/ViewTemplates/' . $parts['view'];
 		$paths[] = ($requestedAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/tmpl/' . $parts['view'];
-		$paths[] = ($requestedAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/View/' . $parts['view'] . '/tmpl';
+		$paths[] = ($requestedAdmin ? $componentPaths['admin'] : $componentPaths['site']) . '/ViewTemplates/' . $parts['view'];
 
 		// Add the other side of the application for "any:" URIs
 		if ($parts['admin'] == -1)
 		{
-			$paths[] = ($requestedAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/ViewTemplates/' . $parts['view'];
 			$paths[] = ($requestedAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/tmpl/' . $parts['view'];
-			$paths[] = ($requestedAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/View/' . $parts['view'] . '/tmpl';
+			$paths[] = ($requestedAdmin ? $componentPaths['site'] : $componentPaths['admin']) . '/ViewTemplates/' . $parts['view'];
 		}
 
 		// Add extra paths

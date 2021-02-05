@@ -10,7 +10,9 @@ namespace FOF40\InstallScript;
 defined('_JEXEC') || die;
 
 use Exception;
+use FOF40\Container\Container;
 use FOF40\Database\Installer as DatabaseInstaller;
+use FOF40\Utils\ViewManifestMigration;
 use JDatabaseDriver;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filesystem\File;
@@ -142,6 +144,26 @@ class Component extends BaseInstaller
 	 * @var   boolean
 	 */
 	protected $isPaid = false;
+
+	/**
+	 * Should I copy XML manifests from the tmpl and ViewTemplates folders into the views folder on Joomla 3?
+	 *
+	 * This copies `tmpl/<VIEWNAME>/*.xml` and `ViewTemplates/<VIEWNAME>/*.xml` to `views/<VIEWNAME>/tmpl/*.xml` on
+	 * Joomla 3.
+	 *
+	 * @var bool
+	 */
+	protected $migrateJoomla4MenuXMLFiles = true;
+
+	/**
+	 * Should I remove the legacy `views` folder on Joomla 4?
+	 *
+	 * This removes both the front- and backend `views` folder. Recommended when `$migrateJoomla4MenuXMLFiles` is also
+	 * true.
+	 *
+	 * @var bool
+	 */
+	protected $removeLegacyViewsFolder = true;
 
 	/**
 	 * Module installer script constructor.
@@ -284,6 +306,24 @@ class Component extends BaseInstaller
 
 		// Remove obsolete files and folders
 		$this->removeFilesAndFolders($removeFiles);
+
+		// Migrate view manifest XML files
+		if ($this->migrateJoomla4MenuXMLFiles)
+		{
+			$container = Container::getInstance($this->componentName, [
+				'tempInstance' => true
+			]);
+			ViewManifestMigration::migrateJoomla4MenuXMLFiles($container);
+		}
+
+		// Remove the legacy Joomla 3 `views` folder
+		if ($this->removeLegacyViewsFolder)
+		{
+			$container = Container::getInstance($this->componentName, [
+				'tempInstance' => true
+			]);
+			ViewManifestMigration::removeJoomla3LegacyViews($container);
+		}
 
 		// Make sure everything is copied properly
 		$this->bugfixFilesNotCopiedOnUpdate($parent);

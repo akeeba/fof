@@ -108,13 +108,22 @@ installing it the same way as FOF 4 (see above).
 
 FOF 4 accepts the following directories under the component area's root folder for the view templates of a view named `Example` and they are searched in this order:
 
-* `ViewTemplates/Example` FOF 3 compatible. Deprecated.
-* `views/Example` Joomla 4 compatible — recommended
-* `view/Example/tmpl` Joomla 1.x, 2.x, 3.x compatible — NOT recommended and will be removed in FOF 5.
+* `tmpl/Example` Joomla 4 compatible — recommended, has priority
+* `ViewTemplates/Example` FOF 3 compatible. No longer recommended.
+
+View template files will **NOT** be located in the following directories (b/c break):
+* `views/Example/tmpl` Joomla 1.x, 2.x, 3.x compatible. Already removed in FOF 3.
+* `View/Example/tmpl` FOF 3 legacy. Removed in FOF 4.
 
 The view template overrides in **all** cases are located in `<TEMPLATE FOLDER>/html/Example`, following the standard Joomla 1.5 or later convention. Template overrides have priority over extension files.
 
 The view template files can either be Blade (extension `.blade.php`, recommended) or pure PHP view templates (extension `.php`).
+
+## View metadata XML
+
+Creating frontend and backend menus in Joomla 3 and 4 requires a view metadata XML. In Joomla 3 it's supposed to be located in `views/Example/tmpl` whereas in Joomla 4 it can be located either there or in `tmpl/Example`. However, the folder `views/Example/tmpl` creates a problem with Joomla 4's view template overrides feature in its template manager.
+
+As a solution we propose putting your view metadata XML files in the `tmpl/Example` folder. When your component is installed on Joomla 3 these will copied into the `view/Example/tmpl` folders as needed. Moreover, when installing your component in Joomla 4 the entire `views` folder will be automatically removed to avoid problems. This behavior is controlled by the `migrateJoomla4MenuXMLFiles` and `removeLegacyViewsFolder` properties of the component post-installation script. 
 
 ## Common Blade view templates
 

@@ -1,0 +1,125 @@
+<?php
+/**
+ * @package   FOF
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 2, or later
+ */
+
+namespace FOF40\Utils;
+
+
+use FOF40\Container\Container;
+use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Folder;
+
+class ViewManifestMigration
+{
+	/**
+	 * Migrates Joomla 4 view XML manifests into their Joomla 3 locations
+	 *
+	 * @param   Container  $container  The FOF 4 container of the component we'll be migrating.
+	 *
+	 * @return  void
+	 */
+	public static function migrateJoomla4MenuXMLFiles(Container $container): void
+	{
+		// This only applies to Joomla 3
+		if (version_compare(JVERSION, '3.999.999', 'gt'))
+		{
+			return;
+		}
+
+		// Map modern to legacy locations
+		$maps = [
+			$container->frontEndPath . '/tmpl'          => $container->frontEndPath . '/views',
+			$container->frontEndPath . '/ViewTemplates' => $container->frontEndPath . '/views',
+			$container->backEndPath . '/tmpl'           => $container->backEndPath . '/views',
+			$container->backEndPath . '/ViewTemplates'  => $container->backEndPath . '/views',
+		];
+
+		foreach ($maps as $source => $dest)
+		{
+			try
+			{
+				self::migrateViewXMLManifests($source, $dest);
+			}
+			catch (\UnexpectedValueException $e)
+			{
+				// This means the source folder doesn't exist. No problem!
+			}
+		}
+	}
+
+	/**
+	 * Removes the legacy `views` paths from the front- and backend of the component on Joomla 4 and later versions.
+	 *
+	 * @param   Container  $container
+	 *
+	 * @return  void
+	 */
+	public static function removeJoomla3LegacyViews(Container $container): void
+	{
+		// This only applies to Joomla 4
+		if (version_compare(JVERSION, '3.999.999', 'le'))
+		{
+			return;
+		}
+
+		$legacyLocations = [
+			$container->frontEndPath . '/views',
+			$container->backEndPath . '/views',
+		];
+
+		foreach ($legacyLocations as $path)
+		{
+			if (!is_dir($path))
+			{
+				continue;
+			}
+
+			Folder::delete($path);
+		}
+	}
+
+	/**
+	 * Migrates view manifest XML files from the source to the dest folder.
+	 *
+	 * @param   string  $source  Source folder to scan, i.e. the `tmpl` or `ViewTemplates` folder.
+	 * @param   string  $dest    Target folder to copy the files to, i.e. the legacy `views` folder.
+	 */
+	private static function migrateViewXMLManifests(string $source, string $dest): void
+	{
+		$di = new \DirectoryIterator($source);
+
+		/** @var \DirectoryIterator $folderItem */
+		foreach ($di as $folderItem)
+		{
+			if ($folderItem->isDot() || !$folderItem->isDir())
+			{
+				continue;
+			}
+
+			$filesIterator = new \DirectoryIterator($folderItem->getPathname());
+
+			/** @var \DirectoryIterator $fileItem */
+			foreach ($filesIterator as $fileItem)
+			{
+				if ($fileItem->isDir())
+				{
+					continue;
+				}
+
+				if ($fileItem->getExtension() != 'xml')
+				{
+					continue;
+				}
+
+				$destPath     = $dest . '/' . $folderItem->getFilename();
+				$destPathName = $destPath . '/' . $fileItem->getFilename();
+
+				Folder::create($destPath);
+				File::copy($fileItem->getPathname(), $destPathName);
+			}
+		}
+	}
+}
