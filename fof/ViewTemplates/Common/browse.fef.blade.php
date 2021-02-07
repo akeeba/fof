@@ -97,6 +97,11 @@ $ajaxOrderingSupport = $this->hasAjaxOrderingSupport();
     {{-- Put your additional hidden fields in this section --}}
 @stop
 
+@section('browse-ordering-bar')
+    @jhtml('FEFHelp.browse.orderjs', $this->lists->order)
+    @jhtml('FEFHelp.browse.orderheader', $this)
+@stop
+
 @yield('browse-page-top')
 
 {{-- Administrator form for browse views --}}
@@ -107,8 +112,7 @@ $ajaxOrderingSupport = $this->hasAjaxOrderingSupport();
             @yield('browse-filters')
         </div>
         <div class="akeeba-filter-bar akeeba-filter-bar--right">
-            @jhtml('FEFHelp.browse.orderjs', $this->lists->order)
-            @jhtml('FEFHelp.browse.orderheader', $this)
+            @yield('browse-ordering-bar')
         </div>
     </section>
 

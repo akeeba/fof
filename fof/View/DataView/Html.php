@@ -22,6 +22,30 @@ class Html extends Raw implements DataViewInterface
 	/** @var string The translation key for the default page title */
 	public $defaultPageTitle;
 
+	/**
+	 * Should FEFHelpBrowse::orderheader() render the pagination (items per page) dropdown?
+	 *
+	 * @var   bool
+	 * @since 4.0.0
+	 */
+	public $showBrowsePagination = true;
+
+	/**
+	 * Should FEFHelpBrowse::orderheader() render the ordering direction dropdown?
+	 *
+	 * @var   bool
+	 * @since 4.0.0
+	 */
+	public $showBrowseOrdering = true;
+
+	/**
+	 * Should FEFHelpBrowse::orderheader() render the order by item dropdown?
+	 *
+	 * @var   bool
+	 * @since 4.0.0
+	 */
+	public $showBrowseOrderBy = true;
+
 	public function setPageTitle()
 	{
 		if (!$this->container->platform->isFrontend())

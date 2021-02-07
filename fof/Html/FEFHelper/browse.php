@@ -678,6 +678,15 @@ JS;
 			$view = BrowseView::getViewFromBacktrace();
 		}
 
+		$showBrowsePagination = $view->showBrowsePagination ?? true;
+		$showBrowseOrdering   = $view->showBrowseOrdering ?? true;
+		$showBrowseOrderBy    = $view->showBrowseOrderBy ?? true;
+
+		if (!$showBrowsePagination && !$showBrowseOrdering && !$showBrowseOrderBy)
+		{
+			return '';
+		}
+
 		if (empty($sortFields))
 		{
 			/** @var DataModel $model */
@@ -738,7 +747,11 @@ JS;
 			],
 		]);
 
-		return <<<HTML
+		$html = '';
+
+		if ($showBrowsePagination)
+		{
+			$html .= <<< HTML
 		<div class="akeeba-filter-element akeeba-form-group">
 			<label for="limit" class="element-invisible">
 				$limitLabel
@@ -746,6 +759,12 @@ JS;
 			{$pagination->getLimitBox()}
 		</div>
 
+HTML;
+		}
+
+		if ($showBrowseOrdering)
+		{
+			$html .= <<< HTML
 		<div class="akeeba-filter-element akeeba-form-group">
 			<label for="directionTable" class="element-invisible">
 				$orderingDecr
@@ -753,6 +772,12 @@ JS;
 			$directionSelect
 		</div>
 
+HTML;
+		}
+
+		if ($showBrowseOrderBy)
+		{
+			$html .= <<< HTML
 		<div class="akeeba-filter-element akeeba-form-group">
 			<label for="sortTable" class="element-invisible">
 				{$sortByLabel}
@@ -761,6 +786,9 @@ JS;
 		</div>
 
 HTML;
+		}
+
+		return $html;
 	}
 
 	/**
