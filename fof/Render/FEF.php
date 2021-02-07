@@ -64,12 +64,12 @@ class FEF extends Joomla
 		{
 			if ($useFefCss)
 			{
-				\AkeebaFEFHelper::loadCSSFramework($useReset, $useDarkMode != 0);
+				\AkeebaFEFHelper::loadCSSFramework((bool) $useReset, (bool) $useDarkMode != 0);
 			}
 
 			if ($useFefJs)
 			{
-				\AkeebaFEFHelper::loadJSFramework($minimalJs);
+				\AkeebaFEFHelper::loadJSFramework((bool) $minimalJs);
 			}
 		}
 
