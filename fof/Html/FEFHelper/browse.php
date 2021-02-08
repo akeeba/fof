@@ -729,8 +729,7 @@ JS;
 			'id'          => 'directionTable',
 			'list.select' => $order_Dir,
 			'list.attr'   => [
-				'class'    => 'input-medium custom-select',
-				'onchange' => 'Joomla.orderTable()',
+				'class'    => 'input-medium custom-select akeebaCommonEventsOnChangeOrderTable',
 			],
 		]);
 
@@ -742,8 +741,7 @@ JS;
 			'id'          => 'sortTable',
 			'list.select' => $sortBy,
 			'list.attr'   => [
-				'class'    => 'input-medium custom-select',
-				'onchange' => 'Joomla.orderTable()',
+				'class'    => 'input-medium custom-select akeebaCommonEventsOnChangeOrderTable',
 			],
 		]);
 

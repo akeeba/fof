@@ -7,11 +7,7 @@
 
 defined('_JEXEC') || die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;use Joomla\CMS\Language\Text;use Joomla\CMS\Uri\Uri;
 
 /**
  * User entry field, allowing selection of a user from a modal dialog
@@ -61,18 +57,17 @@ use Joomla\Utilities\ArrayHelper;
  * @var \FOF40\View\DataView\DataViewInterface $this
  */
 
-$id = isset($id) ? $id : $field;
-$readonly = isset($readonly) ? ($readonly ? true : false) : false;
+$id          = isset($id) ? $id : $field;
+$readonly    = isset($readonly) ? ($readonly ? true : false) : false;
 $placeholder = isset($placeholder) ? Text::_($placeholder) : Text::_('JLIB_FORM_SELECT_USER');
-$userID = $item->getFieldValue($field, 0);
-$user = $item->getContainer()->platform->getUser($userID);
-$width = isset($width) ? $width : 800;
-$height = isset($height) ? $height : 500;
-$class = isset($class) ? $class : '';
-$size = isset($size) ? $size : 0;
-$onchange = isset($onchange) ? $onchange : '';
-
-$userName = (is_object($user) && ($user instanceof \Joomla\CMS\User\User) && !$user->guest) ? $user->name : Text::_('JLIB_FORM_SELECT_USER');
+$userID      = $item->getFieldValue($field, 0);
+$user        = $item->getContainer()->platform->getUser($userID);
+$width       = isset($width) ? $width : 800;
+$height      = isset($height) ? $height : 500;
+$class       = isset($class) ? $class : '';
+$size        = isset($size) ? $size : 0;
+$onchange    = isset($onchange) ? $onchange : '';
+$userName    = (is_object($user) && ($user instanceof \Joomla\CMS\User\User) && !$user->guest) ? $user->name : Text::_('JLIB_FORM_SELECT_USER');
 
 if (!$readonly)
 {

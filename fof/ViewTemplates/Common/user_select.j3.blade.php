@@ -43,7 +43,6 @@ $width       = isset($width) ? $width : 800;
 $height      = isset($height) ? $height : 500;
 $class       = isset($class) ? $class : '';
 $size        = isset($size) ? $size : 0;
-$onchange        = isset($onchange) ? $onchange : '';
 
 $uri = new JUri('index.php?option=com_users&view=users&layout=modal&tmpl=component');
 $uri->setVar('required', (isset($required) ? ($required ? 1 : 0) : 0));

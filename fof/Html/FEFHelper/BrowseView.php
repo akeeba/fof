@@ -173,10 +173,15 @@ abstract class BrowseView
 		$attributes['type']        = $attributes['type'] ?? 'text';
 		$attributes['name']        = $searchField;
 		$attributes['id']          = !isset($attributes['id']) ? "filter_$localField" : $attributes['id'];
-		$attributes['onchange']    = !isset($attributes['onchange']) ? 'document.adminForm.submit()' : null;
 		$attributes['placeholder'] = !isset($attributes['placeholder']) ? $view->escape(Text::_($placeholder)) : $attributes['placeholder'];
 		$attributes['title']       = $attributes['title'] ?? $attributes['placeholder'];
 		$attributes['value']       = $view->escape($model->getState($localField));
+
+		if (!isset($attributes['onchange']))
+		{
+			$attributes['class'] = trim(($attributes['class'] ?? '') . ' akeebaCommonEventsOnChangeSubmit');
+			$attributes['data-akeebasubmittarget'] = $attributes['data-akeebasubmittarget'] ?? 'adminForm';
+		}
 
 		// Remove null attributes and collapse into a string
 		$attributes = array_filter($attributes, function ($v) {
@@ -439,28 +444,35 @@ abstract class BrowseView
 
 		$currentValue = $params['list.select'];
 
+		$classes = $params['class'] ?? '';
+		$classes = is_array($classes) ? implode(' ', $classes) : $classes;
+
 		// If fof.autosubmit is enabled and onchange is not set we will add our own handler
 		if ($params['fof.autosubmit'] && is_null($params['onchange']))
 		{
-			$formName           = $params['fof.formname'] ?: 'adminForm';
-			$params['onchange'] = "document.{$formName}.submit()";
+			$formName                          = $params['fof.formname'] ?: 'adminForm';
+			$classes                           .= ' akeebaCommonEventsOnChangeSubmit';
+			$params['data-akeebasubmittarget'] = $formName;
 		}
 
 		// Construct SELECT element's attributes
-		$attr = '';
-		$attr .= $params['class'] ? ' class="' . $params['class'] . '"' : '';
-		$attr .= !empty($params['size']) ? ' size="' . $params['size'] . '"' : '';
-		$attr .= $params['multiple'] ? ' multiple' : '';
-		$attr .= $params['required'] ? ' required aria-required="true"' : '';
-		$attr .= $params['autofocus'] ? ' autofocus' : '';
-		$attr .= ($params['disabled'] || $params['readonly']) ? ' disabled="disabled"' : '';
-		$attr .= $params['onchange'] ? ' onchange="' . $params['onchange'] . '"' : '';
+		$attr = [
+			'class'         => trim($classes) ?: null,
+			'size'          => ($params['size'] ?? null) ?: null,
+			'multiple'      => ($params['multiple'] ?? null) ?: null,
+			'required'      => ($params['required'] ?? false) ?: null,
+			'aria-required' => ($params['required'] ?? false) ? 'true' : null,
+			'autofocus'     => ($params['autofocus'] ?? false) ?: null,
+			'disabled'      => (($params['disabled'] ?? false) || ($params['readonly'] ?? false)) ?: null,
+			'onchange'      => $params['onchange'] ?? null,
+		];
 
-		// We use the constructed SELECT element's attributes only if no 'attr' key was provided
-		if (empty($params['list.attr']))
-		{
-			$params['list.attr'] = $attr;
-		}
+		$attr = array_filter($attr, function ($x) {
+			return !is_null($x);
+		});
+
+		// We merge the constructed SELECT element's attributes with the 'list.attr' array, if it was provided
+		$params['list.attr'] = array_merge($attr, (($params['list.attr'] ?? []) ?: []));
 
 		// Merge the options with those fetched from a source (e.g. another Helper object)
 		$options = array_merge($options, self::getOptionsFromSource($params));

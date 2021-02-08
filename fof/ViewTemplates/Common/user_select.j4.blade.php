@@ -8,7 +8,6 @@
 defined('_JEXEC') || die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 /**
  * User entry field, allowing selection of a user from a modal dialog
@@ -43,7 +42,7 @@ $width       = isset($width) ? $width : 800;
 $height      = isset($height) ? $height : 500;
 $class       = isset($class) ? $class : '';
 $size        = isset($size) ? $size : 0;
-$onchange        = isset($onchange) ? $onchange : '';
+$onchange    = isset($onchange) ? $onchange : '';
 
 ?>
 @jlayout('joomla/form/field/user', [
