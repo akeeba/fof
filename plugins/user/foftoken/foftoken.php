@@ -7,7 +7,8 @@
 
 defined('_JEXEC') || die;
 
-use FOF40\Container\Container;
+use FOF40\Container\Container as FOF4Container;
+use FOF30\Container\Container as FOF3Container;
 use FOF40\Utils\ArrayHelper;
 use Joomla\CMS\Application\BaseApplication;
 use Joomla\CMS\Application\CliApplication;
@@ -475,13 +476,18 @@ class PlgUserFoftoken extends CMSPlugin
 	 * This is called from TransparentAuthentication::getTransparentAuthenticationCredentials. Return an array of
 	 * credentials or an empty array if no suitable credentials were found.
 	 *
-	 * @param   Container  $container  The container of the component performing a transparent authentication check.
+	 * @param   FOF4Container|FOF3Container  $container  The container of the component performing a transparent authentication check.
 	 *
 	 * @return  array  Authentication credentials
 	 * @noinspection PhpUnused
 	 */
-	public function onFOFGetTransparentAuthenticationCredentials(Container $container)
+	public function onFOFGetTransparentAuthenticationCredentials($container)
 	{
+		if (!is_object($container) || !($container instanceof FOF4Container) || !($container instanceof FOF3Container))
+		{
+			return [];
+		}
+
 		$token = '';
 
 		/**

@@ -150,7 +150,7 @@ class CacheCleaner
 	 * @return  array Cache controller options, including cleaning result
 	 * @throws  Exception
 	 */
-	private static function clearCacheGroupJoomla3(string $group, int $client_id, CMSApplication $app): array
+	private static function clearCacheGroupJoomla3(string $group, int $client_id, $app): array
 	{
 		$options = [
 			'defaultgroup' => $group,
@@ -182,7 +182,7 @@ class CacheCleaner
 	 * @return  array Cache controller options, including cleaning result
 	 * @throws  Exception
 	 */
-	private static function clearCacheGroupJoomla4(string $group, int $client_id, CMSApplication $app): array
+	private static function clearCacheGroupJoomla4(string $group, int $client_id, $app): array
 	{
 		// Get the default cache folder. Start by using the JPATH_CACHE constant.
 		$cacheBaseDefault = JPATH_CACHE;
