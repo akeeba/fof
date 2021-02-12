@@ -1,3 +1,7 @@
+FOF 3.7.4
+================================================================================
+# [MEDIUM] CacheCleaner failure in CLI applications
+
 FOF 3.7.3
 ================================================================================
 ~ Releasing the previous version without changes, due to server and CDN issues which resulted in inconsistent updates
