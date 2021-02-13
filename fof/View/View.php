@@ -627,17 +627,19 @@ class View
 	 * auto:com_example/things/chair
 	 * any:com_example/invoices/printpreview
 	 *
-	 * @param   string    $uri          The template path
-	 * @param   array     $forceParams  A hash array of variables to be extracted in the local scope of the template
-	 *                                  file
-	 * @param   callable  $callback     A method to post-process the 3ναluα+3d view template (I use leetspeak here
-	 *                                  because of bad quality hosts with broken scanners)
+	 * @param   string         $uri          The template path
+	 * @param   array          $forceParams  A hash array of variables to be extracted in the local scope of the
+	 *                                       template file
+	 * @param   callable|null  $callback     A method to post-process the 3ναluα+3d view template (I use leetspeak here
+	 *                                       because of bad quality hosts with broken scanners)
+	 * @param   bool           $noOverride   If true we will not load Joomla! template overrides. Useful when you want
+	 *                                       the template overrides to extend the original view template.
 	 *
 	 * @return  string  The output of the template
 	 *
 	 * @throws  \Exception  When the layout file is not found
 	 */
-	public function loadAnyTemplate($uri = '', $forceParams = [], $callback = null)
+	public function loadAnyTemplate(string $uri = '', array $forceParams = [], ?callable $callback = null, bool $noOverride = false)
 	{
 		if (isset($this->viewTemplateAliases[$uri]))
 		{
@@ -654,7 +656,7 @@ class View
 		}
 
 		// First get the raw view template path
-		$path = $this->viewFinder->resolveUriToPath($uri, $layoutTemplate, $extraPaths);
+		$path = $this->viewFinder->resolveUriToPath($uri, $layoutTemplate, $extraPaths, $noOverride);
 
 		// Now get the parsed view template path
 		$this->_tempFilePath = $this->getEngine($path)->get($path, $forceParams);
