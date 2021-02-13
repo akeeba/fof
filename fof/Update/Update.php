@@ -819,9 +819,9 @@ class Update extends Model
 	 *
 	 * @return string
 	 */
-	protected function getLicenseKeyFromExtraQuery(string $extra_query): string
+	protected function getLicenseKeyFromExtraQuery(?string $extra_query): string
 	{
-		$extra_query = trim($extra_query);
+		$extra_query = trim($extra_query ?? '');
 
 		if (empty($extra_query))
 		{
