@@ -156,14 +156,14 @@ class Joomla extends RenderBase implements RenderInterface
 			$classes = array_unique($classes);
 		}
 
-		$this->openPageWrapper($classes);
-
 		// Render the submenu and toolbar
 		if ($input->getBool('render_toolbar', true))
 		{
 			$this->renderButtons($view, $task);
 			$this->renderLinkbar($view, $task);
 		}
+
+		$this->openPageWrapper($classes);
 
 		parent::preRender($view, $task);
 	}
@@ -260,6 +260,12 @@ class Joomla extends RenderBase implements RenderInterface
 
 		$links = $toolbar->getLinks();
 
+		if ($isJoomla4)
+		{
+			HTMLHelper::_('bootstrap.tab');
+			HTMLHelper::_('bootstrap.dropdown');
+		}
+
 		if (!empty($links))
 		{
 			echo "<ul class=\"nav nav-tabs\">\n";
@@ -278,18 +284,30 @@ class Joomla extends RenderBase implements RenderInterface
 					echo "<li";
 					$class = 'nav-item dropdown';
 
-					if ($link['active'])
+					$subMenuActive = array_reduce($link['items'], function ($carry, $item) {
+						return $carry || $item['active'] ?? false;
+					}, false);
+
+					if ($subMenuActive || $link['active'])
 					{
 						$class .= ' active';
 					}
 
 					echo ' class="' . $class . '">';
 
-					echo '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">';
+					if ($isJoomla3)
+					{
+						echo '<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">';
+					}
+					else
+					{
+						$tabActiveClass = ($subMenuActive || $link['active']) ? 'active' : '';
+						echo '<a class="nav-link dropdown-toggle '.$tabActiveClass.'" data-bs-toggle="dropdown" href="#">';
+					}
 
 					if ($link['icon'])
 					{
-						echo "<i class=\"icon icon-" . $link['icon'] . "\"></i>";
+						echo "<span class=\"icon icon-" . $link['icon'] . "\"></span>";
 					}
 
 					echo $link['name'];
@@ -300,30 +318,59 @@ class Joomla extends RenderBase implements RenderInterface
 
 					foreach ($link['items'] as $item)
 					{
-						echo "<li class=\"dropdown-item";
-
-						if ($item['active'])
+						if ($isJoomla3)
 						{
-							echo ' active';
-						}
+							echo "<li class=\"dropdown-item";
 
-						echo "\">";
+							if ($item['active'])
+							{
+								echo ' active';
+							}
 
-						if ($item['icon'])
-						{
-							echo "<i class=\"icon icon-" . $item['icon'] . "\"></i>";
-						}
+							echo "\">";
 
-						if ($item['link'])
-						{
-							echo "<a href=\"" . $item['link'] . "\">" . $item['name'] . "</a>";
+							if ($item['icon'])
+							{
+								echo "<span class=\"icon icon-" . $item['icon'] . "\"></span>";
+							}
+
+							if ($item['link'])
+							{
+								echo "<a href=\"" . $item['link'] . "\">" . $item['name'] . "</a>";
+							}
+							else
+							{
+								echo $item['name'];
+							}
+
+							echo "</li>";
 						}
 						else
 						{
-							echo $item['name'];
-						}
+							echo "<li>";
+							$tag = $item['link'] ? 'a' : 'span';
+							$activeItem = ($item['active'] ?? false) ? 'active' : '';
 
-						echo "</li>";
+							echo "<$tag class=\"dropdown-item $activeItem\"";
+
+							if ($item['link'])
+							{
+								echo "href=\"{$item['link']}\"";
+							}
+
+							echo ">";
+
+							if ($item['icon'])
+							{
+								echo "<span class=\"icon icon-" . $item['icon'] . "\"></span>";
+							}
+
+							echo $item['name'];
+
+							echo "</$tag>";
+
+							echo "</li>";
+						}
 					}
 
 					echo "</ul>\n";
@@ -332,7 +379,7 @@ class Joomla extends RenderBase implements RenderInterface
 				{
 					echo "<li class=\"nav-item";
 
-					if ($link['active'] && $isJoomla3)
+					if ($link['active'])
 					{
 						echo ' active"';
 					}
