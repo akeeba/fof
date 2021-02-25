@@ -23,9 +23,9 @@ class Extension
 	 * Reads an "extension" XML update source and returns all listed update entries.
 	 *
 	 * If you have a "collection" XML update source you should do something like this:
-	 * $collection = new F0FUtilsUpdateCollection();
+	 * $collection = new \FOF40\Update\Collection();
 	 * $extensionUpdateURL = $collection->getExtensionUpdateSource($url, 'component', 'com_foobar', JVERSION);
-	 * $extension = new F0FUtilsUpdateExtension();
+	 * $extension = new \FOF40\Update\Extension();
 	 * $updates = $extension->getUpdatesFromExtension($extensionUpdateURL);
 	 *
 	 * @param string $url The extension XML update source URL to read from

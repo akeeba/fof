@@ -229,7 +229,7 @@ class Joomla extends RenderBase implements RenderInterface
 	}
 
 	/**
-	 * Renders the submenu (link bar) in F0F's classic style, using a Bootstrapped
+	 * Renders the submenu (link bar) in FOF's classic style, using a Bootstrapped
 	 * tab bar.
 	 *
 	 * @param   string  $view  The active view name

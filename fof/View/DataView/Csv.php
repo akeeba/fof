@@ -39,8 +39,7 @@ class Csv extends Html implements DataViewInterface
 
 
 	/**
-	 * Public constructor. Instantiates a F0FViewCsv object.
-	 *
+	 * Public constructor.
 	 *
 	 * @param   Container  $container  The container we belong to
 	 * @param   array      $config     The configuration overrides for the view
