@@ -52,39 +52,39 @@ fail gracefully instead of causing your site to crash and burn.
 
 	<fileset>
 		<files folder="fof" target="libraries/fof40">
-			<folder>Autoloader</folder>
-			<folder>Configuration</folder>
-			<folder>Container</folder>
-			<folder>Controller</folder>
 			<folder>Database</folder>
+			<folder>Configuration</folder>
+			<folder>Update</folder>
+			<folder>InstallScript</folder>
+			<folder>Input</folder>
+			<folder>Layout</folder>
+			<folder>Platform</folder>
 			<folder>Date</folder>
+			<folder>Timer</folder>
 			<folder>Dispatcher</folder>
+			<folder>ViewTemplates</folder>
+			<folder>Toolbar</folder>
+			<folder>Template</folder>
+			<folder>Inflector</folder>
+			<folder>Render</folder>
+			<folder>Utils</folder>
+			<folder>Html</folder>
+			<folder>language</folder>
+			<folder>Cli</folder>
+			<folder>Controller</folder>
+			<folder>Container</folder>
+			<folder>Pimple</folder>
 			<folder>Download</folder>
+			<folder>Params</folder>
+			<folder>Model</folder>
+			<folder>View</folder>
+			<folder>JoomlaAbstraction</folder>
+			<folder>TransparentAuthentication</folder>
+			<folder>IP</folder>
 			<folder>Encrypt</folder>
 			<folder>Event</folder>
 			<folder>Factory</folder>
-			<folder>Form</folder>
-			<folder>Html</folder>
-			<folder>Inflector</folder>
-			<folder>Input</folder>
-			<folder>InstallScript</folder>
-			<folder>IP</folder>
-			<folder>JoomlaAbstraction</folder>
-			<folder>Layout</folder>
-			<folder>Less</folder>
-			<folder>Model</folder>
-			<folder>Params</folder>
-			<folder>Pimple</folder>
-			<folder>Platform</folder>
-			<folder>Render</folder>
-			<folder>Template</folder>
-			<folder>Timer</folder>
-			<folder>Toolbar</folder>
-			<folder>TransparentAuthentication</folder>
-			<folder>Update</folder>
-			<folder>Utils</folder>
-			<folder>View</folder>
-			<folder>ViewTemplates</folder>
+			<folder>Autoloader</folder>
 
 			<file>LICENSE.txt</file>
 			<file>include.php</file>
