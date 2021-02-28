@@ -27,5 +27,16 @@
     ) DEFAULT CHARACTER SET utf8;
                 ]]></query>
         </action>
+        <!-- Simulate taking actions on tables we don't want to uninstallm like DocImport does -->
+        <action table="#__foobar_example2" canfail="1">
+            <condition type="index" value="#__idx_foobar_example2_desc" operator="not" />
+            <query><![CDATA[
+ALTER TABLE #__foobar_example2 ENGINE=MyISAM;
+            ]]></query>
+            <query><![CDATA[
+ALTER TABLE #__foobar_example2 ADD FULLTEXT INDEX `#__idx_foobar_example2_desc` (`description`);
+            ]]></query>
+
+        </action>
     </sql>
 </schema>

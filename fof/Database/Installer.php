@@ -332,7 +332,43 @@ class Installer
 		foreach ($actions as $action)
 		{
 			$attributes = $action->attributes();
-			$tables[]   = (string) $attributes->table;
+			$table      = $attributes->table ? (string) $attributes->table : '';
+			$isCreate   = false;
+
+			foreach ($action->children() as $node)
+			{
+				if ($node->getName() != 'query')
+				{
+					continue;
+				}
+
+				$query = (string) $node;
+
+				// Normalize the whitespace of the query
+				$query = trim($query);
+				$query = str_replace(["\r\n", "\r", "\n"], ' ', $query);
+
+				while (strstr($query, '  ') !== false)
+				{
+					$query = str_replace('  ', ' ', $query);
+				}
+
+				// Is it a create table query?
+				$queryStart = substr($query, 0, 12);
+				$queryStart = strtoupper($queryStart);
+				$isCreate   = $isCreate || ($queryStart == 'CREATE TABLE');
+
+				if ($isCreate)
+				{
+					break;
+				}
+			}
+
+			// Only take into account actions with a CREATE TABLE command.
+			if ($isCreate)
+			{
+				$tables[] = $table;
+			}
 		}
 
 		// Simplify the tables list

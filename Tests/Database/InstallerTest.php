@@ -221,6 +221,7 @@ class InstallerTest extends FOFTestCase
 		$tables = $db->setQuery('SHOW TABLES')->loadColumn();
 		$prefix = $db->getPrefix();
 		$this->assertFalse(in_array($prefix . 'foobar_example', $tables), 'The table must not exist after running removeSchema');
+		$this->assertTrue(in_array($prefix . 'foobar_example2', $tables), 'The #__foobar_example2 table must still exist after running removeSchema');
 	}
 
 	private function createTable()
@@ -230,6 +231,15 @@ class InstallerTest extends FOFTestCase
 		$create = "CREATE TABLE IF NOT EXISTS `#__foobar_example` (
         `example_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
         `description` varchar(255) NOT NULL,
+        `text` longtext,
+    PRIMARY KEY (`example_id`)
+    ) DEFAULT CHARACTER SET utf8;";
+
+		$db->setQuery($create)->execute();
+
+		$create = "CREATE TABLE IF NOT EXISTS `#__foobar_example2` (
+        `example_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `description` TEXT NOT NULL,
         `text` longtext,
     PRIMARY KEY (`example_id`)
     ) DEFAULT CHARACTER SET utf8;";
