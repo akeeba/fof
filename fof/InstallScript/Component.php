@@ -21,6 +21,7 @@ use Joomla\CMS\Installer\Adapter\ComponentAdapter;
 use Joomla\CMS\Installer\Installer as JoomlaInstaller;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Menu;
+use Joomla\Database\DatabaseDriver;
 
 // In case FOF's autoloader is not present yet, e.g. new installation
 if (!class_exists('FOF40\\InstallScript\\BaseInstaller', true))
@@ -1123,12 +1124,10 @@ class Component extends BaseInstaller
 	 * Make sure the Component menu items are really published!
 	 *
 	 * @param   ComponentAdapter  $parent
-	 *
-	 * @return bool
 	 */
-	private function _reallyPublishAdminMenuItems(ComponentAdapter $parent): bool
+	private function _reallyPublishAdminMenuItems(ComponentAdapter $parent): void
 	{
-		$db     = $parent->getParent()->getDbo();
+		$db = $parent->getParent()->getDbo();
 		$option = $parent->get('element');
 
 		$query = $db->getQuery(true)
@@ -1140,11 +1139,9 @@ class Component extends BaseInstaller
 			->where('e.type = ' . $db->quote('component'))
 			->where('e.element = ' . $db->quote($option));
 
-		$db->setQuery($query);
-
 		try
 		{
-			$db->execute();
+			$db->setQuery($query)->execute();
 		}
 		catch (Exception $e)
 		{
@@ -1225,13 +1222,13 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the assets table records for the component
 	 *
-	 * @param   JDatabaseDriver  $db
+	 * @param   JDatabaseDriver|DatabaseDriver  $db
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentAssetRecords(JDatabaseDriver $db): void
+	private function deleteComponentAssetRecords($db): void
 	{
 		$query = $db->getQuery(true);
 		$query->select('id')
@@ -1267,13 +1264,13 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the extensions table records for the component
 	 *
-	 * @param   JDatabaseDriver  $db
+	 * @param   JDatabaseDriver|DatabaseDriver  $db
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentExtensionRecord(JDatabaseDriver $db): void
+	private function deleteComponentExtensionRecord($db): void
 	{
 		$query = $db->getQuery(true);
 		$query->select('extension_id')
@@ -1309,13 +1306,13 @@ class Component extends BaseInstaller
 	/**
 	 * Deletes the menu table records for the component
 	 *
-	 * @param   JDatabaseDriver  $db
+	 * @param   JDatabaseDriver|DatabaseDriver  $db
 	 *
 	 * @return  void
 	 *
 	 * @since   3.0.18
 	 */
-	private function deleteComponentMenuRecord(JDatabaseDriver $db): void
+	private function deleteComponentMenuRecord($db): void
 	{
 		$query = $db->getQuery(true);
 		$query->select('id')

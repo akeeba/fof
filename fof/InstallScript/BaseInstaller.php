@@ -246,6 +246,7 @@ class BaseInstaller
 	 * Clear PHP opcode caches
 	 *
 	 * @return  void
+	 * @noinspection PhpComposerExtensionStubsInspection
 	 */
 	protected function clearOpcodeCaches(): void
 	{
