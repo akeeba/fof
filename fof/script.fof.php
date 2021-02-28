@@ -628,7 +628,7 @@ class file_fof40InstallerScript
 		{
 			$f = sprintf("%s/%s/%s", JPATH_LIBRARIES, $this->libraryFolder, $folder);
 
-			if (!is_dir($f))
+			if (!@file_exists($f) || !is_dir($f) || is_link($f))
 			{
 				continue;
 			}

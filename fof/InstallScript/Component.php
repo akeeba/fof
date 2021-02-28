@@ -693,7 +693,7 @@ class Component extends BaseInstaller
 		{
 			$f = JPATH_ROOT . '/' . $folder;
 
-			if (!is_dir($f))
+			if (!@file_exists($f) || !is_dir($f) || is_link($f))
 			{
 				continue;
 			}
