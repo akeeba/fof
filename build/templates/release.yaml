@@ -2,7 +2,7 @@
 release:
   version: '%%VERSION%%'
   date: '%%DATE%%'
-  category: 42
+  category: 62
   access: 1
   release_notes: '%%DEFAULT_RELEASE_NOTES%%'
   changelog: '%%DEFAULT_CHANGELOG%%'
@@ -59,7 +59,7 @@ updates:
     title: 'FOF 4.x Updates'
     connection: s3
     directory: 'updates'
-    stream: 27
+    stream: 44
     base_name: 'fof4_file'
     formats:
       - 'xml'
