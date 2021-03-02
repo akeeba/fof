@@ -167,6 +167,26 @@ class Component extends BaseInstaller
 	protected $removeLegacyViewsFolder = true;
 
 	/**
+	 * The path to the component's backend directory.
+	 *
+	 * Leave null to assume JPATH_ADMINISTRATOR . '/components/' . $this->componentName
+	 *
+	 * @var   string|null
+	 * @since 4.0.1
+	 */
+	protected $backendPath = null;
+
+	/**
+	 * The path to the component's frontend directory.
+	 *
+	 * Leave null to assume JPATH_SITE . '/components/' . $this->componentName
+	 *
+	 * @var   string|null
+	 * @since 4.0.1
+	 */
+	protected $frontendPath = null;
+
+	/**
 	 * Module installer script constructor.
 	 */
 	public function __construct()
@@ -308,24 +328,6 @@ class Component extends BaseInstaller
 		// Remove obsolete files and folders
 		$this->removeFilesAndFolders($removeFiles);
 
-		// Migrate view manifest XML files
-		if ($this->migrateJoomla4MenuXMLFiles)
-		{
-			$container = Container::getInstance($this->componentName, [
-				'tempInstance' => true
-			]);
-			ViewManifestMigration::migrateJoomla4MenuXMLFiles($container);
-		}
-
-		// Remove the legacy Joomla 3 `views` folder
-		if ($this->removeLegacyViewsFolder)
-		{
-			$container = Container::getInstance($this->componentName, [
-				'tempInstance' => true
-			]);
-			ViewManifestMigration::removeJoomla3LegacyViews($container);
-		}
-
 		// Make sure everything is copied properly
 		$this->bugfixFilesNotCopiedOnUpdate($parent);
 
@@ -351,6 +353,44 @@ class Component extends BaseInstaller
 
 		// Clear the opcode caches again - in case someone accessed the extension while the files were being upgraded.
 		$this->clearOpcodeCaches();
+
+		/**
+		 * DO NOT USE THE CONTAINER TO GET THE PATHS.
+		 *
+		 * There are two cases when updating from a FOF 3 version of a component may cause the container to fail to
+		 * load:
+		 *
+		 * 1. If the component failed to update fully (because Joomla does that)
+		 * 2. You are using opcache but it failed to clear, e.g. the host disabled the function to do so.
+		 *
+		 * Using the hardcoded paths is much safer in this context.
+		 *
+		 * Also note that this code carries two further defenses in cases we start using the container again in the
+		 * future:
+		 *
+		 * 1. It is moved AFTER the call to bugfixFilesNotCopiedOnUpdate() to solve the problem of Joomla failing the
+		 *    update.
+		 * 2. It is moved AFTER the calll to clearOpcodeCaches() to deal with the opcache not being cleared.
+		 *
+		 * However, neither solution is bulletproof. As a result it makes far more sense to NOT use the container if we
+		 * can help it...
+		 */
+		$frontendPath = $this->frontendPath ?? (JPATH_SITE . '/components/' . $this->componentName);
+		$backendPath = $this->backendPath ?? (JPATH_ADMINISTRATOR . '/components/' . $this->componentName);
+
+		// Migrate view manifest XML files
+		if ($this->migrateJoomla4MenuXMLFiles)
+		{
+
+			ViewManifestMigration::migrateJoomla4MenuXMLFiles_real($frontendPath, $backendPath);
+		}
+
+		// Remove the legacy Joomla 3 `views` folder
+		if ($this->removeLegacyViewsFolder)
+		{
+			ViewManifestMigration::removeJoomla3LegacyViews_real($frontendPath, $backendPath);
+		}
+
 
 		// Finally, see if FOF 3.x is obsolete and remove it.
 		$this->uninstallFOF3IfNecessary();

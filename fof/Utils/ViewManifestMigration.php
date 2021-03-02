@@ -23,6 +23,20 @@ class ViewManifestMigration
 	 */
 	public static function migrateJoomla4MenuXMLFiles(Container $container): void
 	{
+		self::migrateJoomla4MenuXMLFiles_real($container->frontEndPath, $container->backEndPath);
+	}
+
+	/**
+	 * Migrates Joomla 4 view XML manifests into their Joomla 3 locations
+	 *
+	 * @param   string  $frontendPath  Component's frontend path
+	 * @param   string  $backendPath   Component's backend path
+	 *
+	 * @return  void
+	 * @noinspection PhpUnused
+	 */
+	public static function migrateJoomla4MenuXMLFiles_real($frontendPath, $backendPath): void
+	{
 		// This only applies to Joomla 3
 		if (version_compare(JVERSION, '3.999.999', 'gt'))
 		{
@@ -31,10 +45,10 @@ class ViewManifestMigration
 
 		// Map modern to legacy locations
 		$maps = [
-			$container->frontEndPath . '/tmpl'          => $container->frontEndPath . '/views',
-			$container->frontEndPath . '/ViewTemplates' => $container->frontEndPath . '/views',
-			$container->backEndPath . '/tmpl'           => $container->backEndPath . '/views',
-			$container->backEndPath . '/ViewTemplates'  => $container->backEndPath . '/views',
+			$frontendPath . '/tmpl'          => $frontendPath . '/views',
+			$frontendPath . '/ViewTemplates' => $frontendPath . '/views',
+			$backendPath . '/tmpl'           => $backendPath . '/views',
+			$backendPath . '/ViewTemplates'  => $backendPath . '/views',
 		];
 
 		foreach ($maps as $source => $dest)
@@ -59,6 +73,20 @@ class ViewManifestMigration
 	 */
 	public static function removeJoomla3LegacyViews(Container $container): void
 	{
+		self::removeJoomla3LegacyViews_real($container->frontEndPath, $container->backEndPath);
+	}
+
+	/**
+	 * Removes the legacy `views` paths from the front- and backend of the component on Joomla 4 and later versions.
+	 *
+	 * @param   string  $frontendPath  Component's frontend path
+	 * @param   string  $backendPath   Component's backend path
+	 *
+	 * @return  void
+	 * @noinspection PhpUnused
+	 */
+	public static function removeJoomla3LegacyViews_real($frontendPath, $backendPath): void
+	{
 		// This only applies to Joomla 4
 		if (version_compare(JVERSION, '3.999.999', 'le'))
 		{
@@ -66,8 +94,8 @@ class ViewManifestMigration
 		}
 
 		$legacyLocations = [
-			$container->frontEndPath . '/views',
-			$container->backEndPath . '/views',
+			$frontendPath . '/views',
+			$backendPath . '/views',
 		];
 
 		foreach ($legacyLocations as $path)
@@ -100,7 +128,7 @@ class ViewManifestMigration
 			}
 
 			// Delete the metadata.xml and tmpl/*.xml files in the corresponding `views` subfolder
-			$killLegacyFile = $dest . '/' . $folderItem->getFilename() . '/metadata.xml';
+			$killLegacyFile   = $dest . '/' . $folderItem->getFilename() . '/metadata.xml';
 			$killLegacyFolder = $dest . '/' . $folderItem->getFilename() . '/tmpl';
 
 			if (!@is_file($killLegacyFile))
@@ -133,7 +161,7 @@ class ViewManifestMigration
 					continue;
 				}
 
-				$destPath     = $dest . '/' . $folderItem->getFilename() . (($fileItem->getFilename() == 'metadata.xml') ? '' : '/tmpl');
+				$destPath = $dest . '/' . $folderItem->getFilename() . (($fileItem->getFilename() == 'metadata.xml') ? '' : '/tmpl');
 
 				$destPathName = $destPath . '/' . $fileItem->getFilename();
 
