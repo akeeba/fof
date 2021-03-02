@@ -7,8 +7,8 @@
 
 defined('_JEXEC') || die;
 
-use FOF40\Container\Container as FOF4Container;
 use FOF30\Container\Container as FOF3Container;
+use FOF40\Container\Container as FOF4Container;
 use FOF40\Utils\ArrayHelper;
 use Joomla\CMS\Application\BaseApplication;
 use Joomla\CMS\Application\CliApplication;
@@ -171,7 +171,7 @@ class PlgUserFoftoken extends CMSPlugin
 		 * generic and we run the risk of creating naming clashes. Instead, we manipulate the data
 		 * directly.
 		 */
-		if (($context === 'com_users.profile') && ($this->app->input->get('layout') !== 'edit'))
+		if (($context == 'com_users.profile') && ($this->app->input->get('layout') != 'edit'))
 		{
 			$pluginData = $data->{$this->profileKeyPrefix} ?? [];
 			$enabled    = $pluginData['enabled'] ?? false;
@@ -191,77 +191,6 @@ class PlgUserFoftoken extends CMSPlugin
 		}
 
 		return true;
-	}
-
-	/**
-	 * Get the token algorithm as defined in the form file
-	 *
-	 * We use a simple RegEx match instead of loading the form for better performance.
-	 *
-	 * @return  string  The configured algorithm, 'sha256' as a fallback if none is found.
-	 */
-	private function getAlgorithmFromFormFile(): string
-	{
-		$algo = 'sha256';
-
-		$file     = __DIR__ . '/foftoken/foftoken.xml';
-		$contents = @file_get_contents($file);
-
-		if ($contents === false)
-		{
-			return $algo;
-		}
-
-		if (preg_match('/\s*algo=\s*"\s*([a-z0-9]+)\s*"/i', $contents, $matches) !== 1)
-		{
-			return $algo;
-		}
-
-		return $matches[1];
-	}
-
-	/**
-	 * Returns the token formatted suitably for the user to copy.
-	 *
-	 * @param   integer  $userId     The user id for token
-	 * @param   string   $tokenSeed  The token seed data stored in the database
-	 * @param   string   $algorithm  The hashing algorithm to use for the token (default: sha256)
-	 *
-	 * @return  string
-	 */
-	private function getTokenForDisplay(int $userId, string $tokenSeed, string $algorithm = 'sha256'): string
-	{
-		if (empty($tokenSeed))
-		{
-			return '';
-		}
-
-		try
-		{
-			$siteSecret = $this->app->get('secret');
-		}
-		catch (\Exception $e)
-		{
-			$jConfig    = JFactory::getConfig();
-			$siteSecret = $jConfig->get('secret');
-		}
-
-		// NO site secret? You monster!
-		if (empty($siteSecret))
-		{
-			return '';
-		}
-
-		$rawToken  = base64_decode($tokenSeed);
-		$tokenHash = hash_hmac($algorithm, $rawToken, $siteSecret);
-		$message   = base64_encode("$algorithm:$userId:$tokenHash");
-
-		if ($userId != JFactory::getUser()->id)
-		{
-			$message = '';
-		}
-
-		return $message;
 	}
 
 	/**
@@ -476,14 +405,15 @@ class PlgUserFoftoken extends CMSPlugin
 	 * This is called from TransparentAuthentication::getTransparentAuthenticationCredentials. Return an array of
 	 * credentials or an empty array if no suitable credentials were found.
 	 *
-	 * @param   FOF4Container|FOF3Container  $container  The container of the component performing a transparent authentication check.
+	 * @param   FOF4Container|FOF3Container  $container  The container of the component performing a transparent
+	 *                                                   authentication check.
 	 *
 	 * @return  array  Authentication credentials
 	 * @noinspection PhpUnused
 	 */
 	public function onFOFGetTransparentAuthenticationCredentials($container)
 	{
-		if (!is_object($container) || !($container instanceof FOF4Container) || !($container instanceof FOF3Container))
+		if (!is_object($container) || !(($container instanceof FOF4Container) || ($container instanceof FOF3Container)))
 		{
 			return [];
 		}
@@ -686,6 +616,77 @@ class PlgUserFoftoken extends CMSPlugin
 	}
 
 	/**
+	 * Get the token algorithm as defined in the form file
+	 *
+	 * We use a simple RegEx match instead of loading the form for better performance.
+	 *
+	 * @return  string  The configured algorithm, 'sha256' as a fallback if none is found.
+	 */
+	private function getAlgorithmFromFormFile(): string
+	{
+		$algo = 'sha256';
+
+		$file     = __DIR__ . '/foftoken/foftoken.xml';
+		$contents = @file_get_contents($file);
+
+		if ($contents === false)
+		{
+			return $algo;
+		}
+
+		if (preg_match('/\s*algo=\s*"\s*([a-z0-9]+)\s*"/i', $contents, $matches) !== 1)
+		{
+			return $algo;
+		}
+
+		return $matches[1];
+	}
+
+	/**
+	 * Returns the token formatted suitably for the user to copy.
+	 *
+	 * @param   integer  $userId     The user id for token
+	 * @param   string   $tokenSeed  The token seed data stored in the database
+	 * @param   string   $algorithm  The hashing algorithm to use for the token (default: sha256)
+	 *
+	 * @return  string
+	 */
+	private function getTokenForDisplay(int $userId, string $tokenSeed, string $algorithm = 'sha256'): string
+	{
+		if (empty($tokenSeed))
+		{
+			return '';
+		}
+
+		try
+		{
+			$siteSecret = $this->app->get('secret');
+		}
+		catch (\Exception $e)
+		{
+			$jConfig    = JFactory::getConfig();
+			$siteSecret = $jConfig->get('secret');
+		}
+
+		// NO site secret? You monster!
+		if (empty($siteSecret))
+		{
+			return '';
+		}
+
+		$rawToken  = base64_decode($tokenSeed);
+		$tokenHash = hash_hmac($algorithm, $rawToken, $siteSecret);
+		$message   = base64_encode("$algorithm:$userId:$tokenHash");
+
+		if ($userId != JFactory::getUser()->id)
+		{
+			$message = '';
+		}
+
+		return $message;
+	}
+
+	/**
 	 * Does the user have the FOF Token profile fields?
 	 *
 	 * @param   int|null  $userId  The user we're interested in
@@ -860,9 +861,10 @@ class PlgUserFoftoken extends CMSPlugin
 	{
 		$allowedUserGroups = $this->getAllowedUserGroups();
 
-		$user = JFactory::getUser($userId);
+		$userId = (int) $userId;
+		$user   = JFactory::getUser($userId);
 
-		if ($user->id !== $userId)
+		if ((int) $user->id !== $userId)
 		{
 			return false;
 		}
