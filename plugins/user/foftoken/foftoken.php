@@ -479,8 +479,13 @@ class PlgUserFoftoken extends CMSPlugin
 	 *
 	 * @return  array  Authentication credentials
 	 */
-	public function onFOFGetTransparentAuthenticationCredentials(Container $container)
+	public function onFOFGetTransparentAuthenticationCredentials($container)
 	{
+		if (!is_object($container) || !($container instanceof Container))
+		{
+			return [];
+		}
+
 		$token = '';
 
 		/**
