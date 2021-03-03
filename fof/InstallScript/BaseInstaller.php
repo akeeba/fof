@@ -135,6 +135,12 @@ class BaseInstaller
 				$targetSize = @filesize($targetPath);
 
 				$mustCopy = $sourceSize !== $targetSize;
+
+				if ((substr($targetPath, -4) === '.php') && function_exists('opcache_invalidate'))
+				{
+					/** @noinspection PhpComposerExtensionStubsInspection */
+					opcache_invalidate($targetPath);
+				}
 			}
 
 			if (!$mustCopy)

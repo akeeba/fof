@@ -1,5 +1,6 @@
 FOF 4.0.2
 ================================================================================
+~ Invalidate each individual .php file on servers using PHP opcache
 # [HIGH] Record value should be possible to be a string in FEFHelperBrowse::id
 
 FOF 4.0.1
