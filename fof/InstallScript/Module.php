@@ -138,7 +138,7 @@ class Module extends BaseInstaller
 		$this->clearOpcodeCaches();
 
 		// Finally, see if FOF 3.x is obsolete and remove it.
-		$this->uninstallFOF3IfNecessary();
+		// $this->uninstallFOF3IfNecessary();
 	}
 
 	/**

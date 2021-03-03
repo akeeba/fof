@@ -1,5 +1,6 @@
 FOF 4.0.2
 ================================================================================
+~ Will no longer uninstall FOF 3. Some third party extensions use it but HAVE NOT marked themselves as dependent.
 ~ Invalidate each individual .php file on servers using PHP opcache
 # [HIGH] Record value should be possible to be a string in FEFHelperBrowse::id
 

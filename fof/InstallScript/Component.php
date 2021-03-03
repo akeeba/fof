@@ -393,7 +393,7 @@ class Component extends BaseInstaller
 
 
 		// Finally, see if FOF 3.x is obsolete and remove it.
-		$this->uninstallFOF3IfNecessary();
+		// $this->uninstallFOF3IfNecessary();
 	}
 
 	/**
