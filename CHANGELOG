@@ -1,7 +1,10 @@
+FOF 4.0.2
+================================================================================
+# [HIGH] Record value should be possible to be a string in FEFHelperBrowse::id
+
 FOF 4.0.1
 ================================================================================
 # [HIGH] Component installation may fail on servers with opcache enabled
-# [HIGH] Record value should be possible to be a string in FEFHelperBrowse::id
 
 FOF 4.0.0
 ================================================================================
