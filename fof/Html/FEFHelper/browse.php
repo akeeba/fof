@@ -590,7 +590,7 @@ HTML;
 	 * Method to create a checkbox for a grid row.
 	 *
 	 * @param   integer  $rowNum      The row index
-	 * @param   integer  $recId       The record id
+	 * @param   mixed    $recId       The record id
 	 * @param   boolean  $checkedOut  True if item is checked out
 	 * @param   string   $name        The name of the form element
 	 * @param   string   $stub        The name of stub identifier
@@ -599,7 +599,7 @@ HTML;
 	 *
 	 * @since   3.3.0
 	 */
-	public static function id(int $rowNum, int $recId, bool $checkedOut = false, string $name = 'cid',
+	public static function id(int $rowNum, $recId, bool $checkedOut = false, string $name = 'cid',
 	                          string $stub = 'cb'): string
 	{
 		return $checkedOut ? '' : '<input type="checkbox" id="' . $stub . $rowNum . '" name="' . $name . '[]" value="' . $recId
