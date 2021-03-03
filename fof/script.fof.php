@@ -439,92 +439,6 @@ class file_fof40InstallerScript
 	}
 
 	/**
-	 * Recursively copy a bunch of files, but only if the source and target file have a different size.
-	 *
-	 * @param   string  $source  Path to copy FROM
-	 * @param   string  $dest    Path to copy TO
-	 *
-	 * @return  void
-	 */
-	protected function recursiveConditionalCopy($source, $dest)
-	{
-		// Make sure source and destination exist
-		if (!@is_dir($source))
-		{
-			return;
-		}
-
-		if (!@is_dir($dest) && !@mkdir($dest, 0755))
-		{
-			Folder::create($dest, 0755);
-		}
-
-		if (!@is_dir($dest))
-		{
-			$this->log(__CLASS__ . ": Cannot create folder $dest");
-
-			return;
-		}
-
-		// List the contents of the source folder
-		try
-		{
-			$di = new DirectoryIterator($source);
-		}
-		catch (Exception $e)
-		{
-			return;
-		}
-
-		// Process each entry
-		foreach ($di as $entry)
-		{
-			// Ignore dot dirs (. and ..)
-			if ($entry->isDot())
-			{
-				continue;
-			}
-
-			$sourcePath = $entry->getPathname();
-			$fileName   = $entry->getFilename();
-
-			// If it's a directory do a recursive copy
-			if ($entry->isDir())
-			{
-				$this->recursiveConditionalCopy($sourcePath, $dest . DIRECTORY_SEPARATOR . $fileName);
-
-				continue;
-			}
-
-			// If it's a file check if it's missing or identical
-			$mustCopy   = false;
-			$targetPath = $dest . DIRECTORY_SEPARATOR . $fileName;
-
-			if (!@is_file($targetPath))
-			{
-				$mustCopy = true;
-			}
-			else
-			{
-				$sourceSize = @filesize($sourcePath);
-				$targetSize = @filesize($targetPath);
-
-				$mustCopy = $sourceSize !== $targetSize;
-			}
-
-			if (!$mustCopy)
-			{
-				continue;
-			}
-
-			if (!@copy($sourcePath, $targetPath) && !File::copy($sourcePath, $targetPath))
-			{
-				$this->log(__CLASS__ . ": Cannot copy $sourcePath to $targetPath");
-			}
-		}
-	}
-
-	/**
 	 * Try to log a warning / error with Joomla
 	 *
 	 * @param   string  $message   The message to write to the log
@@ -637,4 +551,105 @@ class file_fof40InstallerScript
 		}
 	}
 
+	/**
+	 * Recursively copy a bunch of files, but only if the source and target file have a different size.
+	 *
+	 * @param   string  $source   Path to copy FROM
+	 * @param   string  $dest     Path to copy TO
+	 * @param   array   $ignored  List of entries to ignore (first level entries are taken into account)
+	 *
+	 * @return  void
+	 */
+	protected function recursiveConditionalCopy($source, $dest, $ignored = [])
+	{
+		// Make sure source and destination exist
+		if (!@is_dir($source))
+		{
+			return;
+		}
+
+		if (!@is_dir($dest))
+		{
+			if (!@mkdir($dest, 0755))
+			{
+				Folder::create($dest, 0755);
+			}
+		}
+
+		if (!@is_dir($dest))
+		{
+			// Cannot create folder $dest
+
+			return;
+		}
+
+		// List the contents of the source folder
+		try
+		{
+			$di = new DirectoryIterator($source);
+		}
+		catch (Exception $e)
+		{
+			return;
+		}
+
+		// Process each entry
+		foreach ($di as $entry)
+		{
+			// Ignore dot dirs (. and ..)
+			if ($entry->isDot())
+			{
+				continue;
+			}
+
+			$sourcePath = $entry->getPathname();
+			$fileName   = $entry->getFilename();
+
+			// Do not copy ignored files
+			if (!empty($ignored) && in_array($fileName, $ignored))
+			{
+				continue;
+			}
+
+			// If it's a directory do a recursive copy
+			if ($entry->isDir())
+			{
+				$this->recursiveConditionalCopy($sourcePath, $dest . DIRECTORY_SEPARATOR . $fileName);
+
+				continue;
+			}
+
+			// If it's a file check if it's missing or identical
+			$mustCopy   = false;
+			$targetPath = $dest . DIRECTORY_SEPARATOR . $fileName;
+
+			if (!@is_file($targetPath))
+			{
+				$mustCopy = true;
+			}
+			else
+			{
+				$sourceSize = @filesize($sourcePath);
+				$targetSize = @filesize($targetPath);
+
+				$mustCopy = $sourceSize != $targetSize;
+
+				if ((substr($targetPath, -4) === '.php') && function_exists('opcache_invalidate'))
+				{
+					/** @noinspection PhpComposerExtensionStubsInspection */
+					opcache_invalidate($targetPath);
+				}
+			}
+
+			if (!$mustCopy)
+			{
+				continue;
+			}
+
+			if (!@copy($sourcePath, $targetPath))
+			{
+				File::copy($sourcePath, $targetPath);
+			}
+		}
+	}
 }
