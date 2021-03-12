@@ -1,3 +1,7 @@
+FOF 4.0.3
+================================================================================
+~ Database Installer now allows queries with #__ in strings, useful for information_schema queries
+
 FOF 4.0.2
 ================================================================================
 ~ Will no longer uninstall FOF 3. Some third party extensions use it but HAVE NOT marked themselves as dependent.
