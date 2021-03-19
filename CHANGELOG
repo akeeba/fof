@@ -2,6 +2,7 @@ FOF 4.0.3
 ================================================================================
 ~ Database Installer now allows queries with #__ in strings, useful for information_schema queries
 # [LOW] Joomla 4 redirections in the backend need an absolute URL instead of just "index.php?..."
+# [LOW] Edit page may fail with an error if the model isn't an instance of DataModel
 
 FOF 4.0.2
 ================================================================================
