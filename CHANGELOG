@@ -1,5 +1,6 @@
 FOF 4.0.4
 ================================================================================
+~ Use array spread operator instead of switch to run event handlers
 # [HIGH] onBeforeExecute controller task would return false for all non-privileged users
 
 FOF 4.0.3
