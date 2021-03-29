@@ -646,7 +646,13 @@ class Update extends Model
 			// Clear the caches for #__update_sites and #__updates if necessary
 			if ($madeChanges['updateSites'] || $madeChanges['updates'])
 			{
-				CacheCleaner::clearCacheGroups(['system', 'com_installer']);
+				CacheCleaner::clearCacheGroups([
+					'_system',
+					'com_installer',
+					'com_modules',
+					'com_plugins',
+					'mod_menu',
+				]);
 			}
 		}
 
