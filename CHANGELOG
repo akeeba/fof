@@ -1,3 +1,7 @@
+FOF 4.0.5
+================================================================================
++ Automatic workaround for Joomla's deluge of bugs affecting commercial extension updates.
+
 FOF 4.0.4
 ================================================================================
 ~ Use array spread operator instead of switch to run event handlers
