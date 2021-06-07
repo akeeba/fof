@@ -1,6 +1,7 @@
 FOF 4.0.7
 ================================================================================
 # [MEDIUM] Joomla 4 removed bootstrap.tab again.
+# [LOW] cURL header function throwing PHP warnings on PHP 8
 
 FOF 4.0.6
 ================================================================================

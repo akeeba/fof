@@ -242,7 +242,7 @@ class Curl extends AbstractAdapter implements DownloadInterface
 	 *
 	 * @return  int  The length of the $data string
 	 */
-	protected function reponseHeaderCallback(&$ch, string &$data): int
+	protected function reponseHeaderCallback($ch, string $data): int
 	{
 		$strlen = strlen($data);
 
