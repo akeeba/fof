@@ -2,6 +2,7 @@ FOF 4.0.7
 ================================================================================
 ~ Joomla changed its cacert.pem path
 # [MEDIUM] Joomla 4 removed bootstrap.tab again.
+# [MEDIUM] Joomla 4 user select template throws an exception.
 # [LOW] cURL header function throwing PHP warnings on PHP 8
 
 FOF 4.0.6
