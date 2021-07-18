@@ -1,5 +1,6 @@
 FOF 4.0.7
 ================================================================================
++ Adopt extensions when refreshing the update sites, fixes issues with orphaned extensions after Discover and install.
 ~ Joomla changed its cacert.pem path
 # [MEDIUM] Joomla 4 removed bootstrap.tab again.
 # [MEDIUM] Joomla 4 user select template throws an exception.
