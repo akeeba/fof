@@ -1,3 +1,7 @@
+FOF 4.0.8
+================================================================================
+# [HIGH] Adopt extensions logic was broken
+
 FOF 4.0.7
 ================================================================================
 + Adopt extensions when refreshing the update sites, fixes issues with orphaned extensions after Discover and install.

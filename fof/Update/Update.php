@@ -882,8 +882,8 @@ class Update extends Model
 		$db    = $this->container->db;
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__extensions'))
-			->set($db->qn('package_id') . ' = :package_id')
-			->where($db->qn('extension_id') . 'IN(' . array_map([$db, 'qn'], $extensionIDs) . ')');
+			->set($db->qn('package_id') . ' = ' . $db->q($newPackageId))
+			->where($db->qn('extension_id') . 'IN(' . implode(', ', array_map([$db, 'q'], $extensionIDs)) . ')');
 		$db->setQuery($query)->execute();
 	}
 
@@ -919,12 +919,12 @@ class Update extends Model
 
 		foreach ($criteria as $key => $value)
 		{
-			$query->where($db->qn($key) . ' = ' . $db->qn($value));
+			$query->where($db->qn($key) . ' = ' . $db->q($value));
 		}
 
 		try
 		{
-			$this->extensionIds[$extension] = (int) $db->setQuery($query)->loadResult();
+			$this->extensionIds[$extension] = $db->setQuery($query)->loadResult();
 		}
 		catch (\RuntimeException $e)
 		{
