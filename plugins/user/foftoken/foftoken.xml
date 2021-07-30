@@ -13,7 +13,7 @@
 	<license>GNU GPL version 2 or later; see LICENSE.txt</license>
 	<authorEmail>nicholas@akeeba.com</authorEmail>
 	<authorUrl>www.akeeba.com</authorUrl>
-	<version>0.0.0</version>
+	<version>1.0.0</version>
 	<description>PLG_USER_FOFTOKEN_XML_DESCRIPTION</description>
 
 	<files>
@@ -47,4 +47,7 @@
 
 	<scriptfile>script.php</scriptfile>
 
+	<updateservers>
+		<server type="extension" priority="1" name="FOF Token plugin for FOF 4.x">http://cdn.akeeba.com/updates/plg_user_foftoken.xml</server>
+	</updateservers>
 </extension>
