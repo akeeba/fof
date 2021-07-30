@@ -1,6 +1,7 @@
 FOF 4.0.8
 ================================================================================
 # [HIGH] Adopt extensions logic was broken
+# [HIGH] Uninstallation broken on Joomla 4 due to different installation script event handling.
 
 FOF 4.0.7
 ================================================================================
