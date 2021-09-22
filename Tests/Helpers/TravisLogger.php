@@ -67,7 +67,7 @@ abstract class TravisLogger
 	{
 		@touch(JPATH_TESTS . '/debug.txt');
 
-		self::$fp = fopen(JPATH_TESTS . '/debug.txt', 'ab');
+		self::$fp = fopen(JPATH_TESTS . '/debug.txt', 'a');
 	}
 
 	protected static function close()
