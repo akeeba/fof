@@ -1,5 +1,6 @@
 FOF 4.0.9
 ================================================================================
++ PHP 8.1 compatibility
 # [HIGH] Fatal error in the Container on some sites may prevent the software running at all, especially under CLI.
 
 FOF 4.0.8
