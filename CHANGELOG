@@ -1,3 +1,7 @@
+FOF 4.1.0
+================================================================================
++ Auto–uninstallation on update when this package is no longer needed on your site
+
 FOF 4.0.9
 ================================================================================
 + PHP 8.1 compatibility
