@@ -242,10 +242,10 @@ class file_fof40InstallerScript
 	 */
 	public function uninstall($parent)
 	{
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			return;
-		}
+		// if (version_compare(JVERSION, '4.0.0', 'ge'))
+		// {
+		// 	return;
+		// }
 
 		// Check dependencies on FOF
 		$dependencyCount = $this->countHardcodedDependencies();
