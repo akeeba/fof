@@ -1,3 +1,7 @@
+FOF 4.1.1
+================================================================================
+~ Prevent auto–uninstallation. Too many Joomla 4 sites have broken dependencies.
+
 FOF 4.1.0
 ================================================================================
 + Auto–uninstallation on update when this package is no longer needed on your site
