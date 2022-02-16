@@ -1,3 +1,7 @@
+FOF 4.1.2
+================================================================================
+~ PHP 8.1 compatibility
+
 FOF 4.1.1
 ================================================================================
 ~ Prevent auto–uninstallation. Too many Joomla 4 sites have broken dependencies.
