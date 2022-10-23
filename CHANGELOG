@@ -1,6 +1,10 @@
+FOF 4.1.4
+================================================================================
++ Allow installation on all Joomla 4 versions so you can uninstall the package in some uncommon cases
+
 FOF 4.1.3
 ================================================================================
-+ Big notice on Joomla 4.1 and later to uninstall the damn thing
++ Big notice on Joomla 4.1 and later to uninstall the package
 
 FOF 4.1.2
 ================================================================================
