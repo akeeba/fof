@@ -1,3 +1,7 @@
+FOF 4.1.5
+================================================================================
+# [LOW] opcache_invalidate may not invalidate a file
+
 FOF 4.1.4
 ================================================================================
 + Allow installation on all Joomla 4 versions so you can uninstall the package in some uncommon cases

@@ -523,7 +523,7 @@ HTML;
 				if ((substr($targetPath, -4) === '.php') && function_exists('opcache_invalidate'))
 				{
 					/** @noinspection PhpComposerExtensionStubsInspection */
-					opcache_invalidate($targetPath);
+					opcache_invalidate($targetPath, true);
 				}
 			}
 
