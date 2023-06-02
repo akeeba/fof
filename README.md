@@ -1,11 +1,16 @@
 # Framework on Framework [![Build Status](https://travis-ci.org/akeeba/fof.png)](https://travis-ci.org/akeeba/fof)
 
-## WORK IN PROGRESS!
+Hi! This is the development branch of FOF 4, which was rewritten to provide the minimum required compatibility with Joomla 4, with the express intention of allowing your users to migrate their sites to Joomla 4 and native Joomla 4 versions of your components.
 
-Hi! This is the development branch of FOF 4, the upcoming version of our RAD framework which is being rewritten to cater
-for Joomla! 4 and newer versions of PHP. It's currently in active development. Things may be broken from time to time.
-Please only use it to explore the feasibility of porting your extensions from FOF 3 to FOF 4. Take a look at the 
-MIGRATION_3_TO_4.md document for backwards incompatible changes and information about migrating your component to FOF 4. 
+[Documentation](https://github.com/akeeba/fof/wiki)
+
+## DEPRECATED
+
+FOF as a whole has been deprecated and will become End of Life on August 17th, 2023 when Joomla 3 itself becomes End of Life.
+
+We strongly recommend that you do **NOT** use FOF for any new software development.
+
+If you are starting a new software project, or want to upgrade an existing project, we recommend that you use the native Joomla MVC which has improved by leaps and bounds starting with Joomla 4.0. Even though there is no official documentation, I have written documentation for Joomla MVC myself. You can find it at https://www.dionysopoulos.me/book.html
 
 ## What is FOF? 
 
@@ -35,6 +40,10 @@ fairly certain FOF will be maintained and developed further.
 ## Requirements
 
 FOF 4 requires Joomla 3.9 or later and PHP 7.2 or later. It will not work on older Joomla and PHP versions.
+
+At a maximum, FOF 4 supports Joomla up to version 4.4 and PHP up to version 8.2. 
+
+We will not support any newer versions of Joomla or PHP.
 
 ## FOF 2.x, 3.x, 4.x and Joomla 3
 
@@ -67,27 +76,4 @@ This warrants an explanation of the extensions you see in the Extensions, Manage
 Joomla 4, thankfully, no longer includes the ancient FOF 2.x version Joomla 3 shipped with. You can use the latest 
 version of FOF 4 with Joomla 4.
 
-**Important!** We only work towards full compatibility with _stable_ versions of Joomla. Using FOF with pre-release
-versions of Joomla (alpha, beta, RC) may result in issues. If you have identified the issue to be coming from FOF and
-not your extensions feel free to file a Pull Request or an issue in this repository. Please be as specific and detailed
-as possible. 
-
-## Using FOF for your extensions
-
-If you want to use FOF to build your extensions and include it with them please read our Wiki for more information. Be a
-good fellow developer and take care NOT to overwrite newer versions of FOF or use a modified version under the FOF40
-namespace (which would cause all extensions using FOF proper to fail loading). 
-
-Developers caught violating this clause and causing problems with their fellow developers and our clients will face consequences. At first, they will be given a warning. Failure to comply will result in public shaming and active measures in FOF-based software and FOF itself including but not limited to blacklisting your namespace prefixes and forced removal of your extensions when FOF proper is installed on a site.
-
-If you want to use a custom version of FOF or pin your extensions to an older version of FOF you can always create a custom distribution if you abide by the following simple rules:
-
-* Change the namespace prefix from `FOF40\` to something else, e.g. `AcmeCorp\FOF40\` (where `AcmeCorp\` is the usual namespace prefix used in your software).
-* Change the installation path from `JPATH_LIBRARIES . '/fof40'` to a custom location e.g. `JPATH_LIBRARIES . '/acmecorp_fof40'` or `JPATH_ADMINISTRATOR . '/components/com_acme/fof40'`.
-* If you install it as a package you MUST change its name and publisher. You CAN NOT use the strings "Akeeba" or "FOF" in your name, description or publisher names.
-* Do NOT use the `#__akeeba_common` table to handle version dependencies (you need to modify `script.fof.php`).
-* Notify your clients that your software is using a _modified_ version of the Akeeba FOF framework and that your modified version is neither published nor supported by Akeeba Ltd.
-* Per the software license, you cannot remove our copyright from the files but you MUST add your own copyright, stating that the file is derivative work.
-* Per the software license, your customised copy of FOF must be published under the same license: GNU General Public License version 3 or, at your option, any later version.
-
-These changes will take you all of half an hour and ensure that you are not going to be interfering with any other developer's software.
+**Important!** The only reason to migrate a component to FOF 4 is to allow your clients to run the same version of your software on both Joola 3 and 4, allowing them to upgrade their sites. FOF 4 is not considered stable or generally usable on Joomla 4.1 and later versions. You should simultaneously offer a Joomla 4 or later only version of your software written using the core Joomla MVC. That version should be what you will be maintaining in the future.
